@@ -11,17 +11,15 @@ try:
 except ImportError:  # pragma: no cover
     from importlib_resources import files  # pragma: no cover
 
-# DATA = files("pylingdocs") / "tests/data"
-
 
 @pytest.fixture(scope="module")
 def data():
-    return DATA
+    return files("pylingdocs") / "../../tests/data"
 
 
 @pytest.fixture
-def md_path():
-    return DATA / "cldf" / "metadata.json"
+def md_path(data):
+    return data / "cldf" / "metadata.json"
 
 
 @pytest.fixture
