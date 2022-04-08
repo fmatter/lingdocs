@@ -12,6 +12,7 @@ You can use ``pylingdocs`` to create data-rich linguistic documents, with a vari
    :maxdepth: 2
    :caption: Contents:
 
+   installation
    markdown_format
    cli
 

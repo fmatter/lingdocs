@@ -6,6 +6,14 @@ from pycldf import Dataset
 DATA = pathlib.Path(__file__).parent / "data"
 
 
+try:
+    from importlib.resources import files  # pragma: no cover
+except ImportError:  # pragma: no cover
+    from importlib_resources import files  # pragma: no cover
+
+# DATA = files("pylingdocs") / "tests/data"
+
+
 @pytest.fixture(scope="module")
 def data():
     return DATA
