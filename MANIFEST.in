@@ -1,5 +1,5 @@
 include CITATION.cff
 include LICENSE
 include README.md
-include src/pylingdocs/data/*
+recursive-include src/pylingdocs/data/*
 recursive-include src/pylingdocs/test/data *
