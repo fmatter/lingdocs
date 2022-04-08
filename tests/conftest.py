@@ -3,9 +3,6 @@ import pytest
 from pycldf import Dataset
 
 
-DATA = pathlib.Path(__file__).parent / "data"
-
-
 try:
     from importlib.resources import files  # pragma: no cover
 except ImportError:  # pragma: no cover
@@ -14,7 +11,7 @@ except ImportError:  # pragma: no cover
 
 @pytest.fixture(scope="module")
 def data():
-    return files("pylingdocs") / "../../tests/data"
+    return pathlib.Path(__file__).parent / "data"
 
 
 @pytest.fixture

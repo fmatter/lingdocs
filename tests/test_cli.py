@@ -9,13 +9,6 @@ from pylingdocs.cli import preview
 
 log = logging.getLogger(__name__)
 
-try:
-    from importlib.resources import files  # pragma: no cover
-except ImportError:  # pragma: no cover
-    from importlib_resources import files  # pragma: no cover
-
-data = files("pylingdocs") / "tests/data"
-
 
 def test_main():
     runner = CliRunner()
