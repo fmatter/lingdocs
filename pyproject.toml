@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pylint."MESSAGES.CONTROL"]
+disable=["logging-fstring-interpolation"]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py37,py38,py39,py310,lint
+skip_missing_interpreters = true
+toxworkdir=/tmp/.pylingdocs_tox
+
+[testenv]
+usedevelop = True
+commands = 
+    pytest --cov
+extras = dev
+
+[testenv:lint]
+commands =
+    python -m flake8
+    prospector
+    isort --check-only src/pylingdocs --diff
+extras = dev
+"""

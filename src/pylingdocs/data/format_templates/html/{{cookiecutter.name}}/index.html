@@ -1,0 +1,13 @@
+ <!DOCTYPE html>
+<html>
+<body>
+
+<h1>{{ cookiecutter.project_title }}</h1>
+<ol>
+{% for label, file in cookiecutter.parts.list.items() %}
+<li> <a href="{{ file }}.html">{{ label }}</a>
+{% endfor %}
+</ol>
+
+</body>
+</html> 
