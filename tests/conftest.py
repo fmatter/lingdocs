@@ -21,7 +21,7 @@ def data():
 
 @pytest.fixture
 def md_path():
-    return pathlib.Path(__file__).parent / "data" / "cldf" / "metadata.json"
+    return DATA / "cldf" / "metadata.json"
 
 
 @pytest.fixture
