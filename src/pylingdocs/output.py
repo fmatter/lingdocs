@@ -31,8 +31,9 @@ class OutputFormat:
     @classmethod
     def write_folder(cls, output_dir, parts=None, metadata=None):
         log.debug(f"Writing {cls.name} to {output_dir}")
-        extra = {"name": cls.name, "parts": {"list": parts}, "project_title": "WHAT"}
+        extra = {"name": cls.name, "parts": {"list": parts}, "project_title": "empty"}
         extra.update(**metadata)
+        log.debug("Run cookiecutter")
         cookiecutter(
             str(DATA_DIR / "format_templates" / cls.name),
             output_dir=output_dir,
