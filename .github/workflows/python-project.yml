@@ -38,8 +38,11 @@ jobs:
       - name: Test with pytest
         run: |
           ls
+          echo "break"
           ls tests
+          echo "break"
           ls tests/data
+          echo "break"
           ls tests/data/cldf
       - name: Convert coverage
         run: python -m coverage xml
