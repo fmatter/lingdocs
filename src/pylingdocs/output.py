@@ -174,6 +174,9 @@ def create_output(source_dir, formats, dataset, output_dir=OUTPUT_DIR):
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir}")
         output_dir.mkdir()
+    if not source_dir.is_dir():
+        log.error(f"Content folder {source_dir} does not exist")
+        sys.exit()
     contents, parts = _load_content(source_dir)
     for output_format in formats:
         log.info(f"Rendering format [{output_format}]")
