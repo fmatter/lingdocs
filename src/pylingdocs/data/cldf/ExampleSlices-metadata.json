@@ -1,0 +1,38 @@
+{
+    "url": "example_forms.csv",
+    "tableSchema": {
+        "columns": [
+            {
+                "name": "ID",
+                "required": true,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
+                "datatype": {
+                    "base": "string",
+                    "format": "[a-zA-Z0-9_\\-]+"
+                }
+            },
+            {
+                "name": "Form_ID",
+                "required": true,
+                "dc:extent": "singlevalued",
+                "datatype": "string"
+            },
+            {
+                "name": "Example_ID",
+                "required": true,
+                "dc:extent": "singlevalued",
+                "datatype": "string"
+            },
+            {
+                "name": "Slice",
+                "required": false,
+                "dc:description": "Specifies the slice of forms.",
+                "datatype": {
+                    "base": "string",
+                    "format": "\\d+(:\\d+)?"
+                },
+                "separator": " "
+            }
+        ]
+    }
+}

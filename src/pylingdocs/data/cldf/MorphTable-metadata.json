@@ -1,0 +1,59 @@
+{
+    "url": "MorphTable",
+    "tableSchema": {
+        "columns": [
+            {
+                "name": "ID",
+                "required": true,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
+                "datatype": {
+                    "base": "string",
+                    "format": "[a-zA-Z0-9_\\-]+"
+                }
+            },
+            {
+                "name": "Language_ID",
+                "required": true,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#languageReference",
+                "dc:extent": "singlevalued",
+                "dc:description": "A reference to a language (or variety) the form belongs to",
+                "datatype": "string"
+            },
+            {
+                "name": "Parameter_ID",
+                "required": true,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#parameterReference",
+                "dc:description": "A reference to the meaning denoted by the form",
+                "datatype": "string"
+            },
+            {
+                "name": "Form",
+                "required": true,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#form",
+                "dc:extent": "singlevalued",
+                "dc:description": "The representation of the form.",
+                "datatype": "string"
+            },
+            {
+                "name": "Segments",
+                "required": false,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#segments",
+                "dc:extent": "multivalued",
+                "datatype": "string",
+                "separator": " "
+            },
+            {
+                "name": "Comment",
+                "required": false,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#comment",
+                "datatype": "string"
+            },
+            {
+                "name": "Morpheme_ID",
+                "required": true,
+                "dc:description": "The morpheme this form belongs to",
+                "datatype": "string"
+            }
+        ]
+    }
+}

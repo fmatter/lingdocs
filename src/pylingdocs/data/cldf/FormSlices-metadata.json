@@ -1,0 +1,39 @@
+{
+    "url": "form_morphs.csv",
+    "tableSchema": {
+        "columns": [
+            {
+                "name": "ID",
+                "required": true,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
+                "datatype": {
+                    "base": "string",
+                    "format": "[a-zA-Z0-9_\\-]+"
+                }
+            },
+            {
+                "name": "Form_ID",
+                "required": true,
+                "dc:extent": "singlevalued",
+                "datatype": "string"
+            },
+            {
+                "name": "Morph_ID",
+                "required": true,
+                "dc:extent": "singlevalued",
+                "datatype": "string"
+            },
+            {
+                "name": "Slice",
+                "required": false,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#segmentSlice",
+                "dc:description": "Specifies the slice of morphemes.",
+                "datatype": {
+                    "base": "string",
+                    "format": "\\d+(:\\d+)?"
+                },
+                "separator": " "
+            }
+        ]
+    }
+}

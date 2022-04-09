@@ -1,0 +1,40 @@
+{
+    "url": "texts.csv",
+    "tableSchema": {
+        "columns": [
+            {
+                "name": "ID",
+                "required": true,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
+                "datatype": {
+                    "base": "string",
+                    "format": "[a-zA-Z0-9_\\-]+"
+                }
+            },
+            {
+                "name": "Title",
+                "required": true,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#name",
+                "datatype": "string"
+            },
+            {
+                "name": "Description",
+                "required": false,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#description",
+                "datatype": "string"
+            },
+            {
+                "name": "Comment",
+                "required": false,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#comment",
+                "datatype": "string"
+            },
+            {
+                "name": "Source",
+                "required": false,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#source",
+                "datatype": "string",
+            }
+        ]
+    }
+}
