@@ -33,6 +33,8 @@ def test_build(caplog, dataset, md_path, tmpdir, data):
     )
     print(tmpdir)
     output_formats = list((x.name for x in Path(tmpdir).iterdir() if x.is_dir()))
+    print(output_formats)
+    print("HELLO")
     assert "plain" in output_formats
     assert "latex" in output_formats
     assert "html" in output_formats
