@@ -6,7 +6,6 @@ import sys
 import hupper
 import markdown
 import panflute
-import traceback
 from cookiecutter.main import cookiecutter
 from jinja2 import Environment
 from jinja2 import PackageLoader
@@ -32,7 +31,7 @@ class OutputFormat:
     @classmethod
     def write_folder(cls, output_dir, parts=None, metadata=None):
         log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
-        extra = {"name": cls.name, "parts": {"list": parts}, "project_title": "empty"}
+        extra = {"name": cls.name, "parts": {"list": parts}, "project_title": "<PROJECT TITLE>"}
         extra.update(**metadata)
         log.debug("Run cookiecutter")
         try:
@@ -45,7 +44,6 @@ class OutputFormat:
             )
         except Exception as e:
             log.debug(f"Cookiecutter failed.")
-            log.debug(traceback.format_exc())
         log.debug("Cookiecutter completed.")
 
     @classmethod
@@ -194,7 +192,6 @@ def create_output(source_dir, formats, dataset, output_dir=OUTPUT_DIR):
         builder.write_folder(
             output_dir, parts=parts, metadata={"project_title": "A test"}
         )
-        log.debug("Iterating parts")
         for label, part in contents.items():
             preprocessed = preprocess(part, builder)
             output = render_cldf(preprocessed, dataset, output_format=output_format)
