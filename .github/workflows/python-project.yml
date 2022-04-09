@@ -44,6 +44,7 @@ jobs:
           ls tests/data
           echo "break"
           ls tests/data/cldf
+          pytest
       - name: Convert coverage
         run: python -m coverage xml
       - name: Upload coverage to Codecov
