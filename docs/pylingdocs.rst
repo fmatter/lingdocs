@@ -4,10 +4,26 @@ pylingdocs package
 Submodules
 ----------
 
+pylingdocs.cldf module
+----------------------
+
+.. automodule:: pylingdocs.cldf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pylingdocs.cli module
 ---------------------
 
 .. automodule:: pylingdocs.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pylingdocs.config module
+------------------------
+
+.. automodule:: pylingdocs.config
    :members:
    :undoc-members:
    :show-inheritance:
@@ -48,14 +64,6 @@ pylingdocs.preprocessing module
 -------------------------------
 
 .. automodule:: pylingdocs.preprocessing
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pylingdocs.source\_formats module
----------------------------------
-
-.. automodule:: pylingdocs.source_formats
    :members:
    :undoc-members:
    :show-inheritance:
