@@ -43,7 +43,8 @@ class OutputFormat:
                 no_input=True,
             )
         except Exception as e:
-            log.debug(f"Cookiecutter failed. {e}")
+            log.debug(f"Cookiecutter failed.")
+            log.debug(e)
         log.debug("Cookiecutter completed.")
 
     @classmethod
