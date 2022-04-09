@@ -42,8 +42,8 @@ class OutputFormat:
                 overwrite_if_exists=True,
                 no_input=True,
             )
-        except:
-            log.debug("Cookiecutter failed.")
+        except Exception as e:
+            log.debug(f"Cookiecutter failed. {e}")
         log.debug("Cookiecutter completed.")
 
     @classmethod
