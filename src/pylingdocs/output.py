@@ -31,20 +31,19 @@ class OutputFormat:
     @classmethod
     def write_folder(cls, output_dir, parts=None, metadata=None):
         log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
-        extra = {"name": cls.name, "parts": {"list": parts}, "project_title": "<PROJECT TITLE>"}
+        extra = {
+            "name": cls.name,
+            "parts": {"list": parts},
+            "project_title": "<PROJECT TITLE>",
+        }
         extra.update(**metadata)
-        log.debug("Run cookiecutter")
-        try:
-            cookiecutter(
-                str(DATA_DIR / "format_templates" / cls.name),
-                output_dir=output_dir,
-                extra_context=extra,
-                overwrite_if_exists=True,
-                no_input=True,
-            )
-        except Exception as e:
-            log.debug(f"Cookiecutter failed.")
-        log.debug("Cookiecutter completed.")
+        cookiecutter(
+            str(DATA_DIR / "format_templates" / cls.name),
+            output_dir=output_dir,
+            extra_context=extra,
+            overwrite_if_exists=True,
+            no_input=True,
+        )
 
     @classmethod
     def write_part(cls, content, path):
