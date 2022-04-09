@@ -6,15 +6,9 @@ UNDER CONSTRUCTION
 Introduction
 ------------
 
-``pylingdocs`` is called from the terminal; the following commands are available:
-You can see a list of commands and what they do by calling ``pylingdocs --help``.
+``pylingdocs`` is called from the command line, using the format ``pylingdocs <COMMAND> --<argument>``.
+You can see a list of the following commands and what they do by calling ``pylingdocs --help``.
 
-    $ pylingdocs build
-
-    $ pylingdocs preview
-
-    $ pylingdocs compose-latex
-
-.. click:: pylingdocs:main
+.. click:: pylingdocs.cli:main
    :prog: pylingdocs
    :nested: full
