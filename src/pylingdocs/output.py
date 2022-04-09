@@ -30,6 +30,7 @@ class OutputFormat:
 
     @classmethod
     def write_folder(cls, output_dir, parts=None, metadata=None):
+        log.debug(f"Writing {cls.name} to {output_dir}")
         extra = {"name": cls.name, "parts": {"list": parts}, "project_title": "WHAT"}
         extra.update(**metadata)
         cookiecutter(
