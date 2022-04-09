@@ -182,7 +182,7 @@ def create_output(source_dir, formats, dataset, output_dir=OUTPUT_DIR):
         log.info(f"Rendering format [{output_format}]")
         output_dest = output_dir / output_format
         builder = builders[output_format]
-        log.debug("Writing skeleton to folder {output_dir}")
+        log.debug(f"Writing skeleton to folder {output_dir}")
         builder.write_folder(
             output_dir, parts=parts, metadata={"project_title": "A test"}
         )

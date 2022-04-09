@@ -13,8 +13,8 @@ You can use ``pylingdocs`` to create data-rich linguistic documents, with a vari
    :caption: Contents:
 
    installation
+   usage
    markdown_format
-   cli
 
 
 
