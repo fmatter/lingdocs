@@ -14,3 +14,7 @@ You can see a list of commands and what they do by calling ``pylingdocs --help``
     $ pylingdocs preview
 
     $ pylingdocs compose-latex
+
+.. click:: module:parser
+   :prog: pylingdocs
+   :nested: full

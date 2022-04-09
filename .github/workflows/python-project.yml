@@ -37,14 +37,7 @@ jobs:
         run: python3 setup.py sdist bdist_wheel
       - name: Test with pytest
         run: |
-          ls
-          echo "break"
-          ls tests
-          echo "break"
-          ls tests/data
-          echo "break"
-          ls tests/data/cldf
-          pytest
+          pytest -s
       - name: Convert coverage
         run: python -m coverage xml
       - name: Upload coverage to Codecov
