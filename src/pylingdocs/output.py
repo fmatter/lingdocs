@@ -40,6 +40,7 @@ class OutputFormat:
             overwrite_if_exists=True,
             no_input=True,
         )
+        log.debug("Cookiecutter completed.")
 
     @classmethod
     def write_part(cls, content, path):
