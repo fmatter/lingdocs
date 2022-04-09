@@ -34,13 +34,16 @@ class OutputFormat:
         extra = {"name": cls.name, "parts": {"list": parts}, "project_title": "empty"}
         extra.update(**metadata)
         log.debug("Run cookiecutter")
-        cookiecutter(
-            str(DATA_DIR / "format_templates" / cls.name),
-            output_dir=output_dir,
-            extra_context=extra,
-            overwrite_if_exists=True,
-            no_input=True,
-        )
+        try:
+            cookiecutter(
+                str(DATA_DIR / "format_templates" / cls.name),
+                output_dir=output_dir,
+                extra_context=extra,
+                overwrite_if_exists=True,
+                no_input=True,
+            )
+        except:
+            log.debug("Cookiecutter failed.")
         log.debug("Cookiecutter completed.")
 
     @classmethod
