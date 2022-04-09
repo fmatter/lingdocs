@@ -38,6 +38,9 @@ jobs:
       - name: Test with pytest
         run: |
           ls
+          ls tests
+          ls tests/data
+          ls tests/data/cldf
       - name: Convert coverage
         run: python -m coverage xml
       - name: Upload coverage to Codecov
