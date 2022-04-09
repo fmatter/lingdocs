@@ -72,7 +72,7 @@ def build(source, targets, cldf, output_dir):
     except FileNotFoundError as e:
         log.error(e)
         log.error("Please specify a path to a valid CLDF metadata file.")
-        sys.exit()
+        sys.exit(1)
     create_output(source, targets, ds, output_dir)
 
 

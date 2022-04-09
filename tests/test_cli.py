@@ -22,7 +22,7 @@ def test_build(caplog, dataset, md_path, tmpdir, data):
 
     # try running on empty
     result = runner.invoke(build)
-    assert result.exit_code == 0
+    assert result.exit_code == 1
     log.debug(caplog.text)
     assert "Please specify " in caplog.text
 
