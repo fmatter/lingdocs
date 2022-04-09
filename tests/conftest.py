@@ -1,19 +1,13 @@
 import pathlib
 import pytest
 from pycldf import Dataset
+import logging
 
-
-# try:
-#     from importlib.resources import files  # pragma: no cover
-# except ImportError:  # pragma: no cover
-#     from importlib_resources import files  # pragma: no cover
-
+log = logging.getLogger(__name__)
 
 @pytest.fixture(scope="module")
 def data():
-    return (
-        pathlib.Path(__file__).parent / "data"
-    )  # pathlib.Path(__file__).parent / "data"
+    return pathlib.Path(__file__).parent / "data"
 
 
 @pytest.fixture

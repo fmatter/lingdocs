@@ -23,6 +23,7 @@ def test_build(caplog, dataset, md_path, tmpdir, data):
     # try running on empty
     result = runner.invoke(build)
     assert result.exit_code == 0
+    log.debug(caplog.text)
     assert "Please specify " in caplog.text
 
     # with a dataset
@@ -30,6 +31,7 @@ def test_build(caplog, dataset, md_path, tmpdir, data):
         build,
         ["--cldf", md_path, "--output-dir", tmpdir, "--source", data / "contents"],
     )
+    print(tmpdir)
     output_formats = list((x.name for x in Path(tmpdir).iterdir() if x.is_dir()))
     assert "plain" in output_formats
     assert "latex" in output_formats
