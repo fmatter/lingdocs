@@ -6,6 +6,7 @@ import sys
 import hupper
 import markdown
 import panflute
+import traceback
 from cookiecutter.main import cookiecutter
 from jinja2 import Environment
 from jinja2 import PackageLoader
@@ -30,7 +31,7 @@ class OutputFormat:
 
     @classmethod
     def write_folder(cls, output_dir, parts=None, metadata=None):
-        log.debug(f"Writing {cls.name} to {output_dir}")
+        log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
         extra = {"name": cls.name, "parts": {"list": parts}, "project_title": "empty"}
         extra.update(**metadata)
         log.debug("Run cookiecutter")
@@ -44,7 +45,7 @@ class OutputFormat:
             )
         except Exception as e:
             log.debug(f"Cookiecutter failed.")
-            log.debug(e)
+            log.debug(traceback.format_exc())
         log.debug("Cookiecutter completed.")
 
     @classmethod
