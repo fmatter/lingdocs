@@ -1,0 +1,6 @@
+document:
+  title: Test data
+  parts:
+    test:
+      title: A test section
+      abstract: Some text.
