@@ -15,5 +15,6 @@ Installing ``pylingdocs``
 Installing dependencies
 ------------------------
 
-If you want to generate LaTeX output, you will need `pandoc <https://pandoc.org/>`_ >= 2.18.
+Install `pandoc <https://pandoc.org/>`_.
+If you want to generate LaTeX output, version >= 2.18 is needed.
 Note that ``apt`` installs a lower version on Ubuntu 20.04.

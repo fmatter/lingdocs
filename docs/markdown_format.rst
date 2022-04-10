@@ -16,7 +16,7 @@ Citing
 Citing sources is done by the commands ``[src](bibkey[pages])`` and ``[psrc](bibkey[pages])``.
 ``bibkey`` is the identifier of the source (for example, a bibkey in a ``.bib`` file).
 ``[pages]`` is optional.
-``[src](meier2009example[229-231])`` should yield e.g. ``Meier (2009: 229-231)``, and ``[psrc](meier2009example[229-231])`` ``(Meier 2009: 229-231)``.
+For example, ``[src](meier2009example[229-231])`` yields ``Meier (2009: 229-231)``, and ``[psrc](meier2009example[229-231])`` ``(Meier 2009: 229-231)``.
 
 Document elements
 ------------------
@@ -24,4 +24,5 @@ Document elements
 Tables
 .......
 
-Since every table has an ID, they can be inserted with the directive ``[table](id)``.
+Every table has an ID; they can be inserted with the directive ``[table](id)``.
+
