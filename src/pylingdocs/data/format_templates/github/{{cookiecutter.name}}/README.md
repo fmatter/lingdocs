@@ -4,8 +4,8 @@ This is the main file.
 
 Here is a TOC:
 
-{% for label, file in cookiecutter.parts.list.items() %}
-* [{{ label }}]({{ file }})
+{% for id, title in cookiecutter.parts.list.items() %}
+* [{{ title }}]({{ id }}.md)
 {% endfor %}
 
 and here are refs:

@@ -38,6 +38,9 @@ OUTPUT_DIR = get_path("output")
 CLDF_MD = get_path("cldf")
 TABLE_DIR = get_path("tables")
 TABLE_MD = get_path("table_metadata")
+OUTPUT_DIR = get_path("output")
+STRUCTURE_FILE = get_path("structure_file")
+BENCH = get_path("bench")
 
 BUILDERS = ["plain", "github", "html", "latex"]
 PREVIEW = ["plain"]

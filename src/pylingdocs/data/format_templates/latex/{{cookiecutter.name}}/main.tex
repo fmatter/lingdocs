@@ -8,8 +8,8 @@
 Title: {{ cookiecutter.project_title }}
 
 
-{% for label, file in cookiecutter.parts.list.items() %}
-\input{% raw %}{{% endraw %}{{ file }}.tex{% raw %}}{% endraw %}
+{% for id, title in cookiecutter.parts.list.items() %}
+\input{% raw %}{{% endraw %}{{ id }}.tex{% raw %}}{% endraw %}
 {% endfor %}
 
 \end{document}

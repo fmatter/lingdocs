@@ -13,6 +13,7 @@ from pylingdocs.output import clean_output
 from pylingdocs.output import compose_latex as cmplatex
 from pylingdocs.output import create_output
 from pylingdocs.output import run_preview
+from pylingdocs.output import update_structure as do_update_structure
 
 
 log = logging.getLogger(__name__)
@@ -81,6 +82,11 @@ def build(source, targets, cldf, output_dir):
 def preview(refresh):
     """Create a live preview using a lightweight, human-readable output format"""
     run_preview(refresh=refresh)
+
+
+@main.command()
+def update_structure():
+    do_update_structure()
 
 
 @main.command(cls=OutputCommand)

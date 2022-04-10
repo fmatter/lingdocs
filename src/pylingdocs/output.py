@@ -7,19 +7,20 @@ import hupper
 import markdown
 import panflute
 from cookiecutter.main import cookiecutter
-from jinja2 import Environment
-from jinja2 import PackageLoader
+from jinja2 import Environment, PackageLoader
 from jinja2.exceptions import TemplateNotFound
 from pycldf import Dataset
-from pylingdocs.config import CLDF_MD
-from pylingdocs.config import CONTENT_FOLDER
-from pylingdocs.config import DATA_DIR
+from pylingdocs.config import CLDF_MD, DATA_DIR, STRUCTURE_FILE, CONTENT_FOLDER, BENCH
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import PREVIEW
 from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_cldf
+import yaml
+import re
+from pathlib import Path
 
+NUM_PRE = re.compile(r"[\d]+\ ")
 
 log = logging.getLogger(__name__)
 
@@ -122,6 +123,83 @@ class Latex(OutputFormat):
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML]}
 
 
+def _enumerate_children(child_id, child_data, level, tuples, depths=None):
+    if depths is None:
+        depths = {0: 0, 1: 0, 2: 0, 3: 0}
+    depths[level] += 1
+    tuples.append((child_id, "".join([str(x) for x in depths.values()])))
+    if "parts" in child_data:
+        for cchild_id, cchild_data in child_data["parts"].items():
+            tuples = _enumerate_children(
+                cchild_id, cchild_data, level + 1, tuples, depths
+            )
+    return tuples
+
+
+def _get_titles(structure, titles=None):
+    if titles is None:
+        titles = {}
+    for k, v in structure.items():
+        titles[k] = v["title"]
+        if "parts" in v:
+            titles = _get_titles(v["parts"], titles)
+    log.debug(titles)
+    return titles
+
+
+def update_structure(
+    content_dir=CONTENT_FOLDER, bench_dir=BENCH, structure_file=STRUCTURE_FILE
+):
+    log.info("Updating document structure")
+    structure = _load_structure(structure_file)
+    tuples = []
+    for child_id, child_data in structure["document"]["parts"].items():
+        tuples = _enumerate_children(child_id, child_data, 0, tuples)
+
+    content_files = {}
+    for file in content_dir.iterdir():
+        if ".md" not in file.name:
+            continue
+        name = re.sub(NUM_PRE, "", file.stem)
+        content_files[name] = file
+
+    bench_files = {}
+    for file in bench_dir.iterdir():
+        if ".md" not in file.name:
+            continue
+        name = re.sub(NUM_PRE, "", file.stem)
+        bench_files[name] = file
+
+    for section, number in tuples:
+        fname = f"{number} {section}.md"
+        new_path = Path(content_dir, fname)
+        if section in content_files:
+            if section in bench_files:
+                log.warning(f"Conflict: {section}. Resolve manually.")
+            else:
+                if content_files[section] != new_path:
+                    log.info(f"'{section}': {content_files[section]} > {new_path}")
+                    content_files[section].rename(new_path)
+                del content_files[section]
+        elif section in bench_files:
+            if bench_files[section] != new_path:
+                log.info(f"'{section}': moving {bench_files[section]} > {new_path}")
+                bench_files[section].rename(new_path)
+            del bench_files[section]
+        else:
+            log.info(f"'{section}': creating file {new_path}")
+            new_path.touch()
+
+    for file in content_files.values():
+        new_path = Path(bench_dir, file.name)
+        log.info(f"Unlisted: moving {file} > {new_path}")
+        file.rename(new_path)
+
+
+def _load_structure(structure_file=STRUCTURE_FILE):
+    return yaml.load(open(structure_file, encoding="utf-8"), Loader=yaml.SafeLoader)
+
+
 def compose_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
     log.info("Compiling LaTeX document.")
     with subprocess.Popen(
@@ -130,16 +208,21 @@ def compose_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
         del proc  # help, prospector is forcing me
 
 
-def _load_content(source_dir):
+def _load_content(source_dir=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
+    structure = _load_structure(structure_file)
+
+    tuples = []
+    for child_id, child_data in structure["document"]["parts"].items():
+        tuples = _enumerate_children(child_id, child_data, 0, tuples)
+
     contents = {}
-    parts = {}
-    for file in source_dir.iterdir():
-        if ".md" not in file.name:
-            continue
-        with open(file, "r", encoding="utf-8") as f:
+    for part_id, number in tuples:
+        filename = f"{number} {part_id}.md"
+        with open(source_dir / filename, "r", encoding="utf-8") as f:
             content = f.read()
-        contents[file.stem] = content
-        parts[file.stem] = file.stem
+        contents[part_id] = content
+
+    parts = _get_titles(structure["document"]["parts"])
     return contents, parts
 
 
@@ -176,13 +259,20 @@ def create_output(source_dir, formats, dataset, output_dir=OUTPUT_DIR):
         bool: blabla
 
     """
+    log.debug(source_dir)
+    log.debug(dataset)
+    log.debug(output_dir)
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir}")
         output_dir.mkdir()
     if not source_dir.is_dir():
         log.error(f"Content folder {source_dir} does not exist")
         sys.exit(1)
+
     contents, parts = _load_content(source_dir)
+
+    log.debug(contents)
+    log.debug(parts)
     for output_format in formats:
         log.info(f"Rendering format [{output_format}]")
         output_dest = output_dir / output_format
@@ -191,9 +281,9 @@ def create_output(source_dir, formats, dataset, output_dir=OUTPUT_DIR):
         builder.write_folder(
             output_dir, parts=parts, metadata={"project_title": "A test"}
         )
-        for label, part in contents.items():
-            preprocessed = preprocess(part, builder)
+        for part_id, content in contents.items():
+            preprocessed = preprocess(content, builder)
             output = render_cldf(preprocessed, dataset, output_format=output_format)
             builder.write_part(
-                content=output, path=output_dest / f"{label}.{builder.file_ext}"
+                content=output, path=output_dest / f"{part_id}.{builder.file_ext}"
             )
