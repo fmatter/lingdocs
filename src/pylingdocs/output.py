@@ -1,24 +1,30 @@
 """Builders producing different output formats"""
 import logging
+import re
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 import hupper
 import markdown
 import panflute
+import yaml
 from cookiecutter.main import cookiecutter
-from jinja2 import Environment, PackageLoader
+from jinja2 import Environment
+from jinja2 import PackageLoader
 from jinja2.exceptions import TemplateNotFound
 from pycldf import Dataset
-from pylingdocs.config import CLDF_MD, DATA_DIR, STRUCTURE_FILE, CONTENT_FOLDER, BENCH
+from pylingdocs.config import BENCH
+from pylingdocs.config import CLDF_MD
+from pylingdocs.config import CONTENT_FOLDER
+from pylingdocs.config import DATA_DIR
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import PREVIEW
+from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_cldf
-import yaml
-import re
-from pathlib import Path
+
 
 NUM_PRE = re.compile(r"[\d]+\ ")
 
