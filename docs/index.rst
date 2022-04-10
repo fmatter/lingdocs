@@ -15,6 +15,7 @@ You can use ``pylingdocs`` to create data-rich linguistic documents, with a vari
    installation
    usage
    markdown_format
+   config
 
 
 
