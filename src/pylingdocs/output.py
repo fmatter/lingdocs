@@ -203,7 +203,11 @@ def update_structure(
 
 
 def _load_structure(structure_file=STRUCTURE_FILE):
-    return yaml.load(open(structure_file, encoding="utf-8"), Loader=yaml.SafeLoader)
+    if not structure_file.is_file():
+        log.error(f"{STRUCTURE_FILE} not found, aborting.")
+        sys.exit(1)
+    else:
+        return yaml.load(open(structure_file, encoding="utf-8"), Loader=yaml.SafeLoader)
 
 
 def compose_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
