@@ -1,5 +1,7 @@
 from configparser import ConfigParser
 from pathlib import Path
+import logging
+log = logging.getLogger(__name__)
 
 
 try:
@@ -8,6 +10,8 @@ except ImportError:  # pragma: no cover
     from importlib_resources import files  # pragma: no cover
 
 DATA_DIR = files("pylingdocs") / "data"
+
+log.info("Loading configuration")
 
 config = ConfigParser()
 default_config = ConfigParser()
@@ -44,4 +48,3 @@ BENCH = get_path("bench")
 
 BUILDERS = ["plain", "github", "html", "latex"]
 PREVIEW = ["plain"]
-COMBINATION_THRESHOLD = 2
