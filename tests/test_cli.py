@@ -5,7 +5,6 @@ from pylingdocs.cli import main
 from pylingdocs.cli import new
 from pylingdocs.cli import preview
 
-
 log = logging.getLogger(__name__)
 
 
@@ -26,17 +25,19 @@ def test_empty_build(caplog):
     assert "Please specify " in caplog.text
 
 
-# not working right now because the build command relies on a structure.yaml
-# file and I don't know how to do that.
-# def test_build(caplog, dataset, md_path, tmpdir, data):
+# # not working right now because the build command relies on a structure.yaml
+# # file and I don't know how to do that.
+# def test_build(caplog, dataset, md_path, data, working_dir):
 #     runner = CliRunner()
 
 #     result = runner.invoke(
 #         build,
-#         ["--cldf", md_path, "--output-dir", tmpdir, "--source", data / "contents"],
+#         ["--cldf", md_path, "--source", data / "contents"],
 #     )
 #     assert result.exit_code == 0
-#     output_formats = list((x.name for x in Path(tmpdir).iterdir() if x.is_dir()))
+#     output_formats = list(
+# (x.name for x in (working_dir / "output").iterdir() if x.is_dir())
+# )
 #     assert "plain" in output_formats
 #     assert "latex" in output_formats
 #     assert "html" in output_formats

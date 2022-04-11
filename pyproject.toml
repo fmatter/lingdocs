@@ -23,6 +23,6 @@ commands =
     python -m flake8
     prospector src
     prospector tests
-    isort --check-only src/pylingdocs --diff
+    isort --check-only src
 extras = dev
 """

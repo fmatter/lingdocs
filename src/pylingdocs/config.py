@@ -44,3 +44,4 @@ BENCH = get_path("bench")
 
 BUILDERS = ["plain", "github", "html", "latex"]
 PREVIEW = ["plain"]
+COMBINATION_THRESHOLD = 2

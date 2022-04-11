@@ -129,38 +129,28 @@ class Latex(OutputFormat):
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML]}
 
 
-def _enumerate_children(child_id, child_data, level, tuples, depths=None):
-    if depths is None:
-        depths = {0: 0, 1: 0, 2: 0, 3: 0}
-    depths[level] += 1
-    tuples.append((child_id, "".join([str(x) for x in depths.values()])))
-    if "parts" in child_data:
-        for cchild_id, cchild_data in child_data["parts"].items():
-            tuples = _enumerate_children(
-                cchild_id, cchild_data, level + 1, tuples, depths
-            )
-    return tuples
+def _iterate_structure(structure, level, depths):
+    for child_id, child_data in structure.items():
+        depths[level] += 1
+        yield child_id, level, child_data["title"], "".join(
+            [str(x) for x in depths.values()]
+        )
+        if isinstance(child_data, dict) and "parts" in child_data:
+            for x in _iterate_structure(child_data["parts"], level + 1, depths):
+                yield x
 
 
-def _get_titles(structure, titles=None):
-    if titles is None:
-        titles = {}
-    for k, v in structure.items():
-        titles[k] = v["title"]
-        if "parts" in v:
-            titles = _get_titles(v["parts"], titles)
-    log.debug(titles)
-    return titles
+def iterate_structure(structure):
+    for x in _iterate_structure(
+        structure["document"]["parts"], level=0, depths={0: 0, 1: 0, 2: 0, 3: 0}
+    ):
+        yield x
 
 
 def update_structure(
     content_dir=CONTENT_FOLDER, bench_dir=BENCH, structure_file=STRUCTURE_FILE
 ):
     log.info("Updating document structure")
-    structure = _load_structure(structure_file)
-    tuples = []
-    for child_id, child_data in structure["document"]["parts"].items():
-        tuples = _enumerate_children(child_id, child_data, 0, tuples)
 
     content_files = {}
     for file in content_dir.iterdir():
@@ -176,24 +166,28 @@ def update_structure(
         name = re.sub(NUM_PRE, "", file.stem)
         bench_files[name] = file
 
-    for section, number in tuples:
-        fname = f"{number} {section}.md"
+    structure = _load_structure(structure_file)
+
+    for part_id, level, title, fileno in iterate_structure(structure):
+        del level  # unused
+        del title  # unused
+        fname = f"{fileno} {part_id}.md"
         new_path = Path(content_dir, fname)
-        if section in content_files:
-            if section in bench_files:
-                log.warning(f"Conflict: {section}. Resolve manually.")
+        if part_id in content_files:
+            if part_id in bench_files:
+                log.warning(f"Conflict: {part_id}. Resolve manually.")
             else:
-                if content_files[section] != new_path:
-                    log.info(f"'{section}': {content_files[section]} > {new_path}")
-                    content_files[section].rename(new_path)
-                del content_files[section]
-        elif section in bench_files:
-            if bench_files[section] != new_path:
-                log.info(f"'{section}': moving {bench_files[section]} > {new_path}")
-                bench_files[section].rename(new_path)
-            del bench_files[section]
+                if content_files[part_id] != new_path:
+                    log.info(f"'{part_id}': {content_files[part_id]} > {new_path}")
+                    content_files[part_id].rename(new_path)
+                del content_files[part_id]
+        elif part_id in bench_files:
+            if bench_files[part_id] != new_path:
+                log.info(f"'{part_id}': moving {bench_files[part_id]} > {new_path}")
+                bench_files[part_id].rename(new_path)
+            del bench_files[part_id]
         else:
-            log.info(f"'{section}': creating file {new_path}")
+            log.info(f"'{part_id}': creating file {new_path}")
             new_path.touch()
 
     for file in content_files.values():
@@ -221,18 +215,19 @@ def compose_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
 def _load_content(source_dir=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
     structure = _load_structure(structure_file)
 
-    tuples = []
-    for child_id, child_data in structure["document"]["parts"].items():
-        tuples = _enumerate_children(child_id, child_data, 0, tuples)
-
     contents = {}
-    for part_id, number in tuples:
-        filename = f"{number} {part_id}.md"
-        with open(source_dir / filename, "r", encoding="utf-8") as f:
-            content = f.read()
+    parts = {}
+    for part_id, level, title, fileno in iterate_structure(structure):
+        del level  # unused
+        filename = f"{fileno} {part_id}.md"
+        try:
+            with open(source_dir / filename, "r", encoding="utf-8") as f:
+                content = f.read()
+        except FileNotFoundError:
+            log.error(f"File {source_dir/filename} does not exist.")
+            sys.exit(1)
         contents[part_id] = content
-
-    parts = _get_titles(structure["document"]["parts"])
+        parts[part_id] = title
     return contents, parts
 
 
@@ -269,9 +264,6 @@ def create_output(source_dir, formats, dataset, output_dir=OUTPUT_DIR):
         bool: blabla
 
     """
-    log.debug(source_dir)
-    log.debug(dataset)
-    log.debug(output_dir)
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir}")
         output_dir.mkdir()
@@ -281,8 +273,6 @@ def create_output(source_dir, formats, dataset, output_dir=OUTPUT_DIR):
 
     contents, parts = _load_content(source_dir)
 
-    log.debug(contents)
-    log.debug(parts)
     for output_format in formats:
         log.info(f"Rendering format [{output_format}]")
         output_dest = output_dir / output_format
