@@ -17,7 +17,7 @@ section_types = ["section", "subsection", "subsubsection", "paragraph", "subpara
 def reduce_header(elem, doc):
     del doc  # not used, but panflute insists on it...
     if isinstance(elem, Header):
-        log.debug(f"Removing header {elem.content}")
+        # log.debug(f"Removing header {elem.content}")
         cmd = f"\\{section_types[elem.level - 1]}{{"
         inlines = [RawInline(cmd, "tex")]
         inlines.extend(elem.content)

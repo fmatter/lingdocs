@@ -3,10 +3,10 @@ import re
 import pandas as pd
 from cldfviz.text import render
 from clldutils import jsonlib
-from pylingdocs.config import DATA_DIR
+from jinja2 import Environment, DictLoader
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
-
+from pylingdocs.models import models
 
 log = logging.getLogger(__name__)
 
@@ -17,6 +17,25 @@ if TABLE_MD.is_file():
 else:
     tables = {}
 
+labels = {}
+templates = {}
+envs = {}
+
+for model in models:
+    labels[model.shortcut] = model.query_string
+    for output_format in model.formats:
+        if output_format not in templates:
+            templates[output_format] = {}
+
+for output_format in templates.keys():
+    for model in models:
+        templates[output_format][
+            model.cldf_table + "_detail.md"
+        ] = model.representation(output_format)
+
+for output_format in templates.keys():
+    envs[output_format] = DictLoader(templates[output_format])
+
 
 def preprocess_cldfviz(md):
     current = 0
@@ -25,25 +44,17 @@ def preprocess_cldfviz(md):
         current = m.end()
         key = m.group("label")
         url = m.group("url")
-        md_keys = {
-            "mp": f"[Morpheme {url}](MorphsetTable#cldf:{url})",
-            "ex": f"[Example {url}](ExampleTable#cldf:{url})",
-            "m": f"[Morph {url}](MorphTable#cldf:{url})",
-        }
-        if key in md_keys:
-            yield md_keys[key]
+        if key in labels:
+            yield labels[key](url)
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
 
 
-def render_cldf(md_str, ds, data_format="cldf", output_format="github"):
+def render_markdown(md_str, ds, data_format="cldf", output_format="github"):
     if data_format == "cldf":
         preprocessed = render(
-            "".join(preprocess_cldfviz(md_str)),
-            ds,
-            template_dir=DATA_DIR / "model_templates" / output_format,
-            fallback_template_dir=DATA_DIR / "model_templates" / "plain",
+            "".join(preprocess_cldfviz(md_str)), ds, loader=envs[output_format]
         )
         return preprocessed
     log.error(f"Unknown data format {data_format}")
