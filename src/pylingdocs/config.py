@@ -1,6 +1,7 @@
 from configparser import ConfigParser
 from pathlib import Path
 import logging
+
 log = logging.getLogger(__name__)
 
 
@@ -48,3 +49,4 @@ BENCH = get_path("bench")
 
 BUILDERS = ["plain", "github", "html", "latex"]
 PREVIEW = ["plain"]
+CITATION_FILE = "./CITATION.cff"
