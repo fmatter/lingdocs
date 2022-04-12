@@ -1,7 +1,8 @@
 """Various helpers"""
 import logging
-from pylingdocs.config import CITATION_FILE
 import yaml
+from pylingdocs.config import CITATION_FILE
+
 
 log = logging.getLogger(__name__)
 
