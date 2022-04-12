@@ -13,5 +13,6 @@ def new():
 
 
 def load_metadata(citation_file=CITATION_FILE):
-    metadata = yaml.load(open(citation_file, encoding="utf-8"), Loader=yaml.SafeLoader)
+    with open(citation_file, encoding="utf-8") as f:
+        metadata = yaml.load(f, Loader=yaml.SafeLoader)
     log.debug(metadata)
