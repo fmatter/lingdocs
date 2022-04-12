@@ -3,7 +3,7 @@ import re
 import pandas as pd
 from cldfviz.text import render
 from clldutils import jsonlib
-from jinja2 import Environment, DictLoader
+from jinja2 import DictLoader
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
 from pylingdocs.models import models
@@ -29,9 +29,9 @@ for model in models:
 
 for output_format in templates.keys():
     for model in models:
-        templates[output_format][
-            model.cldf_table + "_detail.md"
-        ] = model.representation(output_format)
+        model_output = model.representation(output_format)
+        if model_output is not None:
+            templates[output_format][model.cldf_table + "_detail.md"] = model_output
 
 for output_format in templates.keys():
     envs[output_format] = DictLoader(templates[output_format])

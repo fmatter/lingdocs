@@ -44,12 +44,11 @@ class Example(Entity):
     cldf_table = "ExampleTable"
     shortcut = "ex"
 
-    formats = {
-        "plain": r"""TODO""",
-        "github": """TODO""",
-        "latex": r"""TODO""",
-        "html": """TODO""",
-    }
+    formats = {"plain": r"""TODO""", "latex": r"""TODO""", "html": """TODO"""}
+
+    @classmethod
+    def representation(cls, output_format="plain"):
+        return cls.formats.get(output_format, None)
 
 
 models = [Morpheme, Morph, Example]
