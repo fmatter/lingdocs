@@ -9,7 +9,7 @@ authors:
     orcid: "https://orcid.org/0000-0002-2545-5154"
 date-released: 20??-MM-DD
 doi: <insert your DOI here>
-version: "0.0.1"
+version: "0.0.1.dev"
 repository-code: "https://github.com/fmatter/pylingdocs"
 keywords:
   - digital linguistics
