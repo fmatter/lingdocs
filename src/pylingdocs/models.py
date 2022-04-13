@@ -13,7 +13,6 @@ class Entity:
     with not enough similarity to existing models.
     Refer to this class for documentation of the methods."""
 
-
     name = "ChangeMe"
     """The name of the model."""
     cldf_table = "ChangeMeTable"
