@@ -152,7 +152,7 @@ def write_readme(metadata_file=METADATA_FILE):
 
 * version: `{md["version"]}`
 
-Created with [pylingdocs](https://github.com/fmatter/pylingdocs/) v{__version__}.
+Created using [pylingdocs](https://github.com/fmatter/pylingdocs/) v{__version__}.
 The available output formats are in [output](./output).
 The [github](./output/github) format is most suitable for github(-like) repos.
 
@@ -161,6 +161,5 @@ To refer to the content of unreleased versions:
 
 ```
 {citation}```"""
-    print(readme_text)
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(readme_text)
