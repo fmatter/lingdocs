@@ -15,7 +15,6 @@ def data():
 
 @pytest.fixture
 def working_dir(tmp_path, data):
-    log.debug("YES")
     shutil.copyfile(data / "structure.yaml", tmp_path / "structure.yaml")
     os.chdir(tmp_path)
 
