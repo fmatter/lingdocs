@@ -35,6 +35,7 @@ def _load_metadata(metadata_file=METADATA_FILE):
         md["url"] = md["repository"]
     return md
 
+
 def _validate(metadata, metadata_file, citation_file):
     schema = Path(get_package_root(), "schemas", "1.2.0", "schema.json")
     with open(schema, "rt", encoding="utf-8") as f:
@@ -42,7 +43,10 @@ def _validate(metadata, metadata_file, citation_file):
     try:
         json_validate(instance=metadata, schema=schema)
     except ValidationError as e:
-        log.error(f"The following error was found when converting {metadata_file} to {citation_file}: \n{e.message}")
+        log.error(
+            f"""The following error was found when converting {metadata_file} to {citation_file}:
+{e.message}"""
+        )
         sys.exit(1)
 
 
