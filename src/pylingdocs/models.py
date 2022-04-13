@@ -22,6 +22,7 @@ class Entity:
     def query_string(cls, url, visualizer="cldfviz"):
         if visualizer == "cldfviz":
             return f"[{cls.name} {url}]({cls.cldf_table}#cldf:{url})"
+        return f"[Unknown visualizer]({url}"
 
     @classmethod
     def representation(cls, output_format="plain"):
@@ -37,7 +38,7 @@ class Morpheme(Entity):
     formats = {
         "plain": """{{ ctx["Form"] }}""",
         "github": """_{{ ctx["Form"] }}_""",
-        "latex": r"""\obj{% raw %}{{% endraw %}{{ ctx["Form"] }}{% raw %}}{% endraw %}""",
+        "latex": load_template("morpheme", "latex"),
         "html": """<i>{{ctx["Form"]}}</i>""",
     }
 

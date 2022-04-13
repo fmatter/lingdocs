@@ -8,6 +8,7 @@ from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
 from pylingdocs.models import models
 
+
 log = logging.getLogger(__name__)
 
 MD_LINK_PATTERN = re.compile(r"\[(?P<label>[^]]*)]\((?P<url>[^)]+)\)")
@@ -27,14 +28,14 @@ for model in models:
         if output_format not in templates:
             templates[output_format] = {}
 
-for output_format in templates.keys():
+for output_format, env_dict in templates.items():
     for model in models:
         model_output = model.representation(output_format)
         if model_output is not None:
-            templates[output_format][model.cldf_table + "_detail.md"] = model_output
+            env_dict[model.cldf_table + "_detail.md"] = model_output
 
-for output_format in templates.keys():
-    envs[output_format] = DictLoader(templates[output_format])
+for output_format, env_dict in templates.items():
+    envs[output_format] = DictLoader(env_dict)
 
 
 def preprocess_cldfviz(md):
