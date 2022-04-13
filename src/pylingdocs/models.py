@@ -1,3 +1,13 @@
+from pylingdocs.config import DATA_DIR
+
+
+def load_template(name, style):
+    with open(
+        DATA_DIR / "model_templates" / name / f"{style}.md", "r", encoding="utf-8"
+    ) as f:
+        return f.read()
+
+
 class Entity:
     """The base class for entities"""
 
@@ -45,7 +55,11 @@ class Example(Entity):
     cldf_table = "ExampleTable"
     shortcut = "ex"
 
-    formats = {"plain": r"""TODO""", "latex": r"""TODO""", "html": """TODO"""}
+    formats = {
+        "plain": load_template("example", "plain"),
+        "latex": load_template("example", "latex"),
+        "html": load_template("example", "html"),
+    }
 
 
 models = [Morpheme, Morph, Example]
