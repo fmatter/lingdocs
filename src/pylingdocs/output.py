@@ -14,7 +14,6 @@ from jinja2 import Environment
 from jinja2 import PackageLoader
 from jinja2.exceptions import TemplateNotFound
 from pycldf import Dataset
-from pylingdocs.helpers import render_cff, render_readme
 from pylingdocs.config import BENCH
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
@@ -22,6 +21,8 @@ from pylingdocs.config import DATA_DIR
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import PREVIEW
 from pylingdocs.config import STRUCTURE_FILE
+from pylingdocs.helpers import write_cff
+from pylingdocs.helpers import write_readme
 from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
@@ -265,8 +266,8 @@ def create_output(source_dir, formats, dataset, output_dir=OUTPUT_DIR):
         bool: blabla
 
     """
-    render_cff()
-    render_readme()
+    write_cff()
+    write_readme()
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir}")
         output_dir.mkdir()

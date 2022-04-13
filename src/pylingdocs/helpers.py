@@ -1,15 +1,23 @@
 """Various helpers"""
+import json
 import logging
-import yaml
-from pylingdocs.config import METADATA_FILE, CITATION_FILE
+import sys
 from datetime import datetime
+from pathlib import Path
+import yaml
+from cffconvert.root import get_package_root
 from jsonschema import validate as json_validate
 from jsonschema.exceptions import ValidationError
-from pathlib import Path
-from cffconvert.root import get_package_root
-import json
-import sys
+from pybtex.database import BibliographyData
+from pybtex.database import Entry
+from slugify import slugify
+from pylingdocs import __version__
+from pylingdocs.config import CITATION_FILE
+from pylingdocs.config import DATA_DIR
+from pylingdocs.config import METADATA_FILE
 
+
+ORCID_STR = "https://orcid.org/"
 log = logging.getLogger(__name__)
 
 
@@ -19,26 +27,80 @@ def new():
     log.info("Hello world!")
 
 
-def _load_metadata(metadata_file=METADATA_FILE):
+def _read_metadata_file(metadata_file=METADATA_FILE):
     with open(metadata_file, encoding="utf-8") as f:
         md = yaml.load(f, Loader=yaml.SafeLoader)
+    return md
+
+
+bibtex_repl = {"location": "address"}
+bibtex_rev = {y: x for x, y in bibtex_repl.items()}
+cff_fields = ["title", "url"]
+remove_fields = []
+
+
+def _extract_bib(md):
+    entry_type = md.get("type", "article")
+    with open(DATA_DIR / "bibtex_schemes.json", "r", encoding="utf-8") as f:
+        bibschemes = json.loads(f.read())
+    if entry_type not in bibschemes:
+        log.error(
+            f"Don't know how to handle type '{entry_type}', defaulting to 'article'"
+        )
+        entry_type = "article"
+    good_fields = (
+        bibschemes[entry_type]["required"] + bibschemes[entry_type]["optional"]
+    )
+    good_fields = [bibtex_rev.get(x, x) for x in good_fields] + ["url"]
+    author_string = []
+    for author in md["authors"]:
+        author_string.append(f'{author["family-names"]}, {author["given-names"]}')
+    year = datetime.now().strftime("%Y")
+    bibkey = slugify(md["authors"][0]["family-names"]) + year + slugify(md.pop("id"))
+    title_string = md["title"]
+    if "version" in md:
+        title_string += f' (version {md["version"]})'
+    bibtex_fields = {
+        "author": " and ".join(author_string),
+        "year": year,
+        "title": title_string,
+    }
+    skip_fields = ["title"]
+    for field, value in md.items():
+        if field in good_fields and field not in skip_fields:
+            if field not in cff_fields:
+                remove_fields.append(field)
+            else:
+                bibtex_fields[field] = value
+    for field in remove_fields:
+        bibtex_fields[field] = md.pop(field)
+    bib_data = BibliographyData(
+        {bibkey: Entry(entry_type, list(bibtex_fields.items()))}
+    )
+    return md, bib_data
+
+
+def _sort_metadata(metadata_file=METADATA_FILE):
+    md = _read_metadata_file(metadata_file)
+    if "url" not in md and "repository" in md:
+        md["url"] = md["repository"]
+    md, bib = _extract_bib(md)
     md["message"] = "Created with [pylingdocs](https://github.com/fmatter/pylingdocs/)"
     md["date-released"] = datetime.now().strftime("%Y-%m-%d")
+    for del_field in []:
+        md.pop(del_field, None)
     md["type"] = "dataset"
     md["cff-version"] = "1.2.0"
-    md.pop("id", None)
     if "authors" in md:
         for author in md["authors"]:
             if "orcid" in author and "http" not in author["orcid"]:
-                author["orcid"] = "https://orcid.org/" + author["orcid"]
-    if "url" not in md and "repository" in md:
-        md["url"] = md["repository"]
-    return md
+                author["orcid"] = ORCID_STR + author["orcid"]
+    return md, bib
 
 
 def _validate(metadata, metadata_file, citation_file):
     schema = Path(get_package_root(), "schemas", "1.2.0", "schema.json")
-    with open(schema, "rt", encoding="utf-8") as f:
+    with open(schema, "r", encoding="utf-8") as f:
         schema = json.loads(f.read())
     try:
         json_validate(instance=metadata, schema=schema)
@@ -50,17 +112,55 @@ def _validate(metadata, metadata_file, citation_file):
         sys.exit(1)
 
 
-def render_cff(citation_file=CITATION_FILE, metadata_file=METADATA_FILE):
-    metadata = _load_metadata(metadata_file)
+def _load_metadata(citation_file=CITATION_FILE, metadata_file=METADATA_FILE):
+    metadata, bib = _sort_metadata(metadata_file)
     _validate(metadata, metadata_file, citation_file)
+    return yaml.dump(metadata, sort_keys=False), bib
+
+
+def write_cff(citation_file=CITATION_FILE, metadata_file=METADATA_FILE):
+    cff_output, bib = _load_metadata(citation_file, metadata_file)
+    del bib  # unused
     with open(CITATION_FILE, "w", encoding="utf-8") as f:
-        yaml.dump(metadata, f, sort_keys=False)
+        f.write(cff_output)
 
 
-def render_readme():
-    md = _load_metadata()
+def write_readme(metadata_file=METADATA_FILE):
+    md, bib = _sort_metadata(metadata_file)
+    author_string = []
+    for author in md["authors"]:
+        paren_string = []
+        if "orcid" in author:
+            orcid = author["orcid"].replace(ORCID_STR, "")
+            paren_string.append(f"[{orcid}]({author['orcid']})")
+        if "affiliation" in author:
+            paren_string.append(f"{author['affiliation']}")
+        if len(paren_string) > 0:
+            paren_string = f"({', '.join(paren_string)})"
+        author_string.append(
+            f'{author["given-names"]} {author["family-names"]} {paren_string}'
+        )
+    if len(author_string) > 1:
+        author_string = "\n".join([f"  * {s}" for s in author_string])
+        author_string = f"authors:\n{author_string}"
+    else:
+        author_string = f"author: {author_string[0]}"
+    citation = bib.to_string("bibtex")
     readme_text = f"""# {md["title"]}
-version: {md["version"]}
-created: {md["date-released"]}"""
+
+* {author_string}
+
+* version: `{md["version"]}`
+
+Created with [pylingdocs](https://github.com/fmatter/pylingdocs/) v{__version__}.
+The available output formats are in [output](./output).
+The [github](./output/github) format is most suitable for github(-like) repos.
+
+
+To refer to the content of unreleased versions:
+
+```
+{citation}```"""
+    print(readme_text)
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(readme_text)
