@@ -5,7 +5,7 @@ class Entity:
     cldf_table = "ChangeMeTable"
     shortcut = "chgme"
 
-    fallback: "plain"
+    fallback = "plain"
     formats = {"plain": "{{ ctx.name }}"}
 
     @classmethod
