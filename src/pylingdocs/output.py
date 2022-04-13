@@ -345,4 +345,3 @@ def create_output(
                 builder.write_part(
                     content=output, path=output_dest / f"{part_id}.{builder.file_ext}"
                 )
-                print(render_markdown(builder.reference_list(), dataset))
