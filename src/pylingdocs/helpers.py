@@ -11,6 +11,15 @@ from pylingdocs.metadata import _sort_metadata
 log = logging.getLogger(__name__)
 
 
+def split_ref(s):
+    if "[" in s:
+        bibkey, pages = s.split("[")
+        pages = pages.rstrip("]")
+    else:
+        bibkey, pages = s, None
+    return bibkey, pages
+
+
 def new():
     """Create a new pylingdocs project"""
     # TODO implement

@@ -18,13 +18,16 @@ from pylingdocs.config import BENCH
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
+from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import PREVIEW
 from pylingdocs.config import STRUCTURE_FILE
+from pylingdocs.helpers import split_ref
 from pylingdocs.helpers import write_cff
 from pylingdocs.helpers import write_readme
 from pylingdocs.metadata import PROJECT_TITLE
 from pylingdocs.pandoc_filters import fix_header
+from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
 
@@ -37,15 +40,19 @@ log = logging.getLogger(__name__)
 class OutputFormat:
     name = "boilerplate"
     file_ext = "txt"
+    single_output = True
 
     @classmethod
-    def write_folder(cls, output_dir, parts=None, metadata=None):
+    def write_folder(cls, output_dir, content=None, parts=None, metadata=None):
         # log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
         extra = {
             "name": cls.name,
             "parts": {"list": parts},
             "project_title": PROJECT_TITLE,
         }
+        if content is not None:
+            content = cls.preprocess(content)
+            extra.update({"content": content})
         extra.update(**metadata)
         cookiecutter(
             str(DATA_DIR / "format_templates" / cls.name),
@@ -70,6 +77,33 @@ class OutputFormat:
             f.write(template.render(content=content))
 
     @classmethod
+    def replace_commands(cls, content):
+        current = 0
+        for m in MD_LINK_PATTERN.finditer(content):
+            yield content[current : m.start()]
+            current = m.end()
+            key = m.group("label")
+            url = m.group("url")
+            if key in ["src", "psrc"]:
+                bibkey, pages = split_ref(url)
+                if pages:
+                    page_str = f": {pages}"
+                else:
+                    page_str = ""
+                if key == "src":
+                    yield f"([{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str})"
+                elif key == "psrc":
+                    yield f"[{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str}"
+            else:
+                yield content[m.start() : m.end()]
+        yield content[current:]
+
+    @classmethod
+    def preprocess_commands(cls, content):
+        processed = "".join(cls.replace_commands(content))
+        return processed
+
+    @classmethod
     def preprocess(cls, content):
         return content
 
@@ -77,6 +111,10 @@ class OutputFormat:
     def table(cls, df, caption, label):
         del label  # unused
         return caption + "\n" + df.to_markdown(index=False, tablefmt="grid")
+
+    @classmethod
+    def reference_list(cls):
+        return "# References \n[References](Source?cited_only#cldf:__all__)"
 
 
 class PlainText(OutputFormat):
@@ -254,7 +292,9 @@ def clean_output(output_dir):
     output_dir.mkdir()
 
 
-def create_output(source_dir, formats, dataset, output_dir=OUTPUT_DIR):
+def create_output(
+    source_dir, formats, dataset, output_dir=OUTPUT_DIR, structure_file=STRUCTURE_FILE
+):
     """Run different builders.
 
 
@@ -267,8 +307,12 @@ def create_output(source_dir, formats, dataset, output_dir=OUTPUT_DIR):
         bool: blabla
 
     """
-    write_cff()
-    write_readme()
+    if METADATA_FILE:
+        write_cff()
+        write_readme()
+    output_dir = Path(output_dir)
+    source_dir = Path(source_dir)
+    structure_file = Path(structure_file)
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir}")
         output_dir.mkdir()
@@ -276,17 +320,29 @@ def create_output(source_dir, formats, dataset, output_dir=OUTPUT_DIR):
         log.error(f"Content folder {source_dir} does not exist")
         sys.exit(1)
 
-    contents, parts = _load_content(source_dir)
+    contents, parts = _load_content(source_dir, structure_file)
 
     for output_format in formats:
         log.info(f"Rendering format [{output_format}]")
         output_dest = output_dir / output_format
         builder = builders[output_format]
         # log.debug(f"Writing skeleton to folder {output_dir}")
-        builder.write_folder(output_dir, parts=parts, metadata={})
-        for part_id, content in contents.items():
+        if builder.single_output:
+            content = "\n".join(contents.values())
             preprocessed = preprocess(content, builder)
+            preprocessed = builder.preprocess_commands(preprocessed)
+            preprocessed += "\n" + builder.reference_list()
             output = render_markdown(preprocessed, dataset, output_format=output_format)
-            builder.write_part(
-                content=output, path=output_dest / f"{part_id}.{builder.file_ext}"
-            )
+            builder.write_folder(output_dir, content=output, parts=parts, metadata={})
+        else:
+            builder.write_folder(output_dir, parts=parts, metadata={})
+            for part_id, content in contents.items():
+                preprocessed = preprocess(content, builder)
+                preprocessed = builder.preprocess_commands(preprocessed)
+                output = render_markdown(
+                    preprocessed, dataset, output_format=output_format
+                )
+                builder.write_part(
+                    content=output, path=output_dest / f"{part_id}.{builder.file_ext}"
+                )
+                print(render_markdown(builder.reference_list(), dataset))

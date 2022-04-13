@@ -26,8 +26,10 @@ def _read_metadata_file(metadata_file=METADATA_FILE):
     return md
 
 
-PROJECT_TITLE = _read_metadata_file()["title"]
-
+if METADATA_FILE:
+    PROJECT_TITLE = _read_metadata_file()["title"]
+else:
+    PROJECT_TITLE = "<TITLE PLACEHOLDER>"
 
 bibtex_repl = {"location": "address"}
 bibtex_rev = {y: x for x, y in bibtex_repl.items()}

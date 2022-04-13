@@ -6,11 +6,7 @@
 <body>
 
 <h1>{{ cookiecutter.project_title }}</h1>
-<ol>
-{% for id, title in cookiecutter.parts.list.items() %}
-<li> <a href="{{ id }}.html">{{ title }}</a>
-{% endfor %}
-</ol>
 
+{{ cookiecutter.content }}
 </body>
 </html> 

@@ -7,9 +7,10 @@
 \begin{document}
 Title: {{ cookiecutter.project_title }}
 
+{{ cookiecutter.content }}
 
-{% for id, title in cookiecutter.parts.list.items() %}
-\input{% raw %}{{% endraw %}{{ id }}.tex{% raw %}}{% endraw %}
-{% endfor %}
+% {% for id, title in cookiecutter.parts.list.items() %}
+% \input{% raw %}{{% endraw %}{{ id }}.tex{% raw %}}{% endraw %}
+% {% endfor %}
 
 \end{document}

@@ -18,7 +18,7 @@ pybtex==0.24.0
 pycldf==1.25.1
 pycountry==22.3.5
 pyglottolog==3.7.0
--e git+ssh://git@github.com/fmatter/pylingdocs.git@604f721da8e3e874df93f2d7873b71db4f2aebf8#egg=pylingdocs
+-e git+ssh://git@github.com/fmatter/pylingdocs.git@23e3f5b94422a1098a2ba07f53c2eedca7a3d9c8#egg=pylingdocs
 python-dateutil==2.8.2
 requests==2.27.1
 rfc3986==1.5.0

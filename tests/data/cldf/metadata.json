@@ -7,6 +7,7 @@
     ],
     "dc:conformsTo": "http://cldf.clld.org/v1.0/terms.rdf#Generic",
     "dc:description": "A dataset for testing.",
+    "dc:source": "sources.bib",
     "dc:title": "Test set",
     "prov:wasGeneratedBy": [
         {

@@ -49,6 +49,10 @@ STRUCTURE_FILE = get_path("structure_file")
 BENCH = get_path("bench")
 
 BUILDERS = ["plain", "github", "html", "latex"]
-PREVIEW = ["plain"]
-METADATA_FILE = "./metadata.yaml"
+PREVIEW = ["plain", "github"]
+METADATA_FILE = Path("./metadata.yaml")
 CITATION_FILE = "./CITATION.cff"
+
+if not METADATA_FILE.is_file():
+    log.warning("Please create a metadata file (metadata.yaml)")
+    METADATA_FILE = None
