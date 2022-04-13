@@ -23,6 +23,7 @@ from pylingdocs.config import PREVIEW
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import write_cff
 from pylingdocs.helpers import write_readme
+from pylingdocs.metadata import PROJECT_TITLE
 from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
@@ -43,7 +44,7 @@ class OutputFormat:
         extra = {
             "name": cls.name,
             "parts": {"list": parts},
-            "project_title": "<PROJECT TITLE>",
+            "project_title": PROJECT_TITLE,
         }
         extra.update(**metadata)
         cookiecutter(
@@ -282,9 +283,7 @@ def create_output(source_dir, formats, dataset, output_dir=OUTPUT_DIR):
         output_dest = output_dir / output_format
         builder = builders[output_format]
         # log.debug(f"Writing skeleton to folder {output_dir}")
-        builder.write_folder(
-            output_dir, parts=parts, metadata={"project_title": "A test"}
-        )
+        builder.write_folder(output_dir, parts=parts, metadata={})
         for part_id, content in contents.items():
             preprocessed = preprocess(content, builder)
             output = render_markdown(preprocessed, dataset, output_format=output_format)
