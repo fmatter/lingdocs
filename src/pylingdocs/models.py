@@ -55,6 +55,7 @@ class Example(Entity):
     name = "Example"
     cldf_table = "ExampleTable"
     shortcut = "ex"
+    fallback = None
 
     formats = {
         "plain": load_template("example", "plain"),
