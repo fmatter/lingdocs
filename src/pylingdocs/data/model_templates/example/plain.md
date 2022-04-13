@@ -27,7 +27,7 @@
 {% else %}
 ({{ example_id or ctx.id }}) {{ ctx.related('languageReference').name }}{{ util.references(ctx.references, with_internal_ref_link=with_internal_ref_link) }} 
 {% if (ctx.cldf.analyzedWord == [] and ctx.cldf.primaryText != None) or with_primaryText %}
-<i>{{ ctx.cldf.primaryText }}</i>  
+{{ ctx.cldf.primaryText }}
 {% endif %}
 {% if ctx.cldf.analyzedWord != [] %}
 {% set obj, gloss = pad_ex(ctx.cldf.analyzedWord, ctx.cldf.gloss) %}

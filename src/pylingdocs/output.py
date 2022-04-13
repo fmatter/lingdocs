@@ -23,7 +23,7 @@ from pylingdocs.config import PREVIEW
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import preprocess
-from pylingdocs.preprocessing import render_cldf
+from pylingdocs.preprocessing import render_markdown
 
 
 NUM_PRE = re.compile(r"[\d]+\ ")
@@ -37,7 +37,7 @@ class OutputFormat:
 
     @classmethod
     def write_folder(cls, output_dir, parts=None, metadata=None):
-        log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
+        # log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
         extra = {
             "name": cls.name,
             "parts": {"list": parts},
@@ -277,13 +277,13 @@ def create_output(source_dir, formats, dataset, output_dir=OUTPUT_DIR):
         log.info(f"Rendering format [{output_format}]")
         output_dest = output_dir / output_format
         builder = builders[output_format]
-        log.debug(f"Writing skeleton to folder {output_dir}")
+        # log.debug(f"Writing skeleton to folder {output_dir}")
         builder.write_folder(
             output_dir, parts=parts, metadata={"project_title": "A test"}
         )
         for part_id, content in contents.items():
             preprocessed = preprocess(content, builder)
-            output = render_cldf(preprocessed, dataset, output_format=output_format)
+            output = render_markdown(preprocessed, dataset, output_format=output_format)
             builder.write_part(
                 content=output, path=output_dest / f"{part_id}.{builder.file_ext}"
             )
