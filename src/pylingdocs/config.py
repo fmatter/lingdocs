@@ -50,4 +50,5 @@ BENCH = get_path("bench")
 
 BUILDERS = ["plain", "github", "html", "latex"]
 PREVIEW = ["plain"]
+METADATA_FILE = "./metadata.yaml"
 CITATION_FILE = "./CITATION.cff"
