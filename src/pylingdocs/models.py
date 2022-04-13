@@ -5,6 +5,7 @@ class Entity:
     cldf_table = "ChangeMeTable"
     shortcut = "chgme"
 
+    fallback: "plain"
     formats = {"plain": "{{ ctx.name }}"}
 
     @classmethod
@@ -14,7 +15,7 @@ class Entity:
 
     @classmethod
     def representation(cls, output_format="plain"):
-        return cls.formats.get(output_format, cls.formats["plain"])
+        return cls.formats.get(output_format, cls.formats.get(cls.fallback, None))
 
 
 class Morpheme(Entity):
@@ -45,10 +46,6 @@ class Example(Entity):
     shortcut = "ex"
 
     formats = {"plain": r"""TODO""", "latex": r"""TODO""", "html": """TODO"""}
-
-    @classmethod
-    def representation(cls, output_format="plain"):
-        return cls.formats.get(output_format, None)
 
 
 models = [Morpheme, Morph, Example]
