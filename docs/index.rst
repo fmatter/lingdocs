@@ -9,7 +9,7 @@ Welcome to pylingdocs's documentation!
 You can use ``pylingdocs`` to create data-rich linguistic documents, with a variety of output formats.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    installation
@@ -18,6 +18,8 @@ You can use ``pylingdocs`` to create data-rich linguistic documents, with a vari
    markdown_format
    output_formats
    config
+   extending
+   modules
 
 
 
