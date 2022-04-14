@@ -6,7 +6,6 @@ import subprocess
 import sys
 from pathlib import Path
 import hupper
-import markdown
 import panflute
 import yaml
 from cookiecutter.main import cookiecutter
@@ -122,9 +121,9 @@ class PlainText(OutputFormat):
 
     @classmethod
     def preprocess(cls, content):
-        return  panflute.convert_text(
-                content, output_format="plain", input_format="markdown"
-            )
+        return panflute.convert_text(
+            content, output_format="plain", input_format="markdown"
+        )
 
 
 class HTML(OutputFormat):
@@ -137,9 +136,12 @@ class HTML(OutputFormat):
 
     @classmethod
     def preprocess(cls, content):
-        return  panflute.convert_text(
-                content, output_format="html", input_format="markdown", extra_args=["--shift-heading-level-by=1"]
-            )
+        return panflute.convert_text(
+            content,
+            output_format="html",
+            input_format="markdown",
+            extra_args=["--shift-heading-level-by=1"],
+        )
 
 
 class GitHub(OutputFormat):
@@ -152,9 +154,10 @@ class GitHub(OutputFormat):
 
     @classmethod
     def preprocess(cls, content):
-        return  panflute.convert_text(
-                content, output_format="gfm", input_format="markdown"
-            )
+        return panflute.convert_text(
+            content, output_format="gfm", input_format="markdown"
+        )
+
 
 class Latex(OutputFormat):
     name = "latex"
