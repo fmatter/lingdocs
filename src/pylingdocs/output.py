@@ -27,7 +27,8 @@ from pylingdocs.helpers import write_readme
 from pylingdocs.metadata import PROJECT_TITLE
 from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import MD_LINK_PATTERN
-from pylingdocs.preprocessing import preprocess, postprocess
+from pylingdocs.preprocessing import postprocess
+from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
 
 

@@ -1,14 +1,15 @@
 import logging
 import re
+from io import StringIO
 import pandas as pd
 from cldfviz.text import render
 from clldutils import jsonlib
 from jinja2 import DictLoader
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
-from pylingdocs.models import models
 from pylingdocs.helpers import get_md_pattern
-from io import StringIO
+from pylingdocs.models import models
+
 
 log = logging.getLogger(__name__)
 
