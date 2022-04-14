@@ -78,5 +78,12 @@ class Example(Entity):
         "html": load_template("example", "html"),
     }
 
+class Language(Entity):
 
-models = [Morpheme, Morph, Example]
+    name = "Language"
+    cldf_table = "LanguageTable"
+    shortcut = "lg"
+    fallback = None
+
+
+models = [Morpheme, Morph, Example, Language]
