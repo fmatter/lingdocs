@@ -109,7 +109,7 @@ class OutputFormat:
     @classmethod
     def table(cls, df, caption, label):
         del label  # unused
-        return caption + "\n" + df.to_markdown(index=False, tablefmt="grid")
+        return caption + ":\n\n" + df.to_markdown(index=False, tablefmt="grid")
 
     @classmethod
     def reference_list(cls):
