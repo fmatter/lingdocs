@@ -9,7 +9,7 @@ from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.models import models
-
+import sys
 
 log = logging.getLogger(__name__)
 
@@ -72,8 +72,13 @@ def load_tables(md):
         yield md[current : m.start()]
         current, key, url = get_md_pattern(m)
         if key == "table":
-            with open(TABLE_DIR / f"{url}.csv", "r", encoding="utf-8") as f:
-                yield "PYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + f.read() + "PYLINGDOCS_RAW_TABLE_END"
+            table_path = TABLE_DIR / f"{url}.csv"
+            if not table_path.is_file():
+                log.error(f"The requested table {table_path} could not be found.")
+                sys.exit(1)
+            else:
+                with open(table_path, "r", encoding="utf-8") as f:
+                    yield "PYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + f.read() + "PYLINGDOCS_RAW_TABLE_END"
         else:
             yield md[m.start() : m.end()]
     yield md[current:]

@@ -1,4 +1,3 @@
-## Nouns
+# Another level 1 section
 
-Something about nouns.
-An example?
+Text.
