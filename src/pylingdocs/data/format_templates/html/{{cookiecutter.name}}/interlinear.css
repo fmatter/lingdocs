@@ -4,3 +4,23 @@
 .intlin .obj, .intlin .trans, .interlinear {display: block; margin: 2px 0;}
 .interlinear div.surf { font-style: italic; text-align: left;}
 .interlinear .freetrans { clear: both; }
+
+/*adapted from https://stackoverflow.com/a/10345407*/
+body {counter-reset:section;}
+ h2 {counter-reset:subsection;}
+ h2:before
+ {
+ counter-increment:section;
+ content: counter(section) ". ";
+     font-weight:bold;
+ }
+ h3:before
+ {
+ counter-increment:subsection;
+ content:counter(section) "." counter(subsection) " ";
+ }
+ h4:before
+ {
+ counter-increment:subsubsection;
+ content:counter(section) "." counter(subsection) "." counter(subsubsection) " ";
+ }

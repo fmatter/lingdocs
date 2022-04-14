@@ -120,6 +120,12 @@ class OutputFormat:
 class PlainText(OutputFormat):
     name = "plain"
 
+    @classmethod
+    def preprocess(cls, content):
+        return  panflute.convert_text(
+                content, output_format="plain", input_format="markdown"
+            )
+
 
 class HTML(OutputFormat):
     name = "html"
@@ -131,7 +137,9 @@ class HTML(OutputFormat):
 
     @classmethod
     def preprocess(cls, content):
-        return markdown.markdown(content)
+        return  panflute.convert_text(
+                content, output_format="html", input_format="markdown", extra_args=["--shift-heading-level-by=1"]
+            )
 
 
 class GitHub(OutputFormat):
@@ -142,6 +150,11 @@ class GitHub(OutputFormat):
     def table(cls, df, caption, label):
         return df.to_markdown(index=False)
 
+    @classmethod
+    def preprocess(cls, content):
+        return  panflute.convert_text(
+                content, output_format="gfm", input_format="markdown"
+            )
 
 class Latex(OutputFormat):
     name = "latex"
@@ -328,7 +341,7 @@ def create_output(
         builder = builders[output_format]
         # log.debug(f"Writing skeleton to folder {output_dir}")
         if builder.single_output:
-            content = "\n".join(contents.values())
+            content = "\n\n".join(contents.values())
             preprocessed = preprocess(content, builder)
             preprocessed = builder.preprocess_commands(preprocessed)
             preprocessed += "\n" + builder.reference_list()

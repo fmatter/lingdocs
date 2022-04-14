@@ -8,6 +8,7 @@
 {% import 'util.md' as util %}
 
 <!-- adapted from https://linguistics.stackexchange.com/a/534 -->
+```{=html}
 <div class="interlinear">
 ({{ example_id or ctx.id }}) {% if ctx.cldf.primaryText != None %}
 <div class="surf">{{ ctx.cldf.primaryText }}</div>
@@ -22,3 +23,4 @@
 {% endif %}
 <div class="freetrans">‘{{ ctx.cldf.translatedText }}’</div><br>
 </div>
+```
