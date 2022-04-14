@@ -10,7 +10,7 @@ from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.helpers import new as create_new
 from pylingdocs.output import clean_output
-from pylingdocs.output import compose_latex as cmplatex
+from pylingdocs.output import compile_latex as cmplatex
 from pylingdocs.output import create_output
 from pylingdocs.output import run_preview
 from pylingdocs.output import update_structure as do_update_structure
@@ -90,7 +90,7 @@ def update_structure():
 
 
 @main.command(cls=OutputCommand)
-def compose_latex(output_dir):  # pragma: no cover
+def compile_latex(output_dir):  # pragma: no cover
     """Compile the generated LaTeX output"""
     output_dir = Path(output_dir)
     cmplatex(output_dir=output_dir)

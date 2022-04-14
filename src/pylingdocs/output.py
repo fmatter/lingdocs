@@ -182,6 +182,32 @@ class Latex(OutputFormat):
         )
         return doc
 
+    @classmethod
+    def reference_list(cls):
+        return "\\printbibliography"
+
+    @classmethod
+    def replace_commands(cls, content):
+        current = 0
+        for m in MD_LINK_PATTERN.finditer(content):
+            yield content[current : m.start()]
+            current = m.end()
+            key = m.group("label")
+            url = m.group("url")
+            if key in ["src", "psrc"]:
+                bibkey, pages = split_ref(url)
+                if pages:
+                    page_str = f"[{pages}]"
+                else:
+                    page_str = ""
+                if key == "src":
+                    yield f"\\textcite{page_str}{{{bibkey}}}"
+                elif key == "psrc":
+                    yield f"\\parencite{page_str}{{{bibkey}}}"
+            else:
+                yield content[m.start() : m.end()]
+        yield content[current:]
+
 
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML]}
 
@@ -261,7 +287,7 @@ def _load_structure(structure_file=STRUCTURE_FILE):
         return yaml.load(open(structure_file, encoding="utf-8"), Loader=yaml.SafeLoader)
 
 
-def compose_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
+def compile_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
     log.info("Compiling LaTeX document.")
     with subprocess.Popen(
         "latexmk --xelatex main.tex", shell=True, cwd=output_dir / "latex"
@@ -349,7 +375,12 @@ def create_output(
             preprocessed = builder.preprocess_commands(preprocessed)
             preprocessed += "\n" + builder.reference_list()
             output = render_markdown(preprocessed, dataset, output_format=output_format)
-            builder.write_folder(output_dir, content=output, parts=parts, metadata={})
+            builder.write_folder(
+                output_dir,
+                content=output,
+                parts=parts,
+                metadata={"bibfile": Path(dataset.bibpath).resolve()},
+            )
         else:
             builder.write_folder(output_dir, parts=parts, metadata={})
             for part_id, content in contents.items():

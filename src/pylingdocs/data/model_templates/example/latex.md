@@ -6,7 +6,7 @@
 #}
 {% import 'util.md' as util %}
 ```{=latex}
-\ex<{{ example_id or ctx.id }}> {{ ctx.related('languageReference').name }}{{ util.references(ctx.references, with_internal_ref_link=with_internal_ref_link) }} 
+\ex<{{ example_id or ctx.id }}> {{ ctx.related('languageReference').name }}{{ util.references(ctx.references, with_internal_ref_link=with_internal_ref_link) }} \\
 \begingl
 \glpreamble {{ ctx.cldf.primaryText }} //
 {% if ctx.cldf.analyzedWord != [] %}
