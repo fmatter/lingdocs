@@ -1,2 +1,3 @@
 sphinx-click==4.0.0
 toml == 0.10.2
+colorlog==6.6.0
