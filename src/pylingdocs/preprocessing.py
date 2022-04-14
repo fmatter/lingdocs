@@ -7,11 +7,16 @@ from jinja2 import DictLoader
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
 from pylingdocs.models import models
-
+from pylingdocs.helpers import get_md_pattern
+from io import StringIO
 
 log = logging.getLogger(__name__)
 
 MD_LINK_PATTERN = re.compile(r"\[(?P<label>[^]]*)]\((?P<url>[^)]+)\)")
+
+TABLE_PATTERN = re.compile(
+    r"PYLINGDOCS_RAW_TABLE_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*)PYLINGDOCS_RAW_TABLE_END"
+)
 
 if TABLE_MD.is_file():
     tables = jsonlib.load(TABLE_MD)
@@ -42,9 +47,7 @@ def preprocess_cldfviz(md):
     current = 0
     for m in MD_LINK_PATTERN.finditer(md):
         yield md[current : m.start()]
-        current = m.end()
-        key = m.group("label")
-        url = m.group("url")
+        current, key, url = get_md_pattern(m)
         if key in labels:
             yield labels[key](url)
         else:
@@ -62,20 +65,34 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="github"):
     return ""
 
 
-def insert_tables(md, builder):
+def load_tables(md):
     current = 0
     for m in MD_LINK_PATTERN.finditer(md):
         yield md[current : m.start()]
-        current = m.end()
-        key = m.group("label")
-        url = m.group("url")
+        current, key, url = get_md_pattern(m)
         if key == "table":
-            table = pd.read_csv(TABLE_DIR / f"{url}.csv", keep_default_na=False)
-            yield builder.table(df=table, caption=tables[url]["caption"], label=url)
+            with open(TABLE_DIR / f"{url}.csv", "r", encoding="utf-8") as f:
+                yield "PYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + f.read() + "PYLINGDOCS_RAW_TABLE_END"
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
 
 
-def preprocess(md_str, builder):
+def insert_tables(md, builder):
+    current = 0
+    for m in TABLE_PATTERN.finditer(md):
+        yield md[current : m.start()]
+        current = m.end()
+        label = m.group("label")
+        content = m.group("content")
+        df = pd.read_csv(StringIO(content), keep_default_na=False)
+        yield builder.table(df=df, caption=tables[label]["caption"], label=label)
+    yield md[current:]
+
+
+def preprocess(md_str):
+    return "".join(load_tables(md_str))
+
+
+def postprocess(md_str, builder):
     return "".join(insert_tables(md_str, builder))

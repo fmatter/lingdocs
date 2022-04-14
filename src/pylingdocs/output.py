@@ -27,7 +27,7 @@ from pylingdocs.helpers import write_readme
 from pylingdocs.metadata import PROJECT_TITLE
 from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import MD_LINK_PATTERN
-from pylingdocs.preprocessing import preprocess
+from pylingdocs.preprocessing import preprocess, postprocess
 from pylingdocs.preprocessing import render_markdown
 
 
@@ -132,7 +132,7 @@ class HTML(OutputFormat):
 
     @classmethod
     def table(cls, df, caption, label):
-        return df.to_html(index=False)
+        return df.to_html(escape=False, index=False)
 
     @classmethod
     def preprocess(cls, content):
@@ -169,7 +169,7 @@ class Latex(OutputFormat):
 \\caption{{{caption}}}
 \\label{{{label}}}
 \\centering
-{df.to_latex(index=False)}
+{df.to_latex(escape=False, index=False)}
 \\end{{table}}
 """
 
@@ -366,29 +366,22 @@ def create_output(
 
     for output_format in formats:
         log.info(f"Rendering format [{output_format}]")
-        output_dest = output_dir / output_format
         builder = builders[output_format]
         # log.debug(f"Writing skeleton to folder {output_dir}")
+        content = "\n\n".join(contents.values())
+        preprocessed = preprocess(content)
+        preprocessed = builder.preprocess_commands(preprocessed)
+        preprocessed += "\n\n" + builder.reference_list()
+        preprocessed = render_markdown(
+            preprocessed, dataset, output_format=output_format
+        )
+        preprocessed = postprocess(preprocessed, builder)
         if builder.single_output:
-            content = "\n\n".join(contents.values())
-            preprocessed = preprocess(content, builder)
-            preprocessed = builder.preprocess_commands(preprocessed)
-            preprocessed += "\n" + builder.reference_list()
-            output = render_markdown(preprocessed, dataset, output_format=output_format)
             builder.write_folder(
                 output_dir,
-                content=output,
+                content=preprocessed,
                 parts=parts,
                 metadata={"bibfile": Path(dataset.bibpath).resolve()},
             )
         else:
-            builder.write_folder(output_dir, parts=parts, metadata={})
-            for part_id, content in contents.items():
-                preprocessed = preprocess(content, builder)
-                preprocessed = builder.preprocess_commands(preprocessed)
-                output = render_markdown(
-                    preprocessed, dataset, output_format=output_format
-                )
-                builder.write_part(
-                    content=output, path=output_dest / f"{part_id}.{builder.file_ext}"
-                )
+            pass

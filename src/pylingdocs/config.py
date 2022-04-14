@@ -49,7 +49,7 @@ STRUCTURE_FILE = get_path("structure_file")
 BENCH = get_path("bench")
 
 BUILDERS = ["plain", "github", "html", "latex"]
-PREVIEW = ["plain", "github"]
+PREVIEW = ["html"]
 METADATA_FILE = Path("./metadata.yaml")
 CITATION_FILE = "./CITATION.cff"
 

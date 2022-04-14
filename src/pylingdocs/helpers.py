@@ -26,6 +26,10 @@ def new():
     log.info("Hello world!")
 
 
+def get_md_pattern(m):
+    return m.end(), m.group("label"), m.group("url")
+
+
 def write_cff(citation_file=CITATION_FILE, metadata_file=METADATA_FILE):
     cff_output, bib = _load_metadata(citation_file, metadata_file)
     del bib  # unused
