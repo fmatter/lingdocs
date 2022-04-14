@@ -48,8 +48,8 @@ OUTPUT_DIR = get_path("output")
 STRUCTURE_FILE = get_path("structure_file")
 BENCH = get_path("bench")
 
-BUILDERS = ["plain", "github", "html", "latex"]
-PREVIEW = ["html"]
+BUILDERS = get_config("OUTPUT", "builders").split(" ")
+PREVIEW = get_config("OUTPUT", "preview").split(" ")
 METADATA_FILE = Path("./metadata.yaml")
 CITATION_FILE = "./CITATION.cff"
 
