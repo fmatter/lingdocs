@@ -78,6 +78,7 @@ class Example(Entity):
         "html": load_template("example", "html"),
     }
 
+
 class Language(Entity):
 
     name = "Language"

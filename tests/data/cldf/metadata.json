@@ -27,7 +27,7 @@
     "tables": [
         {
             "dc:conformsTo": "http://cldf.clld.org/v1.0/terms.rdf#LanguageTable",
-            "dc:extent": 1,
+            "dc:extent": 23,
             "tableSchema": {
                 "columns": [
                     {
@@ -98,7 +98,7 @@
             "url": "languages.csv"
         },
         {
-            "dc:extent": 1,
+            "dc:extent": 2,
             "tableSchema": {
                 "columns": [
                     {
