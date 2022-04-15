@@ -31,11 +31,12 @@ class Entity:
     formats = {"plain": "{{ ctx.name }}"}
 
     @classmethod
-    def query_string(cls, url, visualizer="cldfviz", **kwargs):
+    def query_string(cls, url, *args, visualizer="cldfviz", **kwargs):
         """This method returns what commands in running text will be replaced with."""
         if visualizer == "cldfviz":
-            arguments = [f"{x}={y}" for x, y in kwargs.items()]
-            arg_str = "&".join(arguments)
+            arguments = "&".join(args)
+            kwarguments = "&".join([f"{x}={y}" for x, y in kwargs.items()])
+            arg_str = "&".join([arguments, kwarguments])
             if arg_str != "":
                 arg_str = "?" + arg_str
             return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:{url})"

@@ -53,12 +53,26 @@ def preprocess_cldfviz(md):
         yield md[current : m.start()]
         current, key, url = get_md_pattern(m)
         if key in labels:
+            args = []
+            kwargs = {}
+            if "?" in url:
+                url, arguments = url.split("?")
+                for arg in arguments.split("&"):
+                    if "=" in arg:
+                        k, v = arg.split("=")
+                        kwargs[k] = v
+                    else:
+                        args.append(arg)
             if "," in url:
+                kwargs.update({"multiple": True})
                 yield model_lists[key](
-                    [labels[key](x, multiple=True) for x in url.split(",")]
+                    [
+                        labels[key](x, visualizer="cldfviz", *args, **kwargs)
+                        for x in url.split(",")
+                    ]
                 )
             else:
-                yield labels[key](url)
+                yield labels[key](url, visualizer="cldfviz", *args, **kwargs)
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
