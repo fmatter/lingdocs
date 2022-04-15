@@ -73,9 +73,7 @@ def write_readme(metadata_file=METADATA_FILE):
 * version: `{md["version"]}`
 
 Created using [pylingdocs](https://github.com/fmatter/pylingdocs/) v{__version__}.
-The available output formats are in [output](./output).
-The [github](./output/github) format is most suitable for github(-like) repos.
-
+The available output formats are in [output](./output); if you are viewing this readme in a browser, you probably want the [github formatted output](./output/github).
 
 To refer to the content of unreleased versions:
 
