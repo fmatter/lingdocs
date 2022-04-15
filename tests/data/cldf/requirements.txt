@@ -23,7 +23,7 @@ pycldf==1.25.1
 pycountry==22.3.5
 pyglottolog==3.7.0
 pykwalify==1.8.0
--e git+ssh://git@github.com/fmatter/pylingdocs.git@1b9373eec99951fb26397fd279e9755bd7214aa1#egg=pylingdocs
+-e git+ssh://git@github.com/fmatter/pylingdocs.git@9c42e5894e202adf8e066bdfc3ea5c8cd80f657f#egg=pylingdocs
 pyrsistent==0.18.1
 python-dateutil==2.8.2
 python-slugify==6.1.1

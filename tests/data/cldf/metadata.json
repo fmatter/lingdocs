@@ -98,7 +98,7 @@
             "url": "languages.csv"
         },
         {
-            "dc:extent": 2,
+            "dc:extent": 3,
             "tableSchema": {
                 "columns": [
                     {
@@ -160,7 +160,7 @@
             "url": "MorphsetTable"
         },
         {
-            "dc:extent": 2,
+            "dc:extent": 4,
             "tableSchema": {
                 "columns": [
                     {

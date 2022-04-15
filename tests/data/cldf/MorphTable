@@ -1,3 +1,5 @@
 ID,Language_ID,Parameter_ID,Form,Segments,Comment,Morpheme_ID
-apa-neg,apa,NEG,pɨra,,,apa-neg
-tri-dog,tri,dog,kaikui,,,tri-dog
+tri-se-1,tri,SUP,-se,,,tri-se
+tri-se-2,tri,SUP,-je,,,tri-se
+tri-se-3,tri,SUP,-e,,,tri-se
+apa-se-1,apa,SUP,-se,,,apa-se

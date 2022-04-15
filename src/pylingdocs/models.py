@@ -83,7 +83,7 @@ class Morpheme(Entity):
     }
 
 
-class Morph(Entity):
+class Morph(Morpheme):
 
     name = "Morph"
     cldf_table = "MorphTable"
