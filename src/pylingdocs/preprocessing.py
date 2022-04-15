@@ -83,6 +83,10 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="github"):
         preprocessed = render(
             "".join(preprocess_cldfviz(md_str)), ds, loader=envs[output_format]
         )
+        if "Table#cldf" in preprocessed:
+            preprocessed = render(
+            preprocessed, ds, loader=envs[output_format]
+        )
         return preprocessed
     log.error(f"Unknown data format {data_format}")
     return ""
