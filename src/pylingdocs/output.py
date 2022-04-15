@@ -91,9 +91,9 @@ class OutputFormat:
                 else:
                     page_str = ""
                 if key == "src":
-                    yield f"([{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str})"
-                elif key == "psrc":
                     yield f"[{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str}"
+                elif key == "psrc":
+                    yield f"([{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str})"
             else:
                 yield content[m.start() : m.end()]
         yield content[current:]
