@@ -1,7 +1,9 @@
-from pylingdocs.config import DATA_DIR
-from clldutils import jsonlib
-import pycldf
 from pathlib import Path
+import pycldf
+from clldutils import jsonlib
+from pylingdocs.config import DATA_DIR
+from pylingdocs.helpers import comma_and_list
+
 
 def load_template(name, style):
     with open(
@@ -29,11 +31,19 @@ class Entity:
     formats = {"plain": "{{ ctx.name }}"}
 
     @classmethod
-    def query_string(cls, url, visualizer="cldfviz"):
+    def query_string(cls, url, visualizer="cldfviz", **kwargs):
         """This method returns what commands in running text will be replaced with."""
         if visualizer == "cldfviz":
-            return f"[{cls.name} {url}]({cls.cldf_table}#cldf:{url})"
+            arguments = [f"{x}={y}" for x, y in kwargs.items()]
+            arg_str = "&".join(arguments)
+            if arg_str != "":
+                arg_str = "?" + arg_str
+            return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:{url})"
         return f"[Unknown visualizer]({url}"
+
+    @classmethod
+    def representations(cls, entities):
+        return comma_and_list(entities)
 
     @classmethod
     def representation(cls, output_format="plain"):
@@ -51,7 +61,11 @@ class Entity:
         in pylingdocs, it will search in pycldf"""
         path = DATA_DIR / "cldf" / f"{cls.cldf_table}-metadata.json"
         if not path.is_file():
-            path = Path(pycldf.__file__).resolve().parent / "components" / f"{cls.cldf_table}-metadata.json"
+            path = (
+                Path(pycldf.__file__).resolve().parent
+                / "components"
+                / f"{cls.cldf_table}-metadata.json"
+            )
         return jsonlib.load(path)
 
 

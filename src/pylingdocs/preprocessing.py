@@ -1,5 +1,6 @@
 import logging
 import re
+import sys
 from io import StringIO
 import pandas as pd
 from cldfviz.text import render
@@ -9,7 +10,7 @@ from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.models import models
-import sys
+
 
 log = logging.getLogger(__name__)
 
@@ -27,6 +28,7 @@ else:
 labels = {}
 templates = {}
 envs = {}
+model_lists = {}
 
 for model in models:
     labels[model.shortcut] = model.query_string
@@ -37,6 +39,7 @@ for model in models:
 for output_format, env_dict in templates.items():
     for model in models:
         model_output = model.representation(output_format)
+        model_lists[model.shortcut] = model.representations
         if model_output is not None:
             env_dict[model.cldf_table + "_detail.md"] = model_output
 
@@ -50,7 +53,12 @@ def preprocess_cldfviz(md):
         yield md[current : m.start()]
         current, key, url = get_md_pattern(m)
         if key in labels:
-            yield labels[key](url)
+            if "," in url:
+                yield model_lists[key](
+                    [labels[key](x, multiple=True) for x in url.split(",")]
+                )
+            else:
+                yield labels[key](url)
         else:
             yield md[m.start() : m.end()]
     yield md[current:]

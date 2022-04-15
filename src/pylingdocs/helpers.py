@@ -20,6 +20,14 @@ def split_ref(s):
     return bibkey, pages
 
 
+def comma_and_list(entries, sep1=", ", sep2=" and "):
+    output = entries[0]
+    for entry in entries[1:-1]:
+        output += sep1 + entry
+    output += sep2 + entries[-1]
+    return output
+
+
 def new():
     """Create a new pylingdocs project"""
     # TODO implement
