@@ -275,6 +275,9 @@ def update_structure(
             new_path.touch()
 
     for file in content_files.values():
+        if not bench_dir.is_dir():
+            log.info(f"Creating {bench_dir} for unused files.")
+            bench_dir.mkdir()
         new_path = Path(bench_dir, file.name)
         log.info(f"Unlisted: moving {file} > {new_path}")
         file.rename(new_path)
@@ -359,9 +362,6 @@ def create_output(
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir}")
         output_dir.mkdir()
-    if not source_dir.is_dir():
-        log.error(f"Content folder {source_dir} does not exist")
-        sys.exit(1)
 
     contents, parts = _load_content(source_dir, structure_file)
 

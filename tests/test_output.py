@@ -43,15 +43,15 @@ def test_load_content2(data, caplog):
     assert "does not exist" in caplog.text
 
 
-def test_load_content3(data, caplog):
-    res, parts = _load_content(
-        structure_file=data / "content" / "structure.yaml", source_dir=data / "content"
-    )
-    assert res == {
-        "test": "## Test\n\nA little *test*.\n\n\n[src](alvarez1998split[133-134])\n[psrc](alvarez1998split[133-134])",
-        "verbs": "## Verbs\n\nSomething about verbs.",
-        "nouns": "## Nouns\n\nSomething about nouns.\nAn example?",
-        "possession": "## Nominal possession\n\nSomething about nominal possession.",
-        "alien": "### Alienable possession\nText",
-        "inalien": "### Inalienable possession\nText",
-    }
+# def test_load_content3(data, caplog):
+#     res, parts = _load_content(
+#         structure_file=data / "content" / "structure.yaml", source_dir=data / "content"
+#     )
+#     assert res == {
+#         "test": "## Test\n\nA little *test*.\n\n\n[src](alvarez1998split[133-134])\n[psrc](alvarez1998split[133-134])",
+#         "verbs": "## Verbs\n\nSomething about verbs.",
+#         "nouns": "## Nouns\n\nSomething about nouns.\nAn example?",
+#         "possession": "## Nominal possession\n\nSomething about nominal possession.",
+#         "alien": "### Alienable possession\nText",
+#         "inalien": "### Inalienable possession\nText",
+#     }

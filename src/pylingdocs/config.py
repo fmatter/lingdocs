@@ -2,7 +2,6 @@ import logging
 from configparser import ConfigParser
 from pathlib import Path
 
-
 log = logging.getLogger(__name__)
 
 
@@ -31,7 +30,12 @@ else:
 def get_config(section, label, as_path=False):
     value = config.get(section, label, fallback=default_config.get(section, label))
     if as_path:
-        return Path(value)
+        path = Path(value)
+        if not path.exists():
+            log.warning(
+                f"{value} does not exist. Please create it or change your configuration."
+            )
+        return path
     return value
 
 
@@ -50,9 +54,9 @@ BENCH = get_path("bench")
 
 BUILDERS = get_config("OUTPUT", "builders").split(" ")
 PREVIEW = get_config("OUTPUT", "preview").split(" ")
-METADATA_FILE = Path("./metadata.yaml")
 CITATION_FILE = "./CITATION.cff"
 
+METADATA_FILE = Path("./metadata.yaml")
 if not METADATA_FILE.is_file():
     log.warning("Please create a metadata file (metadata.yaml)")
     METADATA_FILE = None
