@@ -1,5 +1,7 @@
 from pylingdocs.config import DATA_DIR
-
+from clldutils import jsonlib
+import pycldf
+from pathlib import Path
 
 def load_template(name, style):
     with open(
@@ -42,6 +44,15 @@ class Entity:
         Returns:
             str: a formatted string with a jinja placeholder for data"""
         return cls.formats.get(output_format, cls.formats.get(cls.fallback, None))
+
+    @classmethod
+    def cldf_metadata(cls):
+        """Loads the CLDF table specification for this model. If none is present
+        in pylingdocs, it will search in pycldf"""
+        path = DATA_DIR / "cldf" / f"{cls.cldf_table}-metadata.json"
+        if not path.is_file():
+            path = Path(pycldf.__file__).resolve().parent / "components" / f"{cls.cldf_table}-metadata.json"
+        return jsonlib.load(path)
 
 
 class Morpheme(Entity):
