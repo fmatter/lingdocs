@@ -28,33 +28,42 @@ class Entity:
     fallback = "plain"
     """The fallback for the builder, if there no builder-specific template is defined
     for the model."""
-    formats = {"plain": "{{ ctx.name }}"}
+    templates = {"plain": "{{ ctx.name }}"}
+    list_templates = {"plain": "{% for x in ctx %} {{ x['Form'] }}{% endfor %}"}
 
     @classmethod
-    def query_string(cls, url, *args, visualizer="cldfviz", **kwargs):
+    def _compile_cldfviz_args(cls, args, kwargs):
+        arguments = "&".join(args)
+        kwarguments = "&".join([f"{x}={y}" for x, y in kwargs.items()])
+        arg_str = "&".join([arguments, kwarguments])
+        if arg_str != "":
+            arg_str = "?" + arg_str.strip("&")
+        return arg_str
+
+    @classmethod
+    def query_string(cls, url, *args, multiple=False, visualizer="cldfviz", **kwargs):
         """This method returns what commands in running text will be replaced with."""
         if visualizer == "cldfviz":
-            arguments = "&".join(args)
-            kwarguments = "&".join([f"{x}={y}" for x, y in kwargs.items()])
-            arg_str = "&".join([arguments, kwarguments])
-            if arg_str != "":
-                arg_str = "?" + arg_str
-            return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:{url})"
+            if not multiple:
+                arg_str = cls._compile_cldfviz_args(args, kwargs)
+                return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:{url})"
+            else:
+                arg_str = cls._compile_cldfviz_args(args, kwargs)
+                return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:__all__)"
         return f"[Unknown visualizer]({url}"
 
     @classmethod
-    def representations(cls, entities):
-        return comma_and_list(entities)
-
-    @classmethod
-    def representation(cls, output_format="plain"):
+    def representation(cls, output_format="plain", multiple=False):
         """Gives the representation of this model for a given output format.
 
         Args:
             output_format: the chosen format
         Returns:
             str: a formatted string with a jinja placeholder for data"""
-        return cls.formats.get(output_format, cls.formats.get(cls.fallback, None))
+        if not multiple:
+            return cls.templates.get(output_format, cls.list_templates.get(cls.fallback, None))
+        else:
+            return cls.list_templates.get(output_format, cls.list_templates.get(cls.fallback, None))
 
     @classmethod
     def cldf_metadata(cls):
@@ -76,11 +85,15 @@ class Morpheme(Entity):
     cldf_table = "MorphsetTable"
     shortcut = "mp"
 
-    formats = {
+    templates = {
         "plain": """{{ ctx["Form"] }}""",
         "github": """_{{ ctx["Form"] }}_""",
         "latex": load_template("morpheme", "latex"),
         "html": """<i>{{ctx["Form"]}}</i>""",
+    }
+
+    list_templates = {
+        "plain": load_template("morpheme", "plain_index"),
     }
 
 
@@ -98,10 +111,17 @@ class Example(Entity):
     shortcut = "ex"
     fallback = None
 
-    formats = {
+    templates = {
         "plain": load_template("example", "plain"),
         "latex": load_template("example", "latex"),
         "html": load_template("example", "html"),
+    }
+
+    list_templates = {
+        "plain": load_template("example", "plain_index"),
+        "github": load_template("example", "plain_index"),
+        "html": load_template("example", "plain_index"),
+        "latex": load_template("example", "latex_index"),
     }
 
 

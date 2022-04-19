@@ -25,29 +25,39 @@ if TABLE_MD.is_file():
 else:
     tables = {}
 
+log.info("Loading templates")
 labels = {}
 templates = {}
+list_templates = {}
 envs = {}
-model_lists = {}
 
 for model in models:
     labels[model.shortcut] = model.query_string
-    for output_format in model.formats:
+    for output_format in model.templates:
         if output_format not in templates:
             templates[output_format] = {}
+    for output_format in model.list_templates:
+        if output_format not in list_templates:
+            list_templates[output_format] = {}
 
 for output_format, env_dict in templates.items():
     for model in models:
         model_output = model.representation(output_format)
-        model_lists[model.shortcut] = model.representations
         if model_output is not None:
             env_dict[model.cldf_table + "_detail.md"] = model_output
 
+for output_format, env_dict in list_templates.items():
+    for model in models:
+        model_output = model.representation(output_format, multiple=True)
+        if model_output is not None:
+            env_dict[model.cldf_table + "_index.md"] = model_output
+
 for output_format, env_dict in templates.items():
+    env_dict.update(list_templates[output_format])
     envs[output_format] = DictLoader(env_dict)
 
 
-def preprocess_cldfviz(md):
+def preprocess_cldfviz(md, output_format="plain"):
     current = 0
     for m in MD_LINK_PATTERN.finditer(md):
         yield md[current : m.start()]
@@ -64,13 +74,8 @@ def preprocess_cldfviz(md):
                     else:
                         args.append(arg)
             if "," in url:
-                kwargs.update({"multiple": True})
-                yield model_lists[key](
-                    [
-                        labels[key](x, visualizer="cldfviz", *args, **kwargs)
-                        for x in url.split(",")
-                    ]
-                )
+                kwargs.update({"ids": url})
+                yield labels[key](url, visualizer="cldfviz", multiple=True, *args, **kwargs)
             else:
                 yield labels[key](url, visualizer="cldfviz", *args, **kwargs)
         else:
@@ -78,10 +83,10 @@ def preprocess_cldfviz(md):
     yield md[current:]
 
 
-def render_markdown(md_str, ds, data_format="cldf", output_format="github"):
+def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
     if data_format == "cldf":
         preprocessed = render(
-            "".join(preprocess_cldfviz(md_str)), ds, loader=envs[output_format]
+            "".join(preprocess_cldfviz(md_str, output_format)), ds, loader=envs[output_format]
         )
         if "Table#cldf" in preprocessed:
             preprocessed = render(
@@ -118,6 +123,7 @@ def insert_tables(md, builder):
         label = m.group("label")
         content = m.group("content")
         df = pd.read_csv(StringIO(content), keep_default_na=False)
+        df.columns = [col if "Unnamed: " not in col else "" for col in df.columns]
         yield builder.table(df=df, caption=tables[label]["caption"], label=label)
     yield md[current:]
 
