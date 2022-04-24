@@ -28,8 +28,10 @@ def _read_metadata_file(metadata_file=METADATA_FILE):
 
 if METADATA_FILE:
     PROJECT_TITLE = _read_metadata_file()["title"]
+    PROJECT_SLUG = _read_metadata_file()["id"]
 else:
     PROJECT_TITLE = "<TITLE PLACEHOLDER>"
+    PROJECT_SLUG = "pylingdocs_app"
 
 bibtex_repl = {"location": "address"}
 bibtex_rev = {y: x for x, y in bibtex_repl.items()}

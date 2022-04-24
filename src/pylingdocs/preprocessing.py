@@ -85,9 +85,12 @@ def preprocess_cldfviz(md, output_format="plain"):
 
 def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
     if data_format == "cldf":
-        preprocessed = render(
-            "".join(preprocess_cldfviz(md_str, output_format)), ds, loader=envs[output_format]
-        )
+        if output_format!="clld":
+            preprocessed = render(
+               "".join(preprocess_cldfviz(md_str, output_format)), ds, loader=envs[output_format]
+            )
+        else:
+            preprocessed = md_str
         if "Table#cldf" in preprocessed:
             preprocessed = render(
             preprocessed, ds, loader=envs[output_format]

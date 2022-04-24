@@ -24,7 +24,7 @@ from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import split_ref
 from pylingdocs.helpers import write_cff
 from pylingdocs.helpers import write_readme
-from pylingdocs.metadata import PROJECT_TITLE
+from pylingdocs.metadata import PROJECT_TITLE, PROJECT_SLUG
 from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import postprocess
@@ -159,6 +159,28 @@ class GitHub(OutputFormat):
             content, output_format="gfm", input_format="markdown"
         )
 
+class CLLD(OutputFormat):
+    name = "clld"
+    file_ext = "md"
+    single_output = False
+
+    @classmethod
+    def create_app(cls):
+        extra = {
+            "name": cls.name,
+            "project_title": PROJECT_TITLE,
+            "clld_slug": PROJECT_SLUG.replace("-", "_") +"_clld",
+            "cldf_paths": "['"+str(CLDF_MD.resolve())+"']"
+        }
+        # extra.update(**metadata)
+        cookiecutter(
+            str(DATA_DIR / "format_templates" / cls.name),
+            output_dir="clld",
+            extra_context=extra,
+            overwrite_if_exists=True,
+            no_input=True,
+        )
+        
 
 class Latex(OutputFormat):
     name = "latex"
@@ -210,8 +232,7 @@ class Latex(OutputFormat):
         yield content[current:]
 
 
-builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML]}
-
+builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD]}
 
 def _iterate_structure(structure, level, depths):
     for child_id, child_data in structure.items():
@@ -384,5 +405,7 @@ def create_output(
                 parts=parts,
                 metadata={"bibfile": Path(dataset.bibpath).resolve()},
             )
+        elif builder.name == "clld":
+            builder.create_app()
         else:
             pass
