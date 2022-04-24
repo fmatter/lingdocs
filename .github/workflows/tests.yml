@@ -37,10 +37,7 @@ jobs:
         run: python3 setup.py sdist bdist_wheel
       - name: Test with pytest
         run: |
-          ls src/pylingdocs/data
-          ls src/pylingdocs/data/format_templates
-          ls src/pylingdocs/data/format_templates/plain
-          pytest -sv
+          pytest
       - name: Convert coverage
         run: python -m coverage xml
       - name: Upload coverage to Codecov
