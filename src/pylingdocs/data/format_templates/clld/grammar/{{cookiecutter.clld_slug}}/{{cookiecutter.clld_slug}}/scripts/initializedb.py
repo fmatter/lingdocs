@@ -1,18 +1,21 @@
-import itertools
 import collections
-
-from pycldf import Sources, Dataset
-from clldutils.misc import nfilter
-from clldutils.color import qualitative_colors
-from clld.cliutil import Data, bibtex2source
+import itertools
+import {{cookiecutter.clld_slug}}
+from clld.cliutil import Data
+from clld.cliutil import bibtex2source
 from clld.db.meta import DBSession
-from clldutils import jsonlib
 from clld.db.models import common
 from clld.lib import bibtex
-
-import {{cookiecutter.clld_slug}}
+from clld_morphology_plugin.models import Meaning
+from clld_morphology_plugin.models import Morph
+from clld_morphology_plugin.models import Morpheme
+from clldutils import jsonlib
+from clldutils.color import qualitative_colors
+from clldutils.misc import nfilter
+from pycldf import Dataset
+from pycldf import Sources
 from {{cookiecutter.clld_slug}} import models
-from clld_morphology_plugin.models import Morpheme, Morph, Meaning
+
 
 def main(args):
     data = Data()

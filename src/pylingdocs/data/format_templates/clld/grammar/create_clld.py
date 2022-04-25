@@ -1,9 +1,11 @@
-from cookiecutter.main import cookiecutter
 import configparser
-from pybtex.database.input import bibtex
-from pybtex.database import BibliographyData, Entry
 import datetime
 from clldutils import jsonlib
+from cookiecutter.main import cookiecutter
+from pybtex.database import BibliographyData
+from pybtex.database import Entry
+from pybtex.database.input import bibtex
+
 
 config = configparser.ConfigParser()
 config.read("config.ini")

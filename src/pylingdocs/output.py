@@ -18,13 +18,15 @@ from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import METADATA_FILE
-from pylingdocs.config import OUTPUT_DIR, OUTPUT_TEMPLATES
+from pylingdocs.config import OUTPUT_DIR
+from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import PREVIEW
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import split_ref
 from pylingdocs.helpers import write_cff
 from pylingdocs.helpers import write_readme
-from pylingdocs.metadata import PROJECT_TITLE, PROJECT_SLUG
+from pylingdocs.metadata import PROJECT_SLUG
+from pylingdocs.metadata import PROJECT_TITLE
 from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import postprocess

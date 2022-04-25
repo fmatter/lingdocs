@@ -1,8 +1,6 @@
 from pathlib import Path
-
-from clld.web.assets import environment
-
 import {{cookiecutter.clld_slug}}
+from clld.web.assets import environment
 
 
 environment.append_path(

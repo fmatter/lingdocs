@@ -1,7 +1,7 @@
-from clldutils import jsonlib
-from pylingdocs.config import DATA_DIR
 from pathlib import Path
 import pycldf
+from clldutils import jsonlib
+from pylingdocs.config import DATA_DIR
 
 
 def metadata(table_name):

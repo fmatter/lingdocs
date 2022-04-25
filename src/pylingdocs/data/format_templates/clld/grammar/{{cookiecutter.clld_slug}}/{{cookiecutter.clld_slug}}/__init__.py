@@ -1,9 +1,12 @@
 import collections
-
+from clld.interfaces import IDomainElement
+from clld.interfaces import IMapMarker
+from clld.interfaces import IValue
+from clld.interfaces import IValueSet
+from clldutils.svg import data_url
+from clldutils.svg import icon
+from clldutils.svg import pie
 from pyramid.config import Configurator
-from clld.interfaces import IMapMarker, IValueSet, IValue, IDomainElement
-from clldutils.svg import pie, icon, data_url
-
 # we must make sure custom models are known at database initialization!
 from {{cookiecutter.clld_slug}} import models
 
