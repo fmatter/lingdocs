@@ -41,6 +41,11 @@ class OutputFormat:
     name = "boilerplate"
     file_ext = "txt"
     single_output = True
+    doc_elements = {
+        "note": "(note placeholder)",
+        "ref": "(crossref placeholder)",
+        "label": "(label placeholder)",
+    }
 
     @classmethod
     def write_folder(cls, output_dir, content=None, parts=None, metadata=None):
@@ -76,6 +81,7 @@ class OutputFormat:
         with open(path, "w", encoding="utf-8") as f:
             f.write(template.render(content=content))
 
+
     @classmethod
     def replace_commands(cls, content):
         current = 0
@@ -94,6 +100,8 @@ class OutputFormat:
                     yield f"[{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str}"
                 elif key == "psrc":
                     yield f"([{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str})"
+            elif key in cls.doc_elements:
+                yield cls.doc_elements[key]
             else:
                 yield content[m.start() : m.end()]
         yield content[current:]

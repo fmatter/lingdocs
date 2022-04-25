@@ -16,9 +16,7 @@ def get_citation(data):
         data["year"] = date.strftime("%Y")
 
     bib_data = BibliographyData(
-        {
-            id: Entry("online", [(k, v) for k, v in data.items()]),
-        }
+        {id: Entry("online", [(k, v) for k, v in data.items()])}
     )
     return data["title"]
     return bib_data.to_string("bibtex")

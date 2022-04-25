@@ -57,23 +57,6 @@ for output_format, env_dict in templates.items():
     envs[output_format] = DictLoader(env_dict)
 
 
-doc_elements = {
-    "note": "(note placeholder)",
-    "ref": "(crossref placeholder)",
-    "label": "(label placeholder)",
-}
-
-def preprocess_doc_commands(md):
-    current = 0
-    for m in MD_LINK_PATTERN.finditer(md):
-        yield md[current : m.start()]
-        current, key, url = get_md_pattern(m)
-        if key in doc_elements:
-            yield doc_elements[key]
-        else:
-            yield md[m.start() : m.end()]
-    yield md[current:]
-
 def preprocess_cldfviz(md):
     current = 0
     for m in MD_LINK_PATTERN.finditer(md):
@@ -157,7 +140,7 @@ def insert_tables(md, builder):
 
 
 def preprocess(md_str):
-    return "".join(preprocess_doc_commands("".join(load_tables(md_str))))
+    return "".join(load_tables(md_str))
 
 
 def postprocess(md_str, builder):
