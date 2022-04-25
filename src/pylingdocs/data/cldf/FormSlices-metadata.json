@@ -1,5 +1,5 @@
 {
-    "url": "form_morphs.csv",
+    "url": "FormSlices",
     "tableSchema": {
         "columns": [
             {
@@ -31,8 +31,7 @@
                 "datatype": {
                     "base": "string",
                     "format": "\\d+(:\\d+)?"
-                },
-                "separator": " "
+                }
             }
         ]
     }

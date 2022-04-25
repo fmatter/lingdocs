@@ -1,5 +1,5 @@
 {
-    "url": "example_forms.csv",
+    "url": "ExampleSlices",
     "tableSchema": {
         "columns": [
             {
@@ -30,8 +30,7 @@
                 "datatype": {
                     "base": "string",
                     "format": "\\d+(:\\d+)?"
-                },
-                "separator": " "
+                }
             }
         ]
     }
