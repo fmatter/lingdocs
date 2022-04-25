@@ -159,6 +159,7 @@ class GitHub(OutputFormat):
             content, output_format="gfm", input_format="markdown"
         )
 
+
 class CLLD(OutputFormat):
     name = "clld"
     file_ext = "md"
@@ -169,8 +170,8 @@ class CLLD(OutputFormat):
         extra = {
             "name": cls.name,
             "project_title": PROJECT_TITLE,
-            "clld_slug": PROJECT_SLUG.replace("-", "_") +"_clld",
-            "cldf_paths": "['"+str(CLDF_MD.resolve())+"']"
+            "clld_slug": PROJECT_SLUG.replace("-", "_") + "_clld",
+            "cldf_paths": "['" + str(CLDF_MD.resolve()) + "']",
         }
         # extra.update(**metadata)
         cookiecutter(
@@ -180,7 +181,7 @@ class CLLD(OutputFormat):
             overwrite_if_exists=True,
             no_input=True,
         )
-        
+
 
 class Latex(OutputFormat):
     name = "latex"
@@ -233,6 +234,7 @@ class Latex(OutputFormat):
 
 
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD]}
+
 
 def _iterate_structure(structure, level, depths):
     for child_id, child_data in structure.items():

@@ -2,7 +2,6 @@ from pathlib import Path
 import pycldf
 from clldutils import jsonlib
 from pylingdocs.config import DATA_DIR
-from pylingdocs.helpers import comma_and_list
 
 
 def load_template(name, style):
@@ -61,9 +60,13 @@ class Entity:
         Returns:
             str: a formatted string with a jinja placeholder for data"""
         if not multiple:
-            return cls.templates.get(output_format, cls.list_templates.get(cls.fallback, None))
+            return cls.templates.get(
+                output_format, cls.list_templates.get(cls.fallback, None)
+            )
         else:
-            return cls.list_templates.get(output_format, cls.list_templates.get(cls.fallback, None))
+            return cls.list_templates.get(
+                output_format, cls.list_templates.get(cls.fallback, None)
+            )
 
     @classmethod
     def cldf_metadata(cls):
@@ -94,6 +97,9 @@ class Morpheme(Entity):
 
     list_templates = {
         "plain": load_template("morpheme", "plain_index"),
+        "github": load_template("morpheme", "github_index"),
+        "latex": load_template("morpheme", "latex_index"),
+        "html": load_template("morpheme", "html_index"),
     }
 
 

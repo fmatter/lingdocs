@@ -8,7 +8,7 @@ from clldutils import jsonlib
 from jinja2 import DictLoader
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
-from pylingdocs.helpers import get_md_pattern
+from pylingdocs.helpers import get_md_pattern, comma_and_list
 from pylingdocs.models import models
 
 
@@ -75,7 +75,9 @@ def preprocess_cldfviz(md, output_format="plain"):
                         args.append(arg)
             if "," in url:
                 kwargs.update({"ids": url})
-                yield labels[key](url, visualizer="cldfviz", multiple=True, *args, **kwargs)
+                yield labels[key](
+                    url, visualizer="cldfviz", multiple=True, *args, **kwargs
+                )
             else:
                 yield labels[key](url, visualizer="cldfviz", *args, **kwargs)
         else:
@@ -85,16 +87,22 @@ def preprocess_cldfviz(md, output_format="plain"):
 
 def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
     if data_format == "cldf":
-        if output_format!="clld":
+        if output_format != "clld":
             preprocessed = render(
-               "".join(preprocess_cldfviz(md_str, output_format)), ds, loader=envs[output_format]
+                "".join(preprocess_cldfviz(md_str, output_format)),
+                ds,
+                loader=envs[output_format],
+                func_dict={"comma_and_list": comma_and_list},
             )
         else:
             preprocessed = md_str
         if "Table#cldf" in preprocessed:
             preprocessed = render(
-            preprocessed, ds, loader=envs[output_format]
-        )
+                preprocessed,
+                ds,
+                loader=envs[output_format],
+                func_dict={"comma_and_list": comma_and_list},
+            )
         return preprocessed
     log.error(f"Unknown data format {data_format}")
     return ""
