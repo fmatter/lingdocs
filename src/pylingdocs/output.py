@@ -18,7 +18,7 @@ from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import METADATA_FILE
-from pylingdocs.config import OUTPUT_DIR
+from pylingdocs.config import OUTPUT_DIR, OUTPUT_TEMPLATES
 from pylingdocs.config import PREVIEW
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import split_ref
@@ -55,7 +55,7 @@ class OutputFormat:
             extra.update({"content": content})
         extra.update(**metadata)
         cookiecutter(
-            str(DATA_DIR / "format_templates" / cls.name),
+            str(DATA_DIR / "format_templates" / cls.name / OUTPUT_TEMPLATES[cls.name]),
             output_dir=output_dir,
             extra_context=extra,
             overwrite_if_exists=True,
@@ -175,7 +175,7 @@ class CLLD(OutputFormat):
         }
         # extra.update(**metadata)
         cookiecutter(
-            str(DATA_DIR / "format_templates" / cls.name),
+            str(DATA_DIR / "format_templates" / cls.name / OUTPUT_TEMPLATES[cls.name]),
             output_dir="clld",
             extra_context=extra,
             overwrite_if_exists=True,
