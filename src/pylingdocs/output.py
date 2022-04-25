@@ -44,7 +44,6 @@ class OutputFormat:
     file_ext = "txt"
     single_output = True
     doc_elements = {
-        "note": "(note placeholder)",
         "ref": "(crossref placeholder)",
         "label": "(label placeholder)",
     }
@@ -196,6 +195,10 @@ class CLLD(OutputFormat):
 class Latex(OutputFormat):
     name = "latex"
     file_ext = "tex"
+    doc_elements = {
+        "ref": lambda url: f"\\cref{{{url}}}",
+        "label": lambda url: f"\\label{{{url}}}",
+    }
 
     @classmethod
     def table(cls, df, caption, label):
@@ -238,6 +241,8 @@ class Latex(OutputFormat):
                     yield f"\\textcite{page_str}{{{bibkey}}}"
                 elif key == "psrc":
                     yield f"\\parencite{page_str}{{{bibkey}}}"
+            elif key in cls.doc_elements:
+                yield cls.doc_elements[key](url)
             else:
                 yield content[m.start() : m.end()]
         yield content[current:]
