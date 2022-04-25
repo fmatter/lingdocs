@@ -46,9 +46,8 @@ class Entity:
             if not multiple:
                 arg_str = cls._compile_cldfviz_args(args, kwargs)
                 return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:{url})"
-            else:
-                arg_str = cls._compile_cldfviz_args(args, kwargs)
-                return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:__all__)"
+            arg_str = cls._compile_cldfviz_args(args, kwargs)
+            return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:__all__)"
         return f"[Unknown visualizer]({url}"
 
     @classmethod
@@ -63,10 +62,9 @@ class Entity:
             return cls.templates.get(
                 output_format, cls.list_templates.get(cls.fallback, None)
             )
-        else:
-            return cls.list_templates.get(
-                output_format, cls.list_templates.get(cls.fallback, None)
-            )
+        return cls.list_templates.get(
+            output_format, cls.list_templates.get(cls.fallback, None)
+        )
 
     @classmethod
     def cldf_metadata(cls):

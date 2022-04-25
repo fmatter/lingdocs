@@ -57,7 +57,7 @@ for output_format, env_dict in templates.items():
     envs[output_format] = DictLoader(env_dict)
 
 
-def preprocess_cldfviz(md, output_format="plain"):
+def preprocess_cldfviz(md):
     current = 0
     for m in MD_LINK_PATTERN.finditer(md):
         yield md[current : m.start()]
@@ -89,8 +89,8 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
     if data_format == "cldf":
         if output_format != "clld":
             preprocessed = render(
-                "".join(preprocess_cldfviz(md_str, output_format)),
-                ds,
+                doc="".join(preprocess_cldfviz(md_str)),
+                cldf_dict=ds,
                 loader=envs[output_format],
                 func_dict={"comma_and_list": comma_and_list},
             )
@@ -98,8 +98,8 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
             preprocessed = md_str
         if "Table#cldf" in preprocessed:
             preprocessed = render(
-                preprocessed,
-                ds,
+                doc=preprocessed,
+                cldf_dict=ds,
                 loader=envs[output_format],
                 func_dict={"comma_and_list": comma_and_list},
             )
