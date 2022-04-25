@@ -31,6 +31,7 @@ jobs:
           python3 -m pip install --upgrade pip setuptools
           python3 -m pip install .[dev]
       - name: Check style against standards using prospector
-        run: prospector
+        run: prospector src/ --ignore-paths=src/pylingdocs/data/format_templates/
+        run: prospector tests/
       - name: Check import order
         run: isort --check-only src/pylingdocs --diff
