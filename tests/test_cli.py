@@ -49,8 +49,8 @@ def test_preview(caplog, dataset, md_path, tmpdir, data):
 
     # try running on empty
     result = runner.invoke(preview)
-    assert result.exit_code == 0
-    assert "Please specify " in caplog.text
+    assert result.exit_code == 1
+    assert "No such " in caplog.text
 
 
 def test_new(caplog, md_path, tmpdir, data):

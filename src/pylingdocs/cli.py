@@ -80,12 +80,12 @@ def build(source, targets, cldf, output_dir):
 @main.command(cls=BuildCommand)
 @click.option("--refresh", default=True, help="Re-render preview on file change.")
 def preview(source, targets, cldf, output_dir, refresh):
+    """Create a live preview using a lightweight, human-readable output format"""
     source = Path(source)
     output_dir = Path(output_dir)
     ds = _load_cldf_dataset(cldf)
     metadata = _read_metadata_file(METADATA_FILE)
     structure = _load_structure(STRUCTURE_FILE)
-    """Create a live preview using a lightweight, human-readable output format"""
     run_preview(refresh=refresh, source_dir=source, formats=targets, dataset=ds, output_dir=output_dir, structure=structure, metadata=metadata)
 
 

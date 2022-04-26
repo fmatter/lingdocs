@@ -11,14 +11,12 @@ from cookiecutter.main import cookiecutter
 from jinja2 import Environment
 from jinja2 import PackageLoader
 from jinja2.exceptions import TemplateNotFound
-from pycldf import Dataset
 from pylingdocs.config import BENCH
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import OUTPUT_TEMPLATES
-from pylingdocs.config import PREVIEW
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import split_ref, _load_structure
 from pylingdocs.metadata import PROJECT_SLUG, _read_metadata_file
@@ -358,7 +356,7 @@ def clean_output(output_dir):
     output_dir.mkdir()
 
 
-def create_output(source_dir, formats, dataset, output_dir, structure, metadata=None):
+def create_output(source_dir, formats, dataset, output_dir, structure, metadata=None): # pylint: disable=too-many-arguments
     """Run different builders.
 
 
@@ -408,7 +406,7 @@ def create_output(source_dir, formats, dataset, output_dir, structure, metadata=
             )
         elif builder.name == "clld":
             # builder.create_app()
-            with open("clld_output.txt", "w") as f:
+            with open("clld_output.txt", "w", encoding="utf-8") as f:
                 f.write(preprocessed)
         else:
             pass
