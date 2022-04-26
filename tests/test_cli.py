@@ -22,7 +22,7 @@ def test_empty_build(caplog):
     result = runner.invoke(build)
     assert result.exit_code == 1
     log.debug(caplog.text)
-    assert "Please specify " in caplog.text
+    assert "please create one" in caplog.text
 
 
 # # not working right now because the build command relies on a structure.yaml

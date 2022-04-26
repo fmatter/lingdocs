@@ -2,9 +2,11 @@
 import logging
 from pylingdocs import __version__
 from pylingdocs.config import CITATION_FILE
-from pylingdocs.config import METADATA_FILE
+from pylingdocs.config import METADATA_FILE, STRUCTURE_FILE
+import sys
 from pylingdocs.metadata import ORCID_STR
 from pylingdocs.metadata import _load_metadata
+import yaml
 from pylingdocs.metadata import _sort_metadata
 
 
@@ -18,6 +20,14 @@ def split_ref(s):
     else:
         bibkey, pages = s, None
     return bibkey, pages
+
+
+def _load_structure(structure_file=STRUCTURE_FILE):
+    if not structure_file.is_file():
+        log.error(f"{STRUCTURE_FILE} not found, aborting.")
+        sys.exit(1)
+    else:
+        return yaml.load(open(structure_file, encoding="utf-8"), Loader=yaml.SafeLoader)
 
 
 def comma_and_list(entries, sep1=", ", sep2=" and "):

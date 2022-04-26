@@ -143,6 +143,7 @@ class Language(Entity):
         "latex": load_template("base", "inline_list_orm"),
     }
 
+
 class Text(Entity):
 
     name = "Text"

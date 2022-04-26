@@ -7,8 +7,10 @@ from pycldf import Dataset
 from pylingdocs.config import BUILDERS
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
-from pylingdocs.config import OUTPUT_DIR
+from pylingdocs.config import OUTPUT_DIR, METADATA_FILE, STRUCTURE_FILE
 from pylingdocs.helpers import new as create_new
+from pylingdocs.metadata import _read_metadata_file
+from pylingdocs.helpers import _load_structure
 from pylingdocs.output import clean_output
 from pylingdocs.output import compile_latex as cmplatex
 from pylingdocs.output import create_output
@@ -68,13 +70,20 @@ def build(source, targets, cldf, output_dir):
     """Create formatted output of pylingdocs project."""
     source = Path(source)
     output_dir = Path(output_dir)
+    metadata = _read_metadata_file(METADATA_FILE)
+    if not STRUCTURE_FILE.is_file():
+        raise FileNotFoundError
+    else:
+        structure = _load_structure(STRUCTURE_FILE)
     try:
         ds = Dataset.from_metadata(cldf)
     except FileNotFoundError as e:
         log.error(e)
         log.error("Please specify a path to a valid CLDF metadata file.")
         sys.exit(1)
-    create_output(source, targets, ds, output_dir)
+    create_output(
+        source, targets, ds, output_dir, structure=structure, metadata=metadata
+    )
 
 
 @main.command()

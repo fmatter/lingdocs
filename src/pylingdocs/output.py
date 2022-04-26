@@ -7,7 +7,6 @@ import sys
 from pathlib import Path
 import hupper
 import panflute
-import yaml
 from cookiecutter.main import cookiecutter
 from jinja2 import Environment
 from jinja2 import PackageLoader
@@ -17,16 +16,13 @@ from pylingdocs.config import BENCH
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
-from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import PREVIEW
 from pylingdocs.config import STRUCTURE_FILE
-from pylingdocs.helpers import split_ref
-from pylingdocs.helpers import write_cff
-from pylingdocs.helpers import write_readme
-from pylingdocs.metadata import PROJECT_SLUG
-from pylingdocs.metadata import PROJECT_TITLE, _read_metadata_file
+from pylingdocs.helpers import split_ref, _load_structure
+from pylingdocs.metadata import PROJECT_SLUG, _read_metadata_file
+from pylingdocs.metadata import PROJECT_TITLE
 from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import postprocess
@@ -322,14 +318,6 @@ def update_structure(
         file.rename(new_path)
 
 
-def _load_structure(structure_file=STRUCTURE_FILE):
-    if not structure_file.is_file():
-        log.error(f"{STRUCTURE_FILE} not found, aborting.")
-        sys.exit(1)
-    else:
-        return yaml.load(open(structure_file, encoding="utf-8"), Loader=yaml.SafeLoader)
-
-
 def compile_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
     log.info("Compiling LaTeX document.")
     with subprocess.Popen(
@@ -376,9 +364,7 @@ def clean_output(output_dir):
     output_dir.mkdir()
 
 
-def create_output(
-    source_dir, formats, dataset, output_dir, structure_file, metadata=None
-):
+def create_output(source_dir, formats, dataset, output_dir, structure, metadata=None):
     """Run different builders.
 
 
@@ -391,8 +377,10 @@ def create_output(
         bool: blabla
 
     """
-    # if metadata is None:
-    #     metadata = {}
+    if isinstance(metadata, str):
+        metadata = _read_metadata_file(metadata)
+    if metadata is None:
+        metadata = {}
     metadata.update({"bibfile": Path(dataset.bibpath).resolve()})
     # if metadata_file:
     #     write_cff()
@@ -400,12 +388,11 @@ def create_output(
     #     metadata.update(all_metadata)
     output_dir = Path(output_dir)
     source_dir = Path(source_dir)
-    structure_file = Path(structure_file)
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir}")
         output_dir.mkdir()
 
-    contents, parts = _load_content(_load_structure(structure_file), source_dir)
+    contents, parts = _load_content(structure, source_dir)
 
     for output_format in formats:
         log.info(f"Rendering format [{output_format}]")
@@ -421,10 +408,7 @@ def create_output(
         preprocessed = postprocess(preprocessed, builder)
         if builder.single_output:
             builder.write_folder(
-                output_dir,
-                content=preprocessed,
-                parts=parts,
-                metadata=metadata,
+                output_dir, content=preprocessed, parts=parts, metadata=metadata
             )
         elif builder.name == "clld":
             builder.create_app()

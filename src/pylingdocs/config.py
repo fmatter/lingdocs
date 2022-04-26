@@ -58,9 +58,6 @@ PREVIEW = get_config("OUTPUT", "preview").split(" ")
 CITATION_FILE = "./CITATION.cff"
 
 METADATA_FILE = Path("./metadata.yaml")
-if not METADATA_FILE.is_file():
-    log.warning("Please create a metadata file (metadata.yaml)")
-    METADATA_FILE = None
 
 OUTPUT_TEMPLATES = {}
 for builder in BUILDERS:

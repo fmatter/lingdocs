@@ -21,12 +21,16 @@ log = logging.getLogger(__name__)
 
 
 def _read_metadata_file(metadata_file=METADATA_FILE):
-    with open(metadata_file, encoding="utf-8") as f:
-        md = yaml.load(f, Loader=yaml.SafeLoader)
-    return md
+    metadata_file = Path(metadata_file)
+    if metadata_file.is_file():
+        with open(metadata_file, encoding="utf-8") as f:
+            md = yaml.load(f, Loader=yaml.SafeLoader)
+        return md
+    else:
+        log.warning(f"Metadata file {metadata_file.resolve()} not found, please create one.")
 
 
-if METADATA_FILE:
+if METADATA_FILE.is_file():
     PROJECT_TITLE = _read_metadata_file()["title"]
     PROJECT_SLUG = _read_metadata_file()["id"]
 else:

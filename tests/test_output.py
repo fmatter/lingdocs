@@ -1,6 +1,6 @@
 import logging
-import pytest
-from pylingdocs.output import _load_structure, _load_content
+# import pytest
+from pylingdocs.helpers import _load_structure
 
 log = logging.getLogger(__name__)
 
@@ -29,19 +29,6 @@ def test_structure(data, caplog):
             },
         }
     }
-
-
-def test_load_content1(data, caplog):
-    with pytest.raises(SystemExit):
-        _load_content()
-    assert "not found" in caplog.text
-
-
-def test_load_content2(data, caplog):
-    with pytest.raises(SystemExit):
-        _load_content(structure_file=data / "content" / "structure.yaml")
-    assert "does not exist" in caplog.text
-
 
 # def test_load_content3(data, caplog):
 #     res, parts = _load_content(
