@@ -205,7 +205,7 @@ class Latex(OutputFormat):
     def table(cls, df, caption, label):
         return f"""\\begin{{table}}
 \\caption{{{caption}}}
-\\label{{{label}}}
+\\label{{tab:{label}}}
 \\centering
 {df.to_latex(escape=False, index=False)}
 \\end{{table}}

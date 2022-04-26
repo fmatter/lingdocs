@@ -1,8 +1,13 @@
-# Level 1 section [label](sec:test)
+# Integrating linguistic entities [label](sec:linguistics)
 
-Something about verbs.[^3]
+This section demonstrates the core functinality of pylingdocs: including linguistic data in your prose.
+This is achieved by using the [cldfviz](https://github.com/cldf/cldfviz/) tool to access data in the [CLDF](https://cldf.clld.org/) format.
+A number of models are built-in to pylingdocs:
 
-[^3]: A note, hopefully rendered context-dependently. See [ref](sec:test) for details about [mp](apa-se).
+1. morphemes: [mp](apa-se)
+2. [mp](tri-se).
+
+[mp](apa-se,tri-se)
 
 
 [m](tri-se-2)
