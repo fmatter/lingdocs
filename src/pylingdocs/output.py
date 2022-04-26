@@ -344,19 +344,13 @@ def _load_content(structure, source_dir=CONTENT_FOLDER):
     return contents, parts
 
 
-def run_preview(refresh=True):
+def run_preview(refresh=True, **kwargs):
     log.info("Rendering preview")
-    try:
-        ds = Dataset.from_metadata(CLDF_MD)
-    except FileNotFoundError as e:
-        log.error(e)
-        log.error("Please specify a path to a valid CLDF metadata file.")
-        sys.exit()
-    watchfiles = [str(x) for x in CONTENT_FOLDER.iterdir()]
+    watchfiles = [str(x) for x in kwargs["source_dir"].iterdir()]
     if refresh:
-        reloader = hupper.start_reloader("pylingdocs.output.run_preview")
+        reloader = hupper.start_reloader("pylingdocs.output.run_preview", worker_kwargs=kwargs)
         reloader.watch_files(watchfiles)
-    create_output(CONTENT_FOLDER, PREVIEW, ds)
+    create_output(**kwargs)
 
 
 def clean_output(output_dir):
@@ -413,7 +407,7 @@ def create_output(source_dir, formats, dataset, output_dir, structure, metadata=
                 output_dir, content=preprocessed, parts=parts, metadata=metadata
             )
         elif builder.name == "clld":
-            builder.create_app()
+            # builder.create_app()
             with open("clld_output.txt", "w") as f:
                 f.write(preprocessed)
         else:
