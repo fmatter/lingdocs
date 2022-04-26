@@ -1,4 +1,4 @@
-# Level 1 section
+# Level 1 section [label](sec:test)
 
 Something about verbs.[^3]
 
@@ -10,3 +10,4 @@ Something about verbs.[^3]
 [ex](ekiri-1)
 
 [ex](ekiri-2,ekiri-3)
+
