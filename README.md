@@ -12,3 +12,5 @@ Create data-rich linguistic documents.
 
 The main functionalities are showcased in the demo, consisting of a [PDF file](https://raw.githubusercontent.com/fmatter/pylingdocs/main/docs/demo.pdf) generated from [this text](https://github.com/fmatter/pylingdocs/blob/main/docs/demo.txt) and [this dataset](https://github.com/fmatter/pylingdocs/tree/main/tests/data/cldf).
 The documentation lives at [pylingdocs.readthedocs.io](https://pylingdocs.readthedocs.io).
+
+Note: currently the `pylingdocs` branch of `cldfviz` is needed: `pip install git+https://github.com/cldf/cldfviz.git@pylingdocs`.
