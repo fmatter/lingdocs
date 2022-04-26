@@ -22,7 +22,7 @@ extras = dev
 commands =
     python -m prospector src
     python -m flake8
-    prospector tests
-    isort --check-only src
+    python -m prospector tests
+    python -m isort --check-only src
 extras = dev
 """
