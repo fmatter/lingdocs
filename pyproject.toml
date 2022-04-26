@@ -20,8 +20,8 @@ extras = dev
 
 [testenv:lint]
 commands =
+    python -m prospector src
     python -m flake8
-    prospector src
     prospector tests
     isort --check-only src
 extras = dev

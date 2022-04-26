@@ -3,7 +3,6 @@ import logging
 import sys
 from pathlib import Path
 import click
-from pycldf import Dataset
 from pylingdocs.config import BUILDERS
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
@@ -70,9 +69,9 @@ def build(source, targets, cldf, output_dir):
     """Create formatted output of pylingdocs project."""
     source = Path(source)
     output_dir = Path(output_dir)
+    ds = _load_cldf_dataset(cldf)
     metadata = _read_metadata_file(METADATA_FILE)
     structure = _load_structure(STRUCTURE_FILE)
-    ds = _load_cldf_dataset(cldf)
     create_output(
         source, targets, ds, output_dir, structure=structure, metadata=metadata
     )

@@ -27,7 +27,9 @@ def _read_metadata_file(metadata_file=METADATA_FILE):
             md = yaml.load(f, Loader=yaml.SafeLoader)
         return md
     else:
-        log.warning(f"Metadata file {metadata_file.resolve()} not found, please create one.")
+        log.warning(
+            f"Metadata file {metadata_file.resolve()} not found, please create one."
+        )
 
 
 if METADATA_FILE.is_file():

@@ -22,13 +22,17 @@ def split_ref(s):
         bibkey, pages = s, None
     return bibkey, pages
 
+
 def _load_cldf_dataset(cldf_path=CLDF_MD):
     try:
         return Dataset.from_metadata(cldf_path)
     except FileNotFoundError as e:
         log.error(e)
-        log.error(f"Could not load CLDF dataset from {Path(cldf_path).resolve()}. Please specify a path to a valid CLDF metadata file.")
+        log.error(
+            f"Could not load CLDF dataset from {Path(cldf_path).resolve()}. Please specify a path to a valid CLDF metadata file."
+        )
         sys.exit(1)
+
 
 def _load_structure(structure_file=STRUCTURE_FILE):
     if not Path(structure_file).is_file():
