@@ -3,7 +3,7 @@
 \setmainfont{Brill}
 \usepackage{glossingtool}
 \usepackage{booktabs}
-\usepackage{biblatex}
+\usepackage[style=authoryear]{biblatex}
 \addbibresource{% raw %}{{% endraw %}{{ cookiecutter.bibfile }}{% raw %}}{% endraw %}
 \def\tightlist{}
 
@@ -11,7 +11,7 @@
 \author{% raw %}{{% endraw %}{{ cookiecutter.author }}{% raw %}}{% endraw %}
 
 \usepackage{hyperref}
-\usepackage{cleveref}
+\usepackage[capitalise]{cleveref}
 \begin{document}
 \maketitle
 
