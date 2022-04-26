@@ -132,6 +132,7 @@ class Example(Entity):
 class Language(Entity):
 
     name = "Language"
+    fallback = None
     cldf_table = "LanguageTable"
     shortcut = "lg"
 
