@@ -1,9 +1,6 @@
 # Tables
 
-Sed at convallis risus, quis volutpat elit. Integer blandit rutrum odio id rutrum. Duis laoreet tempor lacus quis volutpat. Curabitur non maximus lorem, ac sagittis leo. Etiam maximus tempus orci, sit amet aliquam dolor tempus non. Pellentesque dignissim leo mi, imperdiet ultricies ex aliquam eu. Sed faucibus blandit interdum.
-
-Nulla non tellus gravida, tempor magna et, facilisis enim. Curabitur dolor neque, blandit semper diam a, fringilla finibus erat. Fusce id libero vel eros viverra luctus id vel tellus. Nulla quis tempor nunc. Nunc iaculis, nunc vel elementum imperdiet, tortor justo efficitur sapien, sed tempor massa libero ut enim. Donec tincidunt mi id pharetra lacinia. Nullam vel massa quam. Etiam vitae turpis ullamcorper, gravida ex vel, pretium nisl. Sed quis ante gravida, ullamcorper tellus eget, cursus lectus. Donec pellentesque est id ligula euismod, sit amet pharetra velit iaculis. Fusce a dolor ut mi laoreet pharetra. Etiam elementum faucibus dolor, nec commodo ante pellentesque vitae. Quisque varius odio at nisl ornare, sit amet condimentum sem convallis. Mauris ut diam erat. Proin sagittis risus convallis, egestas mauris at, efficitur nisl. Aenean facilisis libero quis faucibus gravida.
-
-Vestibulum tincidunt, est non facilisis facilisis, purus arcu mattis lacus, faucibus molestie enim ipsum eget leo. Nullam lobortis rhoncus velit id viverra. Vivamus augue tortor, iaculis sit amet molestie in, auctor non risus. Cras venenatis mi id rhoncus egestas. Sed id ornare felis. Donec dignissim dapibus neque, nec fermentum nisl sagittis id. Nullam diam lectus, fringilla non scelerisque quis, ornare in ipsum. Ut eget diam nibh. Sed id nisi pharetra, faucibus elit ut, porttitor dui. Integer sodales tellus at sem scelerisque, vitae maximus tellus interdum. Proin sed euismod lorem. Cras molestie, leo quis tempor faucibus, turpis sapien porta felis, sit amet rutrum est justo ut sapien. Maecenas tincidunt vel quam sit amet tristique. Integer enim eros, luctus sed consequat pharetra, blandit vitae nulla. Morbi libero leo, lacinia quis eros a, convallis sollicitudin felis. 
+Tables are stored as `csv` files, which can contain `pylingdocs` markdown.
 
 [table](onetable)
+
