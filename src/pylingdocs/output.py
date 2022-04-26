@@ -18,9 +18,11 @@ from pylingdocs.config import DATA_DIR
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import STRUCTURE_FILE
-from pylingdocs.helpers import split_ref, _load_structure
-from pylingdocs.metadata import PROJECT_SLUG, _read_metadata_file
+from pylingdocs.helpers import _load_structure
+from pylingdocs.helpers import split_ref
+from pylingdocs.metadata import PROJECT_SLUG
 from pylingdocs.metadata import PROJECT_TITLE
+from pylingdocs.metadata import _read_metadata_file
 from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import postprocess
@@ -346,7 +348,9 @@ def run_preview(refresh=True, **kwargs):
     log.info("Rendering preview")
     watchfiles = [str(x) for x in kwargs["source_dir"].iterdir()]
     if refresh:
-        reloader = hupper.start_reloader("pylingdocs.output.run_preview", worker_kwargs=kwargs)
+        reloader = hupper.start_reloader(
+            "pylingdocs.output.run_preview", worker_kwargs=kwargs
+        )
         reloader.watch_files(watchfiles)
     create_output(**kwargs)
 
@@ -356,7 +360,9 @@ def clean_output(output_dir):
     output_dir.mkdir()
 
 
-def create_output(source_dir, formats, dataset, output_dir, structure, metadata=None): # pylint: disable=too-many-arguments
+def create_output(
+    source_dir, formats, dataset, output_dir, structure, metadata=None
+):  # pylint: disable=too-many-arguments
     """Run different builders.
 
 

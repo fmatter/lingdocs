@@ -6,10 +6,13 @@ import click
 from pylingdocs.config import BUILDERS
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
-from pylingdocs.config import OUTPUT_DIR, METADATA_FILE, STRUCTURE_FILE
+from pylingdocs.config import METADATA_FILE
+from pylingdocs.config import OUTPUT_DIR
+from pylingdocs.config import STRUCTURE_FILE
+from pylingdocs.helpers import _load_cldf_dataset
+from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import new as create_new
 from pylingdocs.metadata import _read_metadata_file
-from pylingdocs.helpers import _load_structure, _load_cldf_dataset
 from pylingdocs.output import clean_output
 from pylingdocs.output import compile_latex as cmplatex
 from pylingdocs.output import create_output
@@ -86,7 +89,15 @@ def preview(source, targets, cldf, output_dir, refresh):
     ds = _load_cldf_dataset(cldf)
     metadata = _read_metadata_file(METADATA_FILE)
     structure = _load_structure(STRUCTURE_FILE)
-    run_preview(refresh=refresh, source_dir=source, formats=targets, dataset=ds, output_dir=output_dir, structure=structure, metadata=metadata)
+    run_preview(
+        refresh=refresh,
+        source_dir=source,
+        formats=targets,
+        dataset=ds,
+        output_dir=output_dir,
+        structure=structure,
+        metadata=metadata,
+    )
 
 
 @main.command()

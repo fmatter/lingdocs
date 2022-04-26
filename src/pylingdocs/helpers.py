@@ -1,15 +1,18 @@
 """Various helpers"""
 import logging
-from pylingdocs import __version__
-from pylingdocs.config import CITATION_FILE, CLDF_MD
-from pylingdocs.config import METADATA_FILE, STRUCTURE_FILE
 import sys
+from pathlib import Path
+import yaml
+from pycldf import Dataset
+from pylingdocs import __version__
+from pylingdocs.config import CITATION_FILE
+from pylingdocs.config import CLDF_MD
+from pylingdocs.config import METADATA_FILE
+from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.metadata import ORCID_STR
 from pylingdocs.metadata import _load_metadata
-import yaml
 from pylingdocs.metadata import _sort_metadata
-from pycldf import Dataset
-from pathlib import Path
+
 
 log = logging.getLogger(__name__)
 
