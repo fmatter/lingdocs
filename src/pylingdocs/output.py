@@ -26,7 +26,7 @@ from pylingdocs.helpers import split_ref
 from pylingdocs.helpers import write_cff
 from pylingdocs.helpers import write_readme
 from pylingdocs.metadata import PROJECT_SLUG
-from pylingdocs.metadata import PROJECT_TITLE
+from pylingdocs.metadata import PROJECT_TITLE, _read_metadata_file
 from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import postprocess
@@ -338,8 +338,7 @@ def compile_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
         del proc  # help, prospector is forcing me
 
 
-def _load_content(source_dir=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
-    structure = _load_structure(structure_file)
+def _load_content(structure, source_dir=CONTENT_FOLDER):
 
     contents = {}
     parts = {}
@@ -378,7 +377,7 @@ def clean_output(output_dir):
 
 
 def create_output(
-    source_dir, formats, dataset, output_dir=OUTPUT_DIR, structure_file=STRUCTURE_FILE
+    source_dir, formats, dataset, output_dir, structure_file, metadata=None
 ):
     """Run different builders.
 
@@ -392,9 +391,13 @@ def create_output(
         bool: blabla
 
     """
-    if METADATA_FILE:
-        write_cff()
-        write_readme()
+    # if metadata is None:
+    #     metadata = {}
+    metadata.update({"bibfile": Path(dataset.bibpath).resolve()})
+    # if metadata_file:
+    #     write_cff()
+    #     write_readme()
+    #     metadata.update(all_metadata)
     output_dir = Path(output_dir)
     source_dir = Path(source_dir)
     structure_file = Path(structure_file)
@@ -402,7 +405,7 @@ def create_output(
         log.info(f"Creating output folder {output_dir}")
         output_dir.mkdir()
 
-    contents, parts = _load_content(source_dir, structure_file)
+    contents, parts = _load_content(_load_structure(structure_file), source_dir)
 
     for output_format in formats:
         log.info(f"Rendering format [{output_format}]")
@@ -421,7 +424,7 @@ def create_output(
                 output_dir,
                 content=preprocessed,
                 parts=parts,
-                metadata={"bibfile": Path(dataset.bibpath).resolve()},
+                metadata=metadata,
             )
         elif builder.name == "clld":
             builder.create_app()

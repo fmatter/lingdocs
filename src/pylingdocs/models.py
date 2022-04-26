@@ -136,6 +136,12 @@ class Language(Entity):
     cldf_table = "LanguageTable"
     shortcut = "lg"
 
+    list_templates = {
+        "plain": load_template("base", "inline_list_orm"),
+        "github": load_template("base", "inline_list_orm"),
+        "html": load_template("base", "inline_list_orm"),
+        "latex": load_template("base", "inline_list_orm"),
+    }
 
 class Text(Entity):
 

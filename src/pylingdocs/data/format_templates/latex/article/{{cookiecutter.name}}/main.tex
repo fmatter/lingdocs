@@ -5,11 +5,15 @@
 \usepackage{booktabs}
 \usepackage{biblatex}
 \addbibresource{% raw %}{{% endraw %}{{ cookiecutter.bibfile }}{% raw %}}{% endraw %}
+\def\tightlist{}
+
+\title{% raw %}{{% endraw %}{{ cookiecutter.project_title }}{% raw %}}{% endraw %}
+\author{% raw %}{{% endraw %}{{ cookiecutter.author }}{% raw %}}{% endraw %}
+
 \usepackage{hyperref}
 \usepackage{cleveref}
-\def\tightlist{}
 \begin{document}
-Title: {{ cookiecutter.project_title }}
+\maketitle
 
 {{ cookiecutter.content }}
 
