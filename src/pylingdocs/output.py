@@ -53,7 +53,7 @@ class OutputFormat:
             extra["author"] = cls.author_list(metadata["authors"])
         else:
             extra["author"] = cls.author_list([])
-            
+
         if content is not None:
             content = cls.preprocess(content)
             extra.update({"content": content})
@@ -130,6 +130,7 @@ class OutputFormat:
         for author in authors:
             out.append(f'{author["given-names"]} {author["family-names"]}')
         return " and ".join(out)
+
 
 class PlainText(OutputFormat):
     name = "plain"
