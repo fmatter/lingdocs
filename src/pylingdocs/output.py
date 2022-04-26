@@ -377,6 +377,8 @@ def create_output(source_dir, formats, dataset, output_dir, structure, metadata=
         bool: blabla
 
     """
+    if isinstance(structure, str):
+        structure = _load_structure(structure)
     if isinstance(metadata, str):
         metadata = _read_metadata_file(metadata)
     if metadata is None:

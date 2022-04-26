@@ -85,4 +85,4 @@ install: clean ## install the package to the active Python's site-packages
 	python setup.py install
 
 demo:
-	cd var; python3 quick.py; pylingdocs compile-latex; cp output/latex/main.pdf ../docs/demo.pdf
+	cd var; python3 demo.py; pylingdocs compile-latex; cp output/latex/main.pdf ../docs/demo.pdf

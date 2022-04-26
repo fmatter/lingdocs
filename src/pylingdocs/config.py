@@ -32,10 +32,6 @@ def get_config(section, label, as_path=False):
     value = config.get(section, label, fallback=default_config.get(section, label))
     if as_path:
         path = Path(value)
-        if not path.exists():
-            log.warning(
-                f"{value} does not exist. Please create it or change your configuration."
-            )
         return path
     return value
 

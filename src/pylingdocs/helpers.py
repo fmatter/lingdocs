@@ -1,14 +1,15 @@
 """Various helpers"""
 import logging
 from pylingdocs import __version__
-from pylingdocs.config import CITATION_FILE
+from pylingdocs.config import CITATION_FILE, CLDF_MD
 from pylingdocs.config import METADATA_FILE, STRUCTURE_FILE
 import sys
 from pylingdocs.metadata import ORCID_STR
 from pylingdocs.metadata import _load_metadata
 import yaml
 from pylingdocs.metadata import _sort_metadata
-
+from pycldf import Dataset
+from pathlib import Path
 
 log = logging.getLogger(__name__)
 
@@ -21,10 +22,17 @@ def split_ref(s):
         bibkey, pages = s, None
     return bibkey, pages
 
+def _load_cldf_dataset(cldf_path=CLDF_MD):
+    try:
+        return Dataset.from_metadata(cldf_path)
+    except FileNotFoundError as e:
+        log.error(e)
+        log.error(f"Could not load CLDF dataset from {Path(cldf_path).resolve()}. Please specify a path to a valid CLDF metadata file.")
+        sys.exit(1)
 
 def _load_structure(structure_file=STRUCTURE_FILE):
-    if not structure_file.is_file():
-        log.error(f"{STRUCTURE_FILE} not found, aborting.")
+    if not Path(structure_file).is_file():
+        log.error(f"Structure file {structure_file} not found, aborting.")
         sys.exit(1)
     else:
         return yaml.load(open(structure_file, encoding="utf-8"), Loader=yaml.SafeLoader)
