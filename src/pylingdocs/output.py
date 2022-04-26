@@ -43,10 +43,7 @@ class OutputFormat:
     name = "boilerplate"
     file_ext = "txt"
     single_output = True
-    doc_elements = {
-        "ref": "(crossref placeholder)",
-        "label": "(label placeholder)",
-    }
+    doc_elements = {"ref": "(crossref placeholder)", "label": "(label placeholder)"}
 
     @classmethod
     def write_folder(cls, output_dir, content=None, parts=None, metadata=None):
@@ -81,7 +78,6 @@ class OutputFormat:
             template = env.from_string("{{ content }}")
         with open(path, "w", encoding="utf-8") as f:
             f.write(template.render(content=content))
-
 
     @classmethod
     def replace_commands(cls, content):
@@ -190,6 +186,11 @@ class CLLD(OutputFormat):
             overwrite_if_exists=True,
             no_input=True,
         )
+
+    @classmethod
+    def table(cls, df, caption, label):
+        del label  # unused
+        return caption + ":\n\n" + df.to_markdown(index=False)
 
 
 class Latex(OutputFormat):
@@ -424,5 +425,7 @@ def create_output(
             )
         elif builder.name == "clld":
             builder.create_app()
+            with open("clld_output.txt", "w") as f:
+                f.write(preprocessed)
         else:
             pass

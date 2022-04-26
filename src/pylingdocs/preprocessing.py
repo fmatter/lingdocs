@@ -96,7 +96,7 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
                 func_dict={"comma_and_list": comma_and_list},
             )
         else:
-            preprocessed = md_str
+            preprocessed = "".join(preprocess_cldfviz(md_str))
         if "Table#cldf" in preprocessed:
             preprocessed = render(
                 doc=preprocessed,

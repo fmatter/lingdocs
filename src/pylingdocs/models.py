@@ -134,7 +134,13 @@ class Language(Entity):
     name = "Language"
     cldf_table = "LanguageTable"
     shortcut = "lg"
-    fallback = None
+
+
+class Text(Entity):
+
+    name = "Text"
+    cldf_table = "TextTable"
+    shortcut = "txt"
 
 
 models = [Morpheme, Morph, Example, Language]

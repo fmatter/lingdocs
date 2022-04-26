@@ -1,5 +1,5 @@
 {
-    "url": "texts.csv",
+    "url": "TextTable",
     "tableSchema": {
         "columns": [
             {
@@ -33,7 +33,20 @@
                 "name": "Source",
                 "required": false,
                 "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#source",
-                "datatype": "string",
+                "datatype": {
+                    "base": "string"
+                },
+                "separator": ";"
+            },
+            {
+                "name": "Type",
+                "required": false,
+                "datatype": "string"
+            },
+            {
+                "name": "Metadata",
+                "required": false,
+                "datatype": "json"
             }
         ]
     }
