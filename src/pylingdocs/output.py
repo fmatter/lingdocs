@@ -49,6 +49,11 @@ class OutputFormat:
             "parts": {"list": parts},
             "project_title": PROJECT_TITLE,
         }
+        if "authors" in metadata:
+            extra["author"] = cls.author_list(metadata["authors"])
+        else:
+            extra["author"] = cls.author_list([])
+            
         if content is not None:
             content = cls.preprocess(content)
             extra.update({"content": content})
@@ -117,6 +122,14 @@ class OutputFormat:
     def reference_list(cls):
         return "# References \n[References](Source?cited_only#cldf:__all__)"
 
+    @classmethod
+    def author_list(cls, authors):
+        if len(authors) == 0:
+            return "Anonymous"
+        out = []
+        for author in authors:
+            out.append(f'{author["given-names"]} {author["family-names"]}')
+        return " and ".join(out)
 
 class PlainText(OutputFormat):
     name = "plain"
