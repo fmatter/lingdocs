@@ -327,7 +327,7 @@ def compile_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
 
 
 def _load_content(structure, source_dir=CONTENT_FOLDER):
-
+    source_dir = Path(source_dir)
     contents = {}
     parts = {}
     for part_id, level, title, fileno in iterate_structure(structure):
