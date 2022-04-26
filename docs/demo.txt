@@ -2,7 +2,7 @@
 
 This document serves both as a test for `pylingdocs` and a showcase of its capabilities.
 It aims to contain every feature and model currently available in `pylingdocs`.
-The `pylingdocs`-flavored markdown on which is it based can be found [here](https://github.com/fmatter/pylingdocs/tree/main/tests/data/content).
+The `pylingdocs`-flavored markdown on which is it based can be found [here](https://github.com/fmatter/pylingdocs/blob/main/docs/demo.txt).
 It uses data from the CLDF [test dataset](https://github.com/fmatter/pylingdocs/tree/main/tests/data/cldf).
 
 We'll start with some generic markdown stuff.

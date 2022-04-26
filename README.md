@@ -10,4 +10,5 @@ Create data-rich linguistic documents.
 [![PyPI](https://img.shields.io/pypi/v/pylingdocs.svg)](https://pypi.org/project/pylingdocs)
 ![Versions](https://img.shields.io/pypi/pyversions/pylingdocs)
 
-* Documentation: https://pylingdocs.readthedocs.io
+The main functionalities are showcased in the demo, consisting of a [PDF file](https://raw.githubusercontent.com/fmatter/pylingdocs/main/docs/demo.pdf) generated from [this text](https://github.com/fmatter/pylingdocs/blob/main/docs/demo.txt) and [this dataset](https://github.com/fmatter/pylingdocs/tree/main/tests/data/cldf).
+The documentation lives at [pylingdocs.readthedocs.io](https://pylingdocs.readthedocs.io).
