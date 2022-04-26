@@ -149,7 +149,7 @@ class Text(Entity):
     name = "Text"
     cldf_table = "TextTable"
     shortcut = "txt"
-    templates = {"plain": "{{ ctx['Title'] }}"}
+    templates = {"plain": "“{{ ctx['Title'] }}”"}
 
 
 models = [Morpheme, Morph, Example, Language, Text]
