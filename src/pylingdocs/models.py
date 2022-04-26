@@ -60,7 +60,7 @@ class Entity:
             str: a formatted string with a jinja placeholder for data"""
         if not multiple:
             return cls.templates.get(
-                output_format, cls.list_templates.get(cls.fallback, None)
+                output_format, cls.templates.get(cls.fallback, None)
             )
         return cls.list_templates.get(
             output_format, cls.list_templates.get(cls.fallback, None)
@@ -149,6 +149,7 @@ class Text(Entity):
     name = "Text"
     cldf_table = "TextTable"
     shortcut = "txt"
+    templates = {"plain": "{{ ctx['Title'] }}"}
 
 
-models = [Morpheme, Morph, Example, Language]
+models = [Morpheme, Morph, Example, Language, Text]
