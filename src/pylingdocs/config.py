@@ -46,7 +46,10 @@ CLDF_MD = get_path("cldf")
 TABLE_DIR = get_path("tables")
 TABLE_MD = get_path("table_metadata")
 OUTPUT_DIR = get_path("output")
-STRUCTURE_FILE = get_path("structure_file")
+if config.has_option("PATHS", "structure_file"):
+    STRUCTURE_FILE = get_path("structure_file")
+else:
+    STRUCTURE_FILE = Path("structure.yaml")
 BENCH = get_path("bench")
 
 BUILDERS = get_config("OUTPUT", "builders").split(" ")

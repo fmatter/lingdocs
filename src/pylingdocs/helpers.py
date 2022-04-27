@@ -5,7 +5,7 @@ from pathlib import Path
 import yaml
 from pycldf import Dataset
 from pylingdocs import __version__
-from pylingdocs.config import CITATION_FILE
+from pylingdocs.config import CITATION_FILE, CONTENT_FOLDER
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import STRUCTURE_FILE
@@ -16,6 +16,13 @@ from pylingdocs.metadata import _sort_metadata
 
 log = logging.getLogger(__name__)
 
+
+def _get_structure_file(source=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
+    source = Path(source)
+    structure_file = Path(structure_file)
+    if structure_file.name == str(structure_file):
+        return source / structure_file
+    return structure_file
 
 def split_ref(s):
     if "[" in s:
