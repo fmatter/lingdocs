@@ -1,15 +1,9 @@
 from pathlib import Path
 import pycldf
 from clldutils import jsonlib
-from pycldf import Dataset
 from pycldf.dataset import SchemaError
 from pylingdocs.config import DATA_DIR
 from pylingdocs.models import models
-
-
-ds = Dataset.from_metadata(
-    "/home/florianm/Dropbox/research/cariban/yawarana/yaw_cldf/cldf/metadata.json"
-)
 
 
 def metadata(table_name):
