@@ -19,7 +19,9 @@ jobs:
         os: ['ubuntu-latest']
         python-version: ['3.7', '3.8', '3.9', '3.10']
     steps:
-      - uses: actions/checkout@v2
+      - uses: |
+          actions/checkout@v2
+          nikeee/setup-pandoc@v1
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
@@ -36,7 +38,6 @@ jobs:
       - name: Verify that we can build the package
         run: python3 setup.py sdist bdist_wheel
       - name: Setup pandoc
-        uses: nikeee/setup-pandoc@v1
         run: echo "# Test" | pandoc -t html
       - name: Test with pytest
         run: |
