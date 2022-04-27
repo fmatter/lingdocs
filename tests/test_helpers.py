@@ -10,6 +10,7 @@ def test_structure():
         folder="my_own_contents", file="path/my_own_structure.yaml"
     ) == Path("path/my_own_structure.yaml")
 
+
 def test_refsplit():
     assert split_ref("anon1998grammar[301]") == ("anon1998grammar", "301")
     assert split_ref("anon1998grammar") == ("anon1998grammar", None)
