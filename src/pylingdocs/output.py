@@ -68,7 +68,7 @@ class OutputFormat:
         )
 
     @classmethod
-    def write_part(cls, content, path):
+    def write_part(cls, content, path):  # pragma: no cover (not used ATM)
         content = cls.preprocess(content)
         env = Environment(
             loader=PackageLoader("pylingdocs", f"data/format_templates/{cls.name}"),
@@ -392,9 +392,9 @@ def create_output(
         bool: blabla
 
     """
-    if isinstance(structure, str) or isinstance(structure, PosixPath):
+    if isinstance(structure, (str, PosixPath)):
         structure = _load_structure(structure)
-    if isinstance(metadata, str) or isinstance(metadata, PosixPath):
+    if isinstance(metadata, (str, PosixPath)):
         metadata = _read_metadata_file(metadata)
     if metadata is None:
         metadata = {}
