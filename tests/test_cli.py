@@ -70,19 +70,21 @@ def test_cli_preview(caplog, tmp_path, md_path, data, monkeypatch):
     shutil.copytree(data / "tables", tmp_path / "tables")
     monkeypatch.chdir(tmp_path)
     result = runner.invoke(
-        preview, args=["--cldf", md_path, "--source", data / "content", "--refresh", False]
+        preview,
+        args=["--cldf", md_path, "--source", data / "content", "--refresh", False],
     )
     assert "Rendering preview" in caplog.text
     assert result.exit_code == 0
+
 
 def test_new(caplog, md_path, tmpdir, data):
     runner = CliRunner()
     result = runner.invoke(new)
     assert result.exit_code == 0
 
+
 def test_update(caplog, md_path, tmpdir, data):
     runner = CliRunner()
     result = runner.invoke(update_structure)
     assert result.exit_code == 1
-    assert "Updating document " in caplog.text # making sure it tries
-
+    assert "Updating document " in caplog.text  # making sure it tries
