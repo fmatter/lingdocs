@@ -44,7 +44,7 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
         source_dir=data / "content/",
         output_dir="output",
         dataset=dataset,
-        formats=["plain", "latex"],
+        formats=["plain", "latex", "clld"],
         structure=data / "content/structure.yaml",
         metadata={"project_title": "pylingdocs demo", "author": "Florian Matter"},
     )
