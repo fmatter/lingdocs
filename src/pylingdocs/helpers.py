@@ -24,6 +24,7 @@ def _get_relative_file(folder, file):
         return folder / file
     return file
 
+
 def split_ref(s):
     if "[" in s:
         bibkey, pages = s.split("[")

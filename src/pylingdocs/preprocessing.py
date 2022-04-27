@@ -8,7 +8,8 @@ from clldutils import jsonlib
 from jinja2 import DictLoader
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
-from pylingdocs.helpers import comma_and_list, _get_relative_file
+from pylingdocs.helpers import _get_relative_file
+from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.models import models
 

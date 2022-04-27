@@ -63,12 +63,16 @@ def _extract_bib(md):
     if "authors" in md:
         for author in md["authors"]:
             author_string.append(f'{author["family-names"]}, {author["given-names"]}')
-        bibkey = slugify(md["authors"][0]["family-names"]) + year + slugify(md.pop("id", "new-pylingdocs-project"))
+        bibkey = (
+            slugify(md["authors"][0]["family-names"])
+            + year
+            + slugify(md.pop("id", "new-pylingdocs-project"))
+        )
     else:
         author_string.append("Anonymous")
         bibkey = "anonymous" + year + slugify(md.pop("id", "new-pylingdocs-project"))
         md["authors"] = [{"family-names": "Anonymous", "given-names": "A."}]
-    
+
     title_string = md.get("title", "Put your title here.")
     md["title"] = title_string
     if "version" in md:
