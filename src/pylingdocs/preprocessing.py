@@ -92,15 +92,15 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
                 loader=envs[output_format],
                 func_dict={"comma_and_list": comma_and_list},
             )
+            if "Table#cldf" in preprocessed:
+                preprocessed = render(
+                    doc=preprocessed,
+                    cldf_dict=ds,
+                    loader=envs[output_format],
+                    func_dict={"comma_and_list": comma_and_list},
+                )
         else:
             preprocessed = "".join(preprocess_cldfviz(md_str))
-        if "Table#cldf" in preprocessed:
-            preprocessed = render(
-                doc=preprocessed,
-                cldf_dict=ds,
-                loader=envs[output_format],
-                func_dict={"comma_and_list": comma_and_list},
-            )
         return preprocessed
     log.error(f"Unknown data format {data_format}")
     return ""

@@ -54,6 +54,7 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
     assert "4.  numbered" in plain_output
     assert "texts: “Ekïrï”" in plain_output
     assert "(ekiri-1) Ikpeng" in plain_output
+    assert "(my_custom_id) Ikpeng" in plain_output
     assert "morphemes: -se" in plain_output
 
     latex_output = open(tmp_path / "output/latex/main.tex").read()
@@ -65,4 +66,5 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
     )
     assert "texts: ``Ekïrï''" in latex_output
     assert "<ekiri-1> Ikpeng" in latex_output
+    assert "ex<my_custom_id> Ikpeng" in latex_output
     assert "morphemes: \\obj{-se}" in latex_output

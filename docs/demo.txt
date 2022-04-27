@@ -20,7 +20,8 @@ Here is some **bold** and _italic_ text.
 * bullet points
 
 `pylingdocs` also supports general functionalities found in humanities studies:
-Here's a citation: [src](alvarez1998split[133-134]), or maybe one in parentheses? [psrc](alvarez1998split[133-134]).
+Here's a citation: [src](alvarez1998split), or maybe one in parentheses? [psrc](alvarez1998split).
+And the same with pages: [src](alvarez1998split[133-134]), [psrc](alvarez1998split[133-134])-
 Here's a cross reference to [ref](sec:linguistics).
 Here's a cross reference[^3] to [ref](tab:onetable).
 
@@ -38,9 +39,13 @@ A number of models are built-in, at the moment:
 3. languages: [lg](tri)
 4. texts: [txt](ikp-ekiri)
 
+You can also use cldfviz syntax: [Some label](LanguageTable#cldf:apa)
+
+
 You can also refer to multiple entities of the same kind:
 The [lg](tri) suffix [mp](tri-se) has the allomorphs [m](tri-se-1,tri-se-2,tri-se-3).
 [lg](apa,tri) are both Cariban languages, as are [lg](pem,ikp,uxc).
+
 
 ## Interlinearized glossed examples
 
@@ -50,12 +55,15 @@ Glossed examples are called like any other entity, but are rendered as follows:
 
 [ex](ekiri-2,ekiri-3)
 
+## Arguments
+Pass arguments to the visualizer:
+
+[ex](ekiri-4?example_id=my_custom_id&with_primaryText)
 # Tables
 
 Tables are stored as `csv` files, which can contain `pylingdocs` markdown.
 
 [table](onetable)
-
 
 ## A level 2 section
 
