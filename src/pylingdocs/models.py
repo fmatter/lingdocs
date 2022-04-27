@@ -48,7 +48,7 @@ class Entity:
                 return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:{url})"
             arg_str = cls._compile_cldfviz_args(args, kwargs)
             return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:__all__)"
-        return f"[Unknown visualizer]({url}"
+        return f"[Unknown visualizer]({url})"
 
     @classmethod
     def representation(cls, output_format="plain", multiple=False):
