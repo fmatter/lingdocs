@@ -4,7 +4,8 @@ import re
 import shutil
 import subprocess
 import sys
-from pathlib import Path, PosixPath
+from pathlib import Path
+from pathlib import PosixPath
 import hupper
 import panflute
 from cookiecutter.main import cookiecutter
@@ -12,7 +13,6 @@ from jinja2 import Environment
 from jinja2 import PackageLoader
 from jinja2.exceptions import TemplateNotFound
 from pylingdocs.config import BENCH
-from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import OUTPUT_DIR
@@ -21,7 +21,6 @@ from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import split_ref
-from pylingdocs.metadata import PROJECT_SLUG
 from pylingdocs.metadata import PROJECT_TITLE
 from pylingdocs.metadata import _read_metadata_file
 from pylingdocs.pandoc_filters import fix_header
@@ -180,23 +179,6 @@ class CLLD(OutputFormat):
     name = "clld"
     file_ext = "md"
     single_output = False
-
-    @classmethod
-    def create_app(cls):
-        extra = {
-            "name": cls.name,
-            "project_title": PROJECT_TITLE,
-            "clld_slug": PROJECT_SLUG.replace("-", "_") + "_clld",
-            "cldf_paths": "['" + str(CLDF_MD.resolve()) + "']",
-        }
-        # extra.update(**metadata)
-        cookiecutter(
-            str(DATA_DIR / "format_templates" / cls.name / OUTPUT_TEMPLATES[cls.name]),
-            output_dir="clld",
-            extra_context=extra,
-            overwrite_if_exists=True,
-            no_input=True,
-        )
 
     @classmethod
     def table(cls, df, caption, label):
