@@ -83,7 +83,7 @@ def test_cli_metadata(caplog, tmp_path, md_path, data, monkeypatch):
             assert "Florian" in open(x).read()
             assert "Secundus" in open(x).read()
 
-    
+
 def test_cli_preview(caplog, tmp_path, md_path, data, monkeypatch):
     runner = CliRunner()
 

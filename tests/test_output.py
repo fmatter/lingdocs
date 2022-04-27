@@ -41,7 +41,7 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
 
     create_output(
-        source_dir=data/"content/",
+        source_dir=data / "content/",
         output_dir="output",
         dataset=dataset,
         formats=["plain", "latex"],
@@ -49,17 +49,20 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
         metadata={"project_title": "pylingdocs demo", "author": "Florian Matter"},
     )
 
-    plain_output = open(tmp_path/"output/plain/document.txt").read()
+    plain_output = open(tmp_path / "output/plain/document.txt").read()
     assert "tɨ-mami-n ɨna" in plain_output
     assert "4.  numbered" in plain_output
     assert "texts: “Ekïrï”" in plain_output
     assert "(ekiri-1) Ikpeng" in plain_output
     assert "morphemes: -se" in plain_output
 
-    latex_output = open(tmp_path/"output/latex/main.tex").read()
+    latex_output = open(tmp_path / "output/latex/main.tex").read()
     assert "tɨ-mami-n ɨna" in latex_output
-    assert """\\item
-  numbered""" in latex_output
+    assert (
+        """\\item
+  numbered"""
+        in latex_output
+    )
     assert "texts: ``Ekïrï''" in latex_output
     assert "<ekiri-1> Ikpeng" in latex_output
     assert "morphemes: \\obj{-se}" in latex_output
