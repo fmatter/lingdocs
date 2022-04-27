@@ -1,4 +1,5 @@
 import logging
+
 # import pytest
 from pylingdocs.helpers import _load_structure
 
@@ -29,6 +30,7 @@ def test_structure(data, caplog):
             },
         }
     }
+
 
 # def test_load_content3(data, caplog):
 #     res, parts = _load_content(
