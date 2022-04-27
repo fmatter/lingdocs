@@ -388,7 +388,7 @@ def create_output(
     output_dir = Path(output_dir)
     source_dir = Path(source_dir)
     if not output_dir.is_dir():
-        log.info(f"Creating output folder {output_dir}")
+        log.info(f"Creating output folder {output_dir.resolve()}")
         output_dir.mkdir()
 
     contents, parts = _load_content(structure, source_dir)

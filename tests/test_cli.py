@@ -17,6 +17,7 @@ def test_main():
 
 
 def test_missing(caplog, tmp_path, md_path, data, monkeypatch):
+    monkeypatch.chdir(tmp_path)
     runner = CliRunner()
     # try running on empty, no CLDF metadata
     result = runner.invoke(build)
