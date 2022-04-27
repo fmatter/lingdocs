@@ -23,7 +23,7 @@ default_config.read(DATA_DIR / "config.cfg")
 
 conf_path = Path(CONF_PATH)
 if conf_path.is_file():
-    config.read(conf_path)
+    config.read(conf_path)  # pragma: no cover
 else:
     config.read(DATA_DIR / "config.cfg")
 
