@@ -43,13 +43,23 @@ def test_missing(caplog, tmp_path, md_path, data, monkeypatch):
 def test_cli_build(caplog, tmp_path, md_path, data, monkeypatch):
     runner = CliRunner()
 
+    monkeypatch.chdir(tmp_path)
+
     # add tables
     shutil.copytree(data / "tables", tmp_path / "tables")
-    monkeypatch.chdir(tmp_path)
     result = runner.invoke(
         build, args=["--cldf", md_path, "--source", data / "content"]
     )
-    assert result.exit_code == 0
+
+    (tmp_path / "tables/table_metadata.json").unlink()
+    result = runner.invoke(
+        build, args=["--cldf", md_path, "--source", data / "content"]
+    )
+    assert result.exit_code == 1
+    assert "Could not find metadata for table" in caplog.text
+    assert result.exit_code == 1
+    assert "Could not find metadata for table" in caplog.text
+
     assert "Rendering" in caplog.text
     assert "metadata.yaml not found" in caplog.text
 
@@ -69,10 +79,11 @@ def test_cli_build(caplog, tmp_path, md_path, data, monkeypatch):
 def test_cli_metadata(caplog, tmp_path, md_path, data, monkeypatch):
     runner = CliRunner()
 
+    monkeypatch.chdir(tmp_path)
+
     # add tables
     shutil.copytree(data / "tables", tmp_path / "tables")
     shutil.copy(data / "metadata.yaml", tmp_path / "metadata.yaml")
-    monkeypatch.chdir(tmp_path)
     result = runner.invoke(
         build, args=["--cldf", md_path, "--source", data / "content"]
     )
