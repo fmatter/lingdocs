@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Changed
+* if the structure_file path is only a file, it is assumed to be in the content folder 
 
 ## [0.0.1] - 2022-04-26
 
