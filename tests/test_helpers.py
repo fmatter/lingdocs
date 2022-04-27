@@ -1,5 +1,6 @@
-from pylingdocs.helpers import _get_relative_file, split_ref
 from pathlib import Path
+from pylingdocs.helpers import _get_relative_file
+from pylingdocs.helpers import split_ref
 
 
 def test_structure():

@@ -1,7 +1,11 @@
+import logging
 from pathlib import Path
 import pycldf
 from clldutils import jsonlib
 from pylingdocs.config import DATA_DIR
+
+
+log = logging.getLogger(__name__)
 
 
 def load_template(name, style):
@@ -79,6 +83,17 @@ class Entity:
             )
         return jsonlib.load(path)
 
+    @classmethod
+    def autocomplete_string(cls, entry):
+        for label in ["Name", "Form", "Title"]:
+            if label in entry:
+                return (
+                    f"{cls.shortcut}:{entry[label]}",
+                    f"[{cls.shortcut}]({entry['ID']})",
+                )
+        log.warning(f"Nothing found for {entry['ID']}")
+        return entry["ID"]
+
 
 class Morpheme(Entity):
 
@@ -128,6 +143,13 @@ class Example(Entity):
         "latex": load_template("example", "latex_index"),
     }
 
+    @classmethod
+    def autocomplete_string(cls, entry):
+        return (
+            f"ex:{entry['ID']} {' '.join(entry['Analyzed_Word'])} ‘{entry['Translated_Text']}’",
+            f"[ex]({entry['ID']})",
+        )
+
 
 class Language(Entity):
 
@@ -152,4 +174,12 @@ class Text(Entity):
     templates = {"plain": "“{{ ctx['Title'] }}”"}
 
 
-models = [Morpheme, Morph, Example, Language, Text]
+class Cognateset(Entity):
+
+    name = "Cognate set"
+    cldf_table = "CognatesetTable"
+    shortcut = "cogset"
+    templates = {"plain": "{{ ctx.name }}"}
+
+
+models = [Morpheme, Morph, Example, Language, Text, Cognateset]

@@ -1,10 +1,12 @@
 import logging
+import shutil
 from click.testing import CliRunner
 from pylingdocs.cli import build
 from pylingdocs.cli import main
 from pylingdocs.cli import new
-from pylingdocs.cli import preview, update_structure
-import shutil
+from pylingdocs.cli import preview
+from pylingdocs.cli import update_structure
+
 
 log = logging.getLogger(__name__)
 

@@ -1,5 +1,6 @@
-from pylingdocs.preprocessing import render_markdown
 import logging
+from pylingdocs.preprocessing import render_markdown
+
 
 log = logging.getLogger(__name__)
 

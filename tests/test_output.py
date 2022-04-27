@@ -1,9 +1,9 @@
 import logging
+import shutil
 
 # import pytest
 from pylingdocs.helpers import _load_structure
 from pylingdocs.output import create_output
-import shutil
 
 
 log = logging.getLogger(__name__)

@@ -1,4 +1,5 @@
-from pylingdocs.models import Language, Morph
+from pylingdocs.models import Language
+from pylingdocs.models import Morph
 
 
 def test_model_cldf():

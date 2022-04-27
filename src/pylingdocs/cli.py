@@ -3,6 +3,7 @@ import logging
 import sys
 from pathlib import Path
 import click
+from pylingdocs.cldf import generate_autocomplete as autogen
 from pylingdocs.config import BUILDERS
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
@@ -128,6 +129,14 @@ def clean(output_dir):  # pragma: no cover
 def new():
     """Create a new pylingdocs project."""
     create_new()
+
+
+@main.command()
+@click.option("--cldf", default=CLDF_MD, help="Path to metadata.json of CLDF dataset.")
+@click.option("--target", default=CONTENT_FOLDER, help="Content folder.")
+def generate_autocomplete(cldf, target):
+    ds = _load_cldf_dataset(cldf)
+    autogen(ds, target)
 
 
 if __name__ == "__main__":

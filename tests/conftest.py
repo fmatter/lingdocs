@@ -1,9 +1,10 @@
-import pathlib
-import pytest
-from pycldf import Dataset
 import logging
 import os
+import pathlib
 import shutil
+import pytest
+from pycldf import Dataset
+
 
 log = logging.getLogger(__name__)
 
