@@ -91,7 +91,7 @@ def preview(source, targets, cldf, output_dir, refresh):
     output_dir = Path(output_dir)
     ds = _load_cldf_dataset(cldf)
     metadata = _read_metadata_file(METADATA_FILE)
-    structure = _load_structure(_get_relative_file(source=source, file=STRUCTURE_FILE))
+    structure = _load_structure(_get_relative_file(folder=source, file=STRUCTURE_FILE))
     run_preview(
         refresh=refresh,
         source_dir=source,
