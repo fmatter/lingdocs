@@ -21,11 +21,6 @@ TABLE_PATTERN = re.compile(
     r"PYLINGDOCS_RAW_TABLE_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*)PYLINGDOCS_RAW_TABLE_END"
 )
 
-table_md = _get_relative_file(TABLE_DIR, TABLE_MD)
-if table_md.is_file():
-    tables = jsonlib.load(table_md)
-else:
-    tables = {}
 
 log.info("Loading templates")
 labels = {}
@@ -128,7 +123,7 @@ def load_tables(md):
     yield md[current:]
 
 
-def insert_tables(md, builder):
+def insert_tables(md, builder, tables):
     current = 0
     for m in TABLE_PATTERN.finditer(md):
         yield md[current : m.start()]
@@ -146,4 +141,9 @@ def preprocess(md_str):
 
 
 def postprocess(md_str, builder):
-    return "".join(insert_tables(md_str, builder))
+    table_md = _get_relative_file(TABLE_DIR, TABLE_MD)
+    if table_md.is_file():
+        tables = jsonlib.load(table_md)
+    else:
+        tables = {}
+    return "".join(insert_tables(md_str, builder, tables))
