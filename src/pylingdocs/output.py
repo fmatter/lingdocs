@@ -4,7 +4,7 @@ import re
 import shutil
 import subprocess
 import sys
-from pathlib import Path
+from pathlib import Path, PosixPath
 import hupper
 import panflute
 from cookiecutter.main import cookiecutter
@@ -392,9 +392,9 @@ def create_output(
         bool: blabla
 
     """
-    if isinstance(structure, str):
+    if isinstance(structure, str) or isinstance(structure, PosixPath):
         structure = _load_structure(structure)
-    if isinstance(metadata, str):
+    if isinstance(metadata, str) or isinstance(metadata, PosixPath):
         metadata = _read_metadata_file(metadata)
     if metadata is None:
         metadata = {}
