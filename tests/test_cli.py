@@ -3,8 +3,7 @@ from click.testing import CliRunner
 from pylingdocs.cli import build
 from pylingdocs.cli import main
 from pylingdocs.cli import new
-from pylingdocs.cli import preview
-import configparser
+from pylingdocs.cli import preview, update_structure
 import shutil
 
 log = logging.getLogger(__name__)
@@ -75,22 +74,15 @@ def test_cli_preview(caplog, tmp_path, md_path, data, monkeypatch):
     )
     assert "Rendering preview" in caplog.text
     assert result.exit_code == 0
-# # not working right now because the build command relies on a structure.yaml
-# # file and I don't know how to do that.
-# def test_build(caplog, dataset, md_path, data, working_dir):
-#     runner = CliRunner()
-
-#     result = runner.invoke(
-#         build,
-#         ["--cldf", md_path, "--source", data / "contents"],
-#     )
-#     assert result.exit_code == 0
-#     output_formats = list(
-# (x.name for x in (working_dir / "output").iterdir() if x.is_dir())
-# )
-
 
 def test_new(caplog, md_path, tmpdir, data):
     runner = CliRunner()
     result = runner.invoke(new)
     assert result.exit_code == 0
+
+def test_update(caplog, md_path, tmpdir, data):
+    runner = CliRunner()
+    result = runner.invoke(update_structure)
+    assert result.exit_code == 1
+    assert "Updating document " in caplog.text # making sure it tries
+
