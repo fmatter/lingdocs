@@ -1,0 +1,16 @@
+id: pylingdocs-demo
+version: 0.0.1
+title: pylingdocs demo
+authors: 
+    - family-names: Matter
+      given-names: Florian
+      orcid: 0000-0002-2545-5154
+      email: florianmatter@gmail.com
+      affiliation: University of Oregon and University of Bern
+    - family-names: Author
+      given-names: Secundus
+abstract: This is a demo document.
+keywords:
+    - digital linguistics
+license: CC-BY-SA-4.0
+type: unpublished
