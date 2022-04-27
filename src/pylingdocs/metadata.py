@@ -58,14 +58,23 @@ def _extract_bib(md):
         bibschemes[entry_type]["required"] + bibschemes[entry_type]["optional"]
     )
     good_fields = [bibtex_rev.get(x, x) for x in good_fields] + ["url"]
-    author_string = []
-    for author in md["authors"]:
-        author_string.append(f'{author["family-names"]}, {author["given-names"]}')
     year = datetime.now().strftime("%Y")
-    bibkey = slugify(md["authors"][0]["family-names"]) + year + slugify(md.pop("id"))
-    title_string = md["title"]
+    author_string = []
+    if "authors" in md:
+        for author in md["authors"]:
+            author_string.append(f'{author["family-names"]}, {author["given-names"]}')
+        bibkey = slugify(md["authors"][0]["family-names"]) + year + slugify(md.pop("id", "new-pylingdocs-project"))
+    else:
+        author_string.append("Anonymous")
+        bibkey = "anonymous" + year + slugify(md.pop("id", "new-pylingdocs-project"))
+        md["authors"] = [{"family-names": "Anonymous", "given-names": "A."}]
+    
+    title_string = md.get("title", "Put your title here.")
+    md["title"] = title_string
     if "version" in md:
         title_string += f' (version {md["version"]})'
+    else:
+        md["version"] = "0.0.0"
     bibtex_fields = {
         "author": " and ".join(author_string),
         "year": year,
