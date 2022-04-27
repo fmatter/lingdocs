@@ -226,15 +226,21 @@ class Latex(OutputFormat):
             key = m.group("label")
             url = m.group("url")
             if key in ["src", "psrc"]:
-                bibkey, pages = split_ref(url)
-                if pages:
-                    page_str = f"[{pages}]"
-                else:
-                    page_str = ""
+                cite_string = []
+                for citation in url.split(","):
+                    bibkey, pages = split_ref(citation)
+                    if pages:
+                        page_str = f"[{pages}]"
+                    else:
+                        page_str = ""
+                    cite_string.append(f"{page_str}{{{bibkey}}}")
+                cite_string = "".join(cite_string)
+                if "," in url:
+                    cite_string = "s" + cite_string
                 if key == "src":
-                    yield f"\\textcite{page_str}{{{bibkey}}}"
+                    yield f"\\textcite{cite_string}"
                 elif key == "psrc":
-                    yield f"\\parencite{page_str}{{{bibkey}}}"
+                    yield f"\\parencite{cite_string}"
             elif key in cls.doc_elements:
                 yield cls.doc_elements[key](url)
             else:
