@@ -8,7 +8,7 @@ from clldutils import jsonlib
 from jinja2 import DictLoader
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
-from pylingdocs.helpers import comma_and_list
+from pylingdocs.helpers import comma_and_list, _get_relative_file
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.models import models
 
@@ -21,8 +21,9 @@ TABLE_PATTERN = re.compile(
     r"PYLINGDOCS_RAW_TABLE_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*)PYLINGDOCS_RAW_TABLE_END"
 )
 
-if TABLE_MD.is_file():
-    tables = jsonlib.load(TABLE_MD)
+table_md = _get_relative_file(TABLE_DIR, TABLE_MD)
+if table_md.is_file():
+    tables = jsonlib.load(table_md)
 else:
     tables = {}
 
@@ -117,7 +118,7 @@ def load_tables(md):
         if key == "table":
             table_path = TABLE_DIR / f"{url}.csv"
             if not table_path.is_file():
-                log.error(f"The requested table {table_path} could not be found.")
+                log.error(f"Table file <{table_path}> does not exist.")
                 sys.exit(1)
             else:
                 with open(table_path, "r", encoding="utf-8") as f:

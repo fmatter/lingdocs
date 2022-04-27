@@ -18,7 +18,7 @@ from pylingdocs.config import DATA_DIR
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import STRUCTURE_FILE
-from pylingdocs.helpers import _load_structure, _get_structure_file
+from pylingdocs.helpers import _load_structure, _get_relative_file
 from pylingdocs.helpers import split_ref
 from pylingdocs.metadata import PROJECT_SLUG
 from pylingdocs.metadata import PROJECT_TITLE
@@ -299,7 +299,7 @@ def update_structure(
         name = re.sub(NUM_PRE, "", file.stem)
         bench_files[name] = file
 
-    structure = _load_structure(_get_structure_file(source=content_dir, structure_file=structure_file))
+    structure = _load_structure(_get_relative_file(folder=content_dir, file=structure_file))
 
     for part_id, level, title, fileno in iterate_structure(structure):
         del level  # unused

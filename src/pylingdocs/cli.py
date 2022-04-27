@@ -6,10 +6,10 @@ import click
 from pylingdocs.config import BUILDERS
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
-from pylingdocs.config import METADATA_FILE
+from pylingdocs.config import METADATA_FILE, STRUCTURE_FILE
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.helpers import _load_cldf_dataset
-from pylingdocs.helpers import _load_structure, _get_structure_file
+from pylingdocs.helpers import _load_structure, _get_relative_file
 from pylingdocs.helpers import new as create_new
 from pylingdocs.helpers import write_cff
 from pylingdocs.helpers import write_readme
@@ -75,7 +75,7 @@ def build(source, targets, cldf, output_dir):
     output_dir = Path(output_dir)
     ds = _load_cldf_dataset(cldf)
     metadata = _read_metadata_file(METADATA_FILE)
-    structure = _load_structure(_get_structure_file(source=source))
+    structure = _load_structure(_get_relative_file(folder=source, file=STRUCTURE_FILE))
     create_output(
         source, targets, ds, output_dir, structure=structure, metadata=metadata
     )
@@ -91,7 +91,7 @@ def preview(source, targets, cldf, output_dir, refresh):
     output_dir = Path(output_dir)
     ds = _load_cldf_dataset(cldf)
     metadata = _read_metadata_file(METADATA_FILE)
-    structure = _load_structure(_get_structure_file(source=source))
+    structure = _load_structure(_get_relative_file(source=source, file=STRUCTURE_FILE))
     run_preview(
         refresh=refresh,
         source_dir=source,
