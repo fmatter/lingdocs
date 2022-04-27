@@ -39,7 +39,7 @@ def test_missing(caplog, tmp_path, md_path, data, monkeypatch):
     assert "Table file" in caplog.text
 
 
-def test_build(caplog, tmp_path, md_path, data, monkeypatch):
+def test_cli_build(caplog, tmp_path, md_path, data, monkeypatch):
     runner = CliRunner()
 
     # add tables
@@ -50,6 +50,7 @@ def test_build(caplog, tmp_path, md_path, data, monkeypatch):
     )
     assert result.exit_code == 0
     assert "Rendering" in caplog.text
+    assert "metadata.yaml not found" in caplog.text
 
     output_formats = [x.name for x in (tmp_path / "output").iterdir()]
 
@@ -63,6 +64,26 @@ def test_build(caplog, tmp_path, md_path, data, monkeypatch):
             assert "Anonymous" in open(x).read()
 
 
+# same with metadata file
+def test_cli_metadata(caplog, tmp_path, md_path, data, monkeypatch):
+    runner = CliRunner()
+
+    # add tables
+    shutil.copytree(data / "tables", tmp_path / "tables")
+    shutil.copy(data / "metadata.yaml", tmp_path / "metadata.yaml")
+    monkeypatch.chdir(tmp_path)
+    result = runner.invoke(
+        build, args=["--cldf", md_path, "--source", data / "content"]
+    )
+    assert "metadata.yaml not found" not in caplog.text
+
+    assert result.exit_code == 0
+    for x in tmp_path.iterdir():
+        if "README" in x.name or "CITATION" in x.name:
+            assert "Florian" in open(x).read()
+            assert "Secundus" in open(x).read()
+
+    
 def test_cli_preview(caplog, tmp_path, md_path, data, monkeypatch):
     runner = CliRunner()
 
