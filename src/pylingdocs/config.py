@@ -28,7 +28,9 @@ else:
     config.read(DATA_DIR / "config.cfg")
 
 
-def get_config(section, label, as_path=False):
+def get_config(section, label, as_path=False, as_boolean=False):
+    if as_boolean:
+        return config.getboolean(section, label, fallback=default_config.getboolean(section, label))
     value = config.get(section, label, fallback=default_config.get(section, label))
     if as_path:
         path = Path(value)
@@ -52,6 +54,9 @@ BENCH = get_path("bench")
 BUILDERS = get_config("OUTPUT", "builders").split(" ")
 PREVIEW = get_config("OUTPUT", "preview").split(" ")
 CITATION_FILE = "./CITATION.cff"
+
+CREATE_CFF = get_config("OUTPUT", "citation_cff", as_boolean=True)
+CREATE_README = get_config("OUTPUT", "readme", as_boolean=True)
 
 METADATA_FILE = Path("./metadata.yaml")
 

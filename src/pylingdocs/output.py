@@ -387,10 +387,6 @@ def create_output(
     if metadata is None:
         metadata = {}
     metadata.update({"bibfile": Path(dataset.bibpath).resolve()})
-    # if metadata_file:
-    #     write_cff()
-    #     write_readme()
-    #     metadata.update(all_metadata)
     output_dir = Path(output_dir)
     source_dir = Path(source_dir)
     if not output_dir.is_dir():

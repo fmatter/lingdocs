@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * generating autocomplete data for Sublime Text plugin (`generate-autocomplete`)
 * multicite (LaTeX only, WIP)
 * implemented `pylingdocs new` command
+* new options:
+    * `readme`
+    * `citation_cff`
 
 ### Removed
 

@@ -7,6 +7,8 @@ from pylingdocs.cldf import generate_autocomplete as autogen
 from pylingdocs.config import BUILDERS
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
+from pylingdocs.config import CREATE_CFF
+from pylingdocs.config import CREATE_README
 from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import STRUCTURE_FILE
@@ -82,8 +84,10 @@ def build(source, targets, cldf, output_dir):
     create_output(
         source, targets, ds, output_dir, structure=structure, metadata=metadata
     )
-    write_cff()
-    write_readme()
+    if CREATE_CFF:
+        write_cff()
+    if CREATE_README:
+        write_readme()
 
 
 @main.command(cls=BuildCommand)
