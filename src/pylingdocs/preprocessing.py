@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 MD_LINK_PATTERN = re.compile(r"\[(?P<label>[^]]*)]\((?P<url>[^)]+)\)")
 
 TABLE_PATTERN = re.compile(
-    r"PYLINGDOCS_RAW_TABLE_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*)PYLINGDOCS_RAW_TABLE_END"
+    r"PYLINGDOCS_RAW_TABLE_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*)PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
 )
 
 
@@ -118,7 +118,7 @@ def load_tables(md):
                 sys.exit(1)
             else:
                 with open(table_path, "r", encoding="utf-8") as f:
-                    yield "PYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + f.read() + "PYLINGDOCS_RAW_TABLE_END"
+                    yield "PYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + f.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
         else:
             yield md[m.start() : m.end()]
     yield md[current:]

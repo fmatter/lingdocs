@@ -95,9 +95,9 @@ class OutputFormat:
                 else:
                     page_str = ""
                 if key == "src":
-                    yield f"[{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str}"
+                    yield f"[{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str}"  # noqa: E501
                 elif key == "psrc":
-                    yield f"([{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str})"
+                    yield f"([{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str})"  # noqa: E501
             elif key in cls.doc_elements:
                 yield cls.doc_elements[key]
             else:

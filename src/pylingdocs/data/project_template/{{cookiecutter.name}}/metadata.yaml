@@ -1,0 +1,16 @@
+id: {{cookiecutter.name}}
+version: 0.0.1.draft
+title: {{cookiecutter.title}}
+authors: 
+    - family-names: {{ cookiecutter.author_family_name }}
+      given-names: {{ cookiecutter.author_given_name }}{%if cookiecutter.orcid != ""%}
+      orcid: {{cookiecutter.orcid}}{% endif %}{%if cookiecutter.email != ""%}
+      email: {{cookiecutter.email}}{% endif %}{%if cookiecutter.affiliation != ""%}
+      affiliation: {{cookiecutter.affiliation}}{% endif %}{%if cookiecutter.repository != ""%}
+repository: {{cookiecutter.repository}}{% endif %}{%if cookiecutter.url != ""%}
+url: {{cookiecutter.url}}{% endif %}
+abstract: {{cookiecutter.abstract}}
+keywords:
+{% for kw in cookiecutter.keywords.split(",") %}- {{ kw }}
+{% endfor %}license: CC-BY-SA-4.0
+type: {{ cookiecutter.document_type }}

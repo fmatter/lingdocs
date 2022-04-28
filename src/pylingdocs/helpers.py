@@ -3,10 +3,12 @@ import logging
 import sys
 from pathlib import Path
 import yaml
+from cookiecutter.main import cookiecutter
 from pycldf import Dataset
 from pylingdocs import __version__
 from pylingdocs.config import CITATION_FILE
 from pylingdocs.config import CLDF_MD
+from pylingdocs.config import DATA_DIR
 from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.metadata import ORCID_STR
@@ -40,7 +42,7 @@ def _load_cldf_dataset(cldf_path=CLDF_MD):
     except FileNotFoundError as e:
         log.error(e)
         log.error(
-            f"Could not load CLDF dataset from {Path(cldf_path).resolve()}. Please specify a path to a valid CLDF metadata file."
+            f"Could not load CLDF dataset from {Path(cldf_path).resolve()}. Please specify a path to a valid CLDF metadata file."  # noqa: E501
         )
         sys.exit(1)
 
@@ -63,7 +65,12 @@ def comma_and_list(entries, sep1=", ", sep2=" and "):
 
 def new():
     """Create a new pylingdocs project"""
+
     # TODO implement
+    cookiecutter(
+        str(DATA_DIR / "project_template"),
+        overwrite_if_exists=True,
+    )
     log.info("Hello world!")
 
 

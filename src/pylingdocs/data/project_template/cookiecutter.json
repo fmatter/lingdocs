@@ -1,0 +1,18 @@
+{
+   "name": "new-pld-document",
+   "cldf": "/path/to/your/cldf/metadata.json",
+   "title": "My awesome title",
+   "abstract": "Insert your abstract here",
+   "license": ["CC-BY-SA-4.0", "CC-BY-4.0", "CC0-1.0", "No license"],
+   "keywords": "keyword1,keyword2",
+   "document_type": ["article", "book", "unpublished"],
+   "latex_template": ["article", "handout"],
+   "files": "file1,file2",
+   "author_family_name": "author1-family",
+   "author_given_name": "author1-given",
+   "email": "",
+   "orcid": "",
+   "affiliation": "",
+   "repository": "",
+   "url": ""
+}
