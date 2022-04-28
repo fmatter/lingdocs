@@ -65,10 +65,7 @@ def comma_and_list(entries, sep1=", ", sep2=" and "):
 
 def new():
     """Create a new pylingdocs project"""
-
-    # TODO implement
     cookiecutter(str(DATA_DIR / "project_template"), overwrite_if_exists=True)
-    log.info("Hello world!")
 
 
 def get_md_pattern(m):

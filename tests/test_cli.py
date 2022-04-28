@@ -6,7 +6,7 @@ from pylingdocs.cli import main
 from pylingdocs.cli import new
 from pylingdocs.cli import preview
 from pylingdocs.cli import update_structure
-
+from pathlib import Path
 
 log = logging.getLogger(__name__)
 
@@ -112,11 +112,12 @@ def test_cli_preview(caplog, tmp_path, md_path, data, monkeypatch):
     assert result.exit_code == 0
 
 
-def test_new(caplog, md_path, tmpdir, data):
+def test_new(caplog, md_path, tmpdir, data, monkeypatch):
+    monkeypatch.chdir(tmpdir)
     runner = CliRunner()
     result = runner.invoke(new)
     assert result.exit_code == 0
-
+    assert "content" in [x.name for x in (Path(tmpdir)/"new-pld-document").iterdir()]
 
 def test_update(caplog, md_path, tmpdir, data):
     runner = CliRunner()
