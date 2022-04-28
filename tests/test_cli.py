@@ -117,7 +117,8 @@ def test_new(caplog, md_path, tmpdir, data, monkeypatch):
     runner = CliRunner()
     result = runner.invoke(new)
     assert result.exit_code == 0
-    assert "content" in [x.name for x in (Path(tmpdir)/"new-pld-document").iterdir()]
+    assert "content" in [x.name for x in (Path(tmpdir) / "new-pld-document").iterdir()]
+
 
 def test_update(caplog, md_path, tmpdir, data):
     runner = CliRunner()
