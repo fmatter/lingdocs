@@ -30,7 +30,9 @@ else:
 
 def get_config(section, label, as_path=False, as_boolean=False):
     if as_boolean:
-        return config.getboolean(section, label, fallback=default_config.getboolean(section, label))
+        return config.getboolean(
+            section, label, fallback=default_config.getboolean(section, label)
+        )
     value = config.get(section, label, fallback=default_config.get(section, label))
     if as_path:
         path = Path(value)

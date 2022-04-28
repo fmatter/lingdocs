@@ -67,10 +67,7 @@ def new():
     """Create a new pylingdocs project"""
 
     # TODO implement
-    cookiecutter(
-        str(DATA_DIR / "project_template"),
-        overwrite_if_exists=True,
-    )
+    cookiecutter(str(DATA_DIR / "project_template"), overwrite_if_exists=True)
     log.info("Hello world!")
 
 
