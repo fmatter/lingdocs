@@ -182,4 +182,11 @@ class Cognateset(Entity):
     templates = {"plain": "{{ ctx.name }}"}
 
 
-models = [Morpheme, Morph, Example, Language, Text, Cognateset]
+class Form(Entity):
+    name = "Form"
+    cldf_table = "FormTable"
+    shortcut = "form"
+    templates = {"plain": "{{ctx.cldf.form}}"}
+
+
+models = [Morpheme, Morph, Example, Language, Text, Cognateset, Form]
