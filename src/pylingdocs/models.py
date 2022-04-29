@@ -146,7 +146,7 @@ class Example(Entity):
     @classmethod
     def autocomplete_string(cls, entry):
         return (
-            f"ex:{entry['ID']} {' '.join(entry['Analyzed_Word'])} ‘{entry['Translated_Text']}’",  # noqa: E501
+            f"ex:{entry['ID']} {' '.join(entry['Analyzed_Word'])}\n‘{entry['Translated_Text']}’",  # noqa: E501
             f"[ex]({entry['ID']})",
         )
 

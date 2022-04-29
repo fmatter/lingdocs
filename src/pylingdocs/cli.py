@@ -138,7 +138,7 @@ def new():
 @main.command()
 @click.option("--cldf", default=CLDF_MD, help="Path to metadata.json of CLDF dataset.")
 @click.option("--target", default=CONTENT_FOLDER, help="Content folder.")
-def generate_autocomplete(cldf, target):
+def sublime(cldf, target):
     ds = _load_cldf_dataset(cldf)
     autogen(ds, target)
 

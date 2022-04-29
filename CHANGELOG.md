@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-* generating autocomplete data for Sublime Text plugin (`generate-autocomplete`)
+* generating autocomplete data for Sublime Text plugin (`pylingdocs sublime`)
 * multicite (LaTeX only, WIP)
 * implemented `pylingdocs new` command
 * new options:
