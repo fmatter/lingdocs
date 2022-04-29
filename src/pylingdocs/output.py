@@ -23,6 +23,7 @@ from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import split_ref
 from pylingdocs.metadata import PROJECT_TITLE
 from pylingdocs.metadata import _read_metadata_file
+from pylingdocs.models import models
 from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import postprocess
@@ -137,9 +138,10 @@ class PlainText(OutputFormat):
 
     @classmethod
     def preprocess(cls, content):
-        return panflute.convert_text(
+        res = panflute.convert_text(
             content, output_format="plain", input_format="markdown"
         )
+        return res.replace("|WHITESPACE|", " ")
 
 
 class HTML(OutputFormat):
@@ -396,6 +398,8 @@ def create_output(
     contents, parts = _load_content(structure, source_dir)
 
     for output_format in formats:
+        for m in models:
+            m.reset_cnt()
         log.info(f"Rendering format [{output_format}]")
         builder = builders[output_format]
         # log.debug(f"Writing skeleton to folder {output_dir}")

@@ -50,10 +50,11 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
     )
 
     plain_output = open(tmp_path / "output/plain/document.txt").read()
-    assert "tɨ-mami-n ɨna" in plain_output
+    log.warning(plain_output)
+    assert "tɨ-mami-n      ɨna" in plain_output
     assert "4.  numbered" in plain_output
     assert "texts: “Ekïrï”" in plain_output
-    assert "(ekiri-1) Ikpeng" in plain_output
+    assert "(1) Ikpeng" in plain_output
     assert "(my_custom_id) Ikpeng" in plain_output
     assert "morphemes: -se" in plain_output
 

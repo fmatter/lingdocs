@@ -33,6 +33,7 @@ class Entity:
     for the model."""
     templates = {"plain": "{{ ctx.name }}"}
     list_templates = {"plain": "{% for x in ctx %} {{ x['Form'] }}{% endfor %}"}
+    cnt = 0
 
     @classmethod
     def _compile_cldfviz_args(cls, args, kwargs):
@@ -94,6 +95,10 @@ class Entity:
         log.warning(f"Nothing found for {entry['ID']}")
         return entry["ID"]
 
+    @classmethod
+    def reset_cnt(cls):
+        pass
+
 
 class Morpheme(Entity):
 
@@ -129,6 +134,7 @@ class Example(Entity):
     cldf_table = "ExampleTable"
     shortcut = "ex"
     fallback = None
+    cnt = 0
 
     templates = {
         "plain": load_template("example", "plain"),
@@ -149,6 +155,22 @@ class Example(Entity):
             f"ex:{entry['ID']} {' '.join(entry['Analyzed_Word'])}\n‘{entry['Translated_Text']}’",  # noqa: E501
             f"[ex]({entry['ID']})",
         )
+
+    @classmethod
+    def query_string(cls, url, *args, multiple=False, visualizer="cldfviz", **kwargs):
+        if visualizer == "cldfviz":
+            cls.cnt += 1
+            kwargs.update({"example_no": cls.cnt})
+            if not multiple:
+                arg_str = cls._compile_cldfviz_args(args, kwargs)
+                return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:{url})"
+            arg_str = cls._compile_cldfviz_args(args, kwargs)
+            return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:__all__)"
+        return f"[Unknown visualizer]({url})"
+
+    @classmethod
+    def reset_cnt(cls):
+        cls.cnt = 0
 
 
 class Language(Entity):
