@@ -9,8 +9,9 @@ from jinja2 import DictLoader
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
 from pylingdocs.helpers import _get_relative_file
-from pylingdocs.helpers import comma_and_list, sanitize_gloss
+from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import get_md_pattern
+from pylingdocs.helpers import sanitize_gloss
 from pylingdocs.models import models
 
 
@@ -90,7 +91,10 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
                 doc="".join(preprocess_cldfviz(md_str)),
                 cldf_dict=ds,
                 loader=envs[output_format],
-                func_dict={"comma_and_list": comma_and_list, "sanitize_gloss": sanitize_gloss},
+                func_dict={
+                    "comma_and_list": comma_and_list,
+                    "sanitize_gloss": sanitize_gloss,
+                },
             )
             if "Table#cldf" in preprocessed:
                 preprocessed = render(

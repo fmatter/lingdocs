@@ -26,8 +26,10 @@ def _get_relative_file(folder, file):
         return folder / file
     return file
 
+
 def sanitize_gloss(gloss):
     return gloss.replace("\\", "\\textbackslash{}").replace("_", "\\_")
+
 
 def split_ref(s):
     if "[" in s:

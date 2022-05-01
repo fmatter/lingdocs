@@ -2,7 +2,8 @@ import logging
 from pathlib import Path
 import pycldf
 from clldutils import jsonlib
-from pylingdocs.config import DATA_DIR, LATEX_EX_TEMPL
+from pylingdocs.config import DATA_DIR
+from pylingdocs.config import LATEX_EX_TEMPL
 
 
 log = logging.getLogger(__name__)
