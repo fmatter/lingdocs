@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 import pycldf
 from clldutils import jsonlib
-from pylingdocs.config import DATA_DIR
+from pylingdocs.config import DATA_DIR, LATEX_EX_TEMPL
 
 
 log = logging.getLogger(__name__)
@@ -138,7 +138,7 @@ class Example(Entity):
 
     templates = {
         "plain": load_template("example", "plain"),
-        "latex": load_template("example", "latex"),
+        "latex": load_template("example", f"latex_{LATEX_EX_TEMPL}"),
         "html": load_template("example", "html"),
     }
 
@@ -146,7 +146,7 @@ class Example(Entity):
         "plain": load_template("example", "plain_index"),
         "github": load_template("example", "plain_index"),
         "html": load_template("example", "plain_index"),
-        "latex": load_template("example", "latex_index"),
+        "latex": load_template("example", f"latex_index_{LATEX_EX_TEMPL}"),
     }
 
     @classmethod
