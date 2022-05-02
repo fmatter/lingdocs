@@ -105,9 +105,9 @@ def build(source, targets, cldf, output_dir, latex):
     "--targets", multiple=True, default=PREVIEW, help="List of target output formats."
 )
 @click.option("--refresh", default=True, help="Re-render preview on file change.")
-def preview( # pylint: disable=too-many-arguments
-    source, targets, cldf, output_dir, refresh, latex  
-): 
+def preview(  # pylint: disable=too-many-arguments
+    source, targets, cldf, output_dir, refresh, latex
+):
     """Create a live preview using a lightweight, human-readable output format"""
     source = Path(source)
     output_dir = Path(output_dir)
