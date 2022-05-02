@@ -18,7 +18,7 @@
 \glb {{ " ".join(glosslist) }}//
 {% endif %}
 {% if ctx.cldf.translatedText != None %}
-\glft ‘{{ ctx.cldf.translatedText }}’// {% endif %} 
+\glft ‘{{ sanitize_latex(ctx.cldf.translatedText) }}’// {% endif %} 
 \endgl 
 \xe
 ```

@@ -28,7 +28,7 @@ def _get_relative_file(folder, file):
 
 
 def sanitize_latex(unsafe_str):
-    for o, r in (("\\", "\\textbackslash"), ("_", "\\_"), ("%", "\\%")):
+    for o, r in (("\\", "\\textbackslash"), ("_", "\\_"), ("%", "\\%"), ("#", "\\#")):
         unsafe_str = unsafe_str.replace(o, r)
     return unsafe_str
 
