@@ -7,22 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-* generating data for Sublime Text plugin (`pylingdocs sublime`)
+* generate data for the [Sublime Text plugin](https://github.com/fmatter/pylingdocs-sublime/) with `pylingdocs sublime`
+* create a new project with `pylingdocs new`
+* prettier plaintext example rendering
+* use pandoc throughout
+* expanded demo document
 * multicite (LaTeX only, WIP)
-* implemented `pylingdocs new` command
-* prettier plaintext examples
 * new options:
     * `readme`
     * `citation_cff`
 * new default models:
     * Form
+    * Cognateset
 * new templates:
-    * LaTeX handout
+    * LaTeX `handout`
 
 ### Removed
+* various bugs
 
 ### Changed
-* if the structure_file and table_md paths are only files, they are assumed to be in the content and tables folders, respectively 
+* if the `structure_file` and `table_md` paths are only files, they are assumed to be in the content and tables folders, respectively 
 
 ## [0.0.1] - 2022-04-26
 

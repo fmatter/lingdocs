@@ -27,8 +27,14 @@ def _get_relative_file(folder, file):
     return file
 
 
-def sanitize_gloss(gloss):
-    return gloss.replace("\\", "\\textbackslash{}").replace("_", "\\_")
+def sanitize_latex(unsafe_str):
+    for o, r in (
+        ("\\", "\\textbackslash"),
+        ("_", "\\_"),
+        ("%", "\\%")
+    ):
+        unsafe_str = unsafe_str.replace(o, r)
+    return unsafe_str
 
 
 def split_ref(s):

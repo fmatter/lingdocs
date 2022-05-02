@@ -1,15 +1,16 @@
-\documentclass[11pt]{article}
+\documentclass[10pt]{article}
 \usepackage[
     landscape,
     twocolumn,
     a4paper,
-    left=1in,
-    right=1in,
+    left=0.7in,
+    right=0.7in,
     bottom=1in,
-    top=1in]{geometry}
+    top=0.7in]{geometry}
 \usepackage{fontspec}
 \setmainfont{Brill}
 \usepackage{expex-acro}
+\lingset{belowglpreambleskip=-1ex,everyglpreamble=\itshape,aboveglftskip=-0.5ex}
 \usepackage{booktabs}
 \usepackage[style=authoryear]{biblatex}
 \addbibresource{% raw %}{{% endraw %}{{ cookiecutter.bibfile }}{% raw %}}{% endraw %}

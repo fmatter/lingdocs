@@ -11,7 +11,7 @@ from pylingdocs.config import TABLE_MD
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import get_md_pattern
-from pylingdocs.helpers import sanitize_gloss
+from pylingdocs.helpers import sanitize_latex
 from pylingdocs.models import models
 
 
@@ -93,7 +93,7 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
                 loader=envs[output_format],
                 func_dict={
                     "comma_and_list": comma_and_list,
-                    "sanitize_gloss": sanitize_gloss,
+                    "sanitize_latex": sanitize_latex,
                 },
             )
             if "Table#cldf" in preprocessed:
