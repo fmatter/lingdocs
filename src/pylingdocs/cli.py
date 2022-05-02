@@ -11,6 +11,7 @@ from pylingdocs.config import CREATE_CFF
 from pylingdocs.config import CREATE_README
 from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import OUTPUT_DIR
+from pylingdocs.config import PREVIEW
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_cldf_dataset
@@ -59,22 +60,25 @@ class BuildCommand(OutputCommand):
                     help="Source folder to process.",
                 ),
                 click.core.Option(
-                    ("--targets",),
-                    multiple=True,
-                    default=BUILDERS,
-                    help="List of target output formats.",
-                ),
-                click.core.Option(
                     ("--cldf",),
                     default=CLDF_MD,
                     help="Path to metadata.json of CLDF dataset.",
+                ),
+                click.core.Option(
+                    ("--latex",),
+                    is_flag=True,
+                    default=False,
+                    help="Automatically compile the generated LaTeX",
                 ),
             ]
         )
 
 
 @main.command(cls=BuildCommand)
-def build(source, targets, cldf, output_dir):
+@click.option(
+    "--targets", multiple=True, default=BUILDERS, help="List of target output formats."
+)
+def build(source, targets, cldf, output_dir, latex):
     """Create formatted output of pylingdocs project."""
     source = Path(source)
     output_dir = Path(output_dir)
@@ -82,7 +86,13 @@ def build(source, targets, cldf, output_dir):
     metadata = _read_metadata_file(METADATA_FILE)
     structure = _load_structure(_get_relative_file(folder=source, file=STRUCTURE_FILE))
     create_output(
-        source, targets, ds, output_dir, structure=structure, metadata=metadata
+        source,
+        targets,
+        ds,
+        output_dir,
+        structure=structure,
+        metadata=metadata,
+        latex=latex,
     )
     if CREATE_CFF:
         write_cff()
@@ -91,8 +101,13 @@ def build(source, targets, cldf, output_dir):
 
 
 @main.command(cls=BuildCommand)
+@click.option(
+    "--targets", multiple=True, default=PREVIEW, help="List of target output formats."
+)
 @click.option("--refresh", default=True, help="Re-render preview on file change.")
-def preview(source, targets, cldf, output_dir, refresh):
+def preview( # pylint: disable=too-many-arguments
+    source, targets, cldf, output_dir, refresh, latex  
+): 
     """Create a live preview using a lightweight, human-readable output format"""
     source = Path(source)
     output_dir = Path(output_dir)
@@ -107,6 +122,7 @@ def preview(source, targets, cldf, output_dir, refresh):
         output_dir=output_dir,
         structure=structure,
         metadata=metadata,
+        latex=latex,
     )
 
 

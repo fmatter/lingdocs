@@ -351,15 +351,19 @@ def _load_content(structure, source_dir=CONTENT_FOLDER):
     return contents, parts
 
 
-def run_preview(refresh=True, **kwargs):
+def run_preview(refresh=True, latex=False, **kwargs):
     log.info("Rendering preview")
     watchfiles = [str(x) for x in kwargs["source_dir"].iterdir()]
     if refresh:
+        wkwargs = kwargs.copy()
+        wkwargs.update({"latex": latex})
         reloader = hupper.start_reloader(
-            "pylingdocs.output.run_preview", worker_kwargs=kwargs
+            "pylingdocs.output.run_preview", worker_kwargs=wkwargs
         )
         reloader.watch_files(watchfiles)
     create_output(**kwargs)
+    if latex is True:
+        compile_latex()
 
 
 def clean_output(output_dir):
@@ -368,7 +372,7 @@ def clean_output(output_dir):
 
 
 def create_output(
-    source_dir, formats, dataset, output_dir, structure, metadata=None
+    source_dir, formats, dataset, output_dir, structure, metadata=None, latex=False
 ):  # pylint: disable=too-many-arguments
     """Run different builders.
 
@@ -421,3 +425,5 @@ def create_output(
                 f.write(preprocessed)
         else:
             pass
+    if latex:
+        compile_latex()

@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     * Cognateset
 * new templates:
     * LaTeX `handout`
+* `--latex` option for the `build` and `preview` commands
 
 ### Removed
 * various bugs
@@ -32,5 +33,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[Unreleased]: https://github.com/fmatter/pylingdocs/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/fmatter/pylingdocs/compare/v0.0.1...HEAD
 [0.0.1]: https://github.com/fmatter/pylingdocs/releases/tag/v0.0.1
