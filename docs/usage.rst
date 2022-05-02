@@ -13,7 +13,7 @@ Projects
 ------------------------
 A project minimally consists of a folder containing markdown files, a YAML file describing how they should be combined, and a database containing the linguistic data.
 You can create a new project by using ``pylingdocs new`` in the directory where you want your project folder to be created.
-For the moment, a database can only consist of :doc:`a CLDF dataset <data_formats>`, which is :doc:`by default <config>` assumed to be retrievable under ``cldf/metadata.json``.
+For the moment, a database can only consist of :doc:`a CLDF dataset <data_formats>`.
 
 Multiple files
 ^^^^^^^^^^^^^^^^
@@ -39,7 +39,7 @@ The order of these files is described in a `YAML <https://yaml.org/>`_ file, def
 This would assume a file structure with 5 files, identified by ``intro``, ``verbs``, ``results``, ``comparison``, and ``possession``.
 When using Sublime Text or some other editor that can open multiple text files but doesn't know how to sort them, you can use ``pylingdocs update-structure`` to rename your files.
 For this, the format ``<XXXX> <ID>.md`` is used, where ``XXXX`` is a number causing the files to be sorted correctly.
-The above YAML file would result in this::
+The above YAML file would result in this list of files::
   1000 intro.md
   2000 verbs.md
   3000 results.md
