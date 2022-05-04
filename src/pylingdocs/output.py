@@ -40,7 +40,10 @@ class OutputFormat:
     name = "boilerplate"
     file_ext = "txt"
     single_output = True
-    doc_elements = {"ref": "(crossref placeholder)", "label": "(label placeholder)"}
+    doc_elements = {
+        "ref": lambda url: f"(ref:{url})",
+        "label": lambda url: "(label:{url})",
+    }
 
     @classmethod
     def write_folder(cls, output_dir, content=None, parts=None, metadata=None):
@@ -100,7 +103,8 @@ class OutputFormat:
                 elif key == "psrc":
                     yield f"([{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str})"  # noqa: E501
             elif key in cls.doc_elements:
-                yield cls.doc_elements[key]
+                print(cls.name)
+                yield cls.doc_elements[key](url)
             else:
                 yield content[m.start() : m.end()]
         yield content[current:]
@@ -148,6 +152,8 @@ class HTML(OutputFormat):
     name = "html"
     file_ext = "html"
 
+    doc_elements = {"exref": lambda url: f'<a class="exref" exid="{url}"></a>'}
+
     @classmethod
     def table(cls, df, caption, label):
         return df.to_html(escape=False, index=False)
@@ -190,6 +196,7 @@ class CLLD(OutputFormat):
     @classmethod
     def reference_list(cls):
         return ""
+
 
 class Latex(OutputFormat):
     name = "latex"

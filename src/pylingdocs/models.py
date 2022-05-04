@@ -146,7 +146,7 @@ class Example(Entity):
     list_templates = {
         "plain": load_template("example", "plain_index"),
         "github": load_template("example", "plain_index"),
-        "html": load_template("example", "plain_index"),
+        "html": load_template("example", "html_index"),
         "latex": load_template("example", f"latex_index_{LATEX_EX_TEMPL}"),
     }
 
