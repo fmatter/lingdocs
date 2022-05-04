@@ -187,6 +187,9 @@ class CLLD(OutputFormat):
         del label  # unused
         return caption + ":\n\n" + df.to_markdown(index=False)
 
+    @classmethod
+    def reference_list(cls):
+        return ""
 
 class Latex(OutputFormat):
     name = "latex"
