@@ -1,0 +1,21 @@
+{% import 'html_util.md' as util %}
+{% if ids is defined %}
+    {% set ids = ids.split(",") %}
+    {% set gathered_examples = {} %}
+    {% for example in ctx %}
+        {% if example.id in ids %}
+            {% set _ = gathered_examples.update({example.id: example}) %}
+        {% endif %}
+    {% endfor %}
+```{=html}
+<ol class="example">
+    <li class="example">
+        <ol class="subexample" id ="{{ example_id or 'multipartexample' }}">
+            {% for exid, example in gathered_examples.items() %}
+                {{ util.example(example, class_="subexample") }}
+            {% endfor %}
+        </ol>
+    </li>
+</ol>
+```
+{% endif %}

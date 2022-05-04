@@ -1,0 +1,19 @@
+/*adapted from https://linguistics.stackexchange.com/a/534*/
+.interlinear {clear: both; text-align: left;}
+.intlin {float: left; margin: 0.25em; text-align: left;}
+.intlin .obj, .intlin .trans, .interlinear {display: block; margin: 2px 0;}
+.interlinear div.surf { font-style: italic; text-align: left;}
+.interlinear .freetrans { clear: both; }
+
+
+ol.example {
+  list-style-type: lower-alpha;
+}
+
+ol.subexample {
+  list-style-type: lower-alpha;
+}
+
+li.example::marker {
+    content: "(" attr(value) ") \a0"
+}
