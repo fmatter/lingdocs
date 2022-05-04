@@ -61,7 +61,7 @@ def _load_structure(structure_file=STRUCTURE_FILE):
         return yaml.load(open(structure_file, encoding="utf-8"), Loader=yaml.SafeLoader)
 
 
-def comma_and_list(entries, sep1=", ", sep2=" and "):
+def comma_and_list(entries, sep1=", ", sep2=", and "):
     output = entries[0]
     for entry in entries[1:-1]:
         output += sep1 + entry
