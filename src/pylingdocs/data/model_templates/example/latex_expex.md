@@ -6,8 +6,8 @@
 #}
 {% import 'util.md' as util %}
 ```{=latex}
-\ex<{{ example_id or ctx.id }}> {{ ctx.related('languageReference').name }}{{ util.references(ctx.references, with_internal_ref_link=with_internal_ref_link) }} \\
-\begingl
+\ex {{ ctx.related('languageReference').name }}{{ util.references(ctx.references, with_internal_ref_link=with_internal_ref_link) }} \\
+\label{% raw %}{{% endraw %}{{ example_id or ctx.id }}{% raw %}}{% endraw %}\begingl
 \glpreamble {{ sanitize_latex(ctx.cldf.primaryText) }} //
 {% if ctx.cldf.analyzedWord != [] %}
 {% set glosslist = [] %}

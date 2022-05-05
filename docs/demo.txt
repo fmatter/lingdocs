@@ -55,6 +55,8 @@ Glossed examples are called like any other entity, but are rendered as follows:
 
 [ex](ekiri-2,ekiri-3)
 
+Example references: [exref](ekiri-1), [exref](ekiri-3).
+
 ## Arguments
 Pass arguments to the visualizer:
 

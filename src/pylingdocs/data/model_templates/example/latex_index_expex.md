@@ -11,8 +11,8 @@
 \pex
 {% for example_id in ids %}
 {% set example = gathered_examples[example_id] %}
-\a<{{ example.id }}> {{ example.related('languageReference').name }}\\
-\begingl
+\a {{ example.related('languageReference').name }}\\
+\label{% raw %}{{% endraw %}{{ example.id }}{% raw %}}{% endraw %}\begingl
 \glpreamble {{ example.cldf.primaryText }} //
 {% if example.cldf.analyzedWord != [] %}
 {% set glosslist = [] %}

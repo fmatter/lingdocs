@@ -66,6 +66,6 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
         in latex_output
     )
     assert "texts: ``Ekïrï''" in latex_output
-    assert "<ekiri-1> Ikpeng" in latex_output
-    assert "ex<my_custom_id> Ikpeng" in latex_output
+    assert "ex Ikpeng" in latex_output
+    assert "label{my_custom_id}" in latex_output
     assert "morphemes: \\obj{-se}" in latex_output

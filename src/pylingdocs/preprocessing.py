@@ -6,8 +6,9 @@ import pandas as pd
 from cldfviz.text import render
 from clldutils import jsonlib
 from jinja2 import DictLoader
+from pylingdocs.config import DATA_DIR
 from pylingdocs.config import TABLE_DIR
-from pylingdocs.config import TABLE_MD, DATA_DIR
+from pylingdocs.config import TABLE_MD
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import get_md_pattern
@@ -51,12 +52,9 @@ for output_format, env_dict in list_templates.items():
         if model_output is not None:
             env_dict[model.cldf_table + "_index.md"] = model_output
 
-with open(
-        DATA_DIR / "model_templates" / f"html_util.md", "r", encoding="utf-8"
-    ) as f:
-        html_util = f.read()
+with open(DATA_DIR / "model_templates" / "html_util.md", "r", encoding="utf-8") as f:
+    html_util = f.read()
 
-templates["html"]
 templates["html"]["html_util.md"] = html_util
 
 for output_format, env_dict in templates.items():

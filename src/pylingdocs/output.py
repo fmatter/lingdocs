@@ -204,6 +204,7 @@ class Latex(OutputFormat):
     doc_elements = {
         "ref": lambda url: f"\\cref{{{url}}}",
         "label": lambda url: f"\\label{{{url}}}",
+        "exref": lambda url: f"\\exref{{{url}}}",
     }
 
     @classmethod
