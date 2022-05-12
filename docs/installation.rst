@@ -18,6 +18,6 @@ Installing dependencies
 
 Optional dependencies
 ------------------------
-* install `LaTeX <https://www.latex-project.org/>`_
+* install `LaTeX <https://www.latex-project.org/get/>`_
 * install `Sublime Text <https://www.sublimetext.com/>`_
     * install `the Sublime Text plugin <https://github.com/fmatter/pylingdocs-sublime/>`_
