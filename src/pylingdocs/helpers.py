@@ -85,8 +85,9 @@ def write_cff(citation_file=CITATION_FILE, metadata_file=METADATA_FILE):
         f.write(cff_output)
 
 
-def write_readme(metadata_file=METADATA_FILE):
+def write_readme(metadata_file=METADATA_FILE, release=False):
     md, bib = _sort_metadata(metadata_file)
+    print(md)
     author_string = []
     for author in md["authors"]:
         paren_string = []
@@ -106,7 +107,12 @@ def write_readme(metadata_file=METADATA_FILE):
     else:
         author_string = f"author: {author_string[0]}"
     citation = bib.to_string("bibtex")
-    readme_text = f"""# {md["title"]}
+    if not release:
+        readme_text = f"## Do not cite from this branch!"
+        if "url" in md:
+            readme_text += f"\nUse [the most recent citeable version]({md['url']}) instead."
+    else:
+        readme_text = f"""# {md["title"]}
 
 * {author_string}
 

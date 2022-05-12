@@ -57,6 +57,7 @@ def _extract_bib(md):
     )
     good_fields = [bibtex_rev.get(x, x) for x in good_fields] + ["url"]
     year = datetime.now().strftime("%Y")
+    date = datetime.now().strftime("%Y-%m-%d")
     author_string = []
     if "authors" in md:
         for author in md["authors"]:
@@ -81,6 +82,7 @@ def _extract_bib(md):
         "author": " and ".join(author_string),
         "year": year,
         "title": title_string,
+        "urldate": date
     }
     skip_fields = ["title"]
     for field, value in md.items():
@@ -99,8 +101,11 @@ def _extract_bib(md):
 
 def _sort_metadata(metadata_file=METADATA_FILE):
     md = _read_metadata_file(metadata_file)
-    if "url" not in md and "repository" in md:
-        md["url"] = md["repository"]
+    if "repository" in md:
+        if "version" in md:
+            md["url"] = md["repository"] + f"/tree/{md['version']}"
+        elif "url" not in md: 
+            md["url"] = md["repository"]
     md, bib = _extract_bib(md)
     md["message"] = "Created with [pylingdocs](https://github.com/fmatter/pylingdocs/)"
     md["date-released"] = datetime.now().strftime("%Y-%m-%d")

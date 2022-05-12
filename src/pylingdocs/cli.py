@@ -78,7 +78,10 @@ class BuildCommand(OutputCommand):
 @click.option(
     "--targets", multiple=True, default=BUILDERS, help="List of target output formats."
 )
-def build(source, targets, cldf, output_dir, latex):
+@click.option(
+    "--release", is_flag=True, default=False, help="Prepare for a citeable release"
+)
+def build(source, targets, cldf, output_dir, latex, release):
     """Create formatted output of pylingdocs project."""
     source = Path(source)
     output_dir = Path(output_dir)
@@ -97,7 +100,7 @@ def build(source, targets, cldf, output_dir, latex):
     if CREATE_CFF:
         write_cff()
     if CREATE_README:
-        write_readme()
+        write_readme(release=release)
 
 
 @main.command(cls=BuildCommand)
