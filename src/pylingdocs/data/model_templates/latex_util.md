@@ -4,5 +4,10 @@
 
 {% macro references(sources) -%}
 {% set bibkey, pages = split_ref(sources[0].__str__()) %}
-\parencite[{{pages}}]{%raw%}{{%endraw%}{{bibkey}}{%raw%}}{%endraw%}
+{% if pages %}
+{% set page_string = "[" + pages + "]" %}
+{% else %}
+{% set page_string = "" %}
+{% endif %}
+\parencite{{page_string}}{%raw%}{{%endraw%}{{bibkey}}{%raw%}}{%endraw%}
 {%- endmacro %}
