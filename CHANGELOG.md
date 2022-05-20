@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
+### Removed
+
+
+### Changed
+
+## [0.0.2] -- 2022-05-20
+
+### Added
 * generate data for the [Sublime Text plugin](https://github.com/fmatter/pylingdocs-sublime/) with `pylingdocs sublime`
 * create a new project with `pylingdocs new`
 * prettier plaintext example rendering
@@ -38,5 +47,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[Unreleased]: https://github.com/fmatter/pylingdocs/compare/v0.0.1...HEAD
+[Unreleased]: https://github.com/fmatter/pylingdocs/compare/0.0.2...HEAD
+[0.0.2]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.2
 [0.0.1]: https://github.com/fmatter/pylingdocs/releases/tag/v0.0.1
