@@ -17,7 +17,7 @@
 {% if ctx.cldf.analyzedWord != [] %}
 {% set glosslist = [] %}
 {% for w in ctx.cldf.gloss %}
-    {% set glosslist = glosslist.append(sanitize_latex(w)) %}
+    {% set glosslist = glosslist.append(decorate_gloss_string(sanitize_latex(w))) %}
 {% endfor %}
 \gla {{ " ".join(ctx.cldf.analyzedWord) }}//
 \glb {{ " ".join(glosslist) }}//

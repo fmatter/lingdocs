@@ -123,5 +123,106 @@ To cite the latest version:
         f.write(readme_text)
 
 
-def get_latex_glosses(gloss_string):
-    return gloss_string
+import re
+
+# These symbols could potentially be used to split up morphemes.
+# Some of them are standard, some not.
+glossing_delimiters = [
+    "-",
+    "–",
+    ".",
+    "=",
+    ":",
+    ";",
+    "*",
+    "~",
+    "<",
+    ">",
+    "[",
+    "]",
+    "(",
+    ")",
+    "/",
+    "\\",
+]
+
+
+def is_gloss_abbr_candidate(part, parts, j):
+    return (
+        part == part.upper()
+        and part not in glossing_delimiters
+        and part != "?"
+        and not (
+            len(part) == 1
+            and not re.match(r"\d", part)  # numbers
+            and (
+                (  # or are there more characters?
+                    len(parts) == j + 2
+                    and parts[j + 1] not in ["."]  # and is the next character a period?
+                )
+                or (
+                    len(parts) > j + 2
+                    and
+                    parts[j+2] in glossing_delimiters 
+                )
+            )
+        )
+    )
+
+
+# Splits a word up into morphemes and glossing_delimiters
+def split_word(word):
+    output = []
+    char_list = list(word)
+    for char in char_list:
+        if len(output) == 0 or (char in glossing_delimiters or output[-1] in glossing_delimiters):
+            output.append(char)
+        else:
+            output[-1] += char
+    return output
+
+
+def resolve_glossing_combination(input_string):
+    output = []
+    temp_text = ""
+    for i, char in enumerate(list(input_string)):
+        if re.match(r"[1-3]+", char):
+            if i < len(input_string) - 1 and input_string[i + 1] == "+":
+                temp_text += char
+            elif input_string[i - 1] == "+":
+                temp_text += char
+                output.append(temp_text)
+                temp_text = ""
+            else:
+                if temp_text != "":
+                    output.append(temp_text)
+                output.append(char)
+                temp_text = ""
+        else:
+            temp_text += char
+    if temp_text != "":
+        output.append(temp_text)
+    return output
+
+
+def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
+    words_list = input_string.split(" ")
+    for i, word in enumerate(words_list):
+        output = " "
+        # take proper nouns into account
+        if len(word) == 2 and word[0] == word[0].upper() and word[1] == ".":
+            output += word
+        else:
+            parts = split_word(word)
+            for j, part in enumerate(parts):
+                if is_gloss_abbr_candidate(part, parts, j):
+                    if part[0] == "G" and re.match(r"\d", part[1:]):
+                        output += decoration("g") + part[1:]
+                    else:
+                        for gloss in resolve_glossing_combination(part):
+                            output += decoration(gloss.lower())
+                else:
+                    output += part
+        words_list[i] = output[1:]
+    gloss_text_upcased = " ".join(words_list)
+    return gloss_text_upcased
