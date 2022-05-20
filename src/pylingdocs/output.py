@@ -103,7 +103,6 @@ class OutputFormat:
                 elif key == "psrc":
                     yield f"([{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str})"  # noqa: E501
             elif key in cls.doc_elements:
-                print(cls.name)
                 yield cls.doc_elements[key](url)
             else:
                 yield content[m.start() : m.end()]
@@ -125,7 +124,6 @@ class OutputFormat:
 
     @classmethod
     def reference_list(cls):
-        print("getting muh refs")
         return "# References \n[References](Source?cited_only#cldf:__all__)"
 
     @classmethod
