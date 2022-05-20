@@ -14,6 +14,7 @@ from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.helpers import sanitize_latex
 from pylingdocs.models import models
+from pylingdocs.output import split_ref
 
 
 log = logging.getLogger(__name__)
@@ -51,6 +52,11 @@ for output_format, env_dict in list_templates.items():
         model_output = model.representation(output_format, multiple=True)
         if model_output is not None:
             env_dict[model.cldf_table + "_index.md"] = model_output
+
+with open(DATA_DIR / "model_templates" / "latex_util.md", "r", encoding="utf-8") as f:
+    latex_util = f.read()
+
+templates["latex"]["latex_util.md"] = latex_util
 
 with open(DATA_DIR / "model_templates" / "html_util.md", "r", encoding="utf-8") as f:
     html_util = f.read()
@@ -100,9 +106,23 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
                 func_dict={
                     "comma_and_list": comma_and_list,
                     "sanitize_latex": sanitize_latex,
+                    "split_ref": split_ref
                 },
             )
-            if "Table#cldf" in preprocessed:
+            preprocessed = render(
+                    doc=preprocessed,
+                    cldf_dict=ds,
+                    loader=envs[output_format],
+                    func_dict={"comma_and_list": comma_and_list},
+                )
+            if "#cldf" in preprocessed:
+                preprocessed = render(
+                    doc=preprocessed,
+                    cldf_dict=ds,
+                    loader=envs[output_format],
+                    func_dict={"comma_and_list": comma_and_list},
+                )
+            if "#cldf" in preprocessed:
                 preprocessed = render(
                     doc=preprocessed,
                     cldf_dict=ds,
