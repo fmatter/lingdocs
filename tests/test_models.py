@@ -1,10 +1,10 @@
 from pylingdocs.models import Language
-from pylingdocs.models import Morph
+from pylingdocs.models import Text
 
 
 def test_model_cldf():
     assert "url" in Language.cldf_metadata()
-    assert "url" in Morph.cldf_metadata()
+    assert "url" in Text.cldf_metadata()
 
 
 def test_model_vis():
