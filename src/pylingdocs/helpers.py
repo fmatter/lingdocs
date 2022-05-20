@@ -11,8 +11,8 @@ from pylingdocs.config import DATA_DIR
 from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.metadata import ORCID_STR
-from pylingdocs.metadata import _load_metadata
 from pylingdocs.metadata import _load_bib
+from pylingdocs.metadata import _load_metadata
 
 
 log = logging.getLogger(__name__)

@@ -13,8 +13,8 @@ from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.helpers import sanitize_latex
-from pylingdocs.models import models
 from pylingdocs.helpers import split_ref
+from pylingdocs.models import models
 
 
 log = logging.getLogger(__name__)
