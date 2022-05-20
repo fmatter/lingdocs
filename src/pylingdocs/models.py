@@ -22,19 +22,24 @@ class Entity:
     Refer to this class for documentation of the methods."""
 
     name = "ChangeMe"
-    """The name of the model."""
+    """The model's name."""
     cldf_table = "ChangeMeTable"
-    """The CLDF table corresponding to the model. Note that depending on how you set up your
-    CLDF dataset, this can also be something like lexemes.csv"""
+    """The CLDF table corresponding to the model."""
     shortcut = "chgme"
-    """The shortcut which will be used in running text -- in this example,
-    ``[chgme](id)``."""
+    """The shortcut which will be used when writing: ``[<shortcut>](<id>)``."""
     fallback = "plain"
-    """The fallback for the builder, if there no builder-specific template is defined
-    for the model."""
+    """The fallback for the builder in case no builder-specific template is defined
+    for a given model."""
     templates = {"plain": "{{ ctx.name }}"}
+    """A dictionary of long jinja templates (not shown here)
+
+       :meta hide-value:"""
     list_templates = {"plain": "{% for x in ctx %} {{ x['Form'] }}{% endfor %}"}
+    """A dictionary of long jinja templates (not shown here)
+
+       :meta hide-value:"""
     cnt = 0
+    """A counter, useful for numbered entities like examples"""
 
     @classmethod
     def _compile_cldfviz_args(cls, args, kwargs):
@@ -57,7 +62,7 @@ class Entity:
         return f"[Unknown visualizer]({url})"
 
     @classmethod
-    def representation(cls, output_format="plain", multiple=False):
+    def representation(cls, output_format: str="plain", multiple=False) -> str:
         """Gives the representation of this model for a given output format.
 
         Args:
