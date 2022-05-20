@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+* references in LaTeX IGT examples
 
 ### Removed
 
 
 ### Changed
+* prettier LaTeX layouting
 
 ## [0.0.2] -- 2022-05-20
 
