@@ -7,7 +7,6 @@ from pylingdocs.cldf import generate_autocomplete as autogen
 from pylingdocs.config import BUILDERS
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
-from pylingdocs.config import CREATE_CFF
 from pylingdocs.config import CREATE_README
 from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import OUTPUT_DIR
@@ -17,7 +16,6 @@ from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_cldf_dataset
 from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import new as create_new
-from pylingdocs.helpers import write_cff
 from pylingdocs.helpers import write_readme
 from pylingdocs.metadata import _read_metadata_file
 from pylingdocs.output import clean_output
@@ -81,7 +79,7 @@ class BuildCommand(OutputCommand):
 @click.option(
     "--release", is_flag=True, default=False, help="Prepare for a citeable release"
 )
-def build(source, targets, cldf, output_dir, latex, release):
+def build(source, targets, cldf, output_dir, latex, release):  # pylint: disable=too-many-arguments
     """Create formatted output of pylingdocs project."""
     source = Path(source)
     output_dir = Path(output_dir)
@@ -97,8 +95,6 @@ def build(source, targets, cldf, output_dir, latex, release):
         metadata=metadata,
         latex=latex,
     )
-    if CREATE_CFF:
-        write_cff()
     if CREATE_README:
         write_readme(release=release)
 

@@ -55,9 +55,7 @@ BENCH = get_path("bench")
 
 BUILDERS = get_config("OUTPUT", "builders").split(" ")
 PREVIEW = get_config("OUTPUT", "preview").split(" ")
-CITATION_FILE = "./CITATION.cff"
 
-CREATE_CFF = get_config("OUTPUT", "citation_cff", as_boolean=True)
 CREATE_README = get_config("OUTPUT", "readme", as_boolean=True)
 
 METADATA_FILE = Path("./metadata.yaml")

@@ -62,7 +62,7 @@ class Entity:
         return f"[Unknown visualizer]({url})"
 
     @classmethod
-    def representation(cls, output_format: str="plain", multiple=False) -> str:
+    def representation(cls, output_format: str = "plain", multiple=False) -> str:
         """Gives the representation of this model for a given output format.
 
         Args:

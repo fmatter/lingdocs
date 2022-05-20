@@ -6,14 +6,13 @@ import yaml
 from cookiecutter.main import cookiecutter
 from pycldf import Dataset
 from pylingdocs import __version__
-from pylingdocs.config import CITATION_FILE
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.metadata import ORCID_STR
 from pylingdocs.metadata import _load_metadata
-from pylingdocs.metadata import _sort_metadata
+from pylingdocs.metadata import _load_bib
 
 
 log = logging.getLogger(__name__)
@@ -78,16 +77,9 @@ def get_md_pattern(m):
     return m.end(), m.group("label"), m.group("url")
 
 
-def write_cff(citation_file=CITATION_FILE, metadata_file=METADATA_FILE):
-    cff_output, bib = _load_metadata(citation_file, metadata_file)
-    del bib  # unused
-    with open(CITATION_FILE, "w", encoding="utf-8") as f:
-        f.write(cff_output)
-
-
 def write_readme(metadata_file=METADATA_FILE, release=False):
-    md, bib = _sort_metadata(metadata_file)
-    print(md)
+    bib = _load_bib(metadata_file)
+    md = _load_metadata(metadata_file)
     author_string = []
     for author in md["authors"]:
         paren_string = []
@@ -108,9 +100,11 @@ def write_readme(metadata_file=METADATA_FILE, release=False):
         author_string = f"author: {author_string[0]}"
     citation = bib.to_string("bibtex")
     if not release:
-        readme_text = f"## Do not cite from this branch!"
+        readme_text = "## Do not cite from this branch!"
         if "url" in md:
-            readme_text += f"\nUse [the most recent citeable version]({md['url']}) instead."
+            readme_text += (
+                f"\nUse [the most recent citeable version]({md['url']}) instead."
+            )
     else:
         readme_text = f"""# {md["title"]}
 
@@ -122,7 +116,7 @@ Created using [pylingdocs](https://github.com/fmatter/pylingdocs/) v{__version__
 The available output formats are in [output](./output); if you are viewing this readme
 in a browser, you probably want the [github formatted output](./output/github).
 
-To refer to the content of unreleased versions:
+To cite the latest version:
 
 ```
 {citation}```"""

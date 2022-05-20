@@ -1,17 +1,12 @@
 """Various helpers"""
 import json
 import logging
-import sys
 from datetime import datetime
 from pathlib import Path
 import yaml
-from cffconvert.root import get_package_root
-from jsonschema import validate as json_validate
-from jsonschema.exceptions import ValidationError
 from pybtex.database import BibliographyData
 from pybtex.database import Entry
 from slugify import slugify
-from pylingdocs.config import CITATION_FILE
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import METADATA_FILE
 
@@ -39,11 +34,11 @@ else:
 
 bibtex_repl = {"location": "address"}
 bibtex_rev = {y: x for x, y in bibtex_repl.items()}
-cff_fields = ["title", "url"]
 remove_fields = []
 
 
-def _extract_bib(md):
+def _load_bib(metadata_file=METADATA_FILE):
+    md = _read_metadata_file(metadata_file)
     entry_type = md.get("type", "article")
     with open(DATA_DIR / "bibtex_schemes.json", "r", encoding="utf-8") as f:
         bibschemes = json.loads(f.read())
@@ -72,69 +67,41 @@ def _extract_bib(md):
         bibkey = "anonymous" + year + slugify(md.pop("id", "new-pylingdocs-project"))
         md["authors"] = [{"family-names": "Anonymous", "given-names": "A."}]
 
-    title_string = md.get("title", "Put your title here.")
-    md["title"] = title_string
+    md["title"] = md.get("title", "Put your title here.")
     if "version" in md:
-        title_string += f' (version {md["version"]})'
+        md["title"] += f' (version {md["version"]})'
     else:
         md["version"] = "0.0.0"
+    if "repository" in md:
+        if "version" in md:
+            md["url"] = md["repository"] + f"/tree/{md['version']}"
+        elif "url" not in md:
+            md["url"] = md["repository"]
     bibtex_fields = {
         "author": " and ".join(author_string),
         "year": year,
-        "title": title_string,
-        "urldate": date
+        "urldate": date,
     }
-    skip_fields = ["title"]
     for field, value in md.items():
-        if field in good_fields and field not in skip_fields:
-            if field not in cff_fields:
-                remove_fields.append(field)
-            else:
-                bibtex_fields[field] = value
+        if field in good_fields:
+            bibtex_fields[field] = value
     for field in remove_fields:
         bibtex_fields[field] = md.pop(field)
     bib_data = BibliographyData(
         {bibkey: Entry(entry_type, list(bibtex_fields.items()))}
     )
-    return md, bib_data
+    return bib_data
 
 
-def _sort_metadata(metadata_file=METADATA_FILE):
+def _load_metadata(metadata_file=METADATA_FILE):
     md = _read_metadata_file(metadata_file)
     if "repository" in md:
         if "version" in md:
             md["url"] = md["repository"] + f"/tree/{md['version']}"
-        elif "url" not in md: 
+        elif "url" not in md:
             md["url"] = md["repository"]
-    md, bib = _extract_bib(md)
-    md["message"] = "Created with [pylingdocs](https://github.com/fmatter/pylingdocs/)"
-    md["date-released"] = datetime.now().strftime("%Y-%m-%d")
-    for del_field in []:
-        md.pop(del_field, None)
-    md["type"] = "dataset"
-    md["cff-version"] = "1.2.0"
     if "authors" in md:
         for author in md["authors"]:
             if "orcid" in author and "http" not in author["orcid"]:
                 author["orcid"] = ORCID_STR + author["orcid"]
-    return md, bib
-
-
-def _validate(metadata, metadata_file, citation_file):
-    schema = Path(get_package_root(), "schemas", "1.2.0", "schema.json")
-    with open(schema, "r", encoding="utf-8") as f:
-        schema = json.loads(f.read())
-    try:
-        json_validate(instance=metadata, schema=schema)
-    except ValidationError as e:
-        log.error(
-            f"""The following error was found when converting {metadata_file} to {citation_file}:
-{e.message}"""
-        )
-        sys.exit(1)
-
-
-def _load_metadata(citation_file=CITATION_FILE, metadata_file=METADATA_FILE):
-    metadata, bib = _sort_metadata(metadata_file)
-    _validate(metadata, metadata_file, citation_file)
-    return yaml.dump(metadata, sort_keys=False), bib
+    return md

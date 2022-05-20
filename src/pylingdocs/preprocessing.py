@@ -14,7 +14,7 @@ from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.helpers import sanitize_latex
 from pylingdocs.models import models
-from pylingdocs.output import split_ref
+from pylingdocs.helpers import split_ref
 
 
 log = logging.getLogger(__name__)
@@ -106,15 +106,15 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
                 func_dict={
                     "comma_and_list": comma_and_list,
                     "sanitize_latex": sanitize_latex,
-                    "split_ref": split_ref
+                    "split_ref": split_ref,
                 },
             )
             preprocessed = render(
-                    doc=preprocessed,
-                    cldf_dict=ds,
-                    loader=envs[output_format],
-                    func_dict={"comma_and_list": comma_and_list},
-                )
+                doc=preprocessed,
+                cldf_dict=ds,
+                loader=envs[output_format],
+                func_dict={"comma_and_list": comma_and_list},
+            )
             if "#cldf" in preprocessed:
                 preprocessed = render(
                     doc=preprocessed,

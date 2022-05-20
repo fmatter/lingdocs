@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 * various bugs
+* CITATION.CFF
 
 ### Changed
 * if the `structure_file` and `table_md` paths are only files, they are assumed to be in the content and tables folders, respectively 
