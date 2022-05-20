@@ -2,6 +2,9 @@
 
 Create data-rich linguistic documents.
 
+
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6567304.svg)](https://doi.org/10.5281/zenodo.6567304)
 ![License](https://img.shields.io/github/license/fmatter/pylingdocs)
 [![Documentation Status](https://readthedocs.org/projects/pylingdocs/badge/?version=latest)](https://pylingdocs.readthedocs.io/en/latest/?badge=latest)
 [![Tests](https://img.shields.io/github/workflow/status/fmatter/pylingdocs/tests?label=tests)](https://github.com/fmatter/pylingdocs/actions/workflows/tests.yml)
