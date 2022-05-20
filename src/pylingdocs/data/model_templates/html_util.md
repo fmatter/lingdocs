@@ -12,7 +12,11 @@
         </div>
       {% endfor %}
     {% endif %}
-    <div class="freetrans">‘{{ ctx.cldf.translatedText }}’</div>
+    <div class="freetrans">‘{{ ctx.cldf.translatedText }}’
+```
+{{bib_str}}
+```{=html}
+        </div>
   </div>
 </li>
 {%- endmacro %}

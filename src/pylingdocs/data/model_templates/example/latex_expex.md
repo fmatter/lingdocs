@@ -4,9 +4,9 @@
   `with_internal_ref_link`
   `example_id`
 #}
-{% import 'util.md' as util %}
+{% import 'latex_util.md' as util %}
 ```{=latex}
-\ex {{ ctx.related('languageReference').name }}{{ util.references(ctx.references, with_internal_ref_link=with_internal_ref_link) }} \\
+\ex {{ ctx.related('languageReference').name }}{{ util.references(ctx.references) }} \\
 \label{% raw %}{{% endraw %}{{ example_id or ctx.id }}{% raw %}}{% endraw %}\begingl
 \glpreamble {{ sanitize_latex(ctx.cldf.primaryText) }} //
 {% if ctx.cldf.analyzedWord != [] %}
