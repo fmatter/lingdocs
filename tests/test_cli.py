@@ -49,7 +49,7 @@ def test_cli_build(caplog, tmp_path, md_path, data, monkeypatch):
 
     # add tables
     shutil.copytree(data / "tables", tmp_path / "tables")
-    result = runner.invoke(
+    runner.invoke(
         build, args=["--cldf", md_path, "--source", data / "content", "--release"]
     )
 

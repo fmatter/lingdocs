@@ -79,7 +79,9 @@ class BuildCommand(OutputCommand):
 @click.option(
     "--release", is_flag=True, default=False, help="Prepare for a citeable release"
 )
-def build(source, targets, cldf, output_dir, latex, release):  # pylint: disable=too-many-arguments
+def build(
+    source, targets, cldf, output_dir, latex, release
+):  # pylint: disable=too-many-arguments
     """Create formatted output of pylingdocs project."""
     source = Path(source)
     output_dir = Path(output_dir)
