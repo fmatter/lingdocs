@@ -27,7 +27,7 @@ def _get_relative_file(folder, file):
 
 
 def sanitize_latex(unsafe_str):
-    for o, r in (("\\", "\\textbackslash"), ("_", "\\_"), ("%", "\\%"), ("#", "\\#")):
+    for o, r in (("\\", "\\textbackslash{}"), ("_", "\\_"), ("%", "\\%"), ("#", "\\#"), ("&", "\\&")):
         unsafe_str = unsafe_str.replace(o, r)
     return unsafe_str
 
@@ -39,7 +39,6 @@ def split_ref(s):
     else:
         bibkey, pages = s, None
     return bibkey, pages
-
 
 def _load_cldf_dataset(cldf_path=CLDF_MD):
     try:

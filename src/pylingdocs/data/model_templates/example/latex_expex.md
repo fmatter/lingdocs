@@ -5,8 +5,13 @@
   `example_id`
 #}
 {% import 'latex_util.md' as util %}
+{% if ctx.references %}
+{% set ref_string = " " + util.references(ctx.references) %}
+{% else %}
+{% set ref_string = "" %}
+{% endif %}
 ```{=latex}
-\ex {{ ctx.related('languageReference').name }}{{ util.references(ctx.references) }} \\
+\ex {{ ctx.related('languageReference').name }}{{ref_string}} \\
 \label{% raw %}{{% endraw %}{{ example_id or ctx.id }}{% raw %}}{% endraw %}\begingl
 \glpreamble {{ sanitize_latex(ctx.cldf.primaryText) }} //
 {% if ctx.cldf.analyzedWord != [] %}
