@@ -31,6 +31,13 @@
                     "base": "string",
                     "format": "\\d+(:\\d+)?"
                 }
+            },
+            {
+                "name": "Parameter_ID",
+                "required": false,
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#parameterReference",
+                "dc:description": "A reference to the meaning denoted by the form",
+                "datatype": "string"
             }
         ]
     }
