@@ -22,10 +22,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * new templates:
     * LaTeX `handout`
 * `--latex` option for the `build` and `preview` commands
+* `--release` option for better citability
+* better HTML
+* [expex-acro](https://github.com/fmatter/expex-acro/) in LaTeX templates
 
 ### Removed
 * various bugs
 * CITATION.CFF
+* some CLDF metadata (now in [clld-morphology-plugin](https://github.com/fmatter/clld-morphology-plugin))
 
 ### Changed
 * if the `structure_file` and `table_md` paths are only files, they are assumed to be in the content and tables folders, respectively 
