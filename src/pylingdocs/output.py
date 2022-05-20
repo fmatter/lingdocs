@@ -42,7 +42,7 @@ class OutputFormat:
     single_output = True
     doc_elements = {
         "ref": lambda url: f"(ref:{url})",
-        "label": lambda url: "(label:{url})",
+        "label": lambda url: f"(label:{url})",
     }
 
     @classmethod
@@ -125,6 +125,7 @@ class OutputFormat:
 
     @classmethod
     def reference_list(cls):
+        print("getting muh refs")
         return "# References \n[References](Source?cited_only#cldf:__all__)"
 
     @classmethod
@@ -187,6 +188,11 @@ class CLLD(OutputFormat):
     name = "clld"
     file_ext = "md"
     single_output = False
+
+    doc_elements = {
+        "ref": lambda url: f"<a href='#{url}'>crossref</a>",
+        "label": lambda url: f"<a id='{url}'></a>",
+    }
 
     @classmethod
     def table(cls, df, caption, label):
@@ -421,6 +427,9 @@ def create_output(
         content = "\n\n".join(contents.values())
         preprocessed = preprocess(content)
         preprocessed = builder.preprocess_commands(preprocessed)
+        preprocessed = render_markdown(
+            preprocessed, dataset, output_format=output_format
+        )
         preprocessed += "\n\n" + builder.reference_list()
         preprocessed = render_markdown(
             preprocessed, dataset, output_format=output_format
