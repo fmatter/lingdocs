@@ -128,3 +128,7 @@ To refer to the content of unreleased versions:
 {citation}```"""
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(readme_text)
+
+
+def get_latex_glosses(gloss_string):
+    return gloss_string
