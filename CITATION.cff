@@ -8,7 +8,7 @@ authors:
     given-names: Florian
     orcid: "https://orcid.org/0000-0002-2545-5154"
 date-released: 2022-05-20
-version: "0.0.1"
+version: "0.0.2"
 repository-code: "https://github.com/fmatter/pylingdocs"
 keywords:
   - digital linguistics
