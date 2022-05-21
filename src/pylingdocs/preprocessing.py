@@ -13,6 +13,7 @@ from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import get_md_pattern
+from pylingdocs.helpers import html_gloss
 from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
 from pylingdocs.models import models
@@ -109,6 +110,7 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
                     "sanitize_latex": sanitize_latex,
                     "split_ref": split_ref,
                     "decorate_gloss_string": decorate_gloss_string,
+                    "html_gloss": html_gloss,
                 },
             )
             preprocessed = render(

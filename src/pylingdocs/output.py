@@ -170,7 +170,23 @@ class HTML(OutputFormat):
     name = "html"
     file_ext = "html"
 
-    doc_elements = {"exref": lambda url: f'<a class="exref" exid="{url}"></a>'}
+    doc_elements = {
+        "exref": lambda url: f'<a class="exref" exid="{url}"></a>',
+        "gl": lambda url: f'<span class="gloss">{url} <span class="tooltiptext gloss-{url}" ></span></span>',
+    }
+
+    @classmethod
+    def register_glossing_abbrevs(cls, abbrev_dict):
+        return f"""<script>var abbrev_dict={abbrev_dict}; for (var key in abbrev_dict){{
+var targets = document.getElementsByClassName('gloss-'+key)
+for (var i = 0; i < targets.length; i++) {{
+    targets[i].innerHTML = abbrev_dict[key];
+}}
+}};</script>"""
+
+    @classmethod
+    def glossing_abbrevs_list(cls, arg_string):
+        return """<dl id="glossing_abbrevs"></dl>"""
 
     @classmethod
     def table(cls, df, caption, label):

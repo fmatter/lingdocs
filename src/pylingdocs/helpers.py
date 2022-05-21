@@ -19,6 +19,12 @@ from pylingdocs.metadata import _load_metadata
 log = logging.getLogger(__name__)
 
 
+def html_gloss(s):
+    return (
+        f'<span class="gloss">{s} <span class="tooltiptext gloss-{s}" ></span></span>'
+    )
+
+
 def _get_relative_file(folder, file):
     folder = Path(folder)
     file = Path(file)

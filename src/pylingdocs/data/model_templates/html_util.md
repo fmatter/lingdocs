@@ -15,7 +15,7 @@
       {% for obj in ctx.cldf.analyzedWord %}
         <div class="intlin">
           <span class="obj">{{ obj }}</span>
-          <span class="trans">{{ ctx.cldf.gloss[loop.index-1] }}</span>
+          <span class="trans">{{ decorate_gloss_string(ctx.cldf.gloss[loop.index-1], decoration=html_gloss) }}</span>
         </div>
       {% endfor %}
     {% endif %}

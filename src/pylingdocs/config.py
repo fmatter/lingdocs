@@ -62,7 +62,7 @@ if "cldf:" in gloss_file_address:
     GLOSS_ABBREVS = {}
 elif Path(gloss_file_address).is_file():
     df = pd.read_csv(gloss_file_address)
-    GLOSS_ABBREVS = dict(zip(df["ID"], df["Description"]))
+    GLOSS_ABBREVS = dict(zip(df["ID"].str.lower(), df["Description"]))
 else:
     GLOSS_ABBREVS = {}
 
