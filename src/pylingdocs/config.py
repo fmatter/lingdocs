@@ -1,6 +1,7 @@
 import logging
 from configparser import ConfigParser
 from pathlib import Path
+import pandas as pd
 
 
 log = logging.getLogger(__name__)
@@ -55,6 +56,15 @@ BENCH = get_path("bench")
 
 BUILDERS = get_config("OUTPUT", "builders").split(" ")
 PREVIEW = get_config("OUTPUT", "preview").split(" ")
+gloss_file_address = get_config("misc", "glossing_abbrevs")
+
+if "cldf:" in gloss_file_address:
+    GLOSS_ABBREVS = {}
+elif Path(gloss_file_address).is_file():
+    df = pd.read_csv(gloss_file_address)
+    GLOSS_ABBREVS = dict(zip(df["ID"], df["Description"]))
+else:
+    GLOSS_ABBREVS = {}
 
 CREATE_README = get_config("OUTPUT", "readme", as_boolean=True)
 

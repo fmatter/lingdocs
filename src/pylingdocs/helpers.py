@@ -1,5 +1,6 @@
 """Various helpers"""
 import logging
+import re
 import sys
 from pathlib import Path
 import yaml
@@ -27,7 +28,15 @@ def _get_relative_file(folder, file):
 
 
 def sanitize_latex(unsafe_str):
-    for o, r in (("\\", "\\textbackslash{}"), ("_", "\\_"), ("%", "\\%"), ("#", "\\#"), ("&", "\\&")):
+    for o, r in (
+        ("\\\\", "\\textbackslash{}\\"),
+        ("\\ ", "\\textbackslash{} "),
+        ("_", "\\_"),
+        ("%", "\\%"),
+        ("#", "\\#"),
+        ("&", "\\&"),
+        ("~", "\\textasciitilde{}"),
+    ):
         unsafe_str = unsafe_str.replace(o, r)
     return unsafe_str
 
@@ -39,6 +48,7 @@ def split_ref(s):
     else:
         bibkey, pages = s, None
     return bibkey, pages
+
 
 def _load_cldf_dataset(cldf_path=CLDF_MD):
     try:
@@ -123,8 +133,6 @@ To cite the latest version:
         f.write(readme_text)
 
 
-import re
-
 # These symbols could potentially be used to split up morphemes.
 # Some of them are standard, some not.
 glossing_delimiters = [
@@ -132,54 +140,50 @@ glossing_delimiters = [
     "–",
     ".",
     "=",
-    ":",
     ";",
+    ":",
     "*",
     "~",
     "<",
     ">",
-    "[",
-    "]",
+    r"\[",
+    r"\]",
     "(",
     ")",
     "/",
-    "\\",
+    r"\\",
 ]
 
 
 def is_gloss_abbr_candidate(part, parts, j):
     return (
-        part == part.upper()
-        and part not in glossing_delimiters
-        and part != "?"
+        part == part.upper()  # needs to be uppercase
+        and part not in glossing_delimiters + ["[", "]", "\\"]  # and not a delimiter
+        and part != "?"  # question marks may be used for unknown or ambiguous analyses
         and not (
-            len(part) == 1
-            and not re.match(r"\d", part)  # numbers
-            and (
-                (  # or are there more characters?
-                    len(parts) == j + 2
-                    and parts[j + 1] not in ["."]  # and is the next character a period?
-                )
-                or (
-                    len(parts) > j + 2
-                    and
-                    parts[j+2] in glossing_delimiters 
-                )
-            )
+            len(parts) > j + 2
+            and parts[j + 2] in glossing_delimiters
+            and parts[j + 1] not in [">", "-"]
         )
     )
 
 
 # Splits a word up into morphemes and glossing_delimiters
 def split_word(word):
-    output = []
-    char_list = list(word)
-    for char in char_list:
-        if len(output) == 0 or (char in glossing_delimiters or output[-1] in glossing_delimiters):
-            output.append(char)
-        else:
-            output[-1] += char
-    return output
+    parts = re.split(r"([" + "|".join(glossing_delimiters) + "])", word)
+    parts = [x for x in parts if x != ""]
+    return parts
+    # old code
+    # output = []
+    # char_list = list(word)
+    # for char in char_list:
+    #     if len(output) == 0 or (
+    #         char in glossing_delimiters or output[-1] in glossing_delimiters
+    #     ):
+    #         output.append(char)
+    #     else:
+    #         output[-1] += char
+    # return output
 
 
 def resolve_glossing_combination(input_string):
@@ -207,7 +211,7 @@ def resolve_glossing_combination(input_string):
 
 def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
     words_list = input_string.split(" ")
-    for i, word in enumerate(words_list):
+    for i, word in enumerate(words_list):  # pylint: disable=too-many-nested-blocks
         output = " "
         # take proper nouns into account
         if len(word) == 2 and word[0] == word[0].upper() and word[1] == ".":
@@ -216,8 +220,9 @@ def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
             parts = split_word(word)
             for j, part in enumerate(parts):
                 if is_gloss_abbr_candidate(part, parts, j):
+                    # take care of numbered genders
                     if part[0] == "G" and re.match(r"\d", part[1:]):
-                        output += decoration("g") + part[1:]
+                        output += f"\\gl{{{part.lower()}}}"
                     else:
                         for gloss in resolve_glossing_combination(part):
                             output += decoration(gloss.lower())

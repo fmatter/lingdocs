@@ -15,6 +15,7 @@ from jinja2.exceptions import TemplateNotFound
 from pylingdocs.config import BENCH
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
+from pylingdocs.config import GLOSS_ABBREVS
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import STRUCTURE_FILE
@@ -43,15 +44,21 @@ class OutputFormat:
     doc_elements = {
         "ref": lambda url: f"(ref:{url})",
         "label": lambda url: f"(label:{url})",
+        "gl": lambda url: url.upper(),
     }
 
     @classmethod
-    def write_folder(cls, output_dir, content=None, parts=None, metadata=None):
+    def write_folder(
+        cls, output_dir, content=None, parts=None, metadata=None, abbrev_dict=None
+    ):  # pylint: disable=too-many-arguments
         # log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
+        if not abbrev_dict:
+            abbrev_dict = {}
         extra = {
             "name": cls.name,
             "parts": {"list": parts},
             "project_title": PROJECT_TITLE,
+            "glossing_abbrevs": cls.register_glossing_abbrevs(abbrev_dict),
         }
         if "authors" in metadata:
             extra["author"] = cls.author_list(metadata["authors"])
@@ -69,6 +76,16 @@ class OutputFormat:
             overwrite_if_exists=True,
             no_input=True,
         )
+
+    @classmethod
+    def register_glossing_abbrevs(cls, abbrev_dict):
+        del abbrev_dict
+        return ""
+
+    @classmethod
+    def glossing_abbrevs_list(cls, arg_string):
+        del arg_string
+        return ""
 
     @classmethod
     def write_part(cls, content, path):  # pragma: no cover (not used ATM)
@@ -104,6 +121,8 @@ class OutputFormat:
                     yield f"([{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str})"  # noqa: E501
             elif key in cls.doc_elements:
                 yield cls.doc_elements[key](url)
+            elif key == "abbrev_list":
+                yield cls.glossing_abbrevs_list(url)
             else:
                 yield content[m.start() : m.end()]
         yield content[current:]
@@ -209,6 +228,7 @@ class Latex(OutputFormat):
         "ref": lambda url: f"\\cref{{{url}}}",
         "label": lambda url: f"\\label{{{url}}}",
         "exref": lambda url: f"\\exref{{{url}}}",
+        "gl": lambda url: f"\\gl{{{url.lower()}}}",
     }
 
     @classmethod
@@ -220,6 +240,19 @@ class Latex(OutputFormat):
 {df.to_latex(escape=False, index=False)}
 \\end{{table}}
 """
+
+    @classmethod
+    def register_glossing_abbrevs(cls, abbrev_dict):
+        return "\n".join(
+            [
+                f"\\newGlossingAbbrev{{{x.lower()}}}{{{y}}}"
+                for x, y in abbrev_dict.items()
+            ]
+        )
+
+    @classmethod
+    def glossing_abbrevs_list(cls, arg_string):
+        return "\\glossingAbbrevsList"
 
     @classmethod
     def preprocess(cls, content):
@@ -260,6 +293,8 @@ class Latex(OutputFormat):
                     yield f"\\parencite{cite_string}"
             elif key in cls.doc_elements:
                 yield cls.doc_elements[key](url)
+            elif key == "abbrev_list":
+                yield cls.glossing_abbrevs_list(url)
             else:
                 yield content[m.start() : m.end()]
         yield content[current:]
@@ -435,7 +470,11 @@ def create_output(
         preprocessed = postprocess(preprocessed, builder)
         if builder.single_output:
             builder.write_folder(
-                output_dir, content=preprocessed, parts=parts, metadata=metadata
+                output_dir,
+                content=preprocessed,
+                parts=parts,
+                metadata=metadata,
+                abbrev_dict=GLOSS_ABBREVS,
             )
         elif builder.name == "clld":
             # builder.create_app()

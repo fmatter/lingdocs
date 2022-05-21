@@ -15,11 +15,15 @@
 \label{% raw %}{{% endraw %}{{ example_id or ctx.id }}{% raw %}}{% endraw %}\begingl
 \glpreamble {{ sanitize_latex(ctx.cldf.primaryText) }} //
 {% if ctx.cldf.analyzedWord != [] %}
-{% set glosslist = [] %}
-{% for w in ctx.cldf.gloss %}
-    {% set glosslist = glosslist.append(decorate_gloss_string(sanitize_latex(w))) %}
+{% set objlist = [] %}
+{% for o in ctx.cldf.analyzedWord %}
+    {% set objlist = objlist.append(sanitize_latex(o)) %}
 {% endfor %}
-\gla {{ " ".join(ctx.cldf.analyzedWord) }}//
+{% set glosslist = [] %}
+{% for g in ctx.cldf.gloss %}
+    {% set glosslist = glosslist.append(sanitize_latex(decorate_gloss_string(g))) %}
+{% endfor %}
+\gla {{ " ".join(objlist) }}//
 \glb {{ " ".join(glosslist) }}//
 {% endif %}
 {% if ctx.cldf.translatedText != None %}

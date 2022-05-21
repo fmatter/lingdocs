@@ -13,13 +13,17 @@
 {% set example = gathered_examples[example_id] %}
 \a {{ example.related('languageReference').name }}\\
 \label{% raw %}{{% endraw %}{{ example.id }}{% raw %}}{% endraw %}\begingl
-\glpreamble {{ example.cldf.primaryText }} //
+\glpreamble {{ sanitize_latex(example.cldf.primaryText) }} //
 {% if example.cldf.analyzedWord != [] %}
+{% set objlist = [] %}
+{% for o in example.cldf.analyzedWord %}
+    {% set objlist = objlist.append(sanitize_latex(o)) %}
+{% endfor %}
 {% set glosslist = [] %}
 {% for w in example.cldf.gloss %}
-    {% set glosslist = glosslist.append(w) %}
+    {% set glosslist = glosslist.append(sanitize_latex(decorate_gloss_string(w))) %}
 {% endfor %}
-\gla {{ " ".join(example.cldf.analyzedWord) }}//
+\gla {{ " ".join(objlist) }}//
 \glb {{ " ".join(glosslist) }}//
 {% endif %}
 {% if example.cldf.translatedText != None %}

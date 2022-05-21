@@ -11,11 +11,11 @@ from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import comma_and_list
+from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
 from pylingdocs.models import models
-from pylingdocs.helpers import decorate_gloss_string
 
 
 log = logging.getLogger(__name__)
@@ -108,7 +108,7 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
                     "comma_and_list": comma_and_list,
                     "sanitize_latex": sanitize_latex,
                     "split_ref": split_ref,
-                    "decorate_gloss_string": decorate_gloss_string
+                    "decorate_gloss_string": decorate_gloss_string,
                 },
             )
             preprocessed = render(
