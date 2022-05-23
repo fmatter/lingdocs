@@ -213,7 +213,7 @@ class Cognateset(Entity):
 class Form(Entity):
     name = "Form"
     cldf_table = "FormTable"
-    shortcut = "form"
+    shortcut = "wf"
     templates = {"plain": "{{ctx.cldf.form}}"}
 
 
