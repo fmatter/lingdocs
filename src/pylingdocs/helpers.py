@@ -14,7 +14,7 @@ from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.metadata import ORCID_STR
 from pylingdocs.metadata import _load_bib
 from pylingdocs.metadata import _load_metadata
-
+import panflute
 
 log = logging.getLogger(__name__)
 
@@ -68,8 +68,9 @@ def _load_cldf_dataset(cldf_path=CLDF_MD):
 
 
 def _load_structure(structure_file=STRUCTURE_FILE):
-    if not Path(structure_file).is_file():
-        log.error(f"Structure file {structure_file} not found, aborting.")
+    structure_file = Path(structure_file)
+    if not structure_file.is_file():
+        log.error(f"Structure file {structure_file.resolve()} not found, aborting.")
         sys.exit(1)
     else:
         return yaml.load(open(structure_file, encoding="utf-8"), Loader=yaml.SafeLoader)
@@ -91,6 +92,12 @@ def new():
 def get_md_pattern(m):
     return m.end(), m.group("label"), m.group("url")
 
+def latexify_table(cell):
+    if "_" in cell or "*" in cell:
+        return panflute.convert_text(
+            cell, output_format="latex", input_format="markdown"
+        )
+    return cell
 
 def write_readme(metadata_file=METADATA_FILE, release=False):
     bib = _load_bib(metadata_file)

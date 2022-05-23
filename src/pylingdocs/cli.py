@@ -54,7 +54,7 @@ class BuildCommand(OutputCommand):
             [
                 click.core.Option(
                     ("--source",),
-                    default=CONTENT_FOLDER,
+                    default=".",
                     help="Source folder to process.",
                 ),
                 click.core.Option(
@@ -86,8 +86,8 @@ def build(
     source = Path(source)
     output_dir = Path(output_dir)
     ds = _load_cldf_dataset(cldf)
-    metadata = _read_metadata_file(METADATA_FILE)
-    structure = _load_structure(_get_relative_file(folder=source, file=STRUCTURE_FILE))
+    metadata = _read_metadata_file(source/METADATA_FILE)
+    structure = _load_structure(_get_relative_file(folder=source/CONTENT_FOLDER, file=STRUCTURE_FILE))
     create_output(
         source,
         targets,
@@ -98,7 +98,7 @@ def build(
         latex=latex,
     )
     if CREATE_README:
-        write_readme(release=release)
+        write_readme(source/METADATA_FILE, release=release)
 
 
 @main.command(cls=BuildCommand)

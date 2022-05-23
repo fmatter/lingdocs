@@ -6,14 +6,15 @@ import pandas as pd
 from cldfviz.text import render
 from clldutils import jsonlib
 from jinja2 import DictLoader
-from pylingdocs.config import DATA_DIR
+from pylingdocs.config import DATA_DIR, MANEX_DIR
 from pylingdocs.config import TABLE_DIR
-from pylingdocs.config import TABLE_MD
+from pylingdocs.config import TABLE_MD, CONTENT_FOLDER
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.helpers import html_gloss
+import yaml
 from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
 from pylingdocs.models import models
@@ -25,6 +26,18 @@ MD_LINK_PATTERN = re.compile(r"\[(?P<label>[^]]*)]\((?P<url>[^)]+)\)")
 
 TABLE_PATTERN = re.compile(
     r"PYLINGDOCS_RAW_TABLE_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
+)
+
+MANEX_PATTERN = re.compile(
+    r"PYLINGDOCS_MANEX_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_MANEX_END"  # noqa: E501
+)
+
+MANPEX_PATTERN = re.compile(
+    r"PYLINGDOCS_MANPEX_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_MANPEX_END"  # noqa: E501
+)
+
+MANPEX_ITEM_PATTERN = re.compile(
+    r"PYLINGDOCS_MANPEXITEM_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_MANPEXITEM_END"  # noqa: E501
 )
 
 
@@ -140,15 +153,15 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
     return ""
 
 
-def load_tables(md):
+def load_tables(md, source_dir="."):
     current = 0
     for m in MD_LINK_PATTERN.finditer(md):
         yield md[current : m.start()]
         current, key, url = get_md_pattern(m)
         if key == "table":
-            table_path = TABLE_DIR / f"{url}.csv"
+            table_path = source_dir / TABLE_DIR / f"{url}.csv"
             if not table_path.is_file():
-                log.error(f"Table file <{table_path}> does not exist.")
+                log.error(f"Table file <{table_path.resolve()}> does not exist.")
                 sys.exit(1)
             else:
                 with open(table_path, "r", encoding="utf-8") as f:
@@ -157,6 +170,33 @@ def load_tables(md):
             yield md[m.start() : m.end()]
     yield md[current:]
 
+
+def load_manual_examples(md, source_dir="."):
+    current = 0
+    for m in MD_LINK_PATTERN.finditer(md):
+        yield md[current : m.start()]
+        current, key, url = get_md_pattern(m)
+        if key == "manex":
+            manex__yaml_path = source_dir / MANEX_DIR / f"{url}.yaml"
+            if manex__yaml_path.is_file():
+                mex_list = yaml.load(open(manex__yaml_path, encoding="utf-8"), Loader=yaml.SafeLoader)
+                output = []
+                for mex in mex_list:
+                    manex_md_path = source_dir / MANEX_DIR / f"{mex}.md"
+                    with open(manex_md_path, "r", encoding="utf-8") as f:
+                        output.append("PYLINGDOCS_MANPEXITEM_START" + mex + "CONTENT_START" + f.read() + "PYLINGDOCS_MANPEXITEM_END")
+                yield "PYLINGDOCS_MANPEX_START" + url + "CONTENT_START\n" + "\n".join(output) + "\nPYLINGDOCS_MANPEX_END"
+            else:
+                manex_md_path = source_dir / MANEX_DIR / f"{url}.md"
+                if not manex_md_path.is_file():
+                    log.error(f"Manual example file <{manex_md_path.resolve()}> does not exist.")
+                    sys.exit(1)
+                else:
+                    with open(manex_md_path, "r", encoding="utf-8") as f:
+                        yield "PYLINGDOCS_MANEX_START" + url + "CONTENT_START" + f.read() + "PYLINGDOCS_MANEX_END"  # noqa: E501
+        else:
+            yield md[m.start() : m.end()]
+    yield md[current:]
 
 def insert_tables(md, builder, tables):
     current = 0
@@ -170,18 +210,33 @@ def insert_tables(md, builder, tables):
         if label not in tables:
             log.error(f"Could not find metadata for table {label}.")
             sys.exit(1)
-        yield builder.table(df=df, caption=tables[label]["caption"], label=label)
+        yield builder.table(df=df, caption=tables[label].get("caption", None), label=label)
     yield md[current:]
 
 
-def preprocess(md_str):
-    return "".join(load_tables(md_str))
+def insert_manex(md, builder, pattern, kind="plain"):
+    current = 0
+    for m in pattern.finditer(md):
+        yield md[current : m.start()]
+        current = m.end()
+        label = m.group("label")
+        content = m.group("content")
+        yield builder.manex(label, content=content, kind=kind)
+    yield md[current:]
 
 
-def postprocess(md_str, builder):
-    table_md = _get_relative_file(TABLE_DIR, TABLE_MD)
+def preprocess(md_str, source_dir="."):
+    temp_str = "".join(load_manual_examples(md_str, source_dir))
+    return "".join(load_tables(temp_str, source_dir))
+
+
+def postprocess(md_str, builder, source_dir="."):
+    table_md = _get_relative_file(source_dir/TABLE_DIR, TABLE_MD)
     if table_md.is_file():
         tables = jsonlib.load(table_md)
     else:
         tables = {}
+    md_str = "".join(insert_manex(md_str, builder, MANPEX_PATTERN, kind="multipart"))
+    md_str = "".join(insert_manex(md_str, builder, MANPEX_ITEM_PATTERN, kind="subexample"))
+    md_str = "".join(insert_manex(md_str, builder, MANEX_PATTERN))
     return "".join(insert_tables(md_str, builder, tables))

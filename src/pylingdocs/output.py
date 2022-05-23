@@ -21,8 +21,7 @@ from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_structure
-from pylingdocs.helpers import split_ref
-from pylingdocs.metadata import PROJECT_TITLE
+from pylingdocs.helpers import split_ref, latexify_table
 from pylingdocs.metadata import _read_metadata_file
 from pylingdocs.models import models
 from pylingdocs.pandoc_filters import fix_header
@@ -30,7 +29,7 @@ from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import postprocess
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
-
+import os
 
 NUM_PRE = re.compile(r"[\d]+\ ")
 
@@ -57,7 +56,7 @@ class OutputFormat:
         extra = {
             "name": cls.name,
             "parts": {"list": parts},
-            "project_title": PROJECT_TITLE,
+            "project_title": metadata.get("title", "A beautiful title"),
             "glossing_abbrevs": cls.register_glossing_abbrevs(abbrev_dict),
         }
         if "authors" in metadata:
@@ -139,7 +138,14 @@ class OutputFormat:
     @classmethod
     def table(cls, df, caption, label):
         del label  # unused
-        return caption + ":\n\n" + df.to_markdown(index=False, tablefmt="grid")
+        tabular = df.to_markdown(index=False, tablefmt="grid")
+        if not caption:
+            return tabular
+        return caption + ":\n\n" + tabular
+
+    @classmethod
+    def manex(cls, tag, content, kind):
+        return content
 
     @classmethod
     def reference_list(cls):
@@ -208,6 +214,10 @@ class GitHub(OutputFormat):
 
     @classmethod
     def table(cls, df, caption, label):
+        del label  # unused
+        tabular = df.to_markdown(index=False)
+        if not caption:
+            return tabular
         return df.to_markdown(index=False)
 
     @classmethod
@@ -231,6 +241,9 @@ class CLLD(OutputFormat):
     @classmethod
     def table(cls, df, caption, label):
         del label  # unused
+        tabular = df.to_markdown(index=False)
+        if not caption:
+            return tabular
         return caption + ":\n\n" + df.to_markdown(index=False)
 
     @classmethod
@@ -249,12 +262,25 @@ class Latex(OutputFormat):
     }
 
     @classmethod
+    def manex(cls, tag, content, kind):
+        if kind=="multipart":
+            return f"\\pex\\label{{{tag}}}{content}\\xe"
+        elif kind=="subexample":
+            return f"\\a\\label{{{tag}}} {content}"
+        return f"\\ex\\label{{{tag}}} {content} \\xe"
+
+    @classmethod
     def table(cls, df, caption, label):
+        df = df.applymap(latexify_table)
+        df.columns = list(map(latexify_table,df.columns))
+        tabular = df.to_latex(escape=False, index=False)
+        if not caption:
+            return tabular.replace('\\toprule', '').replace('\\midrule', '').replace('\\bottomrule','')
         return f"""\\begin{{table}}
 \\caption{{{caption}}}
 \\label{{tab:{label}}}
 \\centering
-{df.to_latex(escape=False, index=False)}
+{tabular}
 \\end{{table}}
 """
 
@@ -278,6 +304,7 @@ class Latex(OutputFormat):
                 content, output_format="json", input_format="markdown"
             )
         )
+        doc = doc.replace("\\pex\n\n", "\\pex\n")
         return doc
 
     @classmethod
@@ -411,7 +438,7 @@ def _load_content(structure, source_dir=CONTENT_FOLDER):
             with open(source_dir / filename, "r", encoding="utf-8") as f:
                 content = f.read()
         except FileNotFoundError:
-            log.error(f"File {source_dir/filename} does not exist.")
+            log.error(f"File {(source_dir/filename).resolve()} does not exist.")
             sys.exit(1)
         contents[part_id] = content
         parts[part_id] = title
@@ -453,20 +480,20 @@ def create_output(
         bool: blabla
 
     """
+    source_dir = Path(source_dir)
     if isinstance(structure, (str, PosixPath)):
-        structure = _load_structure(structure)
+        structure = _load_structure(source_dir/CONTENT_FOLDER/structure)
     if isinstance(metadata, (str, PosixPath)):
-        metadata = _read_metadata_file(metadata)
+        metadata = _read_metadata_file(metadata, source_dir)
     if metadata is None:
         metadata = {}
     metadata.update({"bibfile": Path(dataset.bibpath).resolve()})
     output_dir = Path(output_dir)
-    source_dir = Path(source_dir)
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir.resolve()}")
         output_dir.mkdir()
 
-    contents, parts = _load_content(structure, source_dir)
+    contents, parts = _load_content(structure, source_dir/CONTENT_FOLDER)
 
     for output_format in formats:
         for m in models:
@@ -475,7 +502,7 @@ def create_output(
         builder = builders[output_format]
         # log.debug(f"Writing skeleton to folder {output_dir}")
         content = "\n\n".join(contents.values())
-        preprocessed = preprocess(content)
+        preprocessed = preprocess(content, source_dir)
         preprocessed = builder.preprocess_commands(preprocessed)
         preprocessed = render_markdown(
             preprocessed, dataset, output_format=output_format
@@ -484,7 +511,7 @@ def create_output(
         preprocessed = render_markdown(
             preprocessed, dataset, output_format=output_format
         )
-        preprocessed = postprocess(preprocessed, builder)
+        preprocessed = postprocess(preprocessed, builder, source_dir)
         if builder.single_output:
             builder.write_folder(
                 output_dir,
