@@ -225,6 +225,7 @@ class CLLD(OutputFormat):
     doc_elements = {
         "ref": lambda url: f"<a href='#{url}'>crossref</a>",
         "label": lambda url: f"<a id='{url}'></a>",
+        "gl": lambda url: f"""<span class="smallcaps">{url}</span>""",
     }
 
     @classmethod
