@@ -47,7 +47,9 @@ The [lg](tri) suffix [mp](tri-se) has the allomorphs [m](tri-se-1,tri-se-2,tri-s
 [lg](apa,tri) are both Cariban languages, as are [lg](pem,ikp,uxc).
 
 
-## Interlinearized glossed examples
+## Examples
+
+### Interlinearized glossed examples
 
 Glossed examples are called like any other entity, but are rendered as follows:
 
@@ -56,6 +58,16 @@ Glossed examples are called like any other entity, but are rendered as follows:
 [ex](ekiri-2,ekiri-3)
 
 Example references: [exref](ekiri-1), [exref](ekiri-3).
+
+### Manual examples
+These can contain tables, lists, whatever:
+
+[manex](manex1)
+
+They can also have multiple parts:
+
+[manex](manex2)
+
 
 ## Arguments
 Pass arguments to the visualizer:

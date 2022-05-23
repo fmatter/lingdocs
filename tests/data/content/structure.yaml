@@ -1,6 +1,8 @@
 document:
   title: Test data
   parts:
+    # manex:
+    #   title: manual examples!
     test:
       title: A test section
       abstract: Some text.
