@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 
 
 def _read_metadata_file(metadata_file=METADATA_FILE, source_dir="."):
-    metadata_file = source_dir/Path(metadata_file)
+    metadata_file = source_dir / Path(metadata_file)
     if metadata_file.is_file():
         with open(metadata_file, encoding="utf-8") as f:
             return yaml.load(f, Loader=yaml.SafeLoader)
@@ -25,6 +25,7 @@ def _read_metadata_file(metadata_file=METADATA_FILE, source_dir="."):
             f"Metadata file {metadata_file.resolve()} not found, please create one."
         )
         return {}
+
 
 bibtex_repl = {"location": "address"}
 bibtex_rev = {y: x for x, y in bibtex_repl.items()}

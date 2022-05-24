@@ -25,6 +25,26 @@ def html_gloss(s):
     )
 
 
+def html_example_wrap(tag, content, kind="example"):
+    if kind == "multipart":
+        return f"""<ol markdown="block" class="example">
+<li class="example" markdown="block" id="{tag}">
+<ol markdown="block" class="subexample">
+{content}
+</ol>
+</li>
+</ol>"""
+    elif kind == "subexample":
+        return f"""<li class="subexample" markdown="block" id="{tag}">
+<div markdown="block">{content}</div>
+</li>"""
+    else:
+        return f"""<ol markdown="block" class="example">
+<li class="example" markdown="block" id="{tag}"><div markdown="block">{content}</div>
+</li>
+</ol>"""
+
+
 def _get_relative_file(folder, file):
     folder = Path(folder)
     file = Path(file)
@@ -92,12 +112,14 @@ def new():
 def get_md_pattern(m):
     return m.end(), m.group("label"), m.group("url")
 
+
 def latexify_table(cell):
     if "_" in cell or "*" in cell:
         return panflute.convert_text(
             cell, output_format="latex", input_format="markdown"
         )
     return cell
+
 
 def write_readme(metadata_file=METADATA_FILE, release=False):
     bib = _load_bib(metadata_file)

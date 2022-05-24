@@ -165,7 +165,7 @@ def load_tables(md, source_dir="."):
                 sys.exit(1)
             else:
                 with open(table_path, "r", encoding="utf-8") as f:
-                    yield "PYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + f.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
+                    yield "\nPYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + f.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
@@ -179,17 +179,29 @@ def load_manual_examples(md, source_dir="."):
         if key == "manex":
             manex__yaml_path = source_dir / MANEX_DIR / f"{url}.yaml"
             if manex__yaml_path.is_file():
-                mex_list = yaml.load(open(manex__yaml_path, encoding="utf-8"), Loader=yaml.SafeLoader)
+                mex_list = yaml.load(
+                    open(manex__yaml_path, encoding="utf-8"), Loader=yaml.SafeLoader
+                )
                 output = []
                 for mex in mex_list:
                     manex_md_path = source_dir / MANEX_DIR / f"{mex}.md"
                     with open(manex_md_path, "r", encoding="utf-8") as f:
-                        output.append("PYLINGDOCS_MANPEXITEM_START" + mex + "CONTENT_START" + f.read() + "PYLINGDOCS_MANPEXITEM_END")
-                yield "PYLINGDOCS_MANPEX_START" + url + "CONTENT_START\n" + "\n".join(output) + "\nPYLINGDOCS_MANPEX_END"
+                        output.append(
+                            "PYLINGDOCS_MANPEXITEM_START"
+                            + mex
+                            + "CONTENT_START"
+                            + f.read()
+                            + "PYLINGDOCS_MANPEXITEM_END"
+                        )
+                yield "PYLINGDOCS_MANPEX_START" + url + "CONTENT_START\n" + "\n".join(
+                    output
+                ) + "\nPYLINGDOCS_MANPEX_END"
             else:
                 manex_md_path = source_dir / MANEX_DIR / f"{url}.md"
                 if not manex_md_path.is_file():
-                    log.error(f"Manual example file <{manex_md_path.resolve()}> does not exist.")
+                    log.error(
+                        f"Manual example file <{manex_md_path.resolve()}> does not exist."
+                    )
                     sys.exit(1)
                 else:
                     with open(manex_md_path, "r", encoding="utf-8") as f:
@@ -197,6 +209,7 @@ def load_manual_examples(md, source_dir="."):
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
+
 
 def insert_tables(md, builder, tables):
     current = 0
@@ -210,7 +223,9 @@ def insert_tables(md, builder, tables):
         if label not in tables:
             log.error(f"Could not find metadata for table {label}.")
             sys.exit(1)
-        yield builder.table(df=df, caption=tables[label].get("caption", None), label=label)
+        yield builder.table(
+            df=df, caption=tables[label].get("caption", None), label=label
+        )
     yield md[current:]
 
 
@@ -231,12 +246,14 @@ def preprocess(md_str, source_dir="."):
 
 
 def postprocess(md_str, builder, source_dir="."):
-    table_md = _get_relative_file(source_dir/TABLE_DIR, TABLE_MD)
+    table_md = _get_relative_file(source_dir / TABLE_DIR, TABLE_MD)
     if table_md.is_file():
         tables = jsonlib.load(table_md)
     else:
         tables = {}
     md_str = "".join(insert_manex(md_str, builder, MANPEX_PATTERN, kind="multipart"))
-    md_str = "".join(insert_manex(md_str, builder, MANPEX_ITEM_PATTERN, kind="subexample"))
+    md_str = "".join(
+        insert_manex(md_str, builder, MANPEX_ITEM_PATTERN, kind="subexample")
+    )
     md_str = "".join(insert_manex(md_str, builder, MANEX_PATTERN))
     return "".join(insert_tables(md_str, builder, tables))

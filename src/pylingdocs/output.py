@@ -19,7 +19,7 @@ from pylingdocs.config import GLOSS_ABBREVS
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import STRUCTURE_FILE
-from pylingdocs.helpers import _get_relative_file
+from pylingdocs.helpers import _get_relative_file, html_example_wrap
 from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import split_ref, latexify_table
 from pylingdocs.metadata import _read_metadata_file
@@ -236,19 +236,25 @@ class CLLD(OutputFormat):
         "ref": lambda url: f"<a href='#{url}'>crossref</a>",
         "label": lambda url: f"<a id='{url}'></a>",
         "gl": lambda url: f"""<span class="smallcaps">{url}</span>""",
+        "exref": lambda url: f'<a class="exref" exid="{url}"></a>',
     }
 
     @classmethod
     def table(cls, df, caption, label):
         del label  # unused
-        tabular = df.to_markdown(index=False)
         if not caption:
-            return tabular
+            return df.to_markdown(index=False)
         return caption + ":\n\n" + df.to_markdown(index=False)
 
     @classmethod
     def reference_list(cls):
         return ""
+
+    @classmethod
+    def manex(cls, tag, content, kind):
+        if content.strip().startswith("PYLINGDOCS_RAW_TABLE_START"):
+            content = " \n \n" + content
+        return html_example_wrap(tag, content, kind=kind)
 
 
 class Latex(OutputFormat):
@@ -263,25 +269,28 @@ class Latex(OutputFormat):
     @classmethod
     def latex_exref(cls, url, end=None, *args, **kwargs):
         if end:
-            print("YES", f"\\exref[][{end}]{{{url}}}")
             return f"\\exref[][{end}]{{{url}}}"
         return f"\\exref{{{url}}}"
 
     @classmethod
     def manex(cls, tag, content, kind):
-        if kind=="multipart":
+        if kind == "multipart":
             return f"\\pex\\label{{{tag}}}{content}\\xe"
-        elif kind=="subexample":
+        elif kind == "subexample":
             return f"\\a\\label{{{tag}}} {content}"
         return f"\\ex\\label{{{tag}}} {content} \\xe"
 
     @classmethod
     def table(cls, df, caption, label):
         df = df.applymap(latexify_table)
-        df.columns = list(map(latexify_table,df.columns))
+        df.columns = list(map(latexify_table, df.columns))
         tabular = df.to_latex(escape=False, index=False)
         if not caption:
-            return tabular.replace('\\toprule', '').replace('\\midrule', '').replace('\\bottomrule','')
+            return (
+                tabular.replace("\\toprule", "")
+                .replace("\\midrule", "")
+                .replace("\\bottomrule", "")
+            )
         return f"""\\begin{{table}}
 \\caption{{{caption}}}
 \\label{{tab:{label}}}
@@ -500,7 +509,7 @@ def create_output(
     """
     source_dir = Path(source_dir)
     if isinstance(structure, (str, PosixPath)):
-        structure = _load_structure(source_dir/CONTENT_FOLDER/structure)
+        structure = _load_structure(source_dir / CONTENT_FOLDER / structure)
     if isinstance(metadata, (str, PosixPath)):
         metadata = _read_metadata_file(metadata, source_dir)
     if metadata is None:
@@ -511,7 +520,7 @@ def create_output(
         log.info(f"Creating output folder {output_dir.resolve()}")
         output_dir.mkdir()
 
-    contents, parts = _load_content(structure, source_dir/CONTENT_FOLDER)
+    contents, parts = _load_content(structure, source_dir / CONTENT_FOLDER)
 
     for output_format in formats:
         for m in models:
