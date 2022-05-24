@@ -40,10 +40,21 @@ class OutputFormat:
     name = "boilerplate"
     file_ext = "txt"
     single_output = True
+
+
+    def ref_element(url, *args, **kwargs):
+        return f"(ref:{url})"
+
+    def label_element(url, *args, **kwargs):
+        return f"(label:{url})"
+
+    def gloss_element(url, *args, **kwargs):
+        return url.upper()
+
     doc_elements = {
-        "ref": lambda url: f"(ref:{url})",
-        "label": lambda url: f"(label:{url})",
-        "gl": lambda url: url.upper(),
+        "ref": ref_element,
+        "label": label_element,
+        "gl": gloss_element,
     }
 
     @classmethod
@@ -108,6 +119,16 @@ class OutputFormat:
             current = m.end()
             key = m.group("label")
             url = m.group("url")
+            args = []
+            kwargs = {}
+            if "?" in url:
+                url, arguments = url.split("?")
+                for arg in arguments.split("&"):
+                    if "=" in arg:
+                        k, v = arg.split("=")
+                        kwargs[k] = v
+                    else:
+                        args.append(arg)
             if key in ["src", "psrc"]:
                 bibkey, pages = split_ref(url)
                 if pages:
@@ -119,7 +140,7 @@ class OutputFormat:
                 elif key == "psrc":
                     yield f"([{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str})"  # noqa: E501
             elif key in cls.doc_elements:
-                yield cls.doc_elements[key](url)
+                yield cls.doc_elements[key](url, *args, **kwargs)
             elif key == "abbrev_list":
                 yield cls.glossing_abbrevs_list(url)
             else:
@@ -176,9 +197,15 @@ class HTML(OutputFormat):
     name = "html"
     file_ext = "html"
 
+    def exref(url, *args, **kwargs):
+        return f'<a class="exref" exid="{url}"></a>'
+
+    def html_gl(url, *args, **kwargs):
+        return f'<span class="gloss">{url} <span class="tooltiptext gloss-{url}" ></span></span>'
+
     doc_elements = {
-        "exref": lambda url: f'<a class="exref" exid="{url}"></a>',
-        "gl": lambda url: f'<span class="gloss">{url} <span class="tooltiptext gloss-{url}" ></span></span>',
+        "exref": exref,
+        "gl": html_gl,
     }
 
     @classmethod
@@ -232,11 +259,24 @@ class CLLD(OutputFormat):
     file_ext = "md"
     single_output = False
 
+    def clld_ref(url, *args, **kwargs):
+        return f"<a href='#{url}'>crossref</a>"
+
+    def clld_label(url, *args, **kwargs):
+        return f"<a id='{url}'></a>"
+        
+    def clld_gloss(url, *args, **kwargs):
+        return f"""<span class="smallcaps">{url}</span>"""
+        
+    def clld_exref(url, *args, **kwargs):
+        kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
+        return f'<a class="exref" exid="{url}"{kw_str}></a>'
+        
     doc_elements = {
-        "ref": lambda url: f"<a href='#{url}'>crossref</a>",
-        "label": lambda url: f"<a id='{url}'></a>",
-        "gl": lambda url: f"""<span class="smallcaps">{url}</span>""",
-        "exref": lambda url: f'<a class="exref" exid="{url}"></a>',
+        "ref": clld_ref,
+        "label": clld_label ,
+        "gl": clld_gloss,
+        "exref": clld_exref ,
     }
 
     @classmethod
