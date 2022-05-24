@@ -17,6 +17,7 @@ from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import GLOSS_ABBREVS
 from pylingdocs.config import OUTPUT_DIR
+import pandas as pd
 from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file, html_example_wrap
@@ -283,6 +284,8 @@ class CLLD(OutputFormat):
     def table(cls, df, caption, label):
         del label  # unused
         if not caption:
+            if len(df) == 0:
+                df = df.append({x: "" for x in df.columns}, ignore_index=True)
             return df.to_markdown(index=False)
         return caption + ":\n\n" + df.to_markdown(index=False)
 

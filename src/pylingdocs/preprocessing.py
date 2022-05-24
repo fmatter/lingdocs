@@ -221,9 +221,12 @@ def insert_tables(md, builder, tables):
         df = pd.read_csv(StringIO(content), keep_default_na=False)
         df.columns = [col if "Unnamed: " not in col else "" for col in df.columns]
         if label not in tables:
-            log.error(f"Could not find metadata for table {label}.")
-            sys.exit(1)
-        yield builder.table(
+            log.warning(f"Could not find metadata for table {label}.")
+            yield builder.table(
+                df=df, caption=None, label=None
+            )
+        else:
+            yield builder.table(
             df=df, caption=tables[label].get("caption", None), label=label
         )
     yield md[current:]
