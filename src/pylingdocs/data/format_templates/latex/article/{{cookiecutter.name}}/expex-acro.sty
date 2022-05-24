@@ -22,7 +22,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{expex-acro}
-    [2022/05/05 v0.0.2 ]
+    [2022/05/17 v0.0.2 ]
 
 
 
@@ -425,11 +425,20 @@
         }
     }
 } {
-    \ProvideDocumentCommand{\exref}{ o m }{
+    \ProvideDocumentCommand{\exref}{ o o m }{
         \IfValueTF{#1} {
-            (\ref{#2}#1)
+            \IfValueTF{#2} {
+                (\ref{#3}-\ref{#2}#1)
+            }{
+                (\ref{#3}#1)
+            }
         }{
-            (\ref{#2})
+            \IfValueTF{#2} {
+                (\ref{#3}-\ref{#2})
+            }{
+                (\ref{#3})
+            }
+
         }
 
     }

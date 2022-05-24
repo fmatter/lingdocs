@@ -257,9 +257,15 @@ class Latex(OutputFormat):
     doc_elements = {
         "ref": lambda url: f"\\cref{{{url}}}",
         "label": lambda url: f"\\label{{{url}}}",
-        "exref": lambda url: f"\\exref{{{url}}}",
         "gl": lambda url: f"\\gl{{{url.lower()}}}",
     }
+
+    @classmethod
+    def latex_exref(cls, url, end=None, *args, **kwargs):
+        if end:
+            print("YES", f"\\exref[][{end}]{{{url}}}")
+            return f"\\exref[][{end}]{{{url}}}"
+        return f"\\exref{{{url}}}"
 
     @classmethod
     def manex(cls, tag, content, kind):
@@ -319,6 +325,16 @@ class Latex(OutputFormat):
             current = m.end()
             key = m.group("label")
             url = m.group("url")
+            kwargs = {}
+            args = []
+            if "?" in url:
+                url, arguments = url.split("?")
+                for arg in arguments.split("&"):
+                    if "=" in arg:
+                        k, v = arg.split("=")
+                        kwargs[k] = v
+                    else:
+                        args.append(arg)
             if key in ["src", "psrc"]:
                 cite_string = []
                 for citation in url.split(","):
@@ -335,6 +351,8 @@ class Latex(OutputFormat):
                     yield f"\\textcite{cite_string}"
                 elif key == "psrc":
                     yield f"\\parencite{cite_string}"
+            elif key == "exref":
+                yield cls.latex_exref(url, *args, **kwargs)
             elif key in cls.doc_elements:
                 yield cls.doc_elements[key](url)
             elif key == "abbrev_list":
