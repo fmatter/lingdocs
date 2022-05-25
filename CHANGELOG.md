@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * references in LaTeX and HTML IGT examples
 * proper handling of glossing abbreviations in LaTeX and HTML output
 * better exref commands
+* custom templates
 
 ### Removed
 

@@ -18,7 +18,7 @@ import yaml
 from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
 from pylingdocs.models import models
-
+from pathlib import Path
 
 log = logging.getLogger(__name__)
 
@@ -67,6 +67,27 @@ for output_format, env_dict in list_templates.items():
         model_output = model.representation(output_format, multiple=True)
         if model_output is not None:
             env_dict[model.cldf_table + "_index.md"] = model_output
+
+if Path("pld/templates").is_dir():
+    for model in Path("pld/templates").iterdir():
+        for output_format in templates.keys():
+
+            templ_path = model / output_format / "detail.md"
+            if not templ_path.is_file():
+                templ_path = model / "plain" / "detail.md"
+            if templ_path.is_file():
+                with open(templ_path, "r", encoding="utf-8") as f:
+                    templ_content = f.read()
+                templates[output_format][model.name+"_detail.md"] = templ_content
+
+            templ_path = model / output_format / "index.md"
+            if not templ_path.is_file():
+                templ_path = model / "plain" / "index.md"
+            if templ_path.is_file():
+                with open(templ_path, "r", encoding="utf-8") as f:
+                    templ_content = f.read()
+                list_templates[output_format][model.name+"_index.md"] = templ_content
+
 
 with open(DATA_DIR / "model_templates" / "latex_util.md", "r", encoding="utf-8") as f:
     latex_util = f.read()
