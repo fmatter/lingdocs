@@ -68,8 +68,8 @@ for output_format, env_dict in list_templates.items():
         if model_output is not None:
             env_dict[model.cldf_table + "_index.md"] = model_output
 
-if Path("pld/templates").is_dir():
-    for model in Path("pld/templates").iterdir():
+if Path("pld/model_templates").is_dir():
+    for model in Path("pld/model_templates").iterdir():
         for output_format in templates.keys():
 
             templ_path = model / output_format / "detail.md"

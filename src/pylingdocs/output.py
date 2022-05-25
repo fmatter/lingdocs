@@ -80,8 +80,13 @@ class OutputFormat:
             content = cls.preprocess(content)
             extra.update({"content": content})
         extra.update(**metadata)
+        local_template_path = Path("pld") / "output_templates" / cls.name / OUTPUT_TEMPLATES[cls.name]
+        if local_template_path.is_dir():
+            template_path = str(local_template_path)
+        else:
+            template_path = str(DATA_DIR / "format_templates" / cls.name / OUTPUT_TEMPLATES[cls.name])
         cookiecutter(
-            str(DATA_DIR / "format_templates" / cls.name / OUTPUT_TEMPLATES[cls.name]),
+            template_path,
             output_dir=output_dir,
             extra_context=extra,
             overwrite_if_exists=True,
