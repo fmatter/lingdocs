@@ -19,6 +19,7 @@ from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
 from pylingdocs.models import models
 from pathlib import Path
+import os
 
 log = logging.getLogger(__name__)
 
@@ -39,6 +40,12 @@ MANPEX_PATTERN = re.compile(
 MANPEX_ITEM_PATTERN = re.compile(
     r"PYLINGDOCS_MANPEXITEM_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_MANPEXITEM_END"  # noqa: E501
 )
+
+
+if Path("custom_pld_models.py").is_file():
+    sys.path.append(os.getcwd())
+    from custom_pld_models import models as custom_models
+    models += custom_models
 
 
 log.info("Loading templates")
