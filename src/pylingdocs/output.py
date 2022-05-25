@@ -16,7 +16,7 @@ from pylingdocs.config import BENCH
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import GLOSS_ABBREVS
-from pylingdocs.config import OUTPUT_DIR
+from pylingdocs.config import OUTPUT_DIR, LATEX_TOPLEVEL
 import pandas as pd
 from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import STRUCTURE_FILE
@@ -357,17 +357,27 @@ class Latex(OutputFormat):
 
     @classmethod
     def preprocess(cls, content):
-        doc = fix_header(
-            panflute.convert_text(
-                content, output_format="json", input_format="markdown"
+        doc = panflute.convert_text(
+                content, output_format="latex", input_format="markdown-auto_identifiers", extra_args=[f"--top-level-division={LATEX_TOPLEVEL}"]
             )
-        )
         doc = doc.replace("\\pex\n\n", "\\pex\n")
         return doc
 
     @classmethod
     def reference_list(cls):
         return "\\printbibliography"
+
+    @classmethod
+    def author_list(cls, authors):
+        if len(authors) == 0:
+            return "Anonymous"
+        out = []
+        for author in authors:
+            out.append(f'{author["given-names"]} {author["family-names"]}')
+        if OUTPUT_TEMPLATES["latex"] == "memoir":
+            return ";".join(out)
+        else:
+            return " and ".join(out)
 
     @classmethod
     def replace_commands(cls, content):

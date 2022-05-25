@@ -1,23 +1,30 @@
 \documentclass{article}
 \usepackage{geometry}
-\usepackage{fontspec}
-\setmainfont{Brill}
-\usepackage[abbrevs=none,refmode=latex]{expex-acro}
-\lingset{everygla=\itshape, belowglpreambleskip=0ex, aboveglftskip=0ex}
-\usepackage{booktabs}
-\usepackage[style=authoryear]{biblatex}
-\addbibresource{% raw %}{{% endraw %}{{ cookiecutter.bibfile }}{% raw %}}{% endraw %}
-\def\tightlist{}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\today}
+% \lhead{}
+\rhead{\footnotesize \itshape Made with \href{https://github.com/fmatter/pylingdocs/}{pylingdocs}}
+\cfoot{\thepage}
+
+\input{preamble.tex}
 
 \title{% raw %}{{% endraw %}{{ cookiecutter.project_title }}{% raw %}}{% endraw %}
 \author{% raw %}{{% endraw %}{{ cookiecutter.author }}{% raw %}}{% endraw %}
 
-\usepackage{hyperref}
-\usepackage[capitalise]{cleveref}
 {{ cookiecutter.glossing_abbrevs }}
+
+
+
 \begin{document}
 \maketitle
 
+\tableofcontents
+
+
 {{ cookiecutter.content }}
+
 
 \end{document}

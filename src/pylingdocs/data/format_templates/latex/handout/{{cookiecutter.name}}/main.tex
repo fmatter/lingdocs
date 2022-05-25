@@ -7,20 +7,17 @@
     right=0.7in,
     bottom=1in,
     top=0.7in]{geometry}
-\usepackage{fontspec}
-\setmainfont{Brill}
-\usepackage[abbrevs=none,refmode=latex]{expex-acro}
+
+\input{preamble.tex}
 \lingset{belowglpreambleskip=-1ex,everyglpreamble=\itshape,aboveglftskip=-0.5ex,aboveexskip=-0.7ex,belowexskip=-1ex}
-\usepackage{booktabs}
-\usepackage[style=authoryear]{biblatex}
-\addbibresource{% raw %}{{% endraw %}{{ cookiecutter.bibfile }}{% raw %}}{% endraw %}
-\def\tightlist{\setlength\itemsep{0em}}
-\usepackage{hyperref}
-\usepackage[capitalise]{cleveref}
+
+{{ cookiecutter.glossing_abbrevs }}
+
 \begin{document}
 \begin{center}
 \Large \bfseries {% raw %}{{% endraw %}{{ cookiecutter.project_title }}{% raw %}}{% endraw %}
 \end{center}
+\tableofcontents
 
 {{ cookiecutter.content }}
 

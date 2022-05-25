@@ -76,3 +76,4 @@ for builder in BUILDERS:
     OUTPUT_TEMPLATES[builder] = get_config(builder, "template")
 
 LATEX_EX_TEMPL = get_config("latex", "interlinear_tool")
+LATEX_TOPLEVEL = get_config("latex", "toplevel")
