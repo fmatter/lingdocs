@@ -291,7 +291,7 @@ class CLLD(OutputFormat):
             if len(df) == 0:
                 df = df.append({x: "" for x in df.columns}, ignore_index=True)
             return df.to_markdown(index=False)
-        return f"<a id='{label}'></a><span class='caption' id='{label}'>{caption}</span>\n\n" + df.to_markdown(index=False)
+        return f"<a id='tab:{label}'></a><span class='caption' id='tab:{label}'>{caption}</span>\n\n" + df.to_markdown(index=False)
 
     @classmethod
     def reference_list(cls):
