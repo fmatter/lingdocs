@@ -1,6 +1,7 @@
-from pylingdocs.config import DATA_DIR
 import shutil
 from pathlib import Path
+from pylingdocs.config import DATA_DIR
+
 
 latex_dir = Path.cwd().resolve()
 

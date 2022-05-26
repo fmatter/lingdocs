@@ -16,18 +16,22 @@ from pylingdocs.config import BENCH
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import GLOSS_ABBREVS
-from pylingdocs.config import OUTPUT_DIR, LATEX_TOPLEVEL
+from pylingdocs.config import LATEX_TOPLEVEL
+from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import STRUCTURE_FILE
-from pylingdocs.helpers import _get_relative_file, html_example_wrap
+from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_structure
-from pylingdocs.helpers import split_ref, latexify_table
+from pylingdocs.helpers import html_example_wrap
+from pylingdocs.helpers import latexify_table
+from pylingdocs.helpers import split_ref
 from pylingdocs.metadata import _read_metadata_file
 from pylingdocs.models import models
 from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import postprocess
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
+
 
 NUM_PRE = re.compile(r"[\d]+\ ")
 

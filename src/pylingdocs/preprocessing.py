@@ -1,12 +1,16 @@
 import logging
+import os
 import re
 import sys
 from io import StringIO
+from pathlib import Path
 import pandas as pd
+import yaml
 from cldfviz.text import render
 from clldutils import jsonlib
 from jinja2 import DictLoader
-from pylingdocs.config import DATA_DIR, MANEX_DIR
+from pylingdocs.config import DATA_DIR
+from pylingdocs.config import MANEX_DIR
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
 from pylingdocs.helpers import _get_relative_file
@@ -14,12 +18,10 @@ from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.helpers import html_gloss
-import yaml
 from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
 from pylingdocs.models import models
-from pathlib import Path
-import os
+
 
 log = logging.getLogger(__name__)
 

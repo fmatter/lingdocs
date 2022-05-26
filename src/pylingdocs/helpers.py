@@ -3,6 +3,7 @@ import logging
 import re
 import sys
 from pathlib import Path
+import panflute
 import yaml
 from cookiecutter.main import cookiecutter
 from pycldf import Dataset
@@ -14,7 +15,7 @@ from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.metadata import ORCID_STR
 from pylingdocs.metadata import _load_bib
 from pylingdocs.metadata import _load_metadata
-import panflute
+
 
 log = logging.getLogger(__name__)
 
