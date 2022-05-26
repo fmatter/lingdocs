@@ -236,25 +236,24 @@
                         "name": "Language_ID"
                     },
                     {
-                        "dc:description": "A reference to the meaning denoted by the morpheme",
                         "datatype": "string",
-                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#parameterReference",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#name",
                         "required": true,
-                        "name": "Parameter_ID"
-                    },
-                    {
-                        "dc:description": "The representation of the morpheme.",
-                        "dc:extent": "singlevalued",
-                        "datatype": "string",
-                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#form",
-                        "required": true,
-                        "name": "Form"
+                        "name": "Name"
                     },
                     {
                         "datatype": "string",
                         "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#comment",
                         "required": false,
                         "name": "Comment"
+                    },
+                    {
+                        "dc:description": "A reference to the meaning denoted by the form",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#parameterReference",
+                        "required": false,
+                        "separator": "; ",
+                        "name": "Parameter_ID"
                     }
                 ],
                 "foreignKeys": [
@@ -298,19 +297,10 @@
                         "name": "Language_ID"
                     },
                     {
-                        "dc:description": "A reference to the meaning denoted by the form",
                         "datatype": "string",
-                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#parameterReference",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#name",
                         "required": true,
-                        "name": "Parameter_ID"
-                    },
-                    {
-                        "dc:description": "The representation of the form.",
-                        "dc:extent": "singlevalued",
-                        "datatype": "string",
-                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#form",
-                        "required": true,
-                        "name": "Form"
+                        "name": "Name"
                     },
                     {
                         "dc:extent": "multivalued",
@@ -331,6 +321,14 @@
                         "datatype": "string",
                         "required": true,
                         "name": "Morpheme_ID"
+                    },
+                    {
+                        "dc:description": "A reference to the meaning denoted by the form",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#parameterReference",
+                        "required": false,
+                        "separator": "; ",
+                        "name": "Parameter_ID"
                     }
                 ],
                 "foreignKeys": [

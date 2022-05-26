@@ -1,4 +1,4 @@
-ID,Language_ID,Parameter_ID,Form,Comment
-tri-se,tri,SUP,-se,
-apa-se,apa,SUP,-se,
-apa-neg,apa,NEG,pɨra,
+ID,Language_ID,Name,Comment,Parameter_ID
+tri-se,tri,-se,,S; U; P
+apa-se,apa,-se,,S; U; P
+apa-neg,apa,pɨra,,N; E; G
