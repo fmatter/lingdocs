@@ -8,7 +8,7 @@ from clldutils import jsonlib
 from jinja2 import DictLoader
 from pylingdocs.config import DATA_DIR, MANEX_DIR
 from pylingdocs.config import TABLE_DIR
-from pylingdocs.config import TABLE_MD, CONTENT_FOLDER
+from pylingdocs.config import TABLE_MD
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import decorate_gloss_string
@@ -44,7 +44,7 @@ MANPEX_ITEM_PATTERN = re.compile(
 
 if Path("custom_pld_models.py").is_file():
     sys.path.append(os.getcwd())
-    from custom_pld_models import models as custom_models
+    from custom_pld_models import models as custom_models  # noqa
 
     models += custom_models
 
@@ -78,7 +78,7 @@ for output_format, env_dict in list_templates.items():
 
 if Path("pld/model_templates").is_dir():
     for model in Path("pld/model_templates").iterdir():
-        for output_format in templates.keys():
+        for output_format, template_collection in templates.items():
 
             templ_path = model / output_format / "detail.md"
             if not templ_path.is_file():
@@ -86,7 +86,7 @@ if Path("pld/model_templates").is_dir():
             if templ_path.is_file():
                 with open(templ_path, "r", encoding="utf-8") as f:
                     templ_content = f.read()
-                templates[output_format][model.name + "_detail.md"] = templ_content
+                template_collection[model.name + "_detail.md"] = templ_content
 
             templ_path = model / output_format / "index.md"
             if not templ_path.is_file():
@@ -94,7 +94,7 @@ if Path("pld/model_templates").is_dir():
             if templ_path.is_file():
                 with open(templ_path, "r", encoding="utf-8") as f:
                     templ_content = f.read()
-                list_templates[output_format][model.name + "_index.md"] = templ_content
+                template_collection[model.name + "_index.md"] = templ_content
 
 
 with open(DATA_DIR / "model_templates" / "latex_util.md", "r", encoding="utf-8") as f:
@@ -208,9 +208,8 @@ def load_manual_examples(md, source_dir="."):
         if key == "manex":
             manex__yaml_path = source_dir / MANEX_DIR / f"{url}.yaml"
             if manex__yaml_path.is_file():
-                mex_list = yaml.load(
-                    open(manex__yaml_path, encoding="utf-8"), Loader=yaml.SafeLoader
-                )
+                with open(manex__yaml_path, encoding="utf-8") as f:
+                    mex_list = yaml.load(f, Loader=yaml.SafeLoader)
                 output = []
                 for mex in mex_list:
                     manex_md_path = source_dir / MANEX_DIR / f"{mex}.md"

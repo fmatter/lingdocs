@@ -34,12 +34,11 @@ def html_example_wrap(tag, content, kind="example"):
 </ol>
 </li>
 </ol>"""
-    elif kind == "subexample":
+    if kind == "subexample":
         return f"""<li class="subexample" markdown="block" id="{tag}">
 <div markdown="block">{content}</div>
 </li>"""
-    else:
-        return f"""<ol markdown="block" class="example">
+    return f"""<ol markdown="block" class="example">
 <li class="example" markdown="block" id="{tag}"><div markdown="block">{content}</div>
 </li>
 </ol>"""

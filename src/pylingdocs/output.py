@@ -290,7 +290,7 @@ class CLLD(OutputFormat):
     def clld_gloss(url):
         return f"""<span class="smallcaps">{url}</span>"""
 
-    def clld_exref(url,**kwargs):
+    def clld_exref(url, **kwargs):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
         return f'<a class="exref" exid="{url}"{kw_str}></a>'
 
@@ -327,7 +327,7 @@ class Latex(OutputFormat):
     name = "latex"
     file_ext = "tex"
 
-    def latex_exref(url, end=None, suffix=""): 
+    def latex_exref(url, end=None, suffix=""):
         if end:
             return f"\\exref[{suffix}][{end}]{{{url}}}"
         return f"\\exref[{suffix}]{{{url}}}"
@@ -361,12 +361,12 @@ class Latex(OutputFormat):
         df = df.applymap(latexify_table)
         df.columns = list(map(latexify_table, df.columns))
         tabular = df.to_latex(escape=False, index=False)
-        if not caption: # tables in examples are handled differently
+        if not caption:  # tables in examples are handled differently
             return (
-                tabular.replace("\\toprule", "") # the only rule is: no rules
+                tabular.replace("\\toprule", "")  # the only rule is: no rules
                 .replace("\\midrule", "")
                 .replace("\\bottomrule", "")
-                .replace("\\begin{tabular}{", "\\begin{tabular}[t]{") # top aligned
+                .replace("\\begin{tabular}{", "\\begin{tabular}[t]{")  # top aligned
             )
         return f"""\\begin{{table}}
 \\caption{{{caption}}}
