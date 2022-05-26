@@ -17,7 +17,6 @@ from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import GLOSS_ABBREVS
 from pylingdocs.config import OUTPUT_DIR, LATEX_TOPLEVEL
-import pandas as pd
 from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file, html_example_wrap
@@ -25,12 +24,10 @@ from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import split_ref, latexify_table
 from pylingdocs.metadata import _read_metadata_file
 from pylingdocs.models import models
-from pylingdocs.pandoc_filters import fix_header
 from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import postprocess
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
-import os
 
 NUM_PRE = re.compile(r"[\d]+\ ")
 
@@ -42,13 +39,13 @@ class OutputFormat:
     file_ext = "txt"
     single_output = True
 
-    def ref_element(url, *args, **kwargs):
+    def ref_element(url):
         return f"(ref:{url})"
 
-    def label_element(url, *args, **kwargs):
+    def label_element(url):
         return f"(label:{url})"
 
-    def gloss_element(url, *args, **kwargs):
+    def gloss_element(url):
         return url.upper()
 
     doc_elements = {"ref": ref_element, "label": label_element, "gl": gloss_element}
@@ -73,8 +70,6 @@ class OutputFormat:
 
         if content is not None:
             content = cls.preprocess(content)
-            with open(f"{cls.name}_preprocessed.md", "w") as f:
-                f.write(content)
             extra.update({"content": content})
         extra.update(**metadata)
         local_template_path = (
@@ -173,6 +168,8 @@ class OutputFormat:
 
     @classmethod
     def manex(cls, tag, content, kind):
+        del tag  # unused
+        del kind  # unused
         return content
 
     @classmethod
@@ -205,20 +202,21 @@ class HTML(OutputFormat):
     file_ext = "html"
 
     def exref(url, *args, **kwargs):
+        del args  # unused
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
         return f'<a class="exref" exid="{url}"{kw_str}></a>'
 
-    def html_gl(url, *args, **kwargs):
+    def html_gl(url):
         return f'<span class="gloss">{url} <span class="tooltiptext gloss-{url}" ></span></span>'
 
     def html_label(url):
         return "{#" + url + "}" + f"\n <a id='{url}'></a>"
-# {{% raw %}}{{{{% endraw %}}#{url}}}{{% raw %}}}}{{% endraw %}}
+
+    # {{% raw %}}{{{{% endraw %}}#{url}}}{{% raw %}}}}{{% endraw %}}
     def html_ref(url):
         return f"<a href='#{url}' class='crossref' name='{url}'>ref</a>"
 
-    doc_elements = {"exref": exref, "gl": html_gl, "ref": html_ref, "label": html_label
-}
+    doc_elements = {"exref": exref, "gl": html_gl, "ref": html_ref, "label": html_label}
 
     @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
@@ -238,9 +236,10 @@ for (var i = 0; i < targets.length; i++) {{
         table = df.to_html(escape=False, index=False)
         if not label:
             return table
-        else:
-            return table.replace("<thead", f"<caption class='table' id ='tab:{label}'>{caption}</caption><thead")
-
+        return table.replace(
+            "<thead",
+            f"<caption class='table' id ='tab:{label}'>{caption}</caption><thead",
+        )
 
     @classmethod
     def preprocess(cls, content):
@@ -282,16 +281,16 @@ class CLLD(OutputFormat):
     file_ext = "md"
     single_output = False
 
-    def clld_ref(url, *args, **kwargs):
+    def clld_ref(url):
         return f"<a href='#{url}' class='crossref' id='{url}'>crossref</a>"
 
-    def clld_label(url, *args, **kwargs):
+    def clld_label(url):
         return f"<a id='{url}'></a>"
 
-    def clld_gloss(url, *args, **kwargs):
+    def clld_gloss(url):
         return f"""<span class="smallcaps">{url}</span>"""
 
-    def clld_exref(url, *args, **kwargs):
+    def clld_exref(url,**kwargs):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
         return f'<a class="exref" exid="{url}"{kw_str}></a>'
 
@@ -327,23 +326,33 @@ class CLLD(OutputFormat):
 class Latex(OutputFormat):
     name = "latex"
     file_ext = "tex"
-    doc_elements = {
-        "ref": lambda url: f"\\cref{{{url}}}",
-        "label": lambda url: f"\\label{{{url}}}",
-        "gl": lambda url: f"\\gl{{{url.lower()}}}",
-    }
 
-    @classmethod
-    def latex_exref(cls, url, end=None, *args, **kwargs):
+    def latex_exref(url, end=None, suffix=""): 
         if end:
-            return f"\\exref[][{end}]{{{url}}}"
-        return f"\\exref{{{url}}}"
+            return f"\\exref[{suffix}][{end}]{{{url}}}"
+        return f"\\exref[{suffix}]{{{url}}}"
+
+    def latex_label(url):
+        return f"\\label{{{url}}}"
+
+    def latex_ref(url):
+        return f"\\cref{{{url}}}"
+
+    def latex_gloss(url):
+        return f"\\gl{{{url.lower()}}}"
+
+    doc_elements = {
+        "exref": latex_exref,
+        "ref": latex_ref,
+        "label": latex_label,
+        "gl": latex_gloss,
+    }
 
     @classmethod
     def manex(cls, tag, content, kind):
         if kind == "multipart":
             return f"\\pex\\label{{{tag}}}{content}\\xe"
-        elif kind == "subexample":
+        if kind == "subexample":
             return f"\\a\\label{{{tag}}} {content}"
         return f"\\ex\\label{{{tag}}} {content} \\xe"
 
@@ -352,11 +361,12 @@ class Latex(OutputFormat):
         df = df.applymap(latexify_table)
         df.columns = list(map(latexify_table, df.columns))
         tabular = df.to_latex(escape=False, index=False)
-        if not caption:
+        if not caption: # tables in examples are handled differently
             return (
-                tabular.replace("\\toprule", "")
+                tabular.replace("\\toprule", "") # the only rule is: no rules
                 .replace("\\midrule", "")
                 .replace("\\bottomrule", "")
+                .replace("\\begin{tabular}{", "\\begin{tabular}[t]{") # top aligned
             )
         return f"""\\begin{{table}}
 \\caption{{{caption}}}
@@ -388,6 +398,7 @@ class Latex(OutputFormat):
             extra_args=[f"--top-level-division={LATEX_TOPLEVEL}"],
         )
         doc = doc.replace("\\pex\n\n", "\\pex\n")
+        doc = doc.replace("\n\n\\begin{tabular", "\n\\begin{tabular")
         return doc
 
     @classmethod
@@ -402,12 +413,11 @@ class Latex(OutputFormat):
         for author in authors:
             out.append(f'{author["given-names"]} {author["family-names"]}')
         if OUTPUT_TEMPLATES["latex"] == "memoir":
-            return ";".join(out)
-        else:
-            return " and ".join(out)
+            return ";".join(out)  # may want to use this for all templates at some point
+        return " and ".join(out)
 
     @classmethod
-    def replace_commands(cls, content):
+    def replace_commands(cls, content):  # pylint: disable=too-many-locals
         current = 0
         for m in MD_LINK_PATTERN.finditer(content):
             yield content[current : m.start()]
@@ -440,10 +450,8 @@ class Latex(OutputFormat):
                     yield f"\\textcite{cite_string}"
                 elif key == "psrc":
                     yield f"\\parencite{cite_string}"
-            elif key == "exref":
-                yield cls.latex_exref(url, *args, **kwargs)
             elif key in cls.doc_elements:
-                yield cls.doc_elements[key](url)
+                yield cls.doc_elements[key](url, *args, **kwargs)
             elif key == "abbrev_list":
                 yield cls.glossing_abbrevs_list(url)
             else:
@@ -555,7 +563,7 @@ def _load_content(structure, source_dir=CONTENT_FOLDER):
 def run_preview(refresh=True, latex=False, **kwargs):
     log.info("Rendering preview")
     watchfiles = [str(x) for x in kwargs["source_dir"].iterdir()]
-    watchfiles += [str(x) for x in (kwargs["source_dir"]/CONTENT_FOLDER).iterdir()]
+    watchfiles += [str(x) for x in (kwargs["source_dir"] / CONTENT_FOLDER).iterdir()]
     if refresh:
         wkwargs = kwargs.copy()
         wkwargs.update({"latex": latex})

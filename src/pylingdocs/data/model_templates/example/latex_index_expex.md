@@ -8,7 +8,7 @@
             {% endif %}
         {% endfor %}
 ```{=latex}
-\pex
+\pex\label{% raw %}{{% endraw %}{{example_id}}{% raw %}}{% endraw %}
 {% for example_id in ids %}
 {% set example = gathered_examples[example_id] %}
 \a {{ example.related('languageReference').name }}\\

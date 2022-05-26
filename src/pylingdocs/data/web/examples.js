@@ -20,8 +20,8 @@ function number_examples() {
             end = x.getAttribute("end")
             x.textContent += "-" + get_example_marker(end)
         }
-        if (x.hasAttribute("range")) {
-            x.textContent += x.getAttribute("range")
+        if (x.hasAttribute("suffix")) {
+            x.textContent += x.getAttribute("suffix")
         }
         x.textContent += ")"
     });
