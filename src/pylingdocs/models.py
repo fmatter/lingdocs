@@ -34,7 +34,7 @@ class Entity:
     """A dictionary of long jinja templates (not shown here)
 
        :meta hide-value:"""
-    list_templates = {"plain": "{% for x in ctx %} {{ x['Form'] }}{% endfor %}"}
+    list_templates = {"plain": "{% for x in ctx %} {{ x['Name'] }}{% endfor %}"}
     """A dictionary of long jinja templates (not shown here)
 
        :meta hide-value:"""
@@ -113,10 +113,10 @@ class Morpheme(Entity):
     shortcut = "mp"
 
     templates = {
-        "plain": """{{ ctx["Form"] }}""",
-        "github": """_{{ ctx["Form"] }}_""",
+        "plain": """{{ ctx["Name"] }}""",
+        "github": """_{{ ctx["Name"] }}_""",
         "latex": load_template("morpheme", "latex"),
-        "html": """<i>{{ctx["Form"]}}</i>""",
+        "html": """<i>{{ctx["Name"]}}</i>""",
     }
 
     list_templates = {

@@ -4,20 +4,28 @@
 <link rel="stylesheet" href="examples.css">
 <link rel="stylesheet" href="styling.css">
 <link rel="stylesheet" href="sections.css">
-<link rel="stylesheet" href="https://latex.now.sh/style.css">
+<!-- <link rel="stylesheet" href="https://latex.now.sh/style.css"> -->
 <title>{{ cookiecutter.project_title }}</title>
 </head>
 <body>
 
+<article>
 <h1>{{ cookiecutter.project_title }}</h1>
-<b>{{ cookiecutter.author }}</b>
+<div class="author">{{ cookiecutter.author }}</div>
 
 {{ cookiecutter.content }}
 
 {{ cookiecutter.glossing_abbrevs }}
-
+</article>
 <script src="examples.js"></script> 
 <script src="glossing.js"></script> 
+<script src="crossref.js"></script> 
+<script>
+number_examples()
+number_sections()
+number_captions()
+</script>
+
 
 </body>
 </html> 

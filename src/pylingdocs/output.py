@@ -208,7 +208,14 @@ class HTML(OutputFormat):
     def html_gl(url, *args, **kwargs):
         return f'<span class="gloss">{url} <span class="tooltiptext gloss-{url}" ></span></span>'
 
-    doc_elements = {"exref": exref, "gl": html_gl}
+    def html_label(url):
+        return f"<a id='{url}'></a>"
+
+    def html_ref(url):
+        return f"<a href='#{url}' class='crossref' name='{url}'>ref</a>"
+
+    doc_elements = {"exref": exref, "gl": html_gl, "ref": html_ref, "label": html_label
+}
 
     @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
@@ -225,7 +232,12 @@ for (var i = 0; i < targets.length; i++) {{
 
     @classmethod
     def table(cls, df, caption, label):
-        return df.to_html(escape=False, index=False)
+        table = df.to_html(escape=False, index=False)
+        if not label:
+            return table
+        else:
+            return table.replace("<thead", f"<caption class='table' id ='tab:{label}'>{caption}</caption><thead")
+
 
     @classmethod
     def preprocess(cls, content):
@@ -235,6 +247,12 @@ for (var i = 0; i < targets.length; i++) {{
             input_format="markdown",
             extra_args=["--shift-heading-level-by=1"],
         )
+
+    @classmethod
+    def manex(cls, tag, content, kind):
+        if content.strip().startswith("PYLINGDOCS_RAW_TABLE_START"):
+            content = " \n \n" + content
+        return html_example_wrap(tag, content, kind=kind)
 
 
 class GitHub(OutputFormat):
@@ -262,7 +280,7 @@ class CLLD(OutputFormat):
     single_output = False
 
     def clld_ref(url, *args, **kwargs):
-        return f"<a href='#{url}'>crossref</a>"
+        return f"<a href='#{url}' class='crossref' id='{url}'>crossref</a>"
 
     def clld_label(url, *args, **kwargs):
         return f"<a id='{url}'></a>"
@@ -288,7 +306,7 @@ class CLLD(OutputFormat):
                 df = df.append({x: "" for x in df.columns}, ignore_index=True)
             return df.to_markdown(index=False)
         return (
-            f"<a id='tab:{label}'></a><caption class='table' id='tab:{label}'>{caption}</caption>\n\n"
+            f"<a id='tab:{label}'></a><div class='caption table' id='tab:{label}'>{caption}</div>\n\n"
             + df.to_markdown(index=False)
         )
 

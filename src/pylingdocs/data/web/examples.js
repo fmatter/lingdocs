@@ -30,9 +30,13 @@ function number_examples() {
 
 function get_example_marker(exid) {
     ex = document.getElementById(exid)
-    parent = ex.parentElement
-    if (parent.getAttribute("class") == "subexample") {
-        return parent.parentElement.value + String.fromCharCode(96 + ex.value)
-    }
+    if (ex != null) {
+        parent = ex.parentElement
+        if (parent.getAttribute("class") == "subexample") {
+            return parent.parentElement.value + String.fromCharCode(96 + ex.value)
+        }
     return ex.value
+    } else {
+        console.log("Can't find example with the ID " + exid)
+    }
 }
