@@ -552,6 +552,7 @@ def _load_content(structure, source_dir=CONTENT_FOLDER):
 def run_preview(refresh=True, latex=False, **kwargs):
     log.info("Rendering preview")
     watchfiles = [str(x) for x in kwargs["source_dir"].iterdir()]
+    watchfiles += [str(x) for x in (kwargs["source_dir"]/CONTENT_FOLDER).iterdir()]
     if refresh:
         wkwargs = kwargs.copy()
         wkwargs.update({"latex": latex})
