@@ -41,7 +41,7 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
 
     create_output(
-        source_dir=data / "content/",
+        source_dir=data,
         output_dir="output",
         dataset=dataset,
         formats=["plain", "latex", "clld"],

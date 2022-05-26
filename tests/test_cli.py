@@ -36,10 +36,10 @@ def test_missing(caplog, tmp_path, md_path, data, monkeypatch):
 
     # add structure
     result = runner.invoke(
-        build, args=["--cldf", md_path, "--source", data / "content"]
+        build, args=["--cldf", md_path, "--source", data ]
     )
-    assert result.exit_code == 1
-    assert "Table file" in caplog.text
+    assert result.exit_code == 0
+    assert "Could not find metadata" in caplog.text
 
 
 def test_cli_build(caplog, tmp_path, md_path, data, monkeypatch):
@@ -50,11 +50,10 @@ def test_cli_build(caplog, tmp_path, md_path, data, monkeypatch):
     # add tables
     shutil.copytree(data / "tables", tmp_path / "tables")
     runner.invoke(
-        build, args=["--cldf", md_path, "--source", data / "content", "--release"]
+        build, args=["--cldf", md_path, "--source", data , "--release"]
     )
 
     assert "Rendering" in caplog.text
-    assert "metadata.yaml not found" in caplog.text
 
     output_formats = [x.name for x in (tmp_path / "output").iterdir()]
 
@@ -65,7 +64,7 @@ def test_cli_build(caplog, tmp_path, md_path, data, monkeypatch):
 
     for x in tmp_path.iterdir():
         if "README" in x.name or "CITATION" in x.name:
-            assert "Anonymous" in open(x).read()
+            assert "Florian" in open(x).read()
 
 
 # same with metadata file
@@ -78,7 +77,7 @@ def test_cli_metadata(caplog, tmp_path, md_path, data, monkeypatch):
     shutil.copytree(data / "tables", tmp_path / "tables")
     shutil.copy(data / "metadata.yaml", tmp_path / "metadata.yaml")
     result = runner.invoke(
-        build, args=["--cldf", md_path, "--source", data / "content", "--release"]
+        build, args=["--cldf", md_path, "--source", data , "--release"]
     )
     assert "metadata.yaml not found" not in caplog.text
 
@@ -97,7 +96,7 @@ def test_cli_preview(caplog, tmp_path, md_path, data, monkeypatch):
     monkeypatch.chdir(tmp_path)
     result = runner.invoke(
         preview,
-        args=["--cldf", md_path, "--source", data / "content", "--refresh", False],
+        args=["--cldf", md_path, "--source", data , "--refresh", False],
     )
     assert "Rendering preview" in caplog.text
     assert result.exit_code == 0

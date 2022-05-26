@@ -289,7 +289,7 @@ class CLLD(OutputFormat):
         return f"<a href='#{url}' class='crossref' id='{url}'>crossref</a>"
 
     def clld_label(url):
-        return f"<a id='{url}'></a>"
+        return f"{{#{url}}}"
 
     def clld_gloss(url):
         return f"""<span class="smallcaps">{url}</span>"""
