@@ -73,6 +73,8 @@ class OutputFormat:
 
         if content is not None:
             content = cls.preprocess(content)
+            with open(f"{cls.name}_preprocessed.md", "w") as f:
+                f.write(content)
             extra.update({"content": content})
         extra.update(**metadata)
         local_template_path = (
@@ -210,8 +212,8 @@ class HTML(OutputFormat):
         return f'<span class="gloss">{url} <span class="tooltiptext gloss-{url}" ></span></span>'
 
     def html_label(url):
-        return f"<a id='{url}'></a>"
-
+        return "{#" + url + "}" + f"\n <a id='{url}'></a>"
+# {{% raw %}}{{{{% endraw %}}#{url}}}{{% raw %}}}}{{% endraw %}}
     def html_ref(url):
         return f"<a href='#{url}' class='crossref' name='{url}'>ref</a>"
 

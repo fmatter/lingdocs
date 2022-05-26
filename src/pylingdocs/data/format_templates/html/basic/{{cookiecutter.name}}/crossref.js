@@ -6,6 +6,9 @@ function get_number_label(counters, level) {
     return output.join(".")
 }
 
+var stored = {}
+
+
 function number_sections(){
     var counters = {};
     var levels = ["h2", "h3", "h4", "h5", "h6"];
@@ -28,6 +31,8 @@ function number_sections(){
         heading.textContent = prefix + number + ". " + heading.textContent
         // reset the smaller counters
         reached = false;
+        console.log(heading)
+        stored[heading.id] = prefix + number
         levels.forEach(function(level_comp, j) {
             if (reached){
                 counters[level_comp] = 0
@@ -48,7 +53,6 @@ function number_captions(){
     var captions = document.querySelectorAll("caption");
     var kinds = ["table", "figure"]
     var counters = {"table": 0, "figure": 0}
-    var stored = {}
     captions.forEach(function(caption, i) {
         kinds.forEach(function(kind, j) {
             if (caption.classList.contains(kind)){
@@ -60,7 +64,7 @@ function number_captions(){
         });
     });
     var refs = document.querySelectorAll("a.crossref");
-
+    console.log(stored)
     refs.forEach(function(ref, i) {
         ref.textContent = stored[ref.name]
     })
