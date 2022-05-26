@@ -45,6 +45,7 @@ MANPEX_ITEM_PATTERN = re.compile(
 if Path("custom_pld_models.py").is_file():
     sys.path.append(os.getcwd())
     from custom_pld_models import models as custom_models
+
     models += custom_models
 
 
@@ -85,7 +86,7 @@ if Path("pld/model_templates").is_dir():
             if templ_path.is_file():
                 with open(templ_path, "r", encoding="utf-8") as f:
                     templ_content = f.read()
-                templates[output_format][model.name+"_detail.md"] = templ_content
+                templates[output_format][model.name + "_detail.md"] = templ_content
 
             templ_path = model / output_format / "index.md"
             if not templ_path.is_file():
@@ -93,7 +94,7 @@ if Path("pld/model_templates").is_dir():
             if templ_path.is_file():
                 with open(templ_path, "r", encoding="utf-8") as f:
                     templ_content = f.read()
-                list_templates[output_format][model.name+"_index.md"] = templ_content
+                list_templates[output_format][model.name + "_index.md"] = templ_content
 
 
 with open(DATA_DIR / "model_templates" / "latex_util.md", "r", encoding="utf-8") as f:
@@ -250,13 +251,11 @@ def insert_tables(md, builder, tables):
         df.columns = [col if "Unnamed: " not in col else "" for col in df.columns]
         if label not in tables:
             log.warning(f"Could not find metadata for table {label}.")
-            yield builder.table(
-                df=df, caption=None, label=None
-            )
+            yield builder.table(df=df, caption=None, label=None)
         else:
             yield builder.table(
-            df=df, caption=tables[label].get("caption", None), label=label
-        )
+                df=df, caption=tables[label].get("caption", None), label=label
+            )
     yield md[current:]
 
 

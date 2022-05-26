@@ -42,7 +42,6 @@ class OutputFormat:
     file_ext = "txt"
     single_output = True
 
-
     def ref_element(url, *args, **kwargs):
         return f"(ref:{url})"
 
@@ -52,11 +51,7 @@ class OutputFormat:
     def gloss_element(url, *args, **kwargs):
         return url.upper()
 
-    doc_elements = {
-        "ref": ref_element,
-        "label": label_element,
-        "gl": gloss_element,
-    }
+    doc_elements = {"ref": ref_element, "label": label_element, "gl": gloss_element}
 
     @classmethod
     def write_folder(
@@ -80,11 +75,15 @@ class OutputFormat:
             content = cls.preprocess(content)
             extra.update({"content": content})
         extra.update(**metadata)
-        local_template_path = Path("pld") / "output_templates" / cls.name / OUTPUT_TEMPLATES[cls.name]
+        local_template_path = (
+            Path("pld") / "output_templates" / cls.name / OUTPUT_TEMPLATES[cls.name]
+        )
         if local_template_path.is_dir():
             template_path = str(local_template_path)
         else:
-            template_path = str(DATA_DIR / "format_templates" / cls.name / OUTPUT_TEMPLATES[cls.name])
+            template_path = str(
+                DATA_DIR / "format_templates" / cls.name / OUTPUT_TEMPLATES[cls.name]
+            )
         cookiecutter(
             template_path,
             output_dir=output_dir,
@@ -209,10 +208,7 @@ class HTML(OutputFormat):
     def html_gl(url, *args, **kwargs):
         return f'<span class="gloss">{url} <span class="tooltiptext gloss-{url}" ></span></span>'
 
-    doc_elements = {
-        "exref": exref,
-        "gl": html_gl,
-    }
+    doc_elements = {"exref": exref, "gl": html_gl}
 
     @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
@@ -270,19 +266,19 @@ class CLLD(OutputFormat):
 
     def clld_label(url, *args, **kwargs):
         return f"<a id='{url}'></a>"
-        
+
     def clld_gloss(url, *args, **kwargs):
         return f"""<span class="smallcaps">{url}</span>"""
-        
+
     def clld_exref(url, *args, **kwargs):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
         return f'<a class="exref" exid="{url}"{kw_str}></a>'
-        
+
     doc_elements = {
         "ref": clld_ref,
-        "label": clld_label ,
+        "label": clld_label,
         "gl": clld_gloss,
-        "exref": clld_exref ,
+        "exref": clld_exref,
     }
 
     @classmethod
@@ -291,7 +287,10 @@ class CLLD(OutputFormat):
             if len(df) == 0:
                 df = df.append({x: "" for x in df.columns}, ignore_index=True)
             return df.to_markdown(index=False)
-        return f"<a id='tab:{label}'></a><span class='caption' id='tab:{label}'>{caption}</span>\n\n" + df.to_markdown(index=False)
+        return (
+            f"<a id='tab:{label}'></a><caption class='table' id='tab:{label}'>{caption}</caption>\n\n"
+            + df.to_markdown(index=False)
+        )
 
     @classmethod
     def reference_list(cls):
@@ -362,8 +361,11 @@ class Latex(OutputFormat):
     @classmethod
     def preprocess(cls, content):
         doc = panflute.convert_text(
-                content, output_format="latex", input_format="markdown-auto_identifiers", extra_args=[f"--top-level-division={LATEX_TOPLEVEL}"]
-            )
+            content,
+            output_format="latex",
+            input_format="markdown-auto_identifiers",
+            extra_args=[f"--top-level-division={LATEX_TOPLEVEL}"],
+        )
         doc = doc.replace("\\pex\n\n", "\\pex\n")
         return doc
 
