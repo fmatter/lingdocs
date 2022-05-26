@@ -203,7 +203,8 @@ class HTML(OutputFormat):
     file_ext = "html"
 
     def exref(url, *args, **kwargs):
-        return f'<a class="exref" exid="{url}"></a>'
+        kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
+        return f'<a class="exref" exid="{url}"{kw_str}></a>'
 
     def html_gl(url, *args, **kwargs):
         return f'<span class="gloss">{url} <span class="tooltiptext gloss-{url}" ></span></span>'

@@ -30,6 +30,7 @@ function number_examples() {
 
 function get_example_marker(exid) {
     ex = document.getElementById(exid)
+    console.log(ex)
     if (ex != null) {
         parent = ex.parentElement
         if (parent.getAttribute("class") == "subexample") {

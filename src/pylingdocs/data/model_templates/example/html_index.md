@@ -9,8 +9,8 @@
     {% endfor %}
 ```{=html}
 <ol class="example">
-    <li class="example">
-        <ol class="subexample" id ="{{ example_id or 'multipartexample' }}">
+    <li class="example" id="{{exid}}">
+        <ol class="subexample">
             {% for exid, example in gathered_examples.items() %}
                 {{ util.example(example, class_="subexample") }}
             {% endfor %}
