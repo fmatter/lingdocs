@@ -7,18 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+* manual (i.e., non-interlinear) examples (`[manex](id)`)
 * references in LaTeX and HTML IGT examples
 * proper handling of glossing abbreviations in LaTeX and HTML output
-* better exref commands
-* custom models and model templates
-* custom output templates
+* better exref commands (with arguments `end` and `suffix`)
+* allow custom models and model templates
+* allow custom output templates
 * LaTeX memoir template
 
 ### Removed
-
+* many small bugs
 
 ### Changed
 * prettier LaTeX layouting
+* HTML layout
+* `wf` shortcut for forms
+* relative file paths, `--source` should work now
 
 ## [0.0.2] -- 2022-05-20
 
