@@ -38,6 +38,13 @@ NUM_PRE = re.compile(r"[\d]+\ ")
 log = logging.getLogger(__name__)
 
 
+def blank_todo(url):
+    return ""
+
+
+text_urls = ["todo"]
+
+
 class OutputFormat:
     name = "boilerplate"
     file_ext = "txt"
@@ -52,7 +59,12 @@ class OutputFormat:
     def gloss_element(url):
         return url.upper()
 
-    doc_elements = {"ref": ref_element, "label": label_element, "gl": gloss_element}
+    doc_elements = {
+        "ref": ref_element,
+        "label": label_element,
+        "gl": gloss_element,
+        "todo": blank_todo,
+    }
 
     @classmethod
     def write_folder(
@@ -127,7 +139,7 @@ class OutputFormat:
             url = m.group("url")
             args = []
             kwargs = {}
-            if "?" in url:
+            if "?" in url and key not in text_urls:
                 url, arguments = url.split("?")
                 for arg in arguments.split("&"):
                     if "=" in arg:
@@ -220,7 +232,13 @@ class HTML(OutputFormat):
     def html_ref(url):
         return f"<a href='#{url}' class='crossref' name='{url}'>ref</a>"
 
-    doc_elements = {"exref": exref, "gl": html_gl, "ref": html_ref, "label": html_label}
+    doc_elements = {
+        "exref": exref,
+        "gl": html_gl,
+        "ref": html_ref,
+        "label": html_label,
+        "todo": blank_todo,
+    }
 
     @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
@@ -298,11 +316,15 @@ class CLLD(OutputFormat):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
         return f'<a class="exref" exid="{url}"{kw_str}></a>'
 
+    def clld_todo(url):
+        return f"<span title='{url}'>❓</span>"
+
     doc_elements = {
         "ref": clld_ref,
         "label": clld_label,
         "gl": clld_gloss,
         "exref": clld_exref,
+        "todo": clld_todo,
     }
 
     @classmethod
@@ -350,6 +372,7 @@ class Latex(OutputFormat):
         "ref": latex_ref,
         "label": latex_label,
         "gl": latex_gloss,
+        "todo": blank_todo,
     }
 
     @classmethod
