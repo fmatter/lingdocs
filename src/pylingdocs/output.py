@@ -362,9 +362,15 @@ class Latex(OutputFormat):
 
     @classmethod
     def table(cls, df, caption, label):
-        df = df.applymap(latexify_table)
-        df.columns = list(map(latexify_table, df.columns))
-        tabular = df.to_latex(escape=False, index=False)
+        if len(df) == 0:
+            df = df.append({x: x for x in df.columns}, ignore_index=True)
+            df = df.applymap(latexify_table)
+            tabular = df.to_latex(escape=False, index=False, header=False)
+        else:
+            df = df.applymap(latexify_table)
+            df.columns = list(map(latexify_table, df.columns))
+            tabular = df.to_latex(escape=False, index=False)
+
         if not caption:  # tables in examples are handled differently
             return (
                 tabular.replace("\\toprule", "")  # the only rule is: no rules
