@@ -42,7 +42,7 @@ def blank_todo(url):
     return ""
 
 
-text_urls = ["todo"]
+text_commands = ["todo"]
 
 
 class OutputFormat:
@@ -139,7 +139,7 @@ class OutputFormat:
             url = m.group("url")
             args = []
             kwargs = {}
-            if "?" in url and key not in text_urls:
+            if "?" in url and key not in text_commands:
                 url, arguments = url.split("?")
                 for arg in arguments.split("&"):
                     if "=" in arg:
@@ -463,7 +463,7 @@ class Latex(OutputFormat):
             url = m.group("url")
             kwargs = {}
             args = []
-            if "?" in url:
+            if "?" in url and key not in text_commands:
                 url, arguments = url.split("?")
                 for arg in arguments.split("&"):
                     if "=" in arg:
