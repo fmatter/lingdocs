@@ -403,6 +403,8 @@ class Latex(OutputFormat):
         )
         doc = doc.replace("\\pex\n\n", "\\pex\n")
         doc = doc.replace("\n\n\\begin{tabular", "\n\\begin{tabular")
+        doc = doc.replace("\\begin{tabular}[t]", "\n\\begin{tabular}[t]")
+        doc = doc.replace("}\n\n\\begin{tabular}[t]", "}\\begin{tabular}[t]")
         return doc
 
     @classmethod
