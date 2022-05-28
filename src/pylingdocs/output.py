@@ -317,7 +317,9 @@ class CLLD(OutputFormat):
         return f'<a class="exref" exid="{url}"{kw_str}></a>'
 
     def clld_todo(url):
-        return f"<span title='{url}'>❓</span>"
+        if "?" in url:
+            return f"<span title='{url}'>❓</span>"
+        return f"<span title='{url}'>❗️</span>"
 
     doc_elements = {
         "ref": clld_ref,
