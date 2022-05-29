@@ -12,22 +12,27 @@
 {% endif %}
 ```{=latex}
 \ex {{ ctx.related('languageReference').name }}{{ref_string}} \\
-\label{% raw %}{{% endraw %}{{ example_id or ctx.id }}{% raw %}}{% endraw %}\begingl
-\glpreamble {{ sanitize_latex(ctx.cldf.primaryText) }} //
+\label{% raw %}{{% endraw %}{{ example_id or ctx.id }}{% raw %}}{% endraw %}
 {% if ctx.cldf.analyzedWord != [] %}
-{% set objlist = [] %}
-{% for o in ctx.cldf.analyzedWord %}
-    {% set objlist = objlist.append(sanitize_latex(o)) %}
-{% endfor %}
-{% set glosslist = [] %}
-{% for g in ctx.cldf.gloss %}
-    {% set glosslist = glosslist.append(sanitize_latex(decorate_gloss_string(g))) %}
-{% endfor %}
-\gla {{ " ".join(objlist) }}//
-\glb {{ " ".join(glosslist) }}//
-{% endif %}
-{% if ctx.cldf.translatedText != None %}
-\glft ‘{{ sanitize_latex(ctx.cldf.translatedText) }}’// {% endif %} 
-\endgl 
+    \begingl
+    \glpreamble {{ sanitize_latex(ctx.cldf.primaryText) }} //
+    {% set objlist = [] %}
+    {% for o in ctx.cldf.analyzedWord %}
+        {% set objlist = objlist.append(sanitize_latex(o)) %}
+    {% endfor %}
+    {% set glosslist = [] %}
+    {% for g in ctx.cldf.gloss %}
+        {% set glosslist = glosslist.append(sanitize_latex(decorate_gloss_string(g))) %}
+    {% endfor %}
+    \gla {{ " ".join(objlist) }}//
+    \glb {{ " ".join(glosslist) }}//
+    {% if ctx.cldf.translatedText != None %}
+        \glft ‘{{ sanitize_latex(ctx.cldf.translatedText) }}’// {% endif %} 
+    \endgl 
+{% else %}
+    \textit{% raw %}{{% endraw %}{{sanitize_latex(ctx.cldf.primaryText).strip()}} }\\
+    {% if ctx.cldf.translatedText != None %}
+        ‘{{ sanitize_latex(ctx.cldf.translatedText) }}’ {% endif %}
+    {% endif %}
 \xe
 ```
