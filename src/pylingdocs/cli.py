@@ -17,7 +17,7 @@ from pylingdocs.helpers import _load_cldf_dataset
 from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import new as create_new
 from pylingdocs.helpers import write_readme
-from pylingdocs.metadata import _read_metadata_file
+from pylingdocs.metadata import _load_metadata
 from pylingdocs.output import clean_output
 from pylingdocs.output import compile_latex as cmplatex
 from pylingdocs.output import create_output
@@ -84,7 +84,7 @@ def build(
     source = Path(source)
     output_dir = Path(output_dir)
     ds = _load_cldf_dataset(cldf)
-    metadata = _read_metadata_file(source / METADATA_FILE)
+    metadata = _load_metadata(source / METADATA_FILE)
     structure = _load_structure(
         _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
     )
@@ -113,7 +113,7 @@ def preview(  # pylint: disable=too-many-arguments
     source = Path(source)
     output_dir = Path(output_dir)
     ds = _load_cldf_dataset(cldf)
-    metadata = _read_metadata_file(METADATA_FILE)
+    metadata = _load_metadata(METADATA_FILE)
     structure = _load_structure(
         _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
     )

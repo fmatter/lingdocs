@@ -1,0 +1,32 @@
+{
+    "url": "ContributorTable",
+    "dc:conformsTo": null,
+    "dc:extent": 55,
+    "tableSchema": {
+        "columns": [
+            {
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
+                "required": true,
+                "name": "ID"
+            },
+            {
+                "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#name",
+                "required": true,
+                "name": "Name"
+            },
+            {
+                "name": "Email"
+            },
+            {
+                "name": "Url"
+            },
+            {
+                "datatype": "integer",
+                "name": "Order"
+            }
+        ],
+        "primaryKey": [
+            "ID"
+        ]
+    }
+}

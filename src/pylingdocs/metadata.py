@@ -32,6 +32,11 @@ bibtex_rev = {y: x for x, y in bibtex_repl.items()}
 remove_fields = []
 
 
+def _license_url(s):
+    license_dic = {"CC-BY-SA-4.0": "http://creativecommons.org/licenses/by/4.0/"}
+    return license_dic.get(s, "")
+
+
 def _load_bib(metadata_file=METADATA_FILE):
     md = _read_metadata_file(metadata_file)
     entry_type = md.get("type", "article")
@@ -99,4 +104,6 @@ def _load_metadata(metadata_file=METADATA_FILE):
         for author in md["authors"]:
             if "orcid" in author and "http" not in author["orcid"]:
                 author["orcid"] = ORCID_STR + author["orcid"]
+    if "license" in md:
+        md["license"] = _license_url(md["license"])
     return md

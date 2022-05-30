@@ -7,11 +7,13 @@ import sys
 from pathlib import Path
 from pathlib import PosixPath
 import hupper
+import pandas as pd
 import panflute
 from cookiecutter.main import cookiecutter
 from jinja2 import Environment
 from jinja2 import PackageLoader
 from jinja2.exceptions import TemplateNotFound
+from slugify import slugify
 from pylingdocs.config import BENCH
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
@@ -25,7 +27,7 @@ from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import html_example_wrap
 from pylingdocs.helpers import latexify_table
 from pylingdocs.helpers import split_ref
-from pylingdocs.metadata import _read_metadata_file
+from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
 from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import postprocess
@@ -39,6 +41,7 @@ log = logging.getLogger(__name__)
 
 
 def blank_todo(url):
+    del url
     return ""
 
 
@@ -317,7 +320,7 @@ class CLLD(OutputFormat):
         return f'<a class="exref" exid="{url}"{kw_str}></a>'
 
     def clld_todo(url):
-        if "?" in url:
+        if "?" in str(url):
             return f"<span title='{url}'>❓</span>"
         return f"<span title='{url}'>❗️</span>"
 
@@ -349,6 +352,69 @@ class CLLD(OutputFormat):
         if content.strip().startswith("PYLINGDOCS_RAW_TABLE_START"):
             content = " \n \n" + content
         return html_example_wrap(tag, content, kind=kind)
+
+    @classmethod
+    def write_folder(
+        cls, output_dir, content=None, parts=None, metadata=None, abbrev_dict=None
+    ):  # pylint: disable=too-many-arguments disable=too-many-locals
+        my_output_dir = output_dir / cls.name
+        if not (my_output_dir).is_dir():
+            (my_output_dir).mkdir()
+        tent = "\n" + content
+        delim = "\n# "
+        parts = tent.split(delim)[1::]
+
+        if len(parts) == 0:
+            with open(my_output_dir / "content.txt", "w", encoding="utf-8") as f:
+                f.write(content)
+        else:
+            tag_dic = {}
+            content_dic = {}
+            for (i, part) in enumerate(parts):
+                title, content = part.split("\n", 1)
+                tag = re.findall("{#(.*?)}", title)
+                title = title.split("{#")[0].strip()
+                if len(tag) == 0:
+                    tag = slugify(title)
+                else:
+                    tag = tag[0]
+                content_dic[tag] = {
+                    "title": title,
+                    "content": f"<a id='{tag}'></a>" + content,
+                }
+
+                tags = re.findall("{#(.*?)}", content_dic[tag]["content"])
+                table_tags = re.findall(
+                    "<div class='caption table' id='(.*?)'>",
+                    content_dic[tag]["content"],
+                )
+                for subtag in tags + table_tags:
+                    if subtag in tag_dic:
+                        print(f"duplicate tag {subtag} in {tag}: {tag_dic[subtag]}")
+                    tag_dic[subtag] = tag
+                tag_dic[tag] = tag
+
+            for tag, data in content_dic.items():
+                refs = re.findall(r"<a href='#(.*?)' .*?</a>", tent)
+                for ref in refs:
+                    if tag_dic[ref] != tag:
+                        data["content"] = re.sub(
+                            rf"<a href='#{ref}'.*?</a>",
+                            f"[crossref](ChapterTable?_anchor={ref}#cldf:{tag_dic[ref]})",
+                            data["content"],
+                        )
+
+            for i, (chapter, data) in enumerate(content_dic.items()):
+                content = data.pop("content")
+                number = i + 1
+                filename = f"{number}_{chapter}.txt"
+                data["Filename"] = filename
+                data["Number"] = number
+                with open(my_output_dir / filename, "w", encoding="utf-8") as f:
+                    f.write(content)
+            chapter_data = pd.DataFrame.from_dict(content_dic, orient="index")
+            chapter_data.index.name = "ID"
+            chapter_data.to_csv(my_output_dir / "chapters.csv")
 
 
 class Latex(OutputFormat):
@@ -637,7 +703,7 @@ def create_output(
     if isinstance(structure, (str, PosixPath)):
         structure = _load_structure(source_dir / CONTENT_FOLDER / structure)
     if isinstance(metadata, (str, PosixPath)):
-        metadata = _read_metadata_file(metadata, source_dir)
+        metadata = _load_metadata(metadata)
     if metadata is None:
         metadata = {}
     metadata.update({"bibfile": Path(dataset.bibpath).resolve()})
@@ -674,9 +740,17 @@ def create_output(
                 abbrev_dict=GLOSS_ABBREVS,
             )
         elif builder.name == "clld":
+            builder.write_folder(
+                output_dir,
+                content=preprocessed,
+                parts=parts,
+                metadata=metadata,
+                abbrev_dict=GLOSS_ABBREVS,
+            )
             # builder.create_app()
-            with open("clld_output.txt", "w", encoding="utf-8") as f:
-                f.write(preprocessed)
+            # write_clld(preprocessed)
+            # with open("clld_output.txt", "w", encoding="utf-8") as f:
+            #     f.write(preprocessed)
         else:
             pass
     if latex:
