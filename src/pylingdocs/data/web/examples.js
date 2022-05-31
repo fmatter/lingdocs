@@ -13,9 +13,9 @@ function number_examples() {
         }
     }
     exrefs.forEach(function(x, i) {
-        exid = x.getAttribute("exid")
-        x.setAttribute("href", "#" + exid)
-        x.textContent = "("+get_example_marker(exid)
+        example_id = x.getAttribute("example_id")
+        x.setAttribute("href", "#" + example_id)
+        x.textContent = "("+get_example_marker(example_id)
         if (x.hasAttribute("end")) {
             end = x.getAttribute("end")
             x.textContent += "-" + get_example_marker(end)
@@ -28,8 +28,8 @@ function number_examples() {
 }
 
 
-function get_example_marker(exid) {
-    ex = document.getElementById(exid)
+function get_example_marker(example_id) {
+    ex = document.getElementById(example_id)
     console.log(ex)
     if (ex != null) {
         parent = ex.parentElement
@@ -38,6 +38,6 @@ function get_example_marker(exid) {
         }
     return ex.value
     } else {
-        console.log("Can't find example with the ID " + exid)
+        console.log("Can't find example with the ID " + example_id)
     }
 }

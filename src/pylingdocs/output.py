@@ -223,7 +223,7 @@ class HTML(OutputFormat):
     def exref(url, *args, **kwargs):
         del args  # unused
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
-        return f'<a class="exref" exid="{url}"{kw_str}></a>'
+        return f'<a class="exref" example_id="{url}"{kw_str}></a>'
 
     def html_gl(url):
         return f'<span class="gloss">{url} <span class="tooltiptext gloss-{url}" ></span></span>'
@@ -317,7 +317,7 @@ class CLLD(OutputFormat):
 
     def clld_exref(url, **kwargs):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
-        return f'<a class="exref" exid="{url}"{kw_str}></a>'
+        return f'<a class="exref" example_id="{url}"{kw_str}></a>'
 
     def clld_todo(url):
         if "?" in str(url):
