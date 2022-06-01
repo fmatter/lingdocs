@@ -3,6 +3,7 @@
   `with_primaryText`
   `with_internal_ref_link`
   `example_id`
+  `format`
 #}
 {% import 'latex_util.md' as util %}
 {% if ctx.references %}
@@ -11,7 +12,7 @@
 {% set ref_string = "" %}
 {% endif %}
 ```{=latex}
-\ex {{ ctx.related('languageReference').name }}{{ref_string}} \\
+{% if format=="subexample" %}\a{%else%}\ex{%endif%} {{ ctx.related('languageReference').name }}{{ref_string}} \\
 \label{% raw %}{{% endraw %}{{ example_id or ctx.id }}{% raw %}}{% endraw %}
 {% if ctx.cldf.analyzedWord != [] %}
     \begingl
@@ -34,5 +35,6 @@
     {% if ctx.cldf.translatedText != None %}
         ‘{{ sanitize_latex(ctx.cldf.translatedText) }}’ {% endif %}
     {% endif %}
-\xe
+{% if format=="subexample" %}{%else%}\xe{%endif%}
+
 ```

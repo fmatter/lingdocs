@@ -1,10 +1,17 @@
 {# 
   Render an example object as IGT (if possible). 
   `example_id`
+  `format`
 #}
 {% import 'html_util.md' as util %}
+{%if format=="subexample"%}
+```{=html}
+{{ util.example(ctx, class_="subexample") }}
+```
+{%else%}
 ```{=html}
 <ol class="example">
 {{ util.example(ctx) }}
 </ol>
 ```
+{%endif%}

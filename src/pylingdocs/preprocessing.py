@@ -214,15 +214,18 @@ def load_manual_examples(md, source_dir="."):
                     mex_list = yaml.load(f, Loader=yaml.SafeLoader)
                 output = []
                 for mex in mex_list:
-                    manex_md_path = source_dir / MANEX_DIR / f"{mex}.md"
-                    with open(manex_md_path, "r", encoding="utf-8") as f:
-                        output.append(
-                            "PYLINGDOCS_MANPEXITEM_START"
-                            + mex
-                            + "CONTENT_START"
-                            + f.read()
-                            + "PYLINGDOCS_MANPEXITEM_END"
-                        )
+                    if mex.startswith("ex:"):
+                        output.append("[ex](ctorat-30?format=subexample)")
+                    else:
+                        manex_md_path = source_dir / MANEX_DIR / f"{mex}.md"
+                        with open(manex_md_path, "r", encoding="utf-8") as f:
+                            output.append(
+                                "PYLINGDOCS_MANPEXITEM_START"
+                                + mex
+                                + "CONTENT_START"
+                                + f.read()
+                                + "PYLINGDOCS_MANPEXITEM_END"
+                            )
                 yield "PYLINGDOCS_MANPEX_START" + url + "CONTENT_START\n" + "\n".join(
                     output
                 ) + "\nPYLINGDOCS_MANPEX_END"
