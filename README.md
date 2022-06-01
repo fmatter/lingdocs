@@ -14,8 +14,8 @@ Create data-rich linguistic documents.
 The main functionalities of `pylingdocs` are showcased in the demo, where [this text](https://github.com/fmatter/pylingdocs/blob/main/docs/demo.txt), using [this dataset](https://github.com/fmatter/pylingdocs/tree/main/tests/data/cldf), is turned into a [PDF file](https://raw.githubusercontent.com/fmatter/pylingdocs/main/docs/demo.pdf).
 Integration into CLLD web apps is possible with the [clld-markdown-plugin](https://github.com/clld/clld-markdown-plugin/); an example can be inspected [here](https://fl.mt/yawarana-sketch).
 
-The documentation lives at [pylingdocs.readthedocs.io](https://pylingdocs.readthedocs.io).
-
 Currently the development version of `cldfviz` is needed (of which pypi disapproves), so to install:
 
 `pip install git+https://github.com/fmatter/pylingdocs.git`
+
+For further instructions check out the documentation at [pylingdocs.readthedocs.io](https://pylingdocs.readthedocs.io).
