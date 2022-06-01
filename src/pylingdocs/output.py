@@ -24,7 +24,8 @@ from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_structure
-from pylingdocs.helpers import html_example_wrap, decorate_gloss_string
+from pylingdocs.helpers import decorate_gloss_string
+from pylingdocs.helpers import html_example_wrap
 from pylingdocs.helpers import latexify_table
 from pylingdocs.helpers import split_ref
 from pylingdocs.metadata import _load_metadata

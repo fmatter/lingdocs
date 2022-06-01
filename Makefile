@@ -85,7 +85,7 @@ install: clean ## install the package to the active Python's site-packages
 	python setup.py install
 
 demo:
-	cd var; python3 demo.py; pylingdocs compile-latex; cp output/latex/main.pdf ../docs/demo.pdf
+	cd var; python3 demo.py; pylingdocs compile-latex; cp output/latex/main.pdf ../docs/demo.pdf; cp output/html/index.html ../docs/demo.html
 
 testdata:
 	 python3 var/create_test_data.py 
