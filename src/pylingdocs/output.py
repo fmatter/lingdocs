@@ -708,9 +708,11 @@ def check_ids(source_dir, dataset, structure):
             bad_ids.append(bad_id)
         else:
             running = False
-    bad_ids = "\n".join(bad_ids)
-    print(f"""IDs missing from the dataset:\n{bad_ids}""")
-
+    if len(bad_ids) > 0:
+        bad_ids = "\n".join(bad_ids)
+        log.error(f"""IDs missing from the dataset:\n{bad_ids}""")
+    else:
+        log.info("All good!")
 
 def create_output(
     source_dir, formats, dataset, output_dir, structure, metadata=None, latex=False
