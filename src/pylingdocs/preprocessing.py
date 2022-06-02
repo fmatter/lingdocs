@@ -215,7 +215,7 @@ def load_manual_examples(md, source_dir="."):
                 output = []
                 for mex in mex_list:
                     if mex.startswith("ex:"):
-                        output.append("[ex](ctorat-30?format=subexample)")
+                        output.append(f"[ex]({mex.split(':', 1)[1]}?format=subexample)")
                     else:
                         manex_md_path = source_dir / MANEX_DIR / f"{mex}.md"
                         with open(manex_md_path, "r", encoding="utf-8") as f:
