@@ -685,6 +685,33 @@ def clean_output(output_dir):
     output_dir.mkdir()
 
 
+def check_ids(source_dir, dataset, structure):
+
+    if isinstance(structure, (str, PosixPath)):
+        structure = _load_structure(source_dir / CONTENT_FOLDER / structure)
+
+    source_dir = Path(source_dir)
+    contents, parts = _load_content(structure, source_dir / CONTENT_FOLDER)
+
+    builder = builders["plain"]
+    content = "\n\n".join(contents.values())
+    preprocessed = preprocess(content, source_dir)
+    preprocessed = builder.preprocess_commands(preprocessed)
+    running = True
+    bad_ids = []
+    while running:
+        try:
+            output = render_markdown(preprocessed, dataset, output_format="plain")
+        except KeyError as e:
+            bad_id = str(e).strip("'")
+            preprocessed = preprocessed.replace(bad_id, "")
+            bad_ids.append(bad_id)
+        else:
+            running = False
+    bad_ids = "\n".join(bad_ids)
+    print(f"""IDs missing from the dataset:\n{bad_ids}""")
+
+
 def create_output(
     source_dir, formats, dataset, output_dir, structure, metadata=None, latex=False
 ):  # pylint: disable=too-many-arguments

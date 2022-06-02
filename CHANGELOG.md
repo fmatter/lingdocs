@@ -8,8 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-* `todo` command
+* `todo` text command
 * IGT examples as part of manual multipart examples
+* `check` terminal command
 
 ### Removed
 * bugs

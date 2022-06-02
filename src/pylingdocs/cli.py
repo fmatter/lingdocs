@@ -18,6 +18,7 @@ from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import new as create_new
 from pylingdocs.helpers import write_readme
 from pylingdocs.metadata import _load_metadata
+from pylingdocs.output import check_ids
 from pylingdocs.output import clean_output
 from pylingdocs.output import compile_latex as cmplatex
 from pylingdocs.output import create_output
@@ -127,6 +128,16 @@ def preview(  # pylint: disable=too-many-arguments
         metadata=metadata,
         latex=latex,
     )
+
+
+@main.command(cls=BuildCommand)
+def check(source, cldf, output_dir, latex):
+    ds = _load_cldf_dataset(cldf)
+    metadata = _load_metadata(METADATA_FILE)
+    structure = _load_structure(
+        _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
+    )
+    check_ids(source, ds, structure=structure)
 
 
 @main.command()
