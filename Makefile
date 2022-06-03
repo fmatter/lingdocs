@@ -73,7 +73,19 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
 
-release: dist ## package and upload a release
+VERSION = $(shell yq -p=props .bumpversion.cfg | yq eval ".current_version"  )
+
+release:
+	python3 var/release.py
+	git commit -am "release $(VERSION)" 
+	git tag -a $(VERSION) -m"$(VERSION) release"
+	git push; git push --tags
+	make pypi
+	bump2version patch
+	git commit -am "bump"; git push
+
+
+pypi: dist ## package and upload a release
 	twine upload dist/*
 
 dist: clean ## builds source and wheel package

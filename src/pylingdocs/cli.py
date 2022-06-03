@@ -132,8 +132,9 @@ def preview(  # pylint: disable=too-many-arguments
 
 @main.command(cls=BuildCommand)
 def check(source, cldf, output_dir, latex):
+    del output_dir
+    del latex
     ds = _load_cldf_dataset(cldf)
-    metadata = _load_metadata(METADATA_FILE)
     structure = _load_structure(
         _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
     )

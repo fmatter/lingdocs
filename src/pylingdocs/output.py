@@ -45,10 +45,12 @@ def blank_todo(url):
     del url
     return ""
 
+
 def html_todo(url):
     if "?" in str(url):
         return f"<span title='{url}'>❓</span>"
     return f"<span title='{url}'>❗️</span>"
+
 
 text_commands = ["todo"]
 
@@ -231,7 +233,10 @@ class HTML(OutputFormat):
         return f'<a class="exref" example_id="{url}"{kw_str}></a>'
 
     def html_gl(url):
-        return decorate_gloss_string(url.upper(), decoration=lambda x: f'<span class="gloss">{x} <span class="tooltiptext gloss-{x}" ></span></span>')
+        return decorate_gloss_string(
+            url.upper(),
+            decoration=lambda x: f'<span class="gloss">{x} <span class="tooltiptext gloss-{x}" ></span></span>',
+        )
 
     def html_label(url):
         return "{#" + url + "}" + f"\n <a id='{url}'></a>"
@@ -323,7 +328,6 @@ class CLLD(OutputFormat):
     def clld_exref(url, **kwargs):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
         return f'<a class="exref" example_id="{url}"{kw_str}></a>'
-
 
     doc_elements = {
         "ref": clld_ref,
@@ -692,6 +696,7 @@ def check_ids(source_dir, dataset, structure):
 
     source_dir = Path(source_dir)
     contents, parts = _load_content(structure, source_dir / CONTENT_FOLDER)
+    del parts
 
     builder = builders["plain"]
     content = "\n\n".join(contents.values())
@@ -701,7 +706,7 @@ def check_ids(source_dir, dataset, structure):
     bad_ids = []
     while running:
         try:
-            output = render_markdown(preprocessed, dataset, output_format="plain")
+            render_markdown(preprocessed, dataset, output_format="plain")
         except KeyError as e:
             bad_id = str(e).strip("'")
             preprocessed = preprocessed.replace(bad_id, "")
@@ -713,6 +718,7 @@ def check_ids(source_dir, dataset, structure):
         log.error(f"""IDs missing from the dataset:\n{bad_ids}""")
     else:
         log.info("All good!")
+
 
 def create_output(
     source_dir, formats, dataset, output_dir, structure, metadata=None, latex=False

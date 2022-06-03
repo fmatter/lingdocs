@@ -3,12 +3,11 @@
 cff-version: "1.1.0"
 title: "pylingdocs"
 authors:
-  -
-    family-names: Matter
+  - family-names: Matter
     given-names: Florian
     orcid: "https://orcid.org/0000-0002-2545-5154"
-date-released: 2022-05-27
-version: "0.0.3"
+date-released: 2022-06-03
+version: "0.0.4.dev"
 doi: 10.5281/zenodo.6567304
 repository-code: "https://github.com/fmatter/pylingdocs"
 keywords:
