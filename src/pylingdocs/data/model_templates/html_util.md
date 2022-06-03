@@ -1,4 +1,4 @@
-{% macro example(ctx, class_="example") -%}
+{% macro example(ctx, class_="example", example_id=None) -%}
 {% if ctx.references %}
 {% set ref = ctx.references[0] %}
 {% set bibkey, pages = split_ref(ref.__str__()) %}

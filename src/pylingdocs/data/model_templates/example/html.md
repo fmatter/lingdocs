@@ -6,12 +6,12 @@
 {% import 'html_util.md' as util %}
 {%if format=="subexample"%}
 ```{=html}
-{{ util.example(ctx, class_="subexample") }}
+{{ util.example(ctx, example_id="lol", class_="subexample") }}
 ```
 {%else%}
 ```{=html}
 <ol class="example">
-{{ util.example(ctx) }}
+{{ util.example(ctx, example_id=example_id) }}
 </ol>
 ```
 {%endif%}
