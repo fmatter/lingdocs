@@ -227,7 +227,7 @@ class HTML(OutputFormat):
         return f'<a class="exref" example_id="{url}"{kw_str}></a>'
 
     def html_gl(url):
-        return f'<span class="gloss">{url} <span class="tooltiptext gloss-{url}" ></span></span>'
+        return decorate_gloss_string(url.upper(), decoration=lambda x: f'<span class="gloss">{x} <span class="tooltiptext gloss-{x}" ></span></span>')
 
     def html_label(url):
         return "{#" + url + "}" + f"\n <a id='{url}'></a>"
