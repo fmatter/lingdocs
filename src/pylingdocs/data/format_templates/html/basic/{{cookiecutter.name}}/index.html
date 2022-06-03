@@ -10,8 +10,11 @@
 <body>
 
 <article>
+
 <h1>{{ cookiecutter.project_title }}</h1>
 <div class="author">{{ cookiecutter.author }}</div>
+
+<div id="toc"></div>
 
 {{ cookiecutter.content }}
 
@@ -25,6 +28,7 @@
 number_examples()
 number_sections()
 number_captions()
+resolve_crossrefs()
 </script>
 
 

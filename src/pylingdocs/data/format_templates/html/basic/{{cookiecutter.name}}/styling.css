@@ -68,6 +68,15 @@ dd {
   grid-column-start: 2;
 }
 
+div#toc {
+    position:fixed;
+    /*width: 40em;*/
+    font-size: 65%;
+    top: 3.5em;
+    left: 1em;
+}
+
+
 /*from https://latex.vercel.app/style.css*/
 
 /* Remove default margin */
