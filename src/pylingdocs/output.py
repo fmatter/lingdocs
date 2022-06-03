@@ -434,7 +434,7 @@ class Latex(OutputFormat):
         return f"\\cref{{{url}}}"
 
     def latex_gloss(url):
-        return decorate_gloss_string(url.lower())
+        return decorate_gloss_string(url.upper())
 
     doc_elements = {
         "exref": latex_exref,
