@@ -45,6 +45,10 @@ def blank_todo(url):
     del url
     return ""
 
+def html_todo(url):
+    if "?" in str(url):
+        return f"<span title='{url}'>❓</span>"
+    return f"<span title='{url}'>❗️</span>"
 
 text_commands = ["todo"]
 
@@ -241,7 +245,7 @@ class HTML(OutputFormat):
         "gl": html_gl,
         "ref": html_ref,
         "label": html_label,
-        "todo": blank_todo,
+        "todo": html_todo,
     }
 
     @classmethod
@@ -320,17 +324,13 @@ class CLLD(OutputFormat):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
         return f'<a class="exref" example_id="{url}"{kw_str}></a>'
 
-    def clld_todo(url):
-        if "?" in str(url):
-            return f"<span title='{url}'>❓</span>"
-        return f"<span title='{url}'>❗️</span>"
 
     doc_elements = {
         "ref": clld_ref,
         "label": clld_label,
         "gl": clld_gloss,
         "exref": clld_exref,
-        "todo": clld_todo,
+        "todo": html_todo,
     }
 
     @classmethod
