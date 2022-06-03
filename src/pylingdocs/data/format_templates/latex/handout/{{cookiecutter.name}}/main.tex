@@ -9,7 +9,7 @@
     top=0.7in]{geometry}
 
 \input{preamble.tex}
-\addbibresource{ {{ cookiecutter.bibfile }} }
+\addbibresource{% raw %}{{% endraw %}{{ cookiecutter.bibfile }}{% raw %}}{% endraw %}
 \lingset{belowglpreambleskip=-1ex,everyglpreamble=\itshape,aboveglftskip=-0.5ex,aboveexskip=-0.7ex,belowexskip=-1ex}
 
 {{ cookiecutter.glossing_abbrevs }}

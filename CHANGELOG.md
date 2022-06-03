@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `todo` text command
 * IGT examples as part of manual multipart examples
 * `check` terminal command
+* TOC in HTML output
 
 ### Removed
 * bugs
