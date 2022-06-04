@@ -764,7 +764,6 @@ def create_output(
         output_dir.mkdir()
 
     contents, parts = _load_content(structure, source_dir / CONTENT_FOLDER)
-
     for output_format in formats:
         for m in models:
             m.reset_cnt()

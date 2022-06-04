@@ -74,6 +74,8 @@ METADATA_FILE = Path("./metadata.yaml")
 OUTPUT_TEMPLATES = {}
 for builder in BUILDERS:
     OUTPUT_TEMPLATES[builder] = get_config(builder, "template")
+for builder in PREVIEW:
+    OUTPUT_TEMPLATES[builder] = get_config(builder, "template")
 
 LATEX_EX_TEMPL = get_config("latex", "interlinear_tool")
 LATEX_TOPLEVEL = get_config("latex", "toplevel")
