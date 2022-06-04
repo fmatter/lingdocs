@@ -4,6 +4,9 @@ import re
 import shutil
 import subprocess
 import sys
+import threading
+from http.server import SimpleHTTPRequestHandler
+from http.server import test
 from pathlib import Path
 from pathlib import PosixPath
 import hupper
@@ -668,6 +671,15 @@ def _load_content(structure, source_dir=CONTENT_FOLDER):
     return contents, parts
 
 
+class Handler(SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=str(OUTPUT_DIR / "html"), **kwargs)
+
+
+def run_server():
+    test(Handler)
+
+
 def run_preview(refresh=True, latex=False, **kwargs):
     log.info("Rendering preview")
     watchfiles = [str(x) for x in kwargs["source_dir"].iterdir()]
@@ -679,8 +691,11 @@ def run_preview(refresh=True, latex=False, **kwargs):
             "pylingdocs.output.run_preview", worker_kwargs=wkwargs
         )
         reloader.watch_files(watchfiles)
+    html = kwargs.pop("html", False)
     create_output(**kwargs)
-    if latex is True:
+    if html:
+        threading.Thread(target=run_server).start()
+    if latex:
         compile_latex()
 
 

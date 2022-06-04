@@ -106,9 +106,15 @@ def build(
 @click.option(
     "--targets", multiple=True, default=PREVIEW, help="List of target output formats."
 )
+@click.option(
+    "--html",
+    is_flag=True,
+    default=False,
+    help="Serve an auto-refreshing HTML preview at localhost:8000",
+)
 @click.option("--refresh", default=True, help="Re-render preview on file change.")
 def preview(  # pylint: disable=too-many-arguments
-    source, targets, cldf, output_dir, refresh, latex
+    source, targets, cldf, output_dir, refresh, latex, html
 ):
     """Create a live preview using a lightweight, human-readable output format"""
     source = Path(source)
@@ -127,6 +133,7 @@ def preview(  # pylint: disable=too-many-arguments
         structure=structure,
         metadata=metadata,
         latex=latex,
+        html=html,
     )
 
 
