@@ -166,7 +166,7 @@ class Example(Entity):
     def query_string(cls, url, *args, multiple=False, visualizer="cldfviz", **kwargs):
         if visualizer == "cldfviz":
             cls.cnt += 1
-            kwargs.update({"example_no": cls.cnt})
+            kwargs.update({"example_id": cls.cnt})
             if not multiple:
                 arg_str = cls._compile_cldfviz_args(args, kwargs)
                 return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:{url})"

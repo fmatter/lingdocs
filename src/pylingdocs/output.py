@@ -55,6 +55,10 @@ def html_todo(url):
         return f"<span title='{url}'>❓</span>"
     return f"<span title='{url}'>❗️</span>"
 
+def html_ref(url, **kwargs):
+    kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
+    return f"<a href='#{url}' class='crossref' name='{url}' {kw_str}>ref</a>"
+
 
 text_commands = ["todo"]
 
@@ -64,20 +68,30 @@ class OutputFormat:
     file_ext = "txt"
     single_output = True
 
-    def ref_element(url):
-        return f"(ref:{url})"
+    def ref_element(url, **kwargs):
+        end = kwargs.pop("end", None)
+        if end:
+            return f"[ref:{url}–{end}]"    
+        return f"[ref:{url}]"
 
     def label_element(url):
-        return f"(label:{url})"
+        return f"[lbl:{url}]"
 
     def gloss_element(url):
         return url.upper()
+
+    def blank_exref(url, **kwargs):
+        end = kwargs.pop("end", None)
+        if end:
+            return f"[ex:{url}–{end}]"    
+        return f"[ex:{url}]"
 
     doc_elements = {
         "ref": ref_element,
         "label": label_element,
         "gl": gloss_element,
         "todo": blank_todo,
+        "exref": blank_exref
     }
 
     @classmethod
@@ -190,11 +204,11 @@ class OutputFormat:
 
     @classmethod
     def table(cls, df, caption, label):
-        del label  # unused
+        # del label  # unused
         tabular = df.to_markdown(index=False, tablefmt="grid")
         if not caption:
             return tabular
-        return caption + ":\n\n" + tabular
+        return caption + f": [lbl:{label}]\n\n" + tabular
 
     @classmethod
     def manex(cls, tag, content, kind):
@@ -244,10 +258,6 @@ class HTML(OutputFormat):
 
     def html_label(url):
         return "{#" + url + "}" + f"\n <a id='{url}'></a>"
-
-    # {{% raw %}}{{{{% endraw %}}#{url}}}{{% raw %}}}}{{% endraw %}}
-    def html_ref(url):
-        return f"<a href='#{url}' class='crossref' name='{url}'>ref</a>"
 
     doc_elements = {
         "exref": exref,
@@ -300,6 +310,32 @@ class GitHub(OutputFormat):
     name = "github"
     file_ext = "md"
 
+
+    def ref_element(url, **kwargs):
+        if "tab:" in url:
+            return "[Table]"
+        return f"<a href='#{url}'>click</a>"
+
+    def label_element(url):
+        return f"<a id='{url}'><a/>"
+
+    def gloss_element(url):
+        return url.upper()
+
+    def blank_exref(url, **kwargs):
+        end = kwargs.pop("end", None)
+        if end:
+            return f"[ex:{url}–{end}]"    
+        return f"[ex:{url}]"
+
+    doc_elements = {
+        "ref": ref_element,
+        "label": label_element,
+        "gl": gloss_element,
+        "todo": blank_todo,
+        "exref": blank_exref
+    }
+
     @classmethod
     def table(cls, df, caption, label):
         del label  # unused
@@ -310,18 +346,15 @@ class GitHub(OutputFormat):
 
     @classmethod
     def preprocess(cls, content):
-        return panflute.convert_text(
+        res = panflute.convert_text(
             content, output_format="gfm", input_format="markdown"
         )
-
+        return res.replace("WHITESPACE", " ").replace("|", "")
 
 class CLLD(OutputFormat):
     name = "clld"
     file_ext = "md"
     single_output = False
-
-    def clld_ref(url):
-        return f"<a href='#{url}' class='crossref' id='{url}'>crossref</a>"
 
     def clld_label(url):
         return f"{{#{url}}}"
@@ -334,7 +367,7 @@ class CLLD(OutputFormat):
         return f'<a class="exref" example_id="{url}"{kw_str}></a>'
 
     doc_elements = {
-        "ref": clld_ref,
+        "ref": html_ref,
         "label": clld_label,
         "gl": clld_gloss,
         "exref": clld_exref,
@@ -438,7 +471,10 @@ class Latex(OutputFormat):
     def latex_label(url):
         return f"\\label{{{url}}}"
 
-    def latex_ref(url):
+    def latex_ref(url, **kwargs):
+        end = kwargs.pop("end", None)
+        if end:
+            return f"\\crefrange{{{url}}}{{{end}}}"
         return f"\\cref{{{url}}}"
 
     def latex_gloss(url):

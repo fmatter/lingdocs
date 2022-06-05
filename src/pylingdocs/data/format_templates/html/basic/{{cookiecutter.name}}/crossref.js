@@ -86,5 +86,9 @@ function resolve_crossrefs(){
     var refs = document.querySelectorAll("a.crossref");
     refs.forEach(function(ref, i) {
         ref.textContent = stored[ref.name]
+        if (ref.hasAttribute("end")) { // for ranges
+            end = ref.getAttribute("end")
+            ref.textContent += "-" + stored[end]
+        }
     })
 }
