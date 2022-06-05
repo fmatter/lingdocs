@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * HTML preview with autorefresh
+* CLLD preview
 
 ### Removed
 * bugs

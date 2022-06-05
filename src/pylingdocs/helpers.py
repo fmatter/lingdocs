@@ -1,14 +1,17 @@
 """Various helpers"""
+import importlib.util
 import logging
 import re
 import sys
 from pathlib import Path
+import pandas as pd
 import panflute
 import yaml
 from cookiecutter.main import cookiecutter
 from pycldf import Dataset
 from pylingdocs import __version__
 from pylingdocs.config import CLDF_MD
+from pylingdocs.config import CLLD_URI
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import STRUCTURE_FILE
@@ -266,3 +269,25 @@ def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
         words_list[i] = output[1:]
     gloss_text_upcased = " ".join(words_list)
     return gloss_text_upcased
+
+
+def refresh_clld_db(clld_folder):
+    df = pd.read_csv(clld_folder / "chapters.csv", keep_default_na=False)
+    chapters = [
+        {
+            "ID": chapter["ID"],
+            "Name": chapter["title"],
+            "Number": chapter["Number"],
+            "Description": open(
+                clld_folder / chapter["Filename"], "r", encoding="utf-8"
+            ).read(),
+        }
+        for chapter in df.to_dict("records")
+    ]
+    spec = importlib.util.find_spec("clld_document_plugin")
+    if spec:
+        from clld_document_plugin.util import refresh_documents
+
+        refresh_documents(CLLD_URI, chapters)
+    else:
+        log.error("clld-document-plugin not found")

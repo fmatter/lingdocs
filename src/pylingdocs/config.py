@@ -57,6 +57,7 @@ BENCH = get_path("bench")
 
 BUILDERS = get_config("OUTPUT", "builders").split(" ")
 PREVIEW = get_config("OUTPUT", "preview").split(" ")
+CLLD_URI = get_config("clld", "db_uri")
 gloss_file_address = get_config("misc", "glossing_abbrevs")
 
 if "cldf:" in gloss_file_address:

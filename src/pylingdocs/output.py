@@ -30,6 +30,7 @@ from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import html_example_wrap
 from pylingdocs.helpers import latexify_table
+from pylingdocs.helpers import refresh_clld_db
 from pylingdocs.helpers import split_ref
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
@@ -680,21 +681,30 @@ def run_server():
     test(Handler)
 
 
-def run_preview(refresh=True, latex=False, **kwargs):
+def run_preview(refresh=True, **kwargs):
     log.info("Rendering preview")
     watchfiles = [str(x) for x in kwargs["source_dir"].iterdir()]
     watchfiles += [str(x) for x in (kwargs["source_dir"] / CONTENT_FOLDER).iterdir()]
     if refresh:
         wkwargs = kwargs.copy()
-        wkwargs.update({"latex": latex})
         reloader = hupper.start_reloader(
             "pylingdocs.output.run_preview", worker_kwargs=wkwargs
         )
         reloader.watch_files(watchfiles)
     html = kwargs.pop("html", False)
+    clld = kwargs.pop("clld", False)
+    latex = kwargs.pop("latex", False)
+    if clld and "clld" not in kwargs["formats"]:
+        kwargs["formats"] = list(kwargs["formats"]) + ["clld"]
+    if html and "html" not in kwargs["formats"]:
+        kwargs["formats"] = list(kwargs["formats"]) + ["html"]
+    if latex and "latex" not in kwargs["formats"]:
+        kwargs["formats"] = list(kwargs["formats"]) + ["latex"]
     create_output(**kwargs)
     if html:
         threading.Thread(target=run_server).start()
+    if clld:
+        refresh_clld_db(OUTPUT_DIR / "clld")
     if latex:
         compile_latex()
 

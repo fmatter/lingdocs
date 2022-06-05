@@ -112,9 +112,15 @@ def build(
     default=False,
     help="Serve an auto-refreshing HTML preview at localhost:8000",
 )
+@click.option(
+    "--clld",
+    is_flag=True,
+    default=False,
+    help="Auto-refresh the documents in your CLLD database",
+)
 @click.option("--refresh", default=True, help="Re-render preview on file change.")
 def preview(  # pylint: disable=too-many-arguments
-    source, targets, cldf, output_dir, refresh, latex, html
+    source, targets, cldf, output_dir, refresh, latex, html, clld
 ):
     """Create a live preview using a lightweight, human-readable output format"""
     source = Path(source)
@@ -134,6 +140,7 @@ def preview(  # pylint: disable=too-many-arguments
         metadata=metadata,
         latex=latex,
         html=html,
+        clld=clld,
     )
 
 
