@@ -349,7 +349,7 @@ class GitHub(OutputFormat):
         res = panflute.convert_text(
             content, output_format="gfm", input_format="markdown"
         )
-        return res.replace("WHITESPACE", " ").replace("|", "")
+        return res.replace("WHITESPACE", " ").replace("\|", "")
 
 class CLLD(OutputFormat):
     name = "clld"
