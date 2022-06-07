@@ -27,7 +27,7 @@
     "tables": [
         {
             "dc:conformsTo": "http://cldf.clld.org/v1.0/terms.rdf#ExampleTable",
-            "dc:extent": 14,
+            "dc:extent": 15,
             "tableSchema": {
                 "columns": [
                     {
@@ -99,6 +99,13 @@
                         "dc:extent": "singlevalued",
                         "datatype": "string",
                         "name": "Text_ID"
+                    },
+                    {
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#source",
+                        "required": false,
+                        "separator": ";",
+                        "name": "Source"
                     }
                 ],
                 "foreignKeys": [

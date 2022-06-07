@@ -80,3 +80,5 @@ for builder in PREVIEW:
 
 LATEX_EX_TEMPL = get_config("latex", "interlinear_tool")
 LATEX_TOPLEVEL = get_config("latex", "toplevel")
+
+EX_LG_LABEL = get_config("example", "ex_lg_label", as_boolean=True)

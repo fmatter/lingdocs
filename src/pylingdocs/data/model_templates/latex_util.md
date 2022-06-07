@@ -9,5 +9,5 @@
 {% else %}
 {% set page_string = "" %}
 {% endif %}
-\parencite{{page_string}}{%raw%}{{%endraw%}{{bibkey}}{%raw%}}{%endraw%}
+\cite{{page_string}}{%raw%}{{%endraw%}{{bibkey}}{%raw%}}{%endraw%}
 {%- endmacro %}

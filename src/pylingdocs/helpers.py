@@ -13,7 +13,7 @@ from pylingdocs import __version__
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CLLD_URI
 from pylingdocs.config import DATA_DIR
-from pylingdocs.config import METADATA_FILE
+from pylingdocs.config import METADATA_FILE, EX_LG_LABEL
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.metadata import ORCID_STR
 from pylingdocs.metadata import _load_bib
@@ -291,3 +291,27 @@ def refresh_clld_db(clld_folder):
         refresh_documents(CLLD_URI, chapters)
     else:
         log.error("clld-document-plugin not found")
+
+def get_example_data(lg, primary, title=None, ref_string=None, show_language=EX_LG_LABEL, corpus_string="", custom_source="", hide_primary=False):
+    data = {}
+    if str(title) != "":
+        data["title"] = title
+    elif show_language not in ["0", "False", "false"]:
+        data["title"] = lg
+    else:
+        data["title"] = ""
+    if custom_source:
+        data["source"] = custom_source
+    elif corpus_string:
+        data["source"] = corpus_string
+        if ref_string:
+            data["source"] += ", " + ref_string.strip()
+    elif ref_string:
+        data["source"] = ref_string.strip()
+    else:
+        data["source"] = ""
+    if hide_primary:
+        data["primary"] = ""
+    else:
+        data["primary"] = primary
+    return data

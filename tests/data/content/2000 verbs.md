@@ -43,4 +43,17 @@ Pass arguments to the visualizer:
 
 [ex](ekiri-4?example_id=my_custom_id&with_primaryText)
 
+[ex](ekiri-4?title=My beautiful example title)
+
+[ex](ekiri-4?show_language=False)
+
+[ex](tri-1)
+
+[ex](tri-1?source=Elicited data)
+
+[ex](tri-1?source=Personal knowledge)
+
+[ex](tri-1?hide_primary)
+
+
 [exref](my_custom_id)

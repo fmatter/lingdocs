@@ -14,7 +14,7 @@ from pylingdocs.config import MANEX_DIR
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
 from pylingdocs.helpers import _get_relative_file
-from pylingdocs.helpers import comma_and_list
+from pylingdocs.helpers import comma_and_list, get_example_data
 from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.helpers import html_gloss
@@ -155,6 +155,7 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
                     "split_ref": split_ref,
                     "decorate_gloss_string": decorate_gloss_string,
                     "html_gloss": html_gloss,
+                    "get_example_data": get_example_data
                 },
             )
             preprocessed = render(
