@@ -163,10 +163,11 @@ class Example(Entity):
         )
 
     @classmethod
-    def query_string(cls, url, *args, multiple=False, visualizer="cldfviz", **kwargs):
+    def query_string(cls, url, *args, count_self=False, multiple=False, visualizer="cldfviz", **kwargs):
         if visualizer == "cldfviz":
             cls.cnt += 1
-            kwargs.update({"example_id": cls.cnt})
+            if count_self:
+                kwargs.update({"example_id": cls.cnt})
             if not multiple:
                 arg_str = cls._compile_cldfviz_args(args, kwargs)
                 return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:{url})"
@@ -214,7 +215,9 @@ class Form(Entity):
     name = "Form"
     cldf_table = "FormTable"
     shortcut = "wf"
-    templates = {"plain": "{{ctx.cldf.form}}"}
-
+    templates = {
+        "plain": "{{ctx.cldf.form}} '{{ctx.data['Translation']}}'",
+        "latex": "\\obj{%raw%}{{%endraw%}{{ctx.cldf.form}}{%raw%}}{%endraw%} \\qu{%raw%}{{%endraw%}{{ctx.data['Translation']}}{%raw%}}{%endraw%}"
+    }
 
 models = [Morpheme, Morph, Example, Language, Text, Cognateset, Form]

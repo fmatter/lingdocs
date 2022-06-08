@@ -515,7 +515,9 @@ class Latex(OutputFormat):
                 .replace("\\begin{tabular}{", "\\begin{tabular}[t]{")  # top aligned
             )
         return f"""\\begin{{table}}
-\\caption{{{caption}}}
+\\caption{{{panflute.convert_text(
+            caption, output_format="latex", input_format="markdown"
+        )}}}
 \\label{{tab:{label}}}
 \\centering
 {tabular}
