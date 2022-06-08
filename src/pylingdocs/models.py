@@ -215,7 +215,9 @@ class Form(Entity):
     name = "Form"
     cldf_table = "FormTable"
     shortcut = "wf"
-    templates = {"plain": "{{ctx.cldf.form}}"}
-
+    templates = {
+        "plain": "{{ctx.cldf.form}} '{{ctx.data['Translation']}}'",
+        "latex": "\\obj{%raw%}{{%endraw%}{{ctx.cldf.form}}{%raw%}}{%endraw%} \\qu{%raw%}{{%endraw%}{{ctx.data['Translation']}}{%raw%}}{%endraw%}"
+    }
 
 models = [Morpheme, Morph, Example, Language, Text, Cognateset, Form]
