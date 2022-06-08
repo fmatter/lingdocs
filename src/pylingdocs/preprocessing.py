@@ -282,7 +282,9 @@ def preprocess(md_str, source_dir="."):
 def postprocess(md_str, builder, source_dir="."):
     table_md = _get_relative_file(source_dir / TABLE_DIR, TABLE_MD)
     if table_md.is_file():
-        tables = jsonlib.load(table_md)
+        with open(table_md, encoding="utf-8") as f:
+            tables = yaml.load(f, Loader=yaml.SafeLoader)
+        # tables = jsonlib.load(table_md)
     else:
         tables = {}
     md_str = "".join(insert_manex(md_str, builder, MANPEX_PATTERN, kind="multipart"))
