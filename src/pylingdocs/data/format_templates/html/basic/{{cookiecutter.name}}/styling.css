@@ -77,8 +77,13 @@ div#toc {
     line-height: 120%;
 }
 
+.version {
+  margin: 0.85rem 0;
+  text-align: center;
+  font-family: monospace;
+}
 
-/*from https://latex.vercel.app/style.css*/
+/*taken from https://latex.vercel.app/style.css*/
 
 /* Remove default margin */
 h1,

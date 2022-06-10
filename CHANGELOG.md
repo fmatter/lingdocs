@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * CLLD preview
 * `end` argument for crossrefs
 * section anchors for github
+* version in HTML
 
 ### Removed
 * bugs

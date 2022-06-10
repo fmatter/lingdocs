@@ -11,5 +11,6 @@
             "label2":"file2"
         }
     },
-    "glossing_abbrevs": ""
+    "glossing_abbrevs": "",
+    "version": "vXXX"
 }
