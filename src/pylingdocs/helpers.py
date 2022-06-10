@@ -273,17 +273,18 @@ def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
 
 def refresh_clld_db(clld_folder):
     df = pd.read_csv(clld_folder / "chapters.csv", keep_default_na=False)
-    chapters = [
-        {
-            "ID": chapter["ID"],
-            "Name": chapter["title"],
-            "Number": chapter["Number"],
-            "Description": open(
-                clld_folder / chapter["Filename"], "r", encoding="utf-8"
-            ).read(),
-        }
-        for chapter in df.to_dict("records")
-    ]
+    chapters = []
+    for chapter in df.to_dict("records"):
+        with open(clld_folder / chapter["Filename"], "r", encoding="utf-8") as f:
+            content = f.read()
+        chapters.append(
+            {
+                "ID": chapter["ID"],
+                "Name": chapter["title"],
+                "Number": chapter["Number"],
+                "Description": content,
+            }
+        )
     spec = importlib.util.find_spec("clld_document_plugin")
     if spec:
         from clld_document_plugin.util import refresh_documents

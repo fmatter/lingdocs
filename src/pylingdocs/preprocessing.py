@@ -7,7 +7,6 @@ from pathlib import Path
 import pandas as pd
 import yaml
 from cldfviz.text import render
-from clldutils import jsonlib
 from jinja2 import DictLoader
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import MANEX_DIR
@@ -284,7 +283,6 @@ def postprocess(md_str, builder, source_dir="."):
     if table_md.is_file():
         with open(table_md, encoding="utf-8") as f:
             tables = yaml.load(f, Loader=yaml.SafeLoader)
-        # tables = jsonlib.load(table_md)
     else:
         tables = {}
     md_str = "".join(insert_manex(md_str, builder, MANPEX_PATTERN, kind="multipart"))

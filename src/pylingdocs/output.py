@@ -55,6 +55,7 @@ def html_todo(url):
         return f"<span title='{url}'>❓</span>"
     return f"<span title='{url}'>❗️</span>"
 
+
 def html_ref(url, **kwargs):
     kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
     return f"<a href='#{url}' class='crossref' name='{url}' {kw_str}>ref</a>"
@@ -71,7 +72,7 @@ class OutputFormat:
     def ref_element(url, **kwargs):
         end = kwargs.pop("end", None)
         if end:
-            return f"[ref:{url}–{end}]"    
+            return f"[ref:{url}–{end}]"
         return f"[ref:{url}]"
 
     def label_element(url):
@@ -83,7 +84,7 @@ class OutputFormat:
     def blank_exref(url, **kwargs):
         end = kwargs.pop("end", None)
         if end:
-            return f"[ex:{url}–{end}]"    
+            return f"[ex:{url}–{end}]"
         return f"[ex:{url}]"
 
     doc_elements = {
@@ -91,7 +92,7 @@ class OutputFormat:
         "label": label_element,
         "gl": gloss_element,
         "todo": blank_todo,
-        "exref": blank_exref
+        "exref": blank_exref,
     }
 
     @classmethod
@@ -310,9 +311,8 @@ class GitHub(OutputFormat):
     name = "github"
     file_ext = "md"
 
-
     def ref_element(url, **kwargs):
-        if "tab:" in url:
+        if "tab:" in str(url):
             return "[Table]"
         return f"<a href='#{url}'>click</a>"
 
@@ -325,7 +325,7 @@ class GitHub(OutputFormat):
     def blank_exref(url, **kwargs):
         end = kwargs.pop("end", None)
         if end:
-            return f"[ex:{url}–{end}]"    
+            return f"[ex:{url}–{end}]"
         return f"[ex:{url}]"
 
     doc_elements = {
@@ -333,7 +333,7 @@ class GitHub(OutputFormat):
         "label": label_element,
         "gl": gloss_element,
         "todo": blank_todo,
-        "exref": blank_exref
+        "exref": blank_exref,
     }
 
     @classmethod
@@ -349,7 +349,8 @@ class GitHub(OutputFormat):
         res = panflute.convert_text(
             content, output_format="gfm", input_format="markdown"
         )
-        return res.replace("WHITESPACE", " ").replace("\|", "")
+        return res.replace("WHITESPACE", " ").replace(r"\|", "")
+
 
 class CLLD(OutputFormat):
     name = "clld"

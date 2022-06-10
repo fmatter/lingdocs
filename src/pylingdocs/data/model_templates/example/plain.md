@@ -3,10 +3,11 @@
   `with_primaryText`
   `with_internal_ref_link`
   `example_id`
+  `example_counter`
 #}
 {% import 'util.md' as util %}
 
-({{ example_id or ctx.id }}) {{ ctx.related('languageReference').name }} ({{ ctx.id }})
+({{ example_id or example_counter or ctx.id }}) {{ ctx.related('languageReference').name }} ({{ ctx.id }})
 {% if (ctx.cldf.analyzedWord == [] or with_primaryText) and ctx.cldf.primaryText != None %}{{ ctx.cldf.primaryText }}
 {% endif %}
 {% if ctx.cldf.analyzedWord != [] %}
