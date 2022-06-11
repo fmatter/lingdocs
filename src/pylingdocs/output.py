@@ -362,10 +362,10 @@ class CLLD(OutputFormat):
     file_ext = "md"
     single_output = False
 
-    def clld_label(url):
+    def clld_label(url, **kwargs):
         return f"{{#{url}}}"
 
-    def clld_gloss(url):
+    def clld_gloss(url, **kwargs):
         return f"""<span class="smallcaps">{url}</span>"""
 
     def clld_exref(url, **kwargs):
