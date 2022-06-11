@@ -45,16 +45,22 @@ NUM_PRE = re.compile(r"[\d]+\ ")
 log = logging.getLogger(__name__)
 
 
-def blank_todo(url):
+def blank_todo(url, **kwargs):
     del url
     return ""
 
 
-def html_todo(url):
+def html_todo(url, **kwargs):
+    if "release" in kwargs:
+        return ""
     if "?" in str(url):
         return f"<span title='{url}'>❓</span>"
     return f"<span title='{url}'>❗️</span>"
 
+def latex_todo(url, **kwargs):
+    if "release" in kwargs:
+        return ""
+    return f"\\todo{{{url}}}"
 
 def html_ref(url, **kwargs):
     kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
@@ -75,10 +81,10 @@ class OutputFormat:
             return f"[ref:{url}–{end}]"
         return f"[ref:{url}]"
 
-    def label_element(url):
+    def label_element(url, **kwargs):
         return f"[lbl:{url}]"
 
-    def gloss_element(url):
+    def gloss_element(url, **kwargs):
         return url.upper()
 
     def blank_exref(url, **kwargs):
@@ -159,7 +165,7 @@ class OutputFormat:
             f.write(template.render(content=content))
 
     @classmethod
-    def replace_commands(cls, content):
+    def replace_commands(cls, content, **kwargs):
         current = 0
         for m in MD_LINK_PATTERN.finditer(content):
             yield content[current : m.start()]
@@ -167,7 +173,6 @@ class OutputFormat:
             key = m.group("label")
             url = m.group("url")
             args = []
-            kwargs = {}
             if "?" in url and key not in text_commands:
                 url, arguments = url.split("?")
                 for arg in arguments.split("&"):
@@ -195,8 +200,8 @@ class OutputFormat:
         yield content[current:]
 
     @classmethod
-    def preprocess_commands(cls, content):
-        processed = "".join(cls.replace_commands(content))
+    def preprocess_commands(cls, content, **kwargs):
+        processed = "".join(cls.replace_commands(content, **kwargs))
         return processed
 
     @classmethod
@@ -251,13 +256,13 @@ class HTML(OutputFormat):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
         return f'<a class="exref" example_id="{url}"{kw_str}></a>'
 
-    def html_gl(url):
+    def html_gl(url, **kwargs):
         return decorate_gloss_string(
             url.upper(),
             decoration=lambda x: f'<span class="gloss">{x} <span class="tooltiptext gloss-{x}" ></span></span>',
         )
 
-    def html_label(url):
+    def html_label(url, **kwargs):
         return "{#" + url + "}" + f"\n <a id='{url}'></a>"
 
     doc_elements = {
@@ -316,10 +321,10 @@ class GitHub(OutputFormat):
             return "[Table]"
         return f"<a href='#{url}'>click</a>"
 
-    def label_element(url):
+    def label_element(url, **kwargs):
         return f"<a id='{url}'><a/>"
 
-    def gloss_element(url):
+    def gloss_element(url, **kwargs):
         return url.upper()
 
     def blank_exref(url, **kwargs):
@@ -433,7 +438,7 @@ class CLLD(OutputFormat):
                 )
                 for subtag in tags + table_tags:
                     if subtag in tag_dic:
-                        print(f"duplicate tag {subtag} in {tag}: {tag_dic[subtag]}")
+                        log.warning(f"duplicate tag {subtag} in {tag}: {tag_dic[subtag]}")
                     tag_dic[subtag] = tag
                 tag_dic[tag] = tag
 
@@ -464,12 +469,12 @@ class Latex(OutputFormat):
     name = "latex"
     file_ext = "tex"
 
-    def latex_exref(url, end=None, suffix=""):
+    def latex_exref(url, end=None, suffix="", **kwargs):
         if end:
             return f"\\exref[{suffix}][{end}]{{{url}}}"
         return f"\\exref[{suffix}]{{{url}}}"
 
-    def latex_label(url):
+    def latex_label(url, **kwargs):
         return f"\\label{{{url}}}"
 
     def latex_ref(url, **kwargs):
@@ -478,7 +483,7 @@ class Latex(OutputFormat):
             return f"\\crefrange{{{url}}}{{{end}}}"
         return f"\\cref{{{url}}}"
 
-    def latex_gloss(url):
+    def latex_gloss(url, **kwargs):
         return decorate_gloss_string(url.upper())
 
     doc_elements = {
@@ -486,7 +491,7 @@ class Latex(OutputFormat):
         "ref": latex_ref,
         "label": latex_label,
         "gl": latex_gloss,
-        "todo": blank_todo,
+        "todo": latex_todo,
     }
 
     @classmethod
@@ -568,14 +573,13 @@ class Latex(OutputFormat):
         return " and ".join(out)
 
     @classmethod
-    def replace_commands(cls, content):  # pylint: disable=too-many-locals
+    def replace_commands(cls, content, **kwargs):  # pylint: disable=too-many-locals
         current = 0
         for m in MD_LINK_PATTERN.finditer(content):
             yield content[current : m.start()]
             current = m.end()
             key = m.group("label")
             url = m.group("url")
-            kwargs = {}
             args = []
             if "?" in url and key not in text_commands:
                 url, arguments = url.split("?")
@@ -785,7 +789,7 @@ def check_ids(source_dir, dataset, structure):
 
 
 def create_output(
-    source_dir, formats, dataset, output_dir, structure, metadata=None, latex=False
+    source_dir, formats, dataset, output_dir, structure, metadata=None, latex=False, **kwargs
 ):  # pylint: disable=too-many-arguments
     """Run different builders.
 
@@ -821,7 +825,7 @@ def create_output(
         # log.debug(f"Writing skeleton to folder {output_dir}")
         content = "\n\n".join(contents.values())
         preprocessed = preprocess(content, source_dir)
-        preprocessed = builder.preprocess_commands(preprocessed)
+        preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
         preprocessed = render_markdown(
             preprocessed, dataset, output_format=output_format
         )
