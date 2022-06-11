@@ -173,12 +173,13 @@ class OutputFormat:
             key = m.group("label")
             url = m.group("url")
             args = []
+            element_kwargs = {**{}, **kwargs}
             if "?" in url and key not in text_commands:
                 url, arguments = url.split("?")
                 for arg in arguments.split("&"):
                     if "=" in arg:
                         k, v = arg.split("=")
-                        kwargs[k] = v
+                        element_kwargs[k] = v
                     else:
                         args.append(arg)
             if key in ["src", "psrc"]:
@@ -192,7 +193,7 @@ class OutputFormat:
                 elif key == "psrc":
                     yield f"([{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str})"  # noqa: E501
             elif key in cls.doc_elements:
-                yield cls.doc_elements[key](url, *args, **kwargs)
+                yield cls.doc_elements[key](url, *args, **element_kwargs)
             elif key == "abbrev_list":
                 yield cls.glossing_abbrevs_list(url)
             else:
@@ -581,12 +582,13 @@ class Latex(OutputFormat):
             key = m.group("label")
             url = m.group("url")
             args = []
+            element_kwargs = {**{}, **kwargs}
             if "?" in url and key not in text_commands:
                 url, arguments = url.split("?")
                 for arg in arguments.split("&"):
                     if "=" in arg:
                         k, v = arg.split("=")
-                        kwargs[k] = v
+                        element_kwargs[k] = v
                     else:
                         args.append(arg)
             if key in ["src", "psrc"]:
@@ -606,7 +608,7 @@ class Latex(OutputFormat):
                 elif key == "psrc":
                     yield f"\\parencite{cite_string}"
             elif key in cls.doc_elements:
-                yield cls.doc_elements[key](url, *args, **kwargs)
+                yield cls.doc_elements[key](url, *args, **element_kwargs)
             elif key == "abbrev_list":
                 yield cls.glossing_abbrevs_list(url)
             else:
