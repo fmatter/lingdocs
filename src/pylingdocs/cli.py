@@ -127,7 +127,7 @@ def preview(  # pylint: disable=too-many-arguments
     source = Path(source)
     output_dir = Path(output_dir)
     ds = _load_cldf_dataset(cldf)
-    metadata = _load_metadata(METADATA_FILE)
+    metadata = _load_metadata(source / METADATA_FILE)
     structure = _load_structure(
         _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
     )
