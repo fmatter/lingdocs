@@ -106,7 +106,11 @@ templates["latex"]["latex_util.md"] = latex_util
 with open(DATA_DIR / "model_templates" / "html_util.md", "r", encoding="utf-8") as f:
     html_util = f.read()
 
+with open(DATA_DIR / "model_templates" / "pylingdocs_util.md", "r", encoding="utf-8") as f:
+    pylingdocs_util = f.read()
+
 templates["html"]["html_util.md"] = html_util
+templates["html"]["pylingdocs_util.md"] = pylingdocs_util
 
 for output_format, env_dict in templates.items():
     env_dict.update(list_templates[output_format])

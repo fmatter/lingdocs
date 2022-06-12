@@ -215,6 +215,7 @@ class Form(Entity):
     cldf_table = "FormTable"
     shortcut = "wf"
     templates = {
+        "html": "{% import 'pylingdocs_util.md' as util%}<i>{{ctx.cldf.form}} </i> ‘{{util.translation(ctx)}}’",
         "plain": "{{ctx.cldf.form}} '{{ctx.data['Translation']}}'",
         "latex": "\\obj{%raw%}{{%endraw%}{{ctx.cldf.form}}{%raw%}}{%endraw%} \\qu{%raw%}{{%endraw%}{{ctx.data['Translation']}}{%raw%}}{%endraw%}",
     }
