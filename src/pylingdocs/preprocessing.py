@@ -17,7 +17,7 @@ from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.helpers import html_gloss
-from pylingdocs.helpers import sanitize_latex
+from pylingdocs.helpers import sanitize_latex, src
 from pylingdocs.helpers import split_ref
 from pylingdocs.models import models
 
@@ -65,6 +65,13 @@ for model in models:
         if output_format not in list_templates:
             list_templates[output_format] = {}
 
+with open(DATA_DIR / "util.md", "r", encoding="utf-8") as f:
+    pylingdocs_util = f.read()
+
+for templ in templates.values():
+    templ["pylingdocs_util.md"] = pylingdocs_util
+    templ["ParameterTable_detail.md"] = "{{ctx.cldf.name}}"
+
 for output_format, env_dict in templates.items():
     for model in models:
         model_output = model.representation(output_format)
@@ -106,16 +113,14 @@ templates["latex"]["latex_util.md"] = latex_util
 with open(DATA_DIR / "model_templates" / "html_util.md", "r", encoding="utf-8") as f:
     html_util = f.read()
 
-with open(DATA_DIR / "model_templates" / "pylingdocs_util.md", "r", encoding="utf-8") as f:
-    pylingdocs_util = f.read()
-
 templates["html"]["html_util.md"] = html_util
-templates["html"]["pylingdocs_util.md"] = pylingdocs_util
 
 for output_format, env_dict in templates.items():
     env_dict.update(list_templates[output_format])
     envs[output_format] = DictLoader(env_dict)
 
+bool_dic = {"True": True, "False": False}
+abbrev_dic = {"nt": "no_translation"}
 
 def preprocess_cldfviz(md):
     current = 0
@@ -130,9 +135,9 @@ def preprocess_cldfviz(md):
                 for arg in arguments.split("&"):
                     if "=" in arg:
                         k, v = arg.split("=")
-                        kwargs[k] = v
+                        kwargs[k] = bool_dic.get(v, v)
                     else:
-                        args.append(arg)
+                        args.append(abbrev_dic.get(arg, arg))
             if "," in url:
                 kwargs.update({"ids": url})
                 yield labels[key](
@@ -145,7 +150,9 @@ def preprocess_cldfviz(md):
     yield md[current:]
 
 
-def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
+def render_markdown(
+    md_str, ds, decorate_gloss_string, data_format="cldf", output_format="plain"
+):
     if data_format == "cldf":
         if output_format != "clld":
             preprocessed = render(
@@ -157,7 +164,7 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
                     "sanitize_latex": sanitize_latex,
                     "split_ref": split_ref,
                     "decorate_gloss_string": decorate_gloss_string,
-                    "html_gloss": html_gloss,
+                    "src": src
                 },
             )
             preprocessed = render(

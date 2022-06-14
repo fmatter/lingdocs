@@ -22,11 +22,49 @@ from pylingdocs.metadata import _load_metadata
 
 log = logging.getLogger(__name__)
 
+def _src(string, mode="cldfviz"):
+    if mode == "cldfviz":
+        bibkey, pages = split_ref(string)
+        if pages:
+            page_str = f": {pages}"
+        else:
+            page_str = ""
+        return f"[{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str}" # noqa: E501
+    elif mode == "biblatex":
+        cite_string = []
+        for citation in string.split(","):
+            bibkey, pages = split_ref(citation)
+            if pages:
+                page_str = f"[{pages}]"
+            else:
+                page_str = ""
+            cite_string.append(f"{page_str}{{{bibkey}}}")
+        cite_string = "".join(cite_string)
+        return cite_string
+
+def src(cite_input, mode="cldfviz", parens=False):
+    if isinstance(cite_input, str):
+        cite_input = [cite_input]
+    citations = []
+    for string in cite_input:
+        if string == "":
+            log.warning("Empty citation")
+            return ""
+        citations.append(_src(string, mode=mode))
+    if mode == "biblatex":
+        if parens:
+            return "\\parencites" + "".join(citations)
+        else:
+            return "\\textcites" + "".join(citations)
+    else:
+        if parens:
+            return "(" + ", ".join(citations) + ")"
+        else:
+            return ", ".join(citations)
 
 def html_gloss(s):
-    return (
-        f'<span class="gloss">{s} <span class="tooltiptext gloss-{s}" ></span></span>'
-    )
+    return f"<span class='gloss'>{s}<span class='tooltiptext gloss-{s}'></span></span>"
+    
 
 
 def html_example_wrap(tag, content, kind="example"):
@@ -99,10 +137,12 @@ def _load_structure(structure_file=STRUCTURE_FILE):
         return yaml.load(open(structure_file, encoding="utf-8"), Loader=yaml.SafeLoader)
 
 
-def comma_and_list(entries, sep1=", ", sep2=", and "):
+def comma_and_list(entries, sep1=", ", sep2=" and ", oxford=True):
     output = entries[0]
     for entry in entries[1:-1]:
         output += sep1 + entry
+    if oxford and len(entries) > 2:
+        output += sep1.strip()
     output += sep2 + entries[-1]
     return output
 
@@ -287,7 +327,9 @@ def refresh_clld_db(clld_folder):
         )
     spec = importlib.util.find_spec("clld_document_plugin")
     if spec:
-        from clld_document_plugin.util import refresh_documents  # pylint: disable=import-outside-toplevel
+        from clld_document_plugin.util import (
+            refresh_documents,
+        )  # pylint: disable=import-outside-toplevel
 
         refresh_documents(CLLD_URI, chapters)
     else:

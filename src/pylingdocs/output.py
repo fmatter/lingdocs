@@ -29,9 +29,9 @@ from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import html_example_wrap
-from pylingdocs.helpers import latexify_table
+from pylingdocs.helpers import latexify_table, html_gloss
 from pylingdocs.helpers import refresh_clld_db
-from pylingdocs.helpers import split_ref
+from pylingdocs.helpers import src
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
 from pylingdocs.preprocessing import MD_LINK_PATTERN
@@ -57,10 +57,12 @@ def html_todo(url, **kwargs):
         return f"<span title='{url}'>❓</span>"
     return f"<span title='{url}'>❗️</span>"
 
+
 def latex_todo(url, **kwargs):
     if "release" in kwargs:
         return ""
     return f"\\todo{{{url}}}"
+
 
 def html_ref(url, **kwargs):
     kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
@@ -102,6 +104,10 @@ class OutputFormat:
     }
 
     @classmethod
+    def decorate_gloss_string(cls, x):
+        return decorate_gloss_string(x, decoration=lambda x: x.upper())
+
+    @classmethod
     def write_folder(
         cls, output_dir, content=None, parts=None, metadata=None, abbrev_dict=None
     ):  # pylint: disable=too-many-arguments
@@ -122,6 +128,7 @@ class OutputFormat:
         if content is not None:
             content = cls.preprocess(content)
             extra.update({"content": content})
+
         extra.update(**metadata)
         local_template_path = (
             Path("pld") / "output_templates" / cls.name / OUTPUT_TEMPLATES[cls.name]
@@ -182,16 +189,10 @@ class OutputFormat:
                         element_kwargs[k] = v
                     else:
                         args.append(arg)
-            if key in ["src", "psrc"]:
-                bibkey, pages = split_ref(url)
-                if pages:
-                    page_str = f": {pages}"
-                else:
-                    page_str = ""
-                if key == "src":
-                    yield f"[{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str}"  # noqa: E501
-                elif key == "psrc":
-                    yield f"([{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str})"  # noqa: E501
+            if key == "src":
+                yield src(url.split(","))
+            elif key == "psrc":
+                yield src(url.split(","), parens=True)
             elif key in cls.doc_elements:
                 yield cls.doc_elements[key](url, *args, **element_kwargs)
             elif key == "abbrev_list":
@@ -260,11 +261,18 @@ class HTML(OutputFormat):
     def html_gl(url, **kwargs):
         return decorate_gloss_string(
             url.upper(),
-            decoration=lambda x: f'<span class="gloss">{x} <span class="tooltiptext gloss-{x}" ></span></span>',
+            decoration=html_gloss,
         )
 
     def html_label(url, **kwargs):
         return "{#" + url + "}" + f"\n <a id='{url}'></a>"
+
+    @classmethod
+    def decorate_gloss_string(cls, x):
+        return decorate_gloss_string(
+            x,
+            decoration=lambda x: f'<span class="gloss">{x} <span class="tooltiptext gloss-{x}" ></span></span>',
+        )
 
     doc_elements = {
         "exref": exref,
@@ -290,7 +298,7 @@ for (var i = 0; i < targets.length; i++) {{
     @classmethod
     def table(cls, df, caption, label):
         table = df.to_html(escape=False, index=False)
-        if not label:
+        if not caption:
             return table
         return table.replace(
             "<thead",
@@ -439,7 +447,9 @@ class CLLD(OutputFormat):
                 )
                 for subtag in tags + table_tags:
                     if subtag in tag_dic:
-                        log.warning(f"duplicate tag {subtag} in {tag}: {tag_dic[subtag]}")
+                        log.warning(
+                            f"duplicate tag {subtag} in {tag}: {tag_dic[subtag]}"
+                        )
                     tag_dic[subtag] = tag
                 tag_dic[tag] = tag
 
@@ -483,6 +493,10 @@ class Latex(OutputFormat):
         if end:
             return f"\\crefrange{{{url}}}{{{end}}}"
         return f"\\cref{{{url}}}"
+
+    @classmethod
+    def decorate_gloss_string(cls, x):
+        return decorate_gloss_string(x)
 
     def latex_gloss(url, **kwargs):
         return decorate_gloss_string(url.upper())
@@ -591,22 +605,10 @@ class Latex(OutputFormat):
                         element_kwargs[k] = v
                     else:
                         args.append(arg)
-            if key in ["src", "psrc"]:
-                cite_string = []
-                for citation in url.split(","):
-                    bibkey, pages = split_ref(citation)
-                    if pages:
-                        page_str = f"[{pages}]"
-                    else:
-                        page_str = ""
-                    cite_string.append(f"{page_str}{{{bibkey}}}")
-                cite_string = "".join(cite_string)
-                if "," in url:
-                    cite_string = "s" + cite_string
-                if key == "src":
-                    yield f"\\textcite{cite_string}"
-                elif key == "psrc":
-                    yield f"\\parencite{cite_string}"
+            if key == "src":
+                yield src(url, mode="biblatex")
+            elif key == "psrc":
+                yield src(url, parens=True, mode="biblatex")
             elif key in cls.doc_elements:
                 yield cls.doc_elements[key](url, *args, **element_kwargs)
             elif key == "abbrev_list":
@@ -694,7 +696,7 @@ def update_structure(
 def compile_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
     log.info("Compiling LaTeX document.")
     with subprocess.Popen(
-        "latexmk --xelatex main.tex", shell=True, cwd=output_dir / "latex"
+        "latexmk --quiet --xelatex main.tex", shell=True, cwd=output_dir / "latex"
     ) as proc:
         del proc  # help, prospector is forcing me
 
@@ -791,7 +793,14 @@ def check_ids(source_dir, dataset, structure):
 
 
 def create_output(
-    source_dir, formats, dataset, output_dir, structure, metadata=None, latex=False, **kwargs
+    source_dir,
+    formats,
+    dataset,
+    output_dir,
+    structure,
+    metadata=None,
+    latex=False,
+    **kwargs,
 ):  # pylint: disable=too-many-arguments
     """Run different builders.
 
@@ -829,11 +838,17 @@ def create_output(
         preprocessed = preprocess(content, source_dir)
         preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
         preprocessed = render_markdown(
-            preprocessed, dataset, output_format=output_format
+            preprocessed,
+            dataset,
+            decorate_gloss_string=builder.decorate_gloss_string,
+            output_format=output_format,
         )
         preprocessed += "\n\n" + builder.reference_list()
         preprocessed = render_markdown(
-            preprocessed, dataset, output_format=output_format
+            preprocessed,
+            dataset,
+            decorate_gloss_string=builder.decorate_gloss_string,
+            output_format=output_format,
         )
         preprocessed = postprocess(preprocessed, builder, source_dir)
         if builder.single_output:

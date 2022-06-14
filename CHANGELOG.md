@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `end` argument for crossrefs
 * section anchors for github
 * version in HTML
+* automatic in-line translations
+* language-form-translation-source template
 
 ### Removed
 * bugs

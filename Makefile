@@ -102,3 +102,6 @@ demo:
 testdata:
 	 python3 var/create_test_data.py 
 	 cldf validate tests/data/cldf/metadata.json
+	 cldf validate tests/data/cldf_single_nparam/metadata.json
+	 cldf validate tests/data/cldf_single_param/metadata.json
+	 cldf validate tests/data/cldf_multi_nparam/metadata.json

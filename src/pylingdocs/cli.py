@@ -97,7 +97,7 @@ def build(
         structure=structure,
         metadata=metadata,
         latex=latex,
-        release=release
+        release=release,
     )
     if CREATE_README:
         write_readme(source / METADATA_FILE, release=release)

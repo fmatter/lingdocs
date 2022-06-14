@@ -113,15 +113,15 @@ class Morpheme(Entity):
     shortcut = "mp"
 
     templates = {
-        "plain": """{{ ctx["Name"] }}""",
-        "github": """_{{ ctx["Name"] }}_""",
+        "plain": load_template("morpheme", "plain"),
+        "github": load_template("morpheme", "plain"),
         "latex": load_template("morpheme", "latex"),
-        "html": """<i>{{ctx["Name"]}}</i>""",
+        "html": load_template("morpheme", "html"),
     }
 
     list_templates = {
         "plain": load_template("morpheme", "plain_index"),
-        "github": load_template("morpheme", "github_index"),
+        "github": load_template("morpheme", "plain_index"),
         "latex": load_template("morpheme", "latex_index"),
         "html": load_template("morpheme", "html_index"),
     }
@@ -215,10 +215,14 @@ class Form(Entity):
     cldf_table = "FormTable"
     shortcut = "wf"
     templates = {
-        "html": "{% import 'pylingdocs_util.md' as util%}<i>{{ctx.cldf.form}} </i> ‘{{util.translation(ctx)}}’",
-        "plain": "{{ctx.cldf.form}} '{{ctx.data['Translation']}}'",
-        "latex": "\\obj{%raw%}{{%endraw%}{{ctx.cldf.form}}{%raw%}}{%endraw%} \\qu{%raw%}{{%endraw%}{{ctx.data['Translation']}}{%raw%}}{%endraw%}",
+        "html": load_template("wordform", "html"),
+        "plain": load_template("wordform", "plain"),
+        "latex": load_template("wordform", "latex"),
     }
 
+    list_templates = {
+        "plain": load_template("wordform", "plain_index"),
+        "html": load_template("wordform", "html_index")
+    }
 
 models = [Morpheme, Morph, Example, Language, Text, Cognateset, Form]

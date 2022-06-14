@@ -1,8 +1,8 @@
-# Introduction
+# Introduction [label](sec:intro)
 
-This document serves both as a test for `pylingdocs` and a showcase of its capabilities.
-It aims to contain every feature and model currently available in `pylingdocs`.
-The `pylingdocs`-flavored markdown on which is it based can be found [here](https://github.com/fmatter/pylingdocs/blob/main/docs/demo.txt).
+This document does double service as a test for `pylingdocs` and a showcase of its capabilities.
+It aims to demonstrate every feature and model currently available in `pylingdocs`.
+The underlying `pylingdocs`-flavored markdown input can be found [here](https://github.com/fmatter/pylingdocs/blob/main/docs/demo.txt).
 It uses data from the CLDF [test dataset](https://github.com/fmatter/pylingdocs/tree/main/tests/data/cldf).
 
 We'll start with some generic markdown stuff.
@@ -19,7 +19,7 @@ Here is some **bold** and _italic_ text.
 * with
 * bullet points
 
-`pylingdocs` also supports general functionalities found in humanities studies:
+`pylingdocs` also supports citations commonly used in linguistics:
 Here's a citation: [src](alvarez1998split), or maybe one in parentheses? [psrc](alvarez1998split).
 And the same with pages: [src](alvarez1998split[133-134]), [psrc](alvarez1998split[133-134])-
 Here's a cross reference to [ref](sec:linguistics).
@@ -38,6 +38,37 @@ A number of models are built-in, at the moment:
 2. morphs: [m](tri-se-2)
 3. languages: [lg](tri)
 4. texts: [txt](ikp-ekiri)
+5. forms: [wf](tri-fire)
+
+Language labels, translations, and sources can be manipulated:
+
+1. [mp](tri-se?with_language)
+1. [m](tri-se-2?with_language)
+1. [wf](tri-fire?with_language)
+
+or
+
+1. [mp](tri-se?with_source)
+1. [m](tri-se-2?with_source)
+1. [wf](tri-fire?with_source)
+
+or
+
+1. [mp](tri-se?no_translation)
+1. [m](tri-se-2?no_translation)
+1. [wf](tri-fire?no_translation)
+
+or
+
+1. [mp](tri-se?with_source&with_language)
+1. [m](tri-se-2?with_language&with_language)
+1. [wf](tri-fire?with_source&with_language)
+
+or
+
+1. [mp](tri-se?with_source&with_language&no_translation)
+1. [m](tri-se-2?with_source&with_language&no_translation)
+1. [wf](tri-fire?with_source&with_language&no_translation)
 
 You can also use cldfviz syntax: [Some label](LanguageTable#cldf:apa)
 
@@ -78,7 +109,6 @@ Pass arguments to the visualizer:
 
 Tables are stored as `csv` files, which can contain `pylingdocs` markdown.
 
-[table](onetable)
 
 ## A level 2 section
 
