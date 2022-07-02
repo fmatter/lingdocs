@@ -375,7 +375,7 @@ class CLLD(OutputFormat):
         return f"{{#{url}}}"
 
     def clld_gloss(url, **kwargs):
-        return f"""<span class="smallcaps">{url}</span>"""
+        return "<span class='smallcaps'>"+url+'</span>'
 
     def clld_exref(url, **kwargs):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
