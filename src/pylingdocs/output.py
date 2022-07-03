@@ -410,6 +410,7 @@ class CLLD(OutputFormat):
             content = " \n \n" + content
         return html_example_wrap(tag, content, kind=kind)
 
+
     @classmethod
     def write_folder(
         cls, output_dir, content=None, parts=None, metadata=None, abbrev_dict=None
@@ -420,8 +421,7 @@ class CLLD(OutputFormat):
         tent = "\n" + content
         delim = "\n# "
         parts = tent.split(delim)[1::]
-
-        if len(parts) == 0:
+        if len(parts) == 0 or OUTPUT_TEMPLATES["clld"] in ["slides", "article"]:
             with open(my_output_dir / "content.txt", "w", encoding="utf-8") as f:
                 f.write(content)
         else:
