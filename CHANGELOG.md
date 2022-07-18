@@ -17,7 +17,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * language-form-translation-source template
 
 ### Removed
-* bugs
 
 ### Changed
 * table metadata are stored in human-friendlier YAML

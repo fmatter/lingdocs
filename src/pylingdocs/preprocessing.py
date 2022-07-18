@@ -151,7 +151,7 @@ def preprocess_cldfviz(md):
 
 
 def render_markdown(
-    md_str, ds, decorate_gloss_string, data_format="cldf", output_format="plain"
+    md_str, ds, decorate_gloss_string=lambda x: x, data_format="cldf", output_format="plain"
 ):
     if data_format == "cldf":
         if output_format != "clld":
