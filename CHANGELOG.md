@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * table metadata are stored in human-friendlier YAML
 
+### Fixed
+* don't split articles and slides
+
 ## [0.0.4] -- 2022-06-03
 
 ### Added
