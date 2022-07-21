@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
+### Removed
+
+### Changed
+
+### Fixed
+
+## [0.0.5] -- 2022-07-21
+
+### Added
 * HTML preview with autorefresh
 * preview in CLLD apps with [clld-document-plugin](https://github.com/fmatter/clld-document-plugin)
 * `end` argument for crossrefs
@@ -15,8 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * section anchors for github
 * language-form-translation-source template
 * hide todos in releases
-
-### Removed
 
 ### Changed
 * table metadata are stored in human-friendlier YAML
@@ -94,7 +102,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[Unreleased]: https://github.com/fmatter/pylingdocs/compare/0.0.4...HEAD
+[Unreleased]: https://github.com/fmatter/pylingdocs/compare/0.0.5...HEAD
+[0.0.5]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.5
 [0.0.4]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.4
 [0.0.3]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.3
 [0.0.2]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.2
