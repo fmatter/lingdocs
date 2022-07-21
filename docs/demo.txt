@@ -126,6 +126,7 @@ or
 Tables are stored as `csv` files, which can contain `pylingdocs` markdown.
 
 
+[table](onetable)
 ## A level 2 section
 
 Something about nominal possession.

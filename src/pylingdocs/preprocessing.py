@@ -295,6 +295,7 @@ def postprocess(md_str, builder, source_dir="."):
         with open(table_md, encoding="utf-8") as f:
             tables = yaml.load(f, Loader=yaml.SafeLoader)
     else:
+        log.warning(f"Specified table metadatafile {TABLE_MD} not found.")
         tables = {}
     md_str = "".join(insert_manex(md_str, builder, MANPEX_PATTERN, kind="multipart"))
     md_str = "".join(

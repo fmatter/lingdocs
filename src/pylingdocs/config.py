@@ -73,9 +73,7 @@ CREATE_README = get_config("OUTPUT", "readme", as_boolean=True)
 METADATA_FILE = Path("./metadata.yaml")
 
 OUTPUT_TEMPLATES = {}
-for builder in BUILDERS:
-    OUTPUT_TEMPLATES[builder] = get_config(builder, "template")
-for builder in PREVIEW:
+for builder in BUILDERS + PREVIEW + ["plain", "github", "html", "latex", "clld"]:
     OUTPUT_TEMPLATES[builder] = get_config(builder, "template")
 
 LATEX_EX_TEMPL = get_config("latex", "interlinear_tool")

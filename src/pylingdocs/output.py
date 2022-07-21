@@ -458,7 +458,9 @@ class CLLD(OutputFormat):
             for tag, data in content_dic.items():
                 refs = re.findall(r"<a href='#(.*?)' .*?</a>", tent)
                 for ref in refs:
-                    if tag_dic[ref] != tag:
+                    if ref not in tag_dic:
+                        log.error(f"Tag {ref} not found.")
+                    elif tag_dic[ref] != tag:
                         data["content"] = re.sub(
                             rf"<a href='#{ref}'.*?</a>",
                             f"[crossref](ChapterTable?_anchor={ref}#cldf:{tag_dic[ref]})",
