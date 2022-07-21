@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * markdown in table captions
 * section anchors for github
 * language-form-translation-source template
+* hide todos in releases
 
 ### Removed
 
@@ -23,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 * don't split articles and slides
 * whitespace in github output
+* various small things
 
 ## [0.0.4] -- 2022-06-03
 
