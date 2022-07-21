@@ -9,11 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * HTML preview with autorefresh
-* CLLD preview
+* preview in CLLD apps with [clld-document-plugin](https://github.com/fmatter/clld-document-plugin)
 * `end` argument for crossrefs
+* markdown in table captions
 * section anchors for github
-* version in HTML
-* automatic in-line translations
 * language-form-translation-source template
 
 ### Removed
@@ -23,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * don't split articles and slides
+* whitespace in github output
 
 ## [0.0.4] -- 2022-06-03
 
