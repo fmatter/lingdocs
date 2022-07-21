@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `pre_cell` and `post_cell` keywords in table metadata to apply markdown to entire table
 
 ### Removed
+* text cldf metadata (now in [clld-corpus-plugin](https://github.com/fmatter/clld-corpus-plugin/blob/main/src/clld_corpus_plugin/cldf/TextTable-metadata.json))
 
 ### Changed
 
