@@ -198,7 +198,7 @@ def render_markdown(
     return ""
 
 
-def load_tables(md, source_dir="."):
+def load_tables(md, tables, source_dir="."):
     current = 0
     for m in MD_LINK_PATTERN.finditer(md):
         yield md[current : m.start()]
@@ -209,8 +209,21 @@ def load_tables(md, source_dir="."):
                 log.error(f"Table file <{table_path.resolve()}> does not exist.")
                 sys.exit(1)
             else:
-                with open(table_path, "r", encoding="utf-8") as f:
-                    yield "\nPYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + f.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
+                temp_df = pd.read_csv(table_path, keep_default_na=False)
+                this_table_metadata = tables.get(url, {})
+                temp_df = temp_df.apply(
+                    lambda x: this_table_metadata.get(  # pylint: disable=cell-var-from-loop
+                        "pre_cell", ""
+                    )
+                    + x
+                    + this_table_metadata.get(  # pylint: disable=cell-var-from-loop
+                        "post_cell", ""
+                    )
+                )
+                csv_buffer = StringIO()
+                temp_df.to_csv(csv_buffer, index=False)
+                csv_buffer.seek(0)
+                yield "\nPYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + csv_buffer.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
@@ -288,12 +301,7 @@ def insert_manex(md, builder, pattern, kind="plain"):
     yield md[current:]
 
 
-def preprocess(md_str, source_dir="."):
-    temp_str = "".join(load_manual_examples(md_str, source_dir))
-    return "".join(load_tables(temp_str, source_dir))
-
-
-def postprocess(md_str, builder, source_dir="."):
+def load_table_metadata(source_dir):
     table_md = _get_relative_file(source_dir / TABLE_DIR, TABLE_MD)
     if table_md.is_file():
         with open(table_md, encoding="utf-8") as f:
@@ -301,6 +309,17 @@ def postprocess(md_str, builder, source_dir="."):
     else:
         log.warning(f"Specified table metadatafile {TABLE_MD} not found.")
         tables = {}
+    return tables
+
+
+def preprocess(md_str, source_dir="."):
+    tables = load_table_metadata(source_dir)
+    temp_str = "".join(load_manual_examples(md_str, source_dir))
+    return "".join(load_tables(temp_str, tables, source_dir))
+
+
+def postprocess(md_str, builder, source_dir="."):
+    tables = load_table_metadata(source_dir)
     md_str = "".join(insert_manex(md_str, builder, MANPEX_PATTERN, kind="multipart"))
     md_str = "".join(
         insert_manex(md_str, builder, MANPEX_ITEM_PATTERN, kind="subexample")

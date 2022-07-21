@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+* `pre_cell` and `post_cell` keywords in table metadata to apply markdown to entire table
 
 ### Removed
 
