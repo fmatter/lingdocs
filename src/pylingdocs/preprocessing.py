@@ -14,11 +14,10 @@ from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import comma_and_list
-from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import get_md_pattern
-from pylingdocs.helpers import html_gloss
-from pylingdocs.helpers import sanitize_latex, src
+from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
+from pylingdocs.helpers import src
 from pylingdocs.models import models
 
 
@@ -122,6 +121,7 @@ for output_format, env_dict in templates.items():
 bool_dic = {"True": True, "False": False}
 abbrev_dic = {"nt": "no_translation"}
 
+
 def preprocess_cldfviz(md):
     current = 0
     for m in MD_LINK_PATTERN.finditer(md):
@@ -151,7 +151,11 @@ def preprocess_cldfviz(md):
 
 
 def render_markdown(
-    md_str, ds, decorate_gloss_string=lambda x: x, data_format="cldf", output_format="plain"
+    md_str,
+    ds,
+    decorate_gloss_string=lambda x: x,
+    data_format="cldf",
+    output_format="plain",
 ):
     if data_format == "cldf":
         if output_format != "clld":
@@ -164,7 +168,7 @@ def render_markdown(
                     "sanitize_latex": sanitize_latex,
                     "split_ref": split_ref,
                     "decorate_gloss_string": decorate_gloss_string,
-                    "src": src
+                    "src": src,
                 },
             )
             preprocessed = render(

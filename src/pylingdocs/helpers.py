@@ -22,6 +22,7 @@ from pylingdocs.metadata import _load_metadata
 
 log = logging.getLogger(__name__)
 
+
 def _src(string, mode="cldfviz"):
     if mode == "cldfviz":
         bibkey, pages = split_ref(string)
@@ -29,8 +30,8 @@ def _src(string, mode="cldfviz"):
             page_str = f": {pages}"
         else:
             page_str = ""
-        return f"[{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str}" # noqa: E501
-    elif mode == "biblatex":
+        return f"[{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str}"  # noqa: E501
+    if mode == "biblatex":
         cite_string = []
         for citation in string.split(","):
             bibkey, pages = split_ref(citation)
@@ -41,6 +42,9 @@ def _src(string, mode="cldfviz"):
             cite_string.append(f"{page_str}{{{bibkey}}}")
         cite_string = "".join(cite_string)
         return cite_string
+    log.error("mode=(cldfviz,biblatex)")
+    sys.exit()
+
 
 def src(cite_input, mode="cldfviz", parens=False):
     if isinstance(cite_input, str):
@@ -54,17 +58,14 @@ def src(cite_input, mode="cldfviz", parens=False):
     if mode == "biblatex":
         if parens:
             return "\\parencites" + "".join(citations)
-        else:
-            return "\\textcites" + "".join(citations)
-    else:
-        if parens:
-            return "(" + ", ".join(citations) + ")"
-        else:
-            return ", ".join(citations)
+        return "\\textcites" + "".join(citations)
+    if parens:
+        return "(" + ", ".join(citations) + ")"
+    return ", ".join(citations)
+
 
 def html_gloss(s):
     return f"<span class='gloss'>{s}<span class='tooltiptext gloss-{s}'></span></span>"
-    
 
 
 def html_example_wrap(tag, content, kind="example"):
@@ -327,9 +328,7 @@ def refresh_clld_db(clld_folder):
         )
     spec = importlib.util.find_spec("clld_document_plugin")
     if spec:
-        from clld_document_plugin.util import (
-            refresh_documents,
-        )  # pylint: disable=import-outside-toplevel
+        from clld_document_plugin.util import refresh_documents  # pylint: disable=import-outside-toplevel,import-error 
 
         refresh_documents(CLLD_URI, chapters)
     else:

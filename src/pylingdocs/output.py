@@ -29,7 +29,8 @@ from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import html_example_wrap
-from pylingdocs.helpers import latexify_table, html_gloss
+from pylingdocs.helpers import html_gloss
+from pylingdocs.helpers import latexify_table
 from pylingdocs.helpers import refresh_clld_db
 from pylingdocs.helpers import src
 from pylingdocs.metadata import _load_metadata
@@ -45,7 +46,7 @@ NUM_PRE = re.compile(r"[\d]+\ ")
 log = logging.getLogger(__name__)
 
 
-def blank_todo(url, **kwargs):
+def blank_todo(url, **_kwargs):
     del url
     return ""
 
@@ -83,10 +84,10 @@ class OutputFormat:
             return f"[ref:{url}–{end}]"
         return f"[ref:{url}]"
 
-    def label_element(url, **kwargs):
+    def label_element(url, **_kwargs):
         return f"[lbl:{url}]"
 
-    def gloss_element(url, **kwargs):
+    def gloss_element(url, **_kwargs):
         return url.upper()
 
     def blank_exref(url, **kwargs):
@@ -258,13 +259,10 @@ class HTML(OutputFormat):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
         return f'<a class="exref" example_id="{url}"{kw_str}></a>'
 
-    def html_gl(url, **kwargs):
-        return decorate_gloss_string(
-            url.upper(),
-            decoration=html_gloss,
-        )
+    def html_gl(url, **_kwargs):
+        return decorate_gloss_string(url.upper(), decoration=html_gloss)
 
-    def html_label(url, **kwargs):
+    def html_label(url, **_kwargs):
         return "{#" + url + "}" + f"\n <a id='{url}'></a>"
 
     @classmethod
@@ -325,15 +323,15 @@ class GitHub(OutputFormat):
     name = "github"
     file_ext = "md"
 
-    def ref_element(url, **kwargs):
+    def ref_element(url, **_kwargs):
         if "tab:" in str(url):
             return "[Table]"
         return f"<a href='#{url}'>click</a>"
 
-    def label_element(url, **kwargs):
+    def label_element(url, **_kwargs):
         return f"<a id='{url}'><a/>"
 
-    def gloss_element(url, **kwargs):
+    def gloss_element(url, **_kwargs):
         return url.upper()
 
     def blank_exref(url, **kwargs):
@@ -371,11 +369,11 @@ class CLLD(OutputFormat):
     file_ext = "md"
     single_output = False
 
-    def clld_label(url, **kwargs):
+    def clld_label(url, **_kwargs):
         return f"{{#{url}}}"
 
-    def clld_gloss(url, **kwargs):
-        return "<span class='smallcaps'>"+url+'</span>'
+    def clld_gloss(url, **_kwargs):
+        return "<span class='smallcaps'>" + url + "</span>"
 
     def clld_exref(url, **kwargs):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
@@ -409,7 +407,6 @@ class CLLD(OutputFormat):
         if content.strip().startswith("PYLINGDOCS_RAW_TABLE_START"):
             content = " \n \n" + content
         return html_example_wrap(tag, content, kind=kind)
-
 
     @classmethod
     def write_folder(
@@ -484,12 +481,12 @@ class Latex(OutputFormat):
     name = "latex"
     file_ext = "tex"
 
-    def latex_exref(url, end=None, suffix="", **kwargs):
+    def latex_exref(url, end=None, suffix="", **_kwargs):
         if end:
             return f"\\exref[{suffix}][{end}]{{{url}}}"
         return f"\\exref[{suffix}]{{{url}}}"
 
-    def latex_label(url, **kwargs):
+    def latex_label(url, **_kwargs):
         return f"\\label{{{url}}}"
 
     def latex_ref(url, **kwargs):
@@ -502,7 +499,7 @@ class Latex(OutputFormat):
     def decorate_gloss_string(cls, x):
         return decorate_gloss_string(x)
 
-    def latex_gloss(url, **kwargs):
+    def latex_gloss(url, **_kwargs):
         return decorate_gloss_string(url.upper())
 
     doc_elements = {
@@ -592,7 +589,7 @@ class Latex(OutputFormat):
         return " and ".join(out)
 
     @classmethod
-    def replace_commands(cls, content, **kwargs):  # pylint: disable=too-many-locals
+    def replace_commands(cls, content, **kwargs):
         current = 0
         for m in MD_LINK_PATTERN.finditer(content):
             yield content[current : m.start()]

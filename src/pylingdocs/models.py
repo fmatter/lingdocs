@@ -222,7 +222,8 @@ class Form(Entity):
 
     list_templates = {
         "plain": load_template("wordform", "plain_index"),
-        "html": load_template("wordform", "html_index")
+        "html": load_template("wordform", "html_index"),
     }
+
 
 models = [Morpheme, Morph, Example, Language, Text, Cognateset, Form]
