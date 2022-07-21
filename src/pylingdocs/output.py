@@ -51,7 +51,7 @@ def blank_todo(url, **kwargs):
 
 
 def html_todo(url, **kwargs):
-    if "release" in kwargs:
+    if kwargs.get("release", False):
         return ""
     if "?" in str(url):
         return f"<span title='{url}'>❓</span>"
@@ -59,7 +59,7 @@ def html_todo(url, **kwargs):
 
 
 def latex_todo(url, **kwargs):
-    if "release" in kwargs:
+    if kwargs.get("release", False):
         return ""
     return f"\\todo{{{url}}}"
 

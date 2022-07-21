@@ -4,7 +4,7 @@
 {% set morphemes = [] %}
 {% for morpheme in ctx %}
 {% if morpheme.id in ids %}
-{% set morphemes = morphemes.append("_"+morpheme["Name"]+"_") %}
+{% set morphemes = morphemes.append(morpheme["Name"]) %}
 {% endif %}
 {% endfor %}
 {{ comma_and_list(morphemes)}}{%endif%}

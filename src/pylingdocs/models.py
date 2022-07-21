@@ -114,14 +114,14 @@ class Morpheme(Entity):
 
     templates = {
         "plain": load_template("morpheme", "plain"),
-        "github": load_template("morpheme", "plain"),
+        "github": load_template("morpheme", "github"),
         "latex": load_template("morpheme", "latex"),
         "html": load_template("morpheme", "html"),
     }
 
     list_templates = {
         "plain": load_template("morpheme", "plain_index"),
-        "github": load_template("morpheme", "plain_index"),
+        "github": load_template("morpheme", "github_index"),
         "latex": load_template("morpheme", "latex_index"),
         "html": load_template("morpheme", "html_index"),
     }

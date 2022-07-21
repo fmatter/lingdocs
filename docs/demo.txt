@@ -19,15 +19,21 @@ Here is some **bold** and _italic_ text.
 * with
 * bullet points
 
-`pylingdocs` also supports citations commonly used in linguistics:
-Here's a citation: [src](alvarez1998split), or maybe one in parentheses? [psrc](alvarez1998split).
-And the same with pages: [src](alvarez1998split[133-134]), [psrc](alvarez1998split[133-134])-
 Here's a cross reference to [ref](sec:linguistics).
 Here's a cross reference[^3] to [ref](tab:onetable).
 
-
 [^3]: And here is a (foot)note. You can use markdown in here: see [ref](sec:linguistics) for details about [mp](apa-se).
 
+# Citing literature
+
+`pylingdocs` supports citation styles commonly used in linguistics:
+
+* [src](alvarez1998split)
+* [psrc](alvarez1998split).
+* [src](alvarez1998split[133-134])
+* [psrc](alvarez1998split[133-134])
+* [src](alvarez1998split[133-134],triomeira1999[218])
+* [psrc](alvarez1998split[133-134],triomeira1999[218])
 # Integrating linguistic entities [label](sec:linguistics)
 
 The core functionality of `pylingdocs` is including linguistic data in your prose.
@@ -39,6 +45,46 @@ A number of models are built-in, at the moment:
 3. languages: [lg](tri)
 4. texts: [txt](ikp-ekiri)
 5. forms: [wf](tri-fire)
+
+You can use cldfviz syntax: [lg](apa) is the same as [Some label](LanguageTable#cldf:apa).
+
+You can also refer to multiple entities of the same kind:
+The [lg](tri) suffix [mp](tri-se) has the allomorphs [m](tri-se-1,tri-se-2,tri-se-3).
+[lg](apa,tri) are both Cariban languages, as are [lg](pem,ikp,uxc).
+This becomes very practical if you are citing data:
+
+1. [wf](tri-fire,apa-fire,wai-fire?with_source&with_language)
+1. [lg](tri) [wf](tri-with,tri-person,tri-us?with_source)
+
+## Examples
+
+### Interlinearized glossed examples
+
+Glossed examples are inserted like any other entity, but are not rendered in-line:
+
+[ex](ekiri-1)
+
+[ex](ekiri-2,ekiri-3?example_id=mymultipartexample)
+
+Example references should be versatile enough for most purposes: [exref](ekiri-1), [exref](ekiri-3), [exref](mymultipartexample), [exref](mymultipartexample?suffix=a-b), [exref](ekiri-1?end=mymultipartexample), [exref](mymultipartexample?suffix=arbitrarysuffix)
+
+### Manual examples
+These can contain tables, lists, whatever:
+
+[manex](manex1)
+
+They can also have multiple parts:
+
+[manex](manex2)
+
+
+## Arguments
+Pass arguments to the visualizer, with examples:
+
+[ex](ekiri-4?example_id=my_custom_id&with_primaryText)
+
+[exref](my_custom_id)
+
 
 Language labels, translations, and sources can be manipulated:
 
@@ -61,7 +107,7 @@ or
 or
 
 1. [mp](tri-se?with_source&with_language)
-1. [m](tri-se-2?with_language&with_language)
+1. [m](tri-se-2?with_source&with_language)
 1. [wf](tri-fire?with_source&with_language)
 
 or
@@ -70,41 +116,11 @@ or
 1. [m](tri-se-2?with_source&with_language&no_translation)
 1. [wf](tri-fire?with_source&with_language&no_translation)
 
-You can also use cldfviz syntax: [Some label](LanguageTable#cldf:apa)
+or
 
+1. [mp](tri-se?with_source&with_language&translation=supine)
+1. [wf](tri-fire?with_source&with_language&translation=people)
 
-You can also refer to multiple entities of the same kind:
-The [lg](tri) suffix [mp](tri-se) has the allomorphs [m](tri-se-1,tri-se-2,tri-se-3).
-[lg](apa,tri) are both Cariban languages, as are [lg](pem,ikp,uxc).
-
-## Examples
-
-### Interlinearized glossed examples
-
-Glossed examples are called like any other entity, but are rendered as follows:
-
-[ex](ekiri-1)
-
-[ex](ekiri-2,ekiri-3?example_id=mymultipartexample)
-
-Example references are quite versatile: [exref](ekiri-1), [exref](ekiri-3), [exref](mymultipartexample), [exref](mymultipartexample?suffix=a-b), [exref](ekiri-1?end=mymultipartexample), [exref](mymultipartexample?suffix=arbitrarysuffix)
-
-### Manual examples
-These can contain tables, lists, whatever:
-
-[manex](manex1)
-
-They can also have multiple parts:
-
-[manex](manex2)
-
-
-## Arguments
-Pass arguments to the visualizer:
-
-[ex](ekiri-4?example_id=my_custom_id&with_primaryText)
-
-[exref](my_custom_id)
 # Tables
 
 Tables are stored as `csv` files, which can contain `pylingdocs` markdown.
