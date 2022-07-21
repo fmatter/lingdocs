@@ -328,7 +328,7 @@ def refresh_clld_db(clld_folder):
         )
     spec = importlib.util.find_spec("clld_document_plugin")
     if spec:
-        from clld_document_plugin.util import refresh_documents  # pylint: disable=import-outside-toplevel,import-error 
+        from clld_document_plugin.util import refresh_documents  # pylint: disable=import-outside-toplevel,import-error,useless-suppression
 
         refresh_documents(CLLD_URI, chapters)
     else:
