@@ -3,6 +3,7 @@ import logging
 import sys
 from pathlib import Path
 import click
+import yaml
 from pylingdocs.cldf import generate_autocomplete as autogen
 from pylingdocs.config import BUILDERS
 from pylingdocs.config import CLDF_MD
@@ -179,6 +180,28 @@ def clean(output_dir):  # pragma: no cover
 def new():
     """Create a new pylingdocs project."""
     create_new()
+
+
+@main.command()
+def author_config():
+    """Create a config file with default values for new pylingdocs projects"""
+    val_dict = {
+        "author_family_name": "Your family name",
+        "author_given_name": "Your given name",
+        "email": "Your e-mail address",
+        "orcid": "Your ORCID",
+        "affiliation": "Your institutional affiliation(s)",
+    }
+    for val, info in val_dict.items():
+        val_dict[val] = input(f"{info}:\n")
+    conf_path = Path.home() / ".config/pld"
+    if not conf_path.is_dir():
+        log.info(f"Creating folder {conf_path}")
+    conf_path.mkdir(parents=True, exist_ok=True)
+    yaml_path = conf_path / "author_config.yaml"
+    log.info(f"Saving to {yaml_path}")
+    with open(yaml_path, "w", encoding="utf-8") as f:
+        yaml.dump(val_dict, f)
 
 
 @main.command()

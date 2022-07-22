@@ -150,7 +150,17 @@ def comma_and_list(entries, sep1=", ", sep2=" and ", oxford=True):
 
 def new():
     """Create a new pylingdocs project"""
-    cookiecutter(str(DATA_DIR / "project_template"), overwrite_if_exists=True)
+    conf_path = Path.home() / ".config/pld" / "author_config.yaml"
+    if conf_path.is_file():
+        with open(conf_path, "r", encoding="utf-8") as f:
+            extra = yaml.load(f, Loader=yaml.SafeLoader)
+    else:
+        extra = {}
+    cookiecutter(
+        str(DATA_DIR / "project_template"),
+        extra_context=extra,
+        overwrite_if_exists=True,
+    )
 
 
 def get_md_pattern(m):
@@ -328,8 +338,9 @@ def refresh_clld_db(clld_folder):
         )
     spec = importlib.util.find_spec("clld_document_plugin")
     if spec:
-        from clld_document_plugin.util import \
-            refresh_documents  # pylint: disable=import-outside-toplevel,import-error,useless-suppression
+        from clld_document_plugin.util import ( # pylint: disable=import-outside-toplevel,import-error,useless-suppression
+            refresh_documents,
+        )  
 
         refresh_documents(CLLD_URI, chapters)
     else:
