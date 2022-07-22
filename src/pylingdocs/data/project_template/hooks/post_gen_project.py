@@ -13,7 +13,7 @@ def create_file(file, no=1):
     number = f"{no}000"
     filename = number + " " + file + ".md"
     with open((PROJECT_DIR / "content" / filename), "w") as f:
-        f.write(f"# {file.capitalize()} [label](sec:{file})\n\n Insert content")
+        f.write(f"# {file.capitalize()} [label](sec:{file})\n\nInsert content")
 
 
 if "No license" == "{{ cookiecutter.license }}":
