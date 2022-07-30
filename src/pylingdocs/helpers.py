@@ -6,10 +6,13 @@ import sys
 from pathlib import Path
 import pandas as pd
 import panflute
+import pybtex
 import yaml
 from cookiecutter.main import cookiecutter
 from pycldf import Dataset
+from pycldf import Source
 from pylingdocs import __version__
+from pylingdocs.config import ADD_BIB
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CLLD_URI
 from pylingdocs.config import DATA_DIR
@@ -120,7 +123,12 @@ def split_ref(s):
 
 def _load_cldf_dataset(cldf_path=CLDF_MD):
     try:
-        return Dataset.from_metadata(cldf_path)
+        ds = Dataset.from_metadata(cldf_path)
+        if Path(ADD_BIB).is_file():
+            bib = pybtex.database.parse_file(ADD_BIB, bib_format="bibtex")
+            sources = [Source.from_entry(k, e) for k, e in bib.entries.items()]
+            ds.add_sources(*sources)
+        return ds
     except FileNotFoundError as e:
         log.error(e)
         log.error(
@@ -338,9 +346,8 @@ def refresh_clld_db(clld_folder):
         )
     spec = importlib.util.find_spec("clld_document_plugin")
     if spec:
-        from clld_document_plugin.util import ( # pylint: disable=import-outside-toplevel,import-error,useless-suppression
-            refresh_documents,
-        )  
+        from clld_document_plugin.util import \
+            refresh_documents  # pylint: disable=import-outside-toplevel,import-error,useless-suppression
 
         refresh_documents(CLLD_URI, chapters)
     else:

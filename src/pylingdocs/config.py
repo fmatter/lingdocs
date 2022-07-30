@@ -54,6 +54,7 @@ TABLE_MD = get_path("table_metadata")
 OUTPUT_DIR = get_path("output")
 STRUCTURE_FILE = get_path("structure_file")
 BENCH = get_path("bench")
+ADD_BIB = get_path("add_bib")
 
 BUILDERS = get_config("OUTPUT", "builders").split(" ")
 PREVIEW = get_config("OUTPUT", "preview").split(" ")

@@ -1,4 +1,5 @@
 function number_examples() {
+    console.log("Numbering examples")
     var examples = document.querySelectorAll("li.example");
     var exrefs = document.querySelectorAll("a.exref");
     for (var exc = 0; exc < examples.length; exc++) {
