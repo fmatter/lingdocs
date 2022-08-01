@@ -21,8 +21,8 @@ from pylingdocs.helpers import write_readme
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.output import check_ids
 from pylingdocs.output import clean_output
-from pylingdocs.output import compile_latex as cmplatex
-from pylingdocs.output import create_output
+from pylingdocs.output import compile_latex as cmplatex, _load_content, _write_file
+from pylingdocs.output import create_output, iterate_structure
 from pylingdocs.output import run_preview
 from pylingdocs.output import update_structure as do_update_structure
 
@@ -202,6 +202,69 @@ def author_config():
     log.info(f"Saving to {yaml_path}")
     with open(yaml_path, "w", encoding="utf-8") as f:
         yaml.dump(val_dict, f)
+
+@main.command(cls=BuildCommand)
+def editor(cldf, source, output_dir, latex):
+    from flask import Flask, request, render_template, jsonify
+    from flask_cors import CORS
+    from pycldf import Dataset
+    from pylingdocs.output import HTML
+    from pylingdocs.preprocessing import render_markdown, preprocess, postprocess
+
+    ds = _load_cldf_dataset(cldf)
+    structure = _load_structure(
+        _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
+    )
+    contents, parts = _load_content(structure, source / CONTENT_FOLDER)
+
+    builder = HTML
+
+    def build(content):
+        preprocessed = preprocess(content)
+        preprocessed = builder.preprocess_commands(preprocessed)
+        preprocessed += "\n\n" + builder.reference_list()
+        try:
+            preprocessed = render_markdown(preprocessed, ds, output_format=builder.name)
+        except KeyError as e:
+            return f"Key not found: {e.args[0]}"
+        preprocessed = postprocess(preprocessed, builder)
+        return builder.preprocess(preprocessed)
+
+    app = Flask(
+        __name__,
+        template_folder="/home/florianm/Dropbox/development/temp/lingedit/src/templates",
+        static_folder="/home/florianm/Dropbox/development/pylingdocs/src/pylingdocs/data/web/",
+    )
+
+    CORS(app)
+
+    @app.route("/getpart/<part_id>")
+    def getpart(part_id):
+        return contents[part_id]
+
+    @app.route("/getparts")
+    def getparts():
+        return jsonify(contents)
+
+    @app.post("/write/<file_id>")
+    def write_file(file_id):
+        _write_file(file_id)
+        log.debug(list(iterate_structure(structure)))
+        return "Good"
+
+    @app.post("/render")
+    def render():
+        return build(request.json["input"])
+
+    @app.route("/input")
+    def input():
+        return contents["nouns"]
+
+    @app.route("/")
+    def index():
+        return render_template("index.html")
+
+    app.run(debug=True, port=5000)
 
 
 @main.command()

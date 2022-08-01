@@ -761,6 +761,8 @@ def clean_output(output_dir):
     shutil.rmtree(output_dir)
     output_dir.mkdir()
 
+def _write_file(part_id):
+    log.debug(f"Writing {part_id}")
 
 def check_ids(source_dir, dataset, structure):
 

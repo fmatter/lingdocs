@@ -10,7 +10,13 @@ except ImportError:  # pragma: no cover
 WEB_DIR = files("pylingdocs") / "data/web"
 
 
-for filename in ["examples.css", "examples.js", "glossing.js"]:
+for filename in [
+    "examples.css",
+    "examples.js",
+    "glossing.js",
+    "styling.css",
+    "crossref.js",
+]:
     source = Path(WEB_DIR / filename)
     target = Path(".")
     copy(source, target)
