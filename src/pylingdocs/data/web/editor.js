@@ -1,16 +1,36 @@
+//shared/global variables
+export const store = Pinia.defineStore('store', {
+    state: () => ({"current": "", "originalContents": {}, "previewMode": "file", "text": "", "modified": {}, "contents": {}, "autoPreview": true})
+})
+
+var initial_data = {
+    "parts": [],
+    "drawer": true,
+    "contentView": "both",
+    "contentViewItems": ["both", "editor", "viewer"],
+    "editor": true,
+    "viewer": true,
+    "renderConfig": {
+        // Mermaid config
+        mermaid: {
+          theme: "dark"
+        }
+      },
+}
+
 
 async function render() {
     console.log("Rendering")
-    if (this.input != this.contents[this.current]) {
+    if (this.originalContents[this.current] != this.contents[this.current]) {
         this.modified[this.current] = true
-        this.contents[this.current] = this.input
+    } else {
+        this.modified[this.current] = false
     }
-    this.text = ""
     var inputString = ""
     if (this.previewMode == "all"){
         inputString = Object.values(this.contents).join("\n\n")
     } else {
-        inputString = this.input
+        inputString = this.contents[this.current]
     }
     const options = {
         method: "POST",
@@ -22,40 +42,53 @@ async function render() {
         dataPromise.then((data) => {
             this.text = data;
             this.$nextTick(() => {
-                style()
+                style(3)
             });
         })
     });
 }
 
-function mounted() {
+async function mounted() {
+    console.log("Mounting")
+    fetch("http://localhost:5000/getfiles", {headers: {'Content-Type': 'application/json'}}).then((response) => {
+        let dataPromise = response.json();
+        dataPromise.then((files) => {
+            this.parts = files
+            var init = false
+            for (const part of files) {
+                this.modified[part["id"]] = false
+                fetch("http://localhost:5000/getpart/"+part["id"], {headers: {'Content-Type': 'application/json'}}).then((response) => {
+                    let dataPromise = response.json();
+                    dataPromise.then((content) => {
+                       this.originalContents[part["id"]] = content
+                       console.log(part["id"])
+                       this.contents[part["id"]] = content
+                       if (!init){
+                        this.current = part["id"]
+                        init=true
+                        this.render()
+                       }
+                    })
+                })
+            }
+        })
+    })
     console.log("Mounted")
-    for (const key of Object.keys(this.contents)) {
-        this.modified[key] = false
-    }
 }
 
-
-var initial_data = {
-    "input": "placeholder",
-    'text': "",
-    "previewMode": "file",
-    "autoPreview": true,
-    "modified": {}
+function insertEntity() {
+    console.log("TBD")
 }
 
-
-function style() {
+function style(start=0) {
     console.log("Styling")
     number_examples();
-    number_sections()
+    number_sections(start)
     number_captions()
     resolve_crossrefs()
 }
 
-function load_part(part){
-    this.input = this.contents[part]
-    this.current = part
+function loadPart(part){
     if (this.previewMode == "file") {
         this.render()
     }
@@ -80,40 +113,60 @@ function saveFile(){
 function updateContent(){
     if (this.autoPreview === true){
         console.log("Rendering")
-        // this.render.bind(this)
         this.render()
     } else {
         console.log("Not rendering")
-        console.log(self.autoPreview)
+        console.log(this.autoPreview)
     }
 }
 
 var methods = {
     'render': render,
-    "load_part": load_part,
+    "loadPart": loadPart,
     "handleAutoPreview": handleAutoPreview,
     "updateContent": updateContent,
-    "saveFile": saveFile
+    "saveFile": saveFile,
+    "entity": insertEntity
 }
 
-fetch("http://localhost:5000/getparts", {headers: {'Content-Type': 'application/json'}}).then((response) => {
-    let dataPromise = response.json();
-    dataPromise.then((contents) => {
-        console.log(Object.keys(contents))
-        initial_data["contents"] = contents
-        const { ref, createApp } = Vue
-        var vueApp = Vue.createApp({
-            data() {return initial_data},
-            methods: methods,
-            mounted:mounted
-        });
-        vueApp.use(naive);
-        vueApp.mount('#app');
-    })
-})
+
+Vue.component('my-markdown-editor', {
+    data() {
+        return {
+            "custom":{
+                'entity': {
+                    cmd: 'entity',
+                    ico: "mdi mdi-database-arrow-down-outline",
+                    title: 'Insert entity'
+                }
+            },
+        }
+    },
+    computed: {...Pinia.mapWritableState(store, ["current", "contents", "autoPreview", "previewMode", "originalContents", "text", "modified"])},
+    methods: methods,
+    template: `<markdown-editor
+                                height="83vh"
+                                v-model:value="contents[current]"
+                                v-on:input="updateContent"
+                                id="textinput"
+                                toolbar="bold italic heading numlist bullist entity"
+                                @command:entity="entity"
+                                :extend="custom"
+                                >
+                            </markdown-editor>`
+});
 
 
-// function renderIcon (icon) {
-//   return () =>Vue.h(NIcon, null, { default: () =>Vue.h(icon) })
-// }
 
+Vue.use(Pinia.PiniaVuePlugin)
+const { ref, createApp } = Vue
+var vueApp = new Vue({
+    el: "#app",
+    data() {return initial_data},
+    computed: {...Pinia.mapWritableState(store, ["current", "contents", "autoPreview", "previewMode", "originalContents", "text", "modified"])},
+    methods: methods,
+    mounted: mounted,
+    vuetify: new Vuetify(),
+    pinia: Pinia.createPinia(),
+    // components: {"my-markdown-editor":}
+});

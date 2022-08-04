@@ -216,6 +216,8 @@ def editor(cldf, source, output_dir, latex):
         _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
     )
     contents, parts = _load_content(structure, source / CONTENT_FOLDER)
+    with open(_get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE), "r", encoding="utf-8") as f:
+        structure_contents = f.read()
 
     builder = HTML
 
@@ -240,11 +242,19 @@ def editor(cldf, source, output_dir, latex):
 
     @app.route("/getpart/<part_id>")
     def getpart(part_id):
-        return contents[part_id]
+        return jsonify(contents[part_id])
 
     @app.route("/getparts")
     def getparts():
         return jsonify(contents)
+
+    @app.route("/getstructure")
+    def getstructure():
+        return jsonify(structure_contents)
+
+    @app.route("/getfiles")
+    def getfiles():
+        return jsonify([{"id": x, "title": y} for x, y in parts.items()])
 
     @app.post("/write/<file_id>")
     def write_file(file_id):

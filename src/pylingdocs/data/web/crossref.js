@@ -11,22 +11,28 @@ function get_number_label(counters, level) {
 var stored = {}
 
 
-function number_sections(){
+function number_sections(start=0){
     var toc = document.getElementById("toc") // get the table of contents
     var counters = {}; // initialize counters for every heading level except h1 (below)
     var levels = ["h2", "h3", "h4", "h5", "h6"];
     levels.forEach(function(x, i) {
         counters[x] = 0
     })
+    counters["h2"] = start
 
     // there is only supposed to be one h1; get a potential chapter number and format it
-    var h1 = document.querySelectorAll("h1")[0];
-    if (h1.hasAttribute("number")) {
-        prefix = h1.getAttribute("number") + "."
-    } else {
+    var h1 = document.querySelectorAll("h1");
+    if (h1.length == 0){
         prefix = ""
+    } else {
+        h1 = h1[0]
+        if (h1.hasAttribute("number")) {
+            prefix = h1.getAttribute("number") + "."
+        } else {
+            prefix = ""
+        }
+        h1.textContent = prefix+" " + h1.textContent
     }
-    h1.textContent = prefix+" " + h1.textContent
 
     // iterate all headings
     var headings = document.querySelectorAll("h2, h3, h4, h5, h6");
@@ -34,7 +40,10 @@ function number_sections(){
         var level = heading.tagName.toLowerCase();
         counters[level] += 1
         number = get_number_label(counters, level.charAt(level.length - 1)) // the formatted X.Y.Z counter
-        heading.textContent = prefix + number + ". " + heading.textContent
+        if (!heading.textContent.startsWith(prefix + number)){
+            heading.textContent = prefix + number + ". " + heading.textContent    
+        }
+        
 
         if (toc) {
             toclink = document.createElement('a') // insert links into the TOC
@@ -74,7 +83,9 @@ function number_captions(){
             if (caption.classList.contains(kind)){
                 counters[kind] += 1
                 ref_counter = capitalizeFirstLetter(kind) + " " + counters[kind];
-                caption.textContent = ref_counter + ": " + caption.textContent
+                if (!caption.textContent.startsWith(ref_counter + ": ")){
+                    caption.textContent = ref_counter + ": " + caption.textContent
+                }
                 stored[caption.id] = ref_counter // store the value for resolve_crossrefs below
             }
         });
