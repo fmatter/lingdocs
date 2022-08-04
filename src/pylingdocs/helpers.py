@@ -14,7 +14,7 @@ from pycldf import Source
 from pylingdocs import __version__
 from pylingdocs.config import ADD_BIB
 from pylingdocs.config import CLDF_MD
-from pylingdocs.config import CLLD_URI
+from pylingdocs.config import CLLD_URI, CONTENT_FILE_PREFIX, CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import STRUCTURE_FILE
@@ -144,6 +144,60 @@ def _load_structure(structure_file=STRUCTURE_FILE):
         sys.exit(1)
     else:
         return yaml.load(open(structure_file, encoding="utf-8"), Loader=yaml.SafeLoader)
+
+
+def get_structure(prefix_mode=None, structure_file=STRUCTURE_FILE):
+    counters = {1: 0, 2: 0, 3: 0, 4: 0}
+    files = _load_structure(structure_file)
+    contents = {}
+    prefix_choices = ["alpha", "numerical"]
+    for file, values in files.items():
+        contents[file] = values
+        if prefix_mode not in prefix_choices:
+            prefix = ""
+        else:
+            level = values.get("level", 1)
+            i = 4
+            while i > level:
+                counters[i] = 0
+                i -= 1
+            counters[level] += 1
+            numbering = ".".join([str(x) for x in counters.values() if x > 0])
+            if prefix_mode == "numerical":
+                prefix = "".join([str(x) for x in counters.values()]) + " "
+            else:
+                prefix = (
+                    "".join([chr(x + 64) for x in counters.values() if x > 0]) + " "
+                )
+            contents[file]["numbering"] = numbering
+        contents[file]["filename"] = prefix + file + ".md"
+    return contents
+
+def load_content(source_dir=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
+    contents = get_structure(
+        prefix_mode=CONTENT_FILE_PREFIX, structure_file=structure_file
+    )
+    for key, data in contents.items():
+        with open(Path(source_dir) / data["filename"], "r", encoding="utf-8") as f:
+            contents[key]["content"] = f.read()
+    return contents
+
+
+def write_file(
+    file_id,
+    content,
+    prefix_mode=CONTENT_FILE_PREFIX,
+    source_dir=CONTENT_FOLDER,
+    structure_file=STRUCTURE_FILE,
+):
+    contents = get_structure(prefix_mode=prefix_mode, structure_file=structure_file)
+    if file_id not in contents:
+        log.error(f"File with handle {file_id} not found, please check your structure.yaml file and your content files")
+        raise ValueError
+    with open(
+        Path(source_dir) / contents[file_id]["filename"], "w", encoding="utf-8"
+    ) as f:
+        f.write(content)
 
 
 def comma_and_list(entries, sep1=", ", sep2=" and ", oxford=True):

@@ -59,7 +59,7 @@ ADD_BIB = get_path("add_bib")
 BUILDERS = get_config("OUTPUT", "builders").split(" ")
 PREVIEW = get_config("OUTPUT", "preview").split(" ")
 CLLD_URI = get_config("clld", "db_uri")
-gloss_file_address = get_config("misc", "glossing_abbrevs")
+gloss_file_address = get_config("input", "glossing_abbrevs")
 
 if "cldf:" in gloss_file_address:
     GLOSS_ABBREVS = {}
@@ -79,3 +79,5 @@ for builder in BUILDERS + PREVIEW + ["plain", "github", "html", "latex", "clld"]
 
 LATEX_EX_TEMPL = get_config("latex", "interlinear_tool")
 LATEX_TOPLEVEL = get_config("latex", "toplevel")
+
+CONTENT_FILE_PREFIX = get_config("input", "content_file_prefix")

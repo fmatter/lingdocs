@@ -203,8 +203,9 @@ def author_config():
     with open(yaml_path, "w", encoding="utf-8") as f:
         yaml.dump(val_dict, f)
 
+
 @main.command(cls=BuildCommand)
-def editor(cldf, source, output_dir, latex):
+def edit(cldf, source, output_dir, latex):
     from flask import Flask, request, render_template, jsonify
     from flask_cors import CORS
     from pycldf import Dataset
@@ -216,7 +217,11 @@ def editor(cldf, source, output_dir, latex):
         _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
     )
     contents, parts = _load_content(structure, source / CONTENT_FOLDER)
-    with open(_get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE), "r", encoding="utf-8") as f:
+    with open(
+        _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE),
+        "r",
+        encoding="utf-8",
+    ) as f:
         structure_contents = f.read()
 
     builder = HTML

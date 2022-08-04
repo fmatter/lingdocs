@@ -2,7 +2,7 @@ from pathlib import Path
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import split_ref
 from pylingdocs.helpers import decorate_gloss_string
-
+from pylingdocs.helpers import load_content, _load_structure, write_file
 
 def test_structure():
     assert _get_relative_file(
@@ -41,3 +41,7 @@ def test_gloss_decoration():
     }
     for raw, expex in test_cases.items():
         assert decorate_gloss_string(raw) == expex
+
+def test_files():
+    print(load_content(source_dir="/home/florianm/Dropbox/research/other_cldf/soq/soqdemo/content", structure_file="/home/florianm/Dropbox/research/other_cldf/soq/soqdemo/content/structure.yaml"))
+    # print(write_file(file_id="file3", content="test me daddyo", source_dir="/home/florianm/Dropbox/research/other_cldf/soq/soqdemo/content", structure_file="/home/florianm/Dropbox/research/other_cldf/soq/soqdemo/content/structure.yaml"))
