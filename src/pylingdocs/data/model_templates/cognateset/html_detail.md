@@ -1,5 +1,5 @@
 {% if inline %}
-  <i>{{ ctx.data["Form"] }}</i>
+  <i>{{ ctx.data.get("Form", ctx.data.get("Name", ctx.data.get("Description", "Unnamed"))) }}</i>
 {% else %}
   {% set vars = namespace(header=False) %}
   <table>
