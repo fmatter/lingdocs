@@ -6,6 +6,11 @@ from pylingdocs.config import DATA_DIR
 from pylingdocs.config import LATEX_EX_TEMPL
 
 
+try:
+    from importlib.resources import files  # pragma: no cover
+except ImportError:  # pragma: no cover
+    from importlib_resources import files  # pragma: no cover
+
 log = logging.getLogger(__name__)
 
 
@@ -207,7 +212,13 @@ class Cognateset(Entity):
     name = "Cognate set"
     cldf_table = "CognatesetTable"
     shortcut = "cogset"
-    templates = {"plain": "{{ ctx.name }}"}
+    # templates = {"plain": "{{ ctx.name }}"}
+    templates = {
+        "plain": open(
+            files("cldfviz") / "templates/text/CognatesetTable_detail.md", "r"
+        ).read(),
+        "html": "test"
+    }
 
 
 class Form(Entity):

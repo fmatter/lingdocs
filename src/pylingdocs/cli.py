@@ -16,13 +16,17 @@ from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_cldf_dataset
 from pylingdocs.helpers import _load_structure
+from pylingdocs.helpers import load_content
 from pylingdocs.helpers import new as create_new
 from pylingdocs.helpers import write_readme
 from pylingdocs.metadata import _load_metadata
+from pylingdocs.output import _load_content
+from pylingdocs.output import _write_file
 from pylingdocs.output import check_ids
 from pylingdocs.output import clean_output
-from pylingdocs.output import compile_latex as cmplatex, _load_content, _write_file
-from pylingdocs.output import create_output, iterate_structure
+from pylingdocs.output import compile_latex as cmplatex
+from pylingdocs.output import create_output
+from pylingdocs.output import iterate_structure
 from pylingdocs.output import run_preview
 from pylingdocs.output import update_structure as do_update_structure
 
@@ -86,22 +90,26 @@ def build(
     source = Path(source)
     output_dir = Path(output_dir)
     ds = _load_cldf_dataset(cldf)
-    metadata = _load_metadata(source / METADATA_FILE)
-    structure = _load_structure(
-        _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
+    contents = load_content(
+        source_dir=source / CONTENT_FOLDER,
+        structure_file=_get_relative_file(
+            folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
+        ),
     )
+    metadata = _load_metadata(source / METADATA_FILE)
+    log.debug(contents)
     create_output(
+        contents,
         source,
         targets,
         ds,
         output_dir,
-        structure=structure,
         metadata=metadata,
         latex=latex,
         release=release,
     )
-    if CREATE_README:
-        write_readme(source / METADATA_FILE, release=release)
+    # if CREATE_README:
+    #     write_readme(source / METADATA_FILE, release=release)
 
 
 @main.command(cls=BuildCommand)
@@ -129,16 +137,19 @@ def preview(  # pylint: disable=too-many-arguments
     output_dir = Path(output_dir)
     ds = _load_cldf_dataset(cldf)
     metadata = _load_metadata(source / METADATA_FILE)
-    structure = _load_structure(
-        _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
+    contents = load_content(
+        structure_file=_get_relative_file(
+            folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
+        ),
+        source_dir=source / CONTENT_FOLDER,
     )
     run_preview(
+        contents=contents,
         refresh=refresh,
         source_dir=source,
         formats=targets,
         dataset=ds,
         output_dir=output_dir,
-        structure=structure,
         metadata=metadata,
         latex=latex,
         html=html,
@@ -206,80 +217,10 @@ def author_config():
 
 @main.command(cls=BuildCommand)
 def edit(cldf, source, output_dir, latex):
-    from flask import Flask, request, render_template, jsonify
-    from flask_cors import CORS
-    from pycldf import Dataset
-    from pylingdocs.output import HTML
-    from pylingdocs.preprocessing import render_markdown, preprocess, postprocess
 
-    ds = _load_cldf_dataset(cldf)
-    structure = _load_structure(
-        _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
-    )
-    contents, parts = _load_content(structure, source / CONTENT_FOLDER)
-    with open(
-        _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE),
-        "r",
-        encoding="utf-8",
-    ) as f:
-        structure_contents = f.read()
-
-    builder = HTML
-
-    def build(content):
-        preprocessed = preprocess(content)
-        preprocessed = builder.preprocess_commands(preprocessed)
-        preprocessed += "\n\n" + builder.reference_list()
-        try:
-            preprocessed = render_markdown(preprocessed, ds, output_format=builder.name)
-        except KeyError as e:
-            return f"Key not found: {e.args[0]}"
-        preprocessed = postprocess(preprocessed, builder)
-        return builder.preprocess(preprocessed)
-
-    app = Flask(
-        __name__,
-        template_folder="/home/florianm/Dropbox/development/temp/lingedit/src/templates",
-        static_folder="/home/florianm/Dropbox/development/pylingdocs/src/pylingdocs/data/web/",
-    )
-
-    CORS(app)
-
-    @app.route("/getpart/<part_id>")
-    def getpart(part_id):
-        return jsonify(contents[part_id])
-
-    @app.route("/getparts")
-    def getparts():
-        return jsonify(contents)
-
-    @app.route("/getstructure")
-    def getstructure():
-        return jsonify(structure_contents)
-
-    @app.route("/getfiles")
-    def getfiles():
-        return jsonify([{"id": x, "title": y} for x, y in parts.items()])
-
-    @app.post("/write/<file_id>")
-    def write_file(file_id):
-        _write_file(file_id)
-        log.debug(list(iterate_structure(structure)))
-        return "Good"
-
-    @app.post("/render")
-    def render():
-        return build(request.json["input"])
-
-    @app.route("/input")
-    def input():
-        return contents["nouns"]
-
-    @app.route("/")
-    def index():
-        return render_template("index.html")
-
-    app.run(debug=True, port=5000)
+    from pylingdocs.editor import Editor
+    e = Editor(cldf, source, output_dir)
+    e.run()
 
 
 @main.command()

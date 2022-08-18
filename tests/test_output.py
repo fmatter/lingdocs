@@ -2,9 +2,9 @@ import logging
 import shutil
 
 # import pytest
-from pylingdocs.helpers import _load_structure
+from pylingdocs.helpers import _load_structure, load_content, _get_relative_file
 from pylingdocs.output import create_output
-
+from pylingdocs.config import CONTENT_FOLDER, STRUCTURE_FILE
 
 log = logging.getLogger(__name__)
 
@@ -40,7 +40,16 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
     shutil.copytree(data / "tables", tmp_path / "tables")
     monkeypatch.chdir(tmp_path)
 
+    contents = load_content(
+        source_dir=data / CONTENT_FOLDER,
+        structure_file=_get_relative_file(
+            folder=data / CONTENT_FOLDER, file=STRUCTURE_FILE
+        ),
+    )
+
+
     create_output(
+        contents=contents,
         source_dir=data,
         output_dir="output",
         dataset=dataset,

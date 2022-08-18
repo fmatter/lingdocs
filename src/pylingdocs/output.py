@@ -20,6 +20,7 @@ from slugify import slugify
 from pylingdocs.config import BENCH
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
+from pylingdocs.config import FIGURE_DIR
 from pylingdocs.config import GLOSS_ABBREVS
 from pylingdocs.config import LATEX_TOPLEVEL
 from pylingdocs.config import OUTPUT_DIR
@@ -31,6 +32,7 @@ from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import html_example_wrap
 from pylingdocs.helpers import html_gloss
 from pylingdocs.helpers import latexify_table
+from pylingdocs.helpers import load_content
 from pylingdocs.helpers import refresh_clld_db
 from pylingdocs.helpers import src
 from pylingdocs.metadata import _load_metadata
@@ -128,6 +130,7 @@ class OutputFormat:
 
         if content is not None:
             content = cls.preprocess(content)
+            content = content.replace("![](", "![](images/")
             extra.update({"content": content})
 
         extra.update(**metadata)
@@ -147,6 +150,14 @@ class OutputFormat:
             overwrite_if_exists=True,
             no_input=True,
         )
+        if FIGURE_DIR.is_dir():
+            target_dir = output_dir / cls.name / FIGURE_DIR.name
+            if not target_dir.is_dir():
+                target_dir.mkdir()
+            for file in FIGURE_DIR.iterdir():
+                target = target_dir / file.name
+                if not target.is_file():
+                    shutil.copy(file, target)
 
     @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
@@ -416,6 +427,9 @@ class CLLD(OutputFormat):
         if not (my_output_dir).is_dir():
             (my_output_dir).mkdir()
         tent = "\n" + content
+        tent = tent.replace(
+            "![](", "![](/static/images/"
+        )  # rudely assume that all images live in the static dir
         delim = "\n# "
         parts = tent.split(delim)[1::]
         if len(parts) == 0 or OUTPUT_TEMPLATES["clld"] in ["slides", "article"]:
@@ -729,7 +743,7 @@ def run_server():
     test(Handler)
 
 
-def run_preview(refresh=True, **kwargs):
+def run_preview(contents, refresh=True, **kwargs):
     log.info("Rendering preview")
     watchfiles = [str(x) for x in kwargs["source_dir"].iterdir()]
     watchfiles += [str(x) for x in (kwargs["source_dir"] / CONTENT_FOLDER).iterdir()]
@@ -748,6 +762,7 @@ def run_preview(refresh=True, **kwargs):
         kwargs["formats"] = list(kwargs["formats"]) + ["html"]
     if latex and "latex" not in kwargs["formats"]:
         kwargs["formats"] = list(kwargs["formats"]) + ["latex"]
+    kwargs["contents"] = contents
     create_output(**kwargs)
     if html:
         threading.Thread(target=run_server).start()
@@ -798,11 +813,11 @@ def check_ids(source_dir, dataset, structure):
 
 
 def create_output(
+    contents,
     source_dir,
     formats,
     dataset,
     output_dir,
-    structure,
     metadata=None,
     latex=False,
     **kwargs,
@@ -819,9 +834,6 @@ def create_output(
         bool: blabla
 
     """
-    source_dir = Path(source_dir)
-    if isinstance(structure, (str, PosixPath)):
-        structure = _load_structure(source_dir / CONTENT_FOLDER / structure)
     if isinstance(metadata, (str, PosixPath)):
         metadata = _load_metadata(metadata)
     if metadata is None:
@@ -831,15 +843,12 @@ def create_output(
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir.resolve()}")
         output_dir.mkdir()
-
-    contents, parts = _load_content(structure, source_dir / CONTENT_FOLDER)
     for output_format in formats:
         for m in models:
             m.reset_cnt()
         log.info(f"Rendering format [{output_format}]")
         builder = builders[output_format]
-        # log.debug(f"Writing skeleton to folder {output_dir}")
-        content = "\n\n".join(contents.values())
+        content = "\n\n".join([x["content"] for x in contents.values()])
         preprocessed = preprocess(content, source_dir)
         preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
         preprocessed = render_markdown(
@@ -860,7 +869,6 @@ def create_output(
             builder.write_folder(
                 output_dir,
                 content=preprocessed,
-                parts=parts,
                 metadata=metadata,
                 abbrev_dict=GLOSS_ABBREVS,
             )
@@ -868,7 +876,6 @@ def create_output(
             builder.write_folder(
                 output_dir,
                 content=preprocessed,
-                parts=parts,
                 metadata=metadata,
                 abbrev_dict=GLOSS_ABBREVS,
             )

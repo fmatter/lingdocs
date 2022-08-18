@@ -14,7 +14,9 @@ from pycldf import Source
 from pylingdocs import __version__
 from pylingdocs.config import ADD_BIB
 from pylingdocs.config import CLDF_MD
-from pylingdocs.config import CLLD_URI, CONTENT_FILE_PREFIX, CONTENT_FOLDER
+from pylingdocs.config import CLLD_URI
+from pylingdocs.config import CONTENT_FILE_PREFIX
+from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import STRUCTURE_FILE
@@ -173,6 +175,7 @@ def get_structure(prefix_mode=None, structure_file=STRUCTURE_FILE):
         contents[file]["filename"] = prefix + file + ".md"
     return contents
 
+
 def load_content(source_dir=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
     contents = get_structure(
         prefix_mode=CONTENT_FILE_PREFIX, structure_file=structure_file
@@ -180,6 +183,8 @@ def load_content(source_dir=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
     for key, data in contents.items():
         with open(Path(source_dir) / data["filename"], "r", encoding="utf-8") as f:
             contents[key]["content"] = f.read()
+        if "title" not in data:
+            data["title"] = "TODO MAKE THIS THE TITLE PLS"
     return contents
 
 
@@ -192,12 +197,14 @@ def write_file(
 ):
     contents = get_structure(prefix_mode=prefix_mode, structure_file=structure_file)
     if file_id not in contents:
-        log.error(f"File with handle {file_id} not found, please check your structure.yaml file and your content files")
+        log.error(
+            f"File with handle {file_id} not found, please check your structure.yaml file and your content files"
+        )
         raise ValueError
-    with open(
-        Path(source_dir) / contents[file_id]["filename"], "w", encoding="utf-8"
-    ) as f:
+    w_path = Path(source_dir) / contents[file_id]["filename"]
+    with open(w_path, "w", encoding="utf-8") as f:
         f.write(content)
+        log.info(f"Wrote to file {w_path}")
 
 
 def comma_and_list(entries, sep1=", ", sep2=" and ", oxford=True):
@@ -400,9 +407,8 @@ def refresh_clld_db(clld_folder):
         )
     spec = importlib.util.find_spec("clld_document_plugin")
     if spec:
-        from clld_document_plugin.util import (
-            refresh_documents,
-        )  # pylint: disable=import-outside-toplevel,import-error,useless-suppression
+        from clld_document_plugin.util import \
+            refresh_documents  # pylint: disable=import-outside-toplevel,import-error,useless-suppression
 
         refresh_documents(CLLD_URI, chapters)
     else:
