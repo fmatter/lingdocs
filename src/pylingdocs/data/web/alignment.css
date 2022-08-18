@@ -1,0 +1,134 @@
+/*FM: from https://github.com/tupian-language-resources/tular/blob/8f1b79ea56ddf2972035edb4c4e27a50884bf0ec/tular/static/alignment.css*/
+/* licensed under  Apache-2.0, author Johann-Mattis List */
+span.residue {
+  display: table-cell;
+  width: 30px;
+  background-color: #f1f1f1;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  cursor: default;
+}
+span.noresidue {
+  display: inline!important;
+}
+span.context:before {
+	content: "";
+}
+span.context {
+  display: table-cell;
+  width: 20px;
+  background-color: #f1f1f1;
+  font-weight: bold;
+  text-align: center;
+  color: black;
+  cursor: default;
+  font-size: 85%;
+}
+
+td.residue{
+  display: table-cell;
+  width: 30px;
+  background-color: #f1f1f1;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  cursor: default;
+}
+td.missing {
+	display: table-cell;
+	width: 30px;
+	background-color: #f0f0f0;
+	font-weight: normal;
+	text-align:center;
+	color: lightgray;
+	cursor: default;
+}
+
+td.dolgo_ERROR{background-color: white; color:red;}
+td.dolgo_V{background-color: #c86464;}
+td.dolgo_K{background-color: #c89664;} 
+td.dolgo_P{background-color: #c8c864;} 
+td.dolgo_H{background-color: #96c864;} 
+td.dolgo_J{background-color: #64c864;} 
+td.dolgo_M{background-color: #64c896;} 
+td.dolgo_N{background-color: #64c8c8;} 
+td.dolgo_S{background-color: #6496c8;} 
+td.dolgo_R{background-color: #6464c8;} 
+td.dolgo_T{background-color: #9664c8;} 
+td.dolgo_W{background-color: #c864c8;} 
+td.dolgo_1{background-color: #c86496;} 
+td.dolgo_X{background-color: #bbbbbb;}
+td.dolgo_IGNORE{opacity: 0.5; color: black;}
+td.dolgo_GAP{background-color: #bbbbbb;}
+td.dolgo_NAS{
+  background: -moz-linear-gradient(left,#c86464,#64c8c8);
+  background: -webkit-linear-gradient(left,#c86464,#64c8c8);
+  background: linear-gradient(left,#c86464,#64c8c8);
+}
+td.dolgo_PLUS{vertical-align:center; font-weight: bold; background-color:white; color:black; width: 10px !important}
+span.dolgo_ERROR{background-color: white; color:red;}
+span.dolgo_V{background-color: #c86464;}
+span.dolgo_K{background-color: #c89664;} 
+span.dolgo_P{background-color: #c8c864;} 
+span.dolgo_H{background-color: #96c864;} 
+span.dolgo_J{background-color: #64c864;} 
+span.dolgo_M{background-color: #64c896;} 
+span.dolgo_N{background-color: #64c8c8;} 
+span.dolgo_S{background-color: #6496c8;} 
+span.dolgo_R{background-color: #6464c8;} 
+span.dolgo_T{background-color: #9664c8;} 
+span.dolgo_W{background-color: #c864c8;} 
+span.dolgo_1{background-color: #c86496;} 
+span.dolgo_X{background-color: #bbbbbb;}
+span.dolgo_GAP{background-color: #bbbbbb;}
+span.dolgo_IGNORE{color: black; opacity: 0.25;}
+span.dolgo_NAS{
+  background: -moz-linear-gradient(left,#c86464,#64c8c8);
+  background: -webkit-linear-gradient(left,#c86464,#64c8c8);
+  background: linear-gradient(left,#c86464,#64c8c8);
+}
+
+span.dolgo_PLUS{vertical-align:center;font-weight: bold; background-color:white; color:black; width: 15px !important}
+
+td.pre-align {
+	color: #2d6ca2;
+}
+.help {
+  border-radius: 5px;
+  z-index: 1;
+  display: block;
+  color: #2D6CA2;
+  background-color: white;
+  border: 2px solid #2D6CA2;
+  max-width: 1000px;
+  padding-top: 10px;
+  padding-bottom: 25px;
+  padding-right:25px;
+  padding-left:25px;
+  margin: 5px;
+
+}
+
+.morpheme {
+	border: 1px solid #2d6ca2;
+	border-radius: 5px;
+	font-weight: bold;
+	color: #2D6CA2;
+	display: table-cell;
+	padding: 1px;
+}
+.morpheme-error {
+	border: 1px solid Crimson;
+	border-radius: 5px;
+	font-weight: bold;
+	color: Crimson;
+	display: table-cell;
+	padding: 1px;
+}
+.small {
+	font-size: 70%;
+}
+
+
+

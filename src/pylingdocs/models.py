@@ -217,7 +217,7 @@ class Cognateset(Entity):
         "plain": open(
             files("cldfviz") / "templates/text/CognatesetTable_detail.md", "r"
         ).read(),
-        "html": "test"
+        "html": load_template("cognateset", "html_detail")
     }
 
 
