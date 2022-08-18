@@ -129,8 +129,8 @@ class OutputFormat:
             extra["author"] = cls.author_list([])
 
         if content is not None:
-            content = cls.preprocess(content)
             content = content.replace("![](", "![](images/")
+            content = cls.preprocess(content)
             extra.update({"content": content})
 
         extra.update(**metadata)
@@ -316,9 +316,10 @@ for (var i = 0; i < targets.length; i++) {{
 
     @classmethod
     def preprocess(cls, content):
+
         return panflute.convert_text(
             content,
-            output_format="html",
+            output_format="revealjs",
             input_format="markdown",
             extra_args=["--shift-heading-level-by=1"],
         )

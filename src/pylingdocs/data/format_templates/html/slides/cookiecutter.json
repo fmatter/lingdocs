@@ -1,0 +1,16 @@
+{
+    "part_name":"new_file",
+    "project_title":"<TITLE_PLACEHOLDER>",
+    "name":"github",
+    "author": "The author's name",
+    "content":"<CONTENT_PLACEHOLDER>",
+    "references":"<REFERENCES_PLACEHOLDER>",
+    "parts":{
+        "list":{
+            "label1":"file1",
+            "label2":"file2"
+        }
+    },
+    "glossing_abbrevs": "",
+    "version": "vXXX"
+}
