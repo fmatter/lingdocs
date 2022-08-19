@@ -9,8 +9,7 @@
         {% endfor %}
 ```{=latex}
 \pex\label{% raw %}{{% endraw %}{{example_id}}{% raw %}}{% endraw %}
-{% for example_id in ids %}
-    {% set example = gathered_examples[example_id] %}
+{% for example_id, example in gathered_examples.items() %}
     \a {{ example.related('languageReference').name }}\\
     \label{% raw %}{{% endraw %}{{ example.id }}{% raw %}}{% endraw %}
     {% if example.cldf.analyzedWord != [] %}
