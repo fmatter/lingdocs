@@ -318,7 +318,7 @@ for (var i = 0; i < targets.length; i++) {{
 
         return panflute.convert_text(
             content,
-            output_format="revealjs",
+            output_format="html",
             input_format="markdown",
             extra_args=["--shift-heading-level-by=1"],
         )
