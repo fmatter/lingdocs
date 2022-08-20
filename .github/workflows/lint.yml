@@ -28,7 +28,8 @@ jobs:
           python3 --version
       - name: Upgrade pip and install dependencies
         run: |
-          python3 -m pip install --upgrade pip setuptools<58
+          python3 -m pip install --upgrade pip
+          python3 -m pip install setuptools<58
           python3 -m pip install .[clld,dev]
       - name: Check style against standards using prospector
         run: |
