@@ -315,7 +315,13 @@ for (var i = 0; i < targets.length; i++) {{
 
     @classmethod
     def preprocess(cls, content):
-
+        if OUTPUT_TEMPLATES["html"] == "slides":
+            return panflute.convert_text(
+                content,
+                output_format="revealjs",
+                input_format="markdown",
+                extra_args=["--shift-heading-level-by=1"],
+            )
         return panflute.convert_text(
             content,
             output_format="html",
