@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [0.0.7] -- 2022-08-20
+
+### Fixed
+
 * default HTML pandoc output should be "html"
 
 ## [0.0.6] -- 2022-08-20
@@ -122,8 +126,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[Unreleased]: https://github.com/fmatter/pylingdocs/compare/0.0.7.dev...HEAD
-[0.0.6]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.7.dev
+[Unreleased]: https://github.com/fmatter/pylingdocs/compare/0.0.7...HEAD
+[0.0.7]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.7
+[0.0.6]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.6
 [0.0.5]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.5
 [0.0.4]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.4
 [0.0.3]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.3
