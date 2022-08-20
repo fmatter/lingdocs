@@ -12,16 +12,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `pylingdocs author-config` command
 * `add_bib` option for adding external sources
 * figures functionality
-* cognate set model
 * support for GUI editor
+* experimental [reveal.js](https://revealjs.com/) output
+* cognate set model & some templates
+* cognate set coloring with @LinguList's JS code
 
 ### Removed
 * text cldf metadata (now in [clld-corpus-plugin](https://github.com/fmatter/clld-corpus-plugin/blob/main/src/clld_corpus_plugin/cldf/TextTable-metadata.json))
 
 ### Changed
 * simpler document structure
-
-### Fixed
 
 ## [0.0.5] -- 2022-07-21
 
