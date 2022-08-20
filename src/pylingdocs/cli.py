@@ -108,8 +108,8 @@ def build(
         latex=latex,
         release=release,
     )
-    # if CREATE_README:
-    #     write_readme(source / METADATA_FILE, release=release)
+    if CREATE_README:
+        write_readme(source / METADATA_FILE, release=release)
 
 
 @main.command(cls=BuildCommand)
@@ -213,14 +213,6 @@ def author_config():
     log.info(f"Saving to {yaml_path}")
     with open(yaml_path, "w", encoding="utf-8") as f:
         yaml.dump(val_dict, f)
-
-
-@main.command(cls=BuildCommand)
-def edit(cldf, source, output_dir, latex):
-
-    from pylingdocs.editor import Editor
-    e = Editor(cldf, source, output_dir)
-    e.run()
 
 
 @main.command()
