@@ -214,8 +214,10 @@ class Cognateset(Entity):
     shortcut = "cogset"
     # templates = {"plain": "{{ ctx.name }}"}
     templates = {
-        "plain": open(
-            files("cldfviz") / "templates/text/CognatesetTable_detail.md", "r"
+        "plain": open(  # pylint: disable=consider-using-with
+            files("cldfviz") / "templates/text/CognatesetTable_detail.md",
+            "r",
+            encoding="utf-8",
         ).read(),
         "html": load_template("cognateset", "html_detail"),
     }

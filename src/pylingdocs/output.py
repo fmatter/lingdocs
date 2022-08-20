@@ -32,7 +32,6 @@ from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import html_example_wrap
 from pylingdocs.helpers import html_gloss
 from pylingdocs.helpers import latexify_table
-from pylingdocs.helpers import load_content
 from pylingdocs.helpers import refresh_clld_db
 from pylingdocs.helpers import src
 from pylingdocs.metadata import _load_metadata

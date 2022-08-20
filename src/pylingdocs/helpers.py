@@ -180,9 +180,9 @@ def load_content(source_dir=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
     contents = get_structure(
         prefix_mode=CONTENT_FILE_PREFIX, structure_file=structure_file
     )
-    for key, data in contents.items():
+    for data in contents.values():
         with open(Path(source_dir) / data["filename"], "r", encoding="utf-8") as f:
-            contents[key]["content"] = f.read()
+            data["content"] = f.read()
         if "title" not in data:
             data["title"] = "TODO MAKE THIS THE TITLE PLS"
     return contents
@@ -407,9 +407,8 @@ def refresh_clld_db(clld_folder):
         )
     spec = importlib.util.find_spec("clld_document_plugin")
     if spec:
-        from clld_document_plugin.util import (
-            refresh_documents,
-        )  # pylint: disable=import-outside-toplevel,import-error,useless-suppression
+        from clld_document_plugin.util import \
+            refresh_documents  # pylint: disable=import-outside-toplevel,import-error,useless-suppression
 
         refresh_documents(CLLD_URI, chapters)
     else:
