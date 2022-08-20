@@ -11,27 +11,22 @@ log = logging.getLogger(__name__)
 
 def test_structure(data, caplog):
     assert _load_structure(data / "content" / "structure.yaml") == {
-        "document": {
-            "title": "Test data",
+        "test": {"abstract": "Some text.", "title": "A test section"},
+        "verbs": {"title": "Verbs"},
+        "nouns": {
+            "title": "Nouns",
+            "abstract": "Some text about nouns.",
             "parts": {
-                "test": {"abstract": "Some text.", "title": "A test section"},
-                "verbs": {"title": "Verbs"},
-                "nouns": {
-                    "title": "Nouns",
-                    "abstract": "Some text about nouns.",
+                "possession": {
+                    "title": "Nominal possession",
+                    "abstract": "Another abstract",
                     "parts": {
-                        "possession": {
-                            "title": "Nominal possession",
-                            "abstract": "Another abstract",
-                            "parts": {
-                                "alien": {"title": "Alienable possession"},
-                                "inalien": {"title": "Inalienable possession"},
-                            },
-                        }
+                        "alien": {"title": "Alienable possession"},
+                        "inalien": {"title": "Inalienable possession"},
                     },
-                },
+                }
             },
-        }
+        },
     }
 
 
@@ -46,7 +41,6 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
             folder=data / CONTENT_FOLDER, file=STRUCTURE_FILE
         ),
     )
-
 
     create_output(
         contents=contents,

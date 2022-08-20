@@ -31,7 +31,6 @@ def test_missing(caplog, tmp_path, md_path, data, monkeypatch):
     result = runner.invoke(build, args=["--cldf", md_path])
     assert result.exit_code == 1
     assert "Structure file" in caplog.text
-    assert "Metadata file" in caplog.text
     caplog.clear()
 
     # add structure
