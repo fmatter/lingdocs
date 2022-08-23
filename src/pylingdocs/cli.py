@@ -94,7 +94,6 @@ def build(
         ),
     )
     metadata = _load_metadata(source / METADATA_FILE)
-    log.debug(contents)
     create_output(
         contents,
         source,
@@ -132,21 +131,13 @@ def preview(  # pylint: disable=too-many-arguments
     """Create a live preview using a lightweight, human-readable output format"""
     source = Path(source)
     output_dir = Path(output_dir)
-    ds = _load_cldf_dataset(cldf)
     metadata = _load_metadata(source / METADATA_FILE)
-    contents = load_content(
-        structure_file=_get_relative_file(
-            folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
-        ),
-        source_dir=source / CONTENT_FOLDER,
-    )
     run_preview(
-        contents=contents,
+        cldf,
+        source,
+        output_dir,
         refresh=refresh,
-        source_dir=source,
         formats=targets,
-        dataset=ds,
-        output_dir=output_dir,
         metadata=metadata,
         latex=latex,
         html=html,

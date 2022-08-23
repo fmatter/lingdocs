@@ -28,11 +28,11 @@ from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_structure
-from pylingdocs.helpers import decorate_gloss_string
+from pylingdocs.helpers import decorate_gloss_string, load_content
 from pylingdocs.helpers import html_example_wrap
 from pylingdocs.helpers import html_gloss
 from pylingdocs.helpers import latexify_table
-from pylingdocs.helpers import refresh_clld_db
+from pylingdocs.helpers import refresh_clld_db, _load_cldf_dataset
 from pylingdocs.helpers import src
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
@@ -749,10 +749,20 @@ def run_server():
     test(Handler)
 
 
-def run_preview(contents, refresh=True, **kwargs):
+def run_preview(cldf, source_dir, output_dir, refresh=True, **kwargs):
     log.info("Rendering preview")
-    watchfiles = [str(x) for x in kwargs["source_dir"].iterdir()]
-    watchfiles += [str(x) for x in (kwargs["source_dir"] / CONTENT_FOLDER).iterdir()]
+    watchfiles = [str(x) for x in source_dir.iterdir()]
+    watchfiles += [str(x) for x in (source_dir / CONTENT_FOLDER).iterdir()]
+    ds = _load_cldf_dataset(cldf)
+    structure_file = _get_relative_file(
+        folder=source_dir / CONTENT_FOLDER, file=STRUCTURE_FILE
+    )
+    contents = load_content(
+        structure_file=structure_file, source_dir=source_dir / CONTENT_FOLDER
+    )
+    kwargs["dataset"] = ds
+    kwargs["source_dir"] = source_dir
+    kwargs["output_dir"] = output_dir
     if refresh:
         wkwargs = kwargs.copy()
         reloader = hupper.start_reloader(
