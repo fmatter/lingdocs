@@ -8,11 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-* sources in sublime text data
 
 ### Removed
 
 ### Changed
+
+### Fixed
+
+## [0.0.8] -- 2022-08-23
+
+### Added
+* sources in sublime text data
 
 ### Fixed
 * preview function
@@ -128,7 +134,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[Unreleased]: https://github.com/fmatter/pylingdocs/compare/0.0.7...HEAD
+[Unreleased]: https://github.com/fmatter/pylingdocs/compare/0.0.8...HEAD
+[0.0.8]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.8
 [0.0.7]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.7
 [0.0.6]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.6
 [0.0.5]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.5
