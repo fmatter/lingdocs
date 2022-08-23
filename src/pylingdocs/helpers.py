@@ -407,7 +407,8 @@ def refresh_clld_db(clld_folder):
         )
     spec = importlib.util.find_spec("clld_document_plugin")
     if spec:
-        from clld_document_plugin.util import refresh_documents  # noqa: E402 
+        from clld_document_plugin.util import refresh_documents  # noqa: E402
+
         refresh_documents(CLLD_URI, chapters)
     else:
         log.error("clld-document-plugin not found")

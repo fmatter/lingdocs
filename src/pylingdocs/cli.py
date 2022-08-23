@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 import click
 import yaml
-from pylingdocs.cldf import generate_autocomplete as autogen
+from pylingdocs.cldf import generate_autocomplete
 from pylingdocs.config import BUILDERS
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
@@ -208,7 +208,7 @@ def author_config():
 @click.option("--target", default=CONTENT_FOLDER, help="Content folder.")
 def sublime(cldf, target):
     ds = _load_cldf_dataset(cldf)
-    autogen(ds, target)
+    generate_autocomplete(ds, target)
 
 
 if __name__ == "__main__":
