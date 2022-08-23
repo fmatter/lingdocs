@@ -762,6 +762,7 @@ def run_preview(cldf, source_dir, output_dir, refresh=True, **kwargs):
     contents = load_content(
         structure_file=structure_file, source_dir=source_dir / CONTENT_FOLDER
     )
+    kwargs["cldf"] = cldf
     kwargs["dataset"] = ds
     kwargs["source_dir"] = source_dir
     kwargs["output_dir"] = output_dir
