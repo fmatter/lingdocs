@@ -409,8 +409,7 @@ def refresh_clld_db(clld_folder):
     if spec:
         from clld_document_plugin.util import (  # pylint: disable=import-outside-toplevel,import-error,useless-suppression
             refresh_documents,
-        )
-
+        ) 
         refresh_documents(CLLD_URI, chapters)
     else:
         log.error("clld-document-plugin not found")
