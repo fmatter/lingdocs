@@ -199,6 +199,13 @@ def render_markdown(
 
 
 def load_tables(md, tables, source_dir="."):
+
+    def decorate_cell(x):
+        if x != "":
+            return this_table_metadata.get("pre_cell", "") + x + this_table_metadata.get("post_cell", "")
+        else:
+            return x
+
     current = 0
     for m in MD_LINK_PATTERN.finditer(md):
         yield md[current : m.start()]
@@ -209,19 +216,11 @@ def load_tables(md, tables, source_dir="."):
                 log.error(f"Table file <{table_path.resolve()}> does not exist.")
                 sys.exit(1)
             else:
-                temp_df = pd.read_csv(table_path, keep_default_na=False)
+                temp_df = pd.read_csv(table_path, index_col=0, keep_default_na=False)
                 this_table_metadata = tables.get(url, {})
-                temp_df = temp_df.apply(
-                    lambda x: this_table_metadata.get(  # pylint: disable=cell-var-from-loop
-                        "pre_cell", ""
-                    )
-                    + x
-                    + this_table_metadata.get(  # pylint: disable=cell-var-from-loop
-                        "post_cell", ""
-                    )
-                )
+                temp_df = temp_df.applymap(decorate_cell)
                 csv_buffer = StringIO()
-                temp_df.to_csv(csv_buffer, index=False)
+                temp_df.to_csv(csv_buffer, index=True)
                 csv_buffer.seek(0)
                 yield "\nPYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + csv_buffer.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
         else:
