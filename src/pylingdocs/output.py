@@ -800,35 +800,19 @@ def _write_file(part_id):
     log.debug(f"Writing {part_id}")
 
 
-def check_ids(source_dir, dataset, structure):
-
-    if isinstance(structure, (str, PosixPath)):
-        structure = _load_structure(source_dir / CONTENT_FOLDER / structure)
-
-    source_dir = Path(source_dir)
-    contents, parts = _load_content(structure, source_dir / CONTENT_FOLDER)
-    del parts
-
+def check_ids(contents, dataset, source_dir):
     builder = builders["plain"]
-    content = "\n\n".join(contents.values())
-    preprocessed = preprocess(content, source_dir)
-    preprocessed = builder.preprocess_commands(preprocessed)
-    running = True
     bad_ids = []
-    while running:
-        try:
-            render_markdown(preprocessed, dataset, output_format="plain")
-        except KeyError as e:
-            bad_id = str(e).strip("'")
-            preprocessed = preprocessed.replace(bad_id, "")
-            bad_ids.append(bad_id)
-        else:
-            running = False
-    if len(bad_ids) > 0:
-        bad_ids = "\n".join(bad_ids)
-        log.error(f"""IDs missing from the dataset:\n{bad_ids}""")
-    else:
-        log.info("All good!")
+    for filename, x in contents.items():
+        preprocessed = preprocess(x["content"], source_dir)
+        preprocessed = builder.preprocess_commands(preprocessed)
+        for i, line in enumerate(preprocessed.split("\n")):
+            try:
+                render_markdown(line, dataset, output_format="plain")
+            except KeyError as e:
+                log.error(
+                    f"Missing ID in file {filename}, line {i+1}:\n{str(e)} ({line})"
+                )
 
 
 def create_output(

@@ -150,10 +150,13 @@ def check(source, cldf, output_dir, latex):
     del output_dir
     del latex
     ds = _load_cldf_dataset(cldf)
-    structure = _load_structure(
-        _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
+    contents = load_content(
+        source_dir=source / CONTENT_FOLDER,
+        structure_file=_get_relative_file(
+            folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
+        ),
     )
-    check_ids(source, ds, structure=structure)
+    check_ids(contents, ds, source)
 
 
 @main.command()
