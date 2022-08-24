@@ -224,7 +224,7 @@ class OutputFormat:
         return content
 
     @classmethod
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, ds):
         # del label  # unused
         tabular = df.to_markdown(index=False, tablefmt="grid")
         if not caption:
@@ -306,7 +306,7 @@ for (var i = 0; i < targets.length; i++) {{
         return """<dl id="glossing_abbrevs"></dl>"""
 
     @classmethod
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, ds):
         table = df.to_html(escape=False, index=False)
         if not caption:
             return table
@@ -368,7 +368,7 @@ class GitHub(OutputFormat):
     }
 
     @classmethod
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, ds):
         del label  # unused
         tabular = df.to_markdown(index=False)
         if not caption:
@@ -407,13 +407,14 @@ class CLLD(OutputFormat):
     }
 
     @classmethod
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, ds):
         if not caption:
             if len(df) == 0:
                 df = df.append({x: "" for x in df.columns}, ignore_index=True)
             return df.to_markdown(index=False)
+        cap = "".join(cls.replace_commands(caption))
         return (
-            f"<a id='tab:{label}'></a><div class='caption table' id='tab:{label}'>{caption}</div>\n\n"
+            f"<a id='tab:{label}'></a><div class='caption table' id='tab:{label}'>{cap}</div>\n\n"
             + df.to_markdown(index=False)
         )
 
@@ -541,7 +542,7 @@ class Latex(OutputFormat):
         return f"\\ex\\label{{{tag}}} {content} \\xe"
 
     @classmethod
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, ds):
         if len(df) == 0:
             df = df.append({x: x for x in df.columns}, ignore_index=True)
             df = df.applymap(latexify_table)
@@ -867,7 +868,7 @@ def create_output(
             decorate_gloss_string=builder.decorate_gloss_string,
             output_format=output_format,
         )
-        preprocessed = postprocess(preprocessed, builder, source_dir)
+        preprocessed = postprocess(preprocessed, builder, dataset, source_dir)
         if builder.single_output:
             builder.write_folder(
                 output_dir,

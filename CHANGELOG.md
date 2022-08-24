@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * more informative `check` function, now with offending files and lines
+* `src` and `psrc` in clld table captions
 
 ### Fixed
 * preview function again
