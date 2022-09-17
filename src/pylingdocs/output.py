@@ -224,7 +224,7 @@ class OutputFormat:
         return content
 
     @classmethod
-    def table(cls, df, caption, label, ds):
+    def table(cls, df, caption, label):
         # del label  # unused
         tabular = df.to_markdown(index=False, tablefmt="grid")
         if not caption:
@@ -306,7 +306,7 @@ for (var i = 0; i < targets.length; i++) {{
         return """<dl id="glossing_abbrevs"></dl>"""
 
     @classmethod
-    def table(cls, df, caption, label, ds):
+    def table(cls, df, caption, label):
         table = df.to_html(escape=False, index=False)
         if not caption:
             return table
@@ -368,7 +368,7 @@ class GitHub(OutputFormat):
     }
 
     @classmethod
-    def table(cls, df, caption, label, ds):
+    def table(cls, df, caption, label):
         del label  # unused
         tabular = df.to_markdown(index=False)
         if not caption:
@@ -407,7 +407,7 @@ class CLLD(OutputFormat):
     }
 
     @classmethod
-    def table(cls, df, caption, label, ds):
+    def table(cls, df, caption, label):
         if not caption:
             if len(df) == 0:
                 df = df.append({x: "" for x in df.columns}, ignore_index=True)
@@ -543,7 +543,7 @@ class Latex(OutputFormat):
         return f"\\ex\\label{{{tag}}} {content} \\xe"
 
     @classmethod
-    def table(cls, df, caption, label, ds):
+    def table(cls, df, caption, label):
         if len(df) == 0:
             df = df.append({x: x for x in df.columns}, ignore_index=True)
             df = df.applymap(latexify_table)
@@ -804,7 +804,6 @@ def _write_file(part_id):
 
 def check_ids(contents, dataset, source_dir):
     builder = builders["plain"]
-    bad_ids = []
     for filename, x in contents.items():
         preprocessed = preprocess(x["content"], source_dir)
         preprocessed = builder.preprocess_commands(preprocessed)

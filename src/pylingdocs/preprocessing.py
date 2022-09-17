@@ -202,8 +202,7 @@ def load_tables(md, tables, source_dir="."):
     def decorate_cell(x):
         if x != "":
             return this_table_metadata.get("pre_cell", "") + x + this_table_metadata.get("post_cell", "")
-        else:
-            return x
+        return x
 
     current = 0
     for m in MD_LINK_PATTERN.finditer(md):
