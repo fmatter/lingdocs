@@ -868,7 +868,7 @@ def create_output(
             decorate_gloss_string=builder.decorate_gloss_string,
             output_format=output_format,
         )
-        preprocessed = postprocess(preprocessed, builder, dataset, source_dir)
+        preprocessed = postprocess(preprocessed, builder, source_dir)
         if builder.single_output:
             builder.write_folder(
                 output_dir,

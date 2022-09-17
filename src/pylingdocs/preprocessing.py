@@ -20,6 +20,7 @@ from pylingdocs.helpers import split_ref
 from pylingdocs.helpers import src
 from pylingdocs.models import models
 
+
 log = logging.getLogger(__name__)
 
 MD_LINK_PATTERN = re.compile(r"\[(?P<label>[^]]*)]\((?P<url>[^)]+)\)")
@@ -268,7 +269,7 @@ def load_manual_examples(md, source_dir="."):
     yield md[current:]
 
 
-def insert_tables(md, builder, tables, ds):
+def insert_tables(md, builder, tables):
     current = 0
     for m in TABLE_PATTERN.finditer(md):
         yield md[current : m.start()]
@@ -279,10 +280,10 @@ def insert_tables(md, builder, tables, ds):
         df.columns = [col if "Unnamed: " not in col else "" for col in df.columns]
         if label not in tables:
             log.warning(f"Could not find metadata for table {label}.")
-            yield builder.table(df=df, ds=ds, caption=None, label=None)
+            yield builder.table(df=df, caption=None, label=None)
         else:
             yield builder.table(
-                df=df, ds=ds, caption=tables[label].get("caption", None), label=label
+                df=df, caption=tables[label].get("caption", None), label=label
             )
     yield md[current:]
 
@@ -315,11 +316,11 @@ def preprocess(md_str, source_dir="."):
     return "".join(load_tables(temp_str, tables, source_dir))
 
 
-def postprocess(md_str, builder, dataset, source_dir="."):
+def postprocess(md_str, builder, source_dir="."):
     tables = load_table_metadata(source_dir)
     md_str = "".join(insert_manex(md_str, builder, MANPEX_PATTERN, kind="multipart"))
     md_str = "".join(
         insert_manex(md_str, builder, MANPEX_ITEM_PATTERN, kind="subexample")
     )
     md_str = "".join(insert_manex(md_str, builder, MANEX_PATTERN))
-    return "".join(insert_tables(md_str, builder, tables, dataset))
+    return "".join(insert_tables(md_str, builder, tables))
