@@ -444,6 +444,7 @@ class CLLD(OutputFormat):
         if len(parts) == 0 or OUTPUT_TEMPLATES["clld"] in ["slides", "article"]:
             # these use # as section markers, so we add a level for the html output
             tent = tent.replace("\n#", "\n##")
+            tent = f"# {metadata['title']}\n\n" + tent
             with open(my_output_dir / "content.txt", "w", encoding="utf-8") as f:
                 f.write(tent)
         else:
