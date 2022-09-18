@@ -183,8 +183,6 @@ def load_content(source_dir=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
     for data in contents.values():
         with open(Path(source_dir) / data["filename"], "r", encoding="utf-8") as f:
             data["content"] = f.read()
-        if "title" not in data:
-            data["title"] = "TODO MAKE THIS THE TITLE PLS"
     return contents
 
 

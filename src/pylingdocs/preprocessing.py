@@ -199,10 +199,13 @@ def render_markdown(
 
 
 def load_tables(md, tables, source_dir="."):
-
     def decorate_cell(x):
         if x != "":
-            return this_table_metadata.get("pre_cell", "") + x + this_table_metadata.get("post_cell", "")
+            return (
+                this_table_metadata.get("pre_cell", "")
+                + x
+                + this_table_metadata.get("post_cell", "")
+            )
         return x
 
     current = 0

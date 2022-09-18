@@ -17,20 +17,10 @@ def test_structure(data, caplog):
     assert _load_structure(data / "content" / "structure.yaml") == {
         "test": {"abstract": "Some text.", "title": "A test section"},
         "verbs": {"title": "Verbs"},
-        "nouns": {
-            "title": "Nouns",
-            "abstract": "Some text about nouns.",
-            "parts": {
-                "possession": {
-                    "title": "Nominal possession",
-                    "abstract": "Another abstract",
-                    "parts": {
-                        "alien": {"title": "Alienable possession"},
-                        "inalien": {"title": "Inalienable possession"},
-                    },
-                }
-            },
-        },
+        "nouns": {"title": "Nouns", "abstract": "Some text about nouns."},
+        "possession": {"title": "Nominal possession", "abstract": "Another abstract"},
+        "alien": {},
+        "inalien": {"title": "Inalienable possession"},
     }
 
 
@@ -38,7 +28,7 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
 
     shutil.copytree(data / "tables", tmp_path / "tables")
     shutil.copytree(data / "figures", tmp_path / "figures")
-    
+
     monkeypatch.chdir(tmp_path)
 
     contents = load_content(

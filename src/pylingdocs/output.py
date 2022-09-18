@@ -812,9 +812,7 @@ def check_ids(contents, dataset, source_dir):
             try:
                 render_markdown(line, dataset, output_format="plain")
             except KeyError as e:
-                log.error(
-                    f"Missing ID in file {filename}, L{i+1}:\n{str(e)} in {line}"
-                )
+                log.error(f"Missing ID in file {filename}, L{i+1}:\n{str(e)} in {line}")
                 found = True
     if not found:
         log.info("No missing IDs found.")

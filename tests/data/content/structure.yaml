@@ -6,12 +6,9 @@ verbs:
 nouns:
   title: Nouns
   abstract: Some text about nouns.
-  parts:
-    possession:
-      title: Nominal possession
-      abstract: Another abstract
-      parts:
-        alien:
-          title: Alienable possession
-        inalien:
-          title: Inalienable possession
+possession:
+  title: Nominal possession
+  abstract: Another abstract
+alien: {}
+inalien:
+  title: Inalienable possession
