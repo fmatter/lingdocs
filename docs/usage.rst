@@ -15,9 +15,9 @@ Quick start
 
 1. ``pylingdocs new`` will let you enter some data to get started with a project
   * if you're impatient, the only information truly needed is the path to a valid CLDF metadata.json file
-2. The project will live in a new folder, and inside you will find the `content` folder. If you have installed Sublime Text, you can open the ``<FILENAME>.sublime-project`` file. Otherwise, use an editor of your choice to open one or all of the ``.md`` files.
+2. The project will live in a new folder, and inside you will find the `content` folder. If you have installed Sublime Text, you can use ``subl`` to open the ``<FILENAME>.sublime-project`` file. Otherwise, use an editor of your choice to open one or all of the ``.md`` files.
 3. Get writing. You can use normal `markdown <https://www.markdownguide.org/cheat-sheet/>`_, and of course :doc:`pylingdocs markdown <markdown_format>`.
-  * if you are using Sublime Text and the ``pylingdocs`` plugin, you can use autocomplete or Tools > pylingdocs > insert entity to add data points from your dataset.
+  * if you are using Sublime Text and the ``pylingdocs`` plugin, you can use ``pylingdocs sublime`` and then autocomplete or Tools > pylingdocs > insert entity to add data points from your dataset.
 4. To create output, run ``pylingdocs build`` in the project folder. By default, a :doc:`range of output formats <data_formats>` will be produced, in the folder ``output``
   * you can add the option ``--latex`` to create a PDF from the generated ``.tex`` file. Note: you need to have a working LaTeX installation for this. 
 
