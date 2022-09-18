@@ -14,7 +14,7 @@ Installing ``pylingdocs``
 
 Installing dependencies
 ------------------------
-* install `pandoc <https://pandoc.org/>`_
+* install `pandoc <https://pandoc.org/>`_ **(minimal required version: 2.8)**
 
 Optional dependencies
 ------------------------
