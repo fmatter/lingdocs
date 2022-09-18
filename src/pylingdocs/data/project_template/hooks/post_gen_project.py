@@ -10,7 +10,6 @@ def remove_file(filename):
 
 
 def create_file(file, no=1):
-    number = f"{no}000"
     filename = file + ".md"
     with open((PROJECT_DIR / "content" / filename), "w") as f:
         f.write(f"# {file.capitalize()} [label](sec:{file})\n\nInsert content")
