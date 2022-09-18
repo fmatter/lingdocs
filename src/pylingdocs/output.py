@@ -21,7 +21,7 @@ from pylingdocs.config import BENCH
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import FIGURE_DIR
-from pylingdocs.config import GLOSS_ABBREVS
+from pylingdocs.config import GLOSS_FILE_ADDRESS
 from pylingdocs.config import LATEX_TOPLEVEL
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import OUTPUT_TEMPLATES
@@ -849,6 +849,14 @@ def create_output(
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir.resolve()}")
         output_dir.mkdir()
+    if "cldf:" in GLOSS_FILE_ADDRESS:
+        gloss_dict = {}
+    elif (Path(source_dir) / GLOSS_FILE_ADDRESS).is_file():
+        df = pd.read_csv(Path(source_dir) / GLOSS_FILE_ADDRESS)
+        gloss_dict = dict(zip(df["ID"].str.lower(), df["Description"]))
+    else:
+        gloss_dict = {}
+
     for output_format in formats:
         for m in models:
             m.reset_cnt()
@@ -876,14 +884,14 @@ def create_output(
                 output_dir,
                 content=preprocessed,
                 metadata=metadata,
-                abbrev_dict=GLOSS_ABBREVS,
+                abbrev_dict=gloss_dict,
             )
         elif builder.name == "clld":
             builder.write_folder(
                 output_dir,
                 content=preprocessed,
                 metadata=metadata,
-                abbrev_dict=GLOSS_ABBREVS,
+                abbrev_dict=gloss_dict,
             )
             # builder.create_app()
             # write_clld(preprocessed)

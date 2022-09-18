@@ -60,15 +60,7 @@ ADD_BIB = get_path("add_bib")
 BUILDERS = get_config("OUTPUT", "builders").split(" ")
 PREVIEW = get_config("OUTPUT", "preview").split(" ")
 CLLD_URI = get_config("clld", "db_uri")
-gloss_file_address = get_config("input", "glossing_abbrevs")
-
-if "cldf:" in gloss_file_address:
-    GLOSS_ABBREVS = {}
-elif Path(gloss_file_address).is_file():
-    df = pd.read_csv(gloss_file_address)
-    GLOSS_ABBREVS = dict(zip(df["ID"].str.lower(), df["Description"]))
-else:
-    GLOSS_ABBREVS = {}
+GLOSS_FILE_ADDRESS = get_config("input", "glossing_abbrevs")
 
 CREATE_README = get_config("OUTPUT", "readme", as_boolean=True)
 
