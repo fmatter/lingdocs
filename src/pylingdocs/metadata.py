@@ -29,7 +29,6 @@ def _read_metadata_file(metadata_file=METADATA_FILE, source_dir="."):
 
 bibtex_repl = {"location": "address"}
 bibtex_rev = {y: x for x, y in bibtex_repl.items()}
-remove_fields = []
 
 
 def _license_url(s):
@@ -85,8 +84,6 @@ def _load_bib(metadata_file=METADATA_FILE):
     for field, value in md.items():
         if field in good_fields:
             bibtex_fields[field] = value
-    for field in remove_fields:
-        bibtex_fields[field] = md.pop(field)
     bib_data = BibliographyData(
         {bibkey: Entry(entry_type, list(bibtex_fields.items()))}
     )
