@@ -1,10 +1,13 @@
 import logging
 import shutil
-
+from pylingdocs.config import CONTENT_FOLDER
+from pylingdocs.config import STRUCTURE_FILE
 # import pytest
-from pylingdocs.helpers import _load_structure, load_content, _get_relative_file
+from pylingdocs.helpers import _get_relative_file
+from pylingdocs.helpers import _load_structure
+from pylingdocs.helpers import load_content
 from pylingdocs.output import create_output
-from pylingdocs.config import CONTENT_FOLDER, STRUCTURE_FILE
+
 
 log = logging.getLogger(__name__)
 

@@ -1,12 +1,15 @@
 import logging
 import shutil
+from pathlib import Path
 from click.testing import CliRunner
 from pylingdocs.cli import build
+from pylingdocs.cli import check
 from pylingdocs.cli import main
 from pylingdocs.cli import new
 from pylingdocs.cli import preview
+from pylingdocs.cli import sublime
 from pylingdocs.cli import update_structure
-from pathlib import Path
+
 
 log = logging.getLogger(__name__)
 
@@ -94,6 +97,25 @@ def test_cli_preview(caplog, tmp_path, md_path, data, monkeypatch):
     )
     assert "Rendering preview" in caplog.text
     assert result.exit_code == 0
+
+
+def test_cli_check(caplog, tmp_path, md_path, data, monkeypatch):
+    runner = CliRunner()
+
+    # add tables
+    shutil.copytree(data / "tables", tmp_path / "tables")
+    monkeypatch.chdir(tmp_path)
+    result = runner.invoke(check, args=["--cldf", md_path, "--source", data])
+    assert "No missing IDs found." in caplog.text
+    assert result.exit_code == 0
+
+
+def test_cli_sublime(caplog, tmp_path, md_path, data, monkeypatch):
+    runner = CliRunner()
+
+    runner.invoke(sublime, args=["--cldf", md_path, "--target", tmp_path])
+    assert (tmp_path / ".pld_autocomplete.json").is_file()
+    assert (tmp_path / ".pld_menudata.json").is_file()
 
 
 def test_new(caplog, md_path, tmpdir, data, monkeypatch):

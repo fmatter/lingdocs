@@ -804,6 +804,7 @@ def _write_file(part_id):
 
 def check_ids(contents, dataset, source_dir):
     builder = builders["plain"]
+    found = False
     for filename, x in contents.items():
         preprocessed = preprocess(x["content"], source_dir)
         preprocessed = builder.preprocess_commands(preprocessed)
@@ -814,6 +815,9 @@ def check_ids(contents, dataset, source_dir):
                 log.error(
                     f"Missing ID in file {filename}, L{i+1}:\n{str(e)} in {line}"
                 )
+                found = True
+    if not found:
+        log.info("No missing IDs found.")
 
 
 def create_output(
