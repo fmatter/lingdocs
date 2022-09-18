@@ -114,6 +114,11 @@ def sanitize_latex(unsafe_str):
     return unsafe_str
 
 
+def get_prefixed_filename(structure, file_id):
+    print(file_id)
+    return structure
+
+
 def split_ref(s):
     if "[" in s:
         bibkey, pages = s.split("[")

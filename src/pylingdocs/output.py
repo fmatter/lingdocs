@@ -18,6 +18,7 @@ from jinja2 import PackageLoader
 from jinja2.exceptions import TemplateNotFound
 from slugify import slugify
 from pylingdocs.config import BENCH
+from pylingdocs.config import CONTENT_FILE_PREFIX
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import FIGURE_DIR
@@ -28,8 +29,8 @@ from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_cldf_dataset
-from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import decorate_gloss_string
+from pylingdocs.helpers import get_structure
 from pylingdocs.helpers import html_example_wrap
 from pylingdocs.helpers import html_gloss
 from pylingdocs.helpers import latexify_table
@@ -45,6 +46,7 @@ from pylingdocs.preprocessing import render_markdown
 
 
 NUM_PRE = re.compile(r"[\d]+\ ")
+ABC_PRE = re.compile(r"[A-Z]+\ ")
 
 log = logging.getLogger(__name__)
 
@@ -665,7 +667,10 @@ def iterate_structure(structure):
 
 
 def update_structure(
-    content_dir=CONTENT_FOLDER, bench_dir=BENCH, structure_file=STRUCTURE_FILE
+    content_dir=CONTENT_FOLDER,
+    bench_dir=BENCH,
+    structure_file=STRUCTURE_FILE,
+    prefix_mode=CONTENT_FILE_PREFIX,
 ):
     log.info("Updating document structure")
 
@@ -674,6 +679,7 @@ def update_structure(
         if ".md" not in file.name:
             continue
         name = re.sub(NUM_PRE, "", file.stem)
+        name = re.sub(ABC_PRE, "", name)
         content_files[name] = file
 
     bench_files = {}
@@ -683,15 +689,15 @@ def update_structure(
         name = re.sub(NUM_PRE, "", file.stem)
         bench_files[name] = file
 
-    structure = _load_structure(
-        _get_relative_file(folder=content_dir, file=structure_file)
+    structure = get_structure(
+        prefix_mode=prefix_mode,
+        structure_file=_get_relative_file(content_dir, structure_file),
     )
-
-    for part_id, level, title, fileno in iterate_structure(structure):
-        del level  # unused
-        del title  # unused
-        fname = f"{fileno} {part_id}.md"
-        new_path = Path(content_dir, fname)
+    print(structure)
+    print(content_files)
+    print(bench_files)
+    for part_id, data in structure.items():
+        new_path = Path(content_dir, data["filename"])
         if part_id in content_files:
             if part_id in bench_files:
                 log.warning(f"Conflict: {part_id}. Resolve manually.")

@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * preview function again
 * apply cell decoration to content cells only
 * don't apply cell decoration to empty cells
+* `update-structure` adapted to new structure handling
 
 ## [0.0.8] -- 2022-08-23
 
