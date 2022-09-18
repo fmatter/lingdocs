@@ -37,6 +37,8 @@ def test_structure(data, caplog):
 def test_build(data, dataset, caplog, monkeypatch, tmp_path):
 
     shutil.copytree(data / "tables", tmp_path / "tables")
+    shutil.copytree(data / "figures", tmp_path / "figures")
+    
     monkeypatch.chdir(tmp_path)
 
     contents = load_content(
@@ -78,4 +80,3 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
     assert "morphemes: \\obj{-se}" in latex_output
 
     latex_output = open(tmp_path / "output/html/index.html").read()
-    print(latex_output)
