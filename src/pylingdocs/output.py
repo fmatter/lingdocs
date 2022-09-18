@@ -693,9 +693,7 @@ def update_structure(
         prefix_mode=prefix_mode,
         structure_file=_get_relative_file(content_dir, structure_file),
     )
-    print(structure)
-    print(content_files)
-    print(bench_files)
+
     for part_id, data in structure.items():
         new_path = Path(content_dir, data["filename"])
         if part_id in content_files:
