@@ -2,6 +2,7 @@ import logging
 import shutil
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import STRUCTURE_FILE
+
 # import pytest
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_structure

@@ -2,6 +2,7 @@ import logging
 import shutil
 from pathlib import Path
 from click.testing import CliRunner
+from pylingdocs.cli import author_config
 from pylingdocs.cli import build
 from pylingdocs.cli import check
 from pylingdocs.cli import main
@@ -131,3 +132,15 @@ def test_update(caplog, md_path, tmpdir, data):
     result = runner.invoke(update_structure)
     assert result.exit_code == 1
     assert "Updating document " in caplog.text  # making sure it tries
+
+
+def test_author(tmp_path, monkeypatch, caplog):
+    def mockreturn():
+        return tmp_path
+
+    monkeypatch.setattr("builtins.input", lambda _: "Mark")
+    monkeypatch.setattr(Path, "home", mockreturn)
+    runner = CliRunner()
+    runner.invoke(author_config, catch_exceptions=False)
+    assert "Saving to" in caplog.text
+    assert (Path.home() / ".config/pld/author_config.yaml").is_file()
