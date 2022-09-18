@@ -1,6 +1,4 @@
-document:
-  title: {{ cookiecutter.title }}
-  parts:{% for file in cookiecutter.files.split(",") %}
-    {{file}}:
-      title:
-      abstract:{%endfor%}
+{% for file in cookiecutter.files.split(",") %}
+{{file}}:
+  title:
+  abstract:{%endfor%}
