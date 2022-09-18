@@ -812,7 +812,7 @@ def check_ids(contents, dataset, source_dir):
                 render_markdown(line, dataset, output_format="plain")
             except KeyError as e:
                 log.error(
-                    f"Missing ID in file {filename}, line {i+1}:\n{str(e)} ({line})"
+                    f"Missing ID in file {filename}, L{i+1}:\n{str(e)} in {line}"
                 )
 
 
