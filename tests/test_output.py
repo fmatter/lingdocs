@@ -51,7 +51,7 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
         source_dir=data,
         output_dir="output",
         dataset=dataset,
-        formats=["plain", "latex", "clld"],
+        formats=["plain", "latex", "clld", "html"],
         structure=data / "content/structure.yaml",
         metadata={"project_title": "pylingdocs demo", "author": "Florian Matter"},
     )
@@ -76,3 +76,6 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
     assert "ex Ikpeng" in latex_output
     assert "label{my_custom_id}" in latex_output
     assert "morphemes: \\obj{-se}" in latex_output
+
+    latex_output = open(tmp_path / "output/html/index.html").read()
+    print(latex_output)
