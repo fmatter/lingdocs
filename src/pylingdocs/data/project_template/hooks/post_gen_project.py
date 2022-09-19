@@ -1,6 +1,6 @@
+from configparser import ConfigParser
 from pathlib import Path
 import cookiecutter
-from configparser import ConfigParser
 
 
 PROJECT_DIR = Path.cwd().resolve()
