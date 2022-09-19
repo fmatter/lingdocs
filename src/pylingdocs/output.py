@@ -683,11 +683,12 @@ def update_structure(
         content_files[name] = file
 
     bench_files = {}
-    for file in bench_dir.iterdir():
-        if ".md" not in file.name:
-            continue
-        name = re.sub(NUM_PRE, "", file.stem)
-        bench_files[name] = file
+    if Path(bench_dir).is_dir():
+        for file in bench_dir.iterdir():
+            if ".md" not in file.name:
+                continue
+            name = re.sub(NUM_PRE, "", file.stem)
+            bench_files[name] = file
 
     structure = get_structure(
         prefix_mode=prefix_mode,
