@@ -36,6 +36,14 @@ def _license_url(s):
     return license_dic.get(s, "")
 
 
+def _fill_repo(md):
+    if "repository" in md:
+        if "version" in md:
+            md["url"] = md["repository"] + f"/tree/{md['version']}"
+        elif "url" not in md:
+            md["url"] = md["repository"]
+
+
 def _load_bib(metadata_file=METADATA_FILE):
     md = _read_metadata_file(metadata_file)
     entry_type = md.get("type", "article")
@@ -71,11 +79,7 @@ def _load_bib(metadata_file=METADATA_FILE):
         md["title"] += f' (version {md["version"]})'
     else:
         md["version"] = "0.0.0"
-    if "repository" in md:
-        if "version" in md:
-            md["url"] = md["repository"] + f"/tree/{md['version']}"
-        elif "url" not in md:
-            md["url"] = md["repository"]
+    _fill_repo(md)
     bibtex_fields = {
         "author": " and ".join(author_string),
         "year": year,
@@ -92,11 +96,7 @@ def _load_bib(metadata_file=METADATA_FILE):
 
 def _load_metadata(metadata_file=METADATA_FILE):
     md = _read_metadata_file(metadata_file)
-    if "repository" in md:
-        if "version" in md:
-            md["url"] = md["repository"] + f"/tree/{md['version']}"
-        elif "url" not in md:
-            md["url"] = md["repository"]
+    _fill_repo(md)
     if "authors" in md:
         for author in md["authors"]:
             if "orcid" in author and "http" not in author["orcid"]:
