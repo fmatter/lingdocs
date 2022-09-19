@@ -9,7 +9,6 @@ from pylingdocs.cli import main
 from pylingdocs.cli import new
 from pylingdocs.cli import preview
 from pylingdocs.cli import sublime
-from pylingdocs.cli import update_structure
 
 
 log = logging.getLogger(__name__)
@@ -125,13 +124,6 @@ def test_new(caplog, md_path, tmpdir, data, monkeypatch):
     result = runner.invoke(new)
     assert result.exit_code == 0
     assert "content" in [x.name for x in (Path(tmpdir) / "new-pld-document").iterdir()]
-
-
-def test_update(caplog, md_path, tmpdir, data):
-    runner = CliRunner()
-    result = runner.invoke(update_structure)
-    assert result.exit_code == 1
-    assert "Updating document " in caplog.text  # making sure it tries
 
 
 def test_author(tmp_path, monkeypatch, caplog):
