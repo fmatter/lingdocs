@@ -1,6 +1,7 @@
 from pylingdocs.helpers import write_file
 import shutil
 
+
 def test_write(data, dataset, caplog, monkeypatch, tmp_path):
     shutil.copytree(data / "content", tmp_path / "content")
     new_content = "a test"

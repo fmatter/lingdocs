@@ -688,6 +688,7 @@ def update_structure(
             if ".md" not in file.name:
                 continue
             name = re.sub(NUM_PRE, "", file.stem)
+            name = re.sub(ABC_PRE, "", name)
             bench_files[name] = file
 
     structure = get_structure(
@@ -729,24 +730,6 @@ def compile_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
         "latexmk --quiet --xelatex main.tex", shell=True, cwd=output_dir / "latex"
     ) as proc:
         del proc  # help, prospector is forcing me
-
-
-def _load_content(structure, source_dir=CONTENT_FOLDER):
-    source_dir = Path(source_dir)
-    contents = {}
-    parts = {}
-    for part_id, level, title, fileno in iterate_structure(structure):
-        del level  # unused
-        filename = f"{fileno} {part_id}.md"
-        try:
-            with open(source_dir / filename, "r", encoding="utf-8") as f:
-                content = f.read()
-        except FileNotFoundError:
-            log.error(f"File {(source_dir/filename).resolve()} does not exist.")
-            sys.exit(1)
-        contents[part_id] = content
-        parts[part_id] = title
-    return contents, parts
 
 
 class Handler(SimpleHTTPRequestHandler):
