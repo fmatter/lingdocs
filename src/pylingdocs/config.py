@@ -41,7 +41,7 @@ def get_config(section, label, as_path=False, as_boolean=False):
 
 
 def get_path(label):
-    return get_config("PATHS", label, as_path=True)
+    return get_config("paths", label, as_path=True)
 
 
 CONTENT_FOLDER = get_path("content")
@@ -56,12 +56,12 @@ STRUCTURE_FILE = get_path("structure_file")
 BENCH = get_path("bench")
 ADD_BIB = get_path("add_bib")
 
-BUILDERS = get_config("OUTPUT", "builders").split(" ")
-PREVIEW = get_config("OUTPUT", "preview").split(" ")
+BUILDERS = get_config("output", "builders").split(" ")
+PREVIEW = get_config("output", "preview").split(" ")
 CLLD_URI = get_config("clld", "db_uri")
 GLOSS_FILE_ADDRESS = get_config("input", "glossing_abbrevs")
 
-CREATE_README = get_config("OUTPUT", "readme", as_boolean=True)
+CREATE_README = get_config("output", "readme", as_boolean=True)
 
 METADATA_FILE = Path("./metadata.yaml")
 

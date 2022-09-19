@@ -14,12 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * more informative `check` function, now with offending files and lines
 * `src` and `psrc` in clld table captions
+* lowercase `paths` and `output` sections in config file
 
 ### Fixed
 * preview function again
 * apply cell decoration to content cells only
 * don't apply cell decoration to empty cells
 * `update-structure` adapted to new structure handling
+* make relative path in setup wizard relative to CLDF dataset
 
 ## [0.0.8] -- 2022-08-23
 
