@@ -3,7 +3,6 @@ import logging
 import re
 import shutil
 import subprocess
-import sys
 import threading
 from http.server import SimpleHTTPRequestHandler
 from http.server import test
@@ -646,24 +645,6 @@ class Latex(OutputFormat):
 
 
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD]}
-
-
-def _iterate_structure(structure, level, depths):
-    for child_id, child_data in structure.items():
-        depths[level] += 1
-        yield child_id, level, child_data["title"], "".join(
-            [str(x) for x in depths.values()]
-        )
-        if isinstance(child_data, dict) and "parts" in child_data:
-            for x in _iterate_structure(child_data["parts"], level + 1, depths):
-                yield x
-
-
-def iterate_structure(structure):
-    for x in _iterate_structure(
-        structure["document"]["parts"], level=0, depths={0: 0, 1: 0, 2: 0, 3: 0}
-    ):
-        yield x
 
 
 def update_structure(
