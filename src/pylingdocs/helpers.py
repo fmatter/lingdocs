@@ -15,11 +15,16 @@ from pylingdocs import __version__
 from pylingdocs.config import ADD_BIB
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CLLD_URI
+from pylingdocs.config import CONF_PATH
 from pylingdocs.config import CONTENT_FILE_PREFIX
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
+from pylingdocs.config import FIGURE_DIR
+from pylingdocs.config import FIGURE_MD
 from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import STRUCTURE_FILE
+from pylingdocs.config import TABLE_DIR
+from pylingdocs.config import TABLE_MD
 from pylingdocs.metadata import ORCID_STR
 from pylingdocs.metadata import _load_bib
 from pylingdocs.metadata import _load_metadata
@@ -208,6 +213,46 @@ def write_file(
     with open(w_path, "w", encoding="utf-8") as f:
         f.write(content)
         log.info(f"Wrote to file {w_path}")
+
+
+def read_config_file(kind):
+    def getfile(path):
+        if Path(path).is_file():
+            return open(path, "r", encoding="utf-8").read()
+        return ""
+
+    if kind == "settings":
+        return getfile(CONF_PATH)
+    if kind == "metadata":
+        return getfile(METADATA_FILE)
+    if kind == "structure":
+        return getfile(CONTENT_FOLDER / STRUCTURE_FILE)
+    if kind == "figures":
+        return getfile(FIGURE_DIR / FIGURE_MD)
+    if kind == "tables":
+        return getfile(TABLE_DIR / TABLE_MD)
+    log.error(f"Invalid config file name: {kind}")
+    raise ValueError
+
+
+def write_config_file(kind, content):
+    def writefile(file, content):
+        with open(file, "w", encoding="utf-8") as f:
+            f.write(content)
+
+    if kind == "settings":
+        writefile(CONF_PATH, content)
+    elif kind == "metadata":
+        writefile(METADATA_FILE, content)
+    elif kind == "structure":
+        writefile(CONTENT_FOLDER / STRUCTURE_FILE, content)
+    elif kind == "figures":
+        writefile(FIGURE_DIR / FIGURE_MD, content)
+    elif kind == "tables":
+        writefile(TABLE_DIR / TABLE_MD, content)
+    else:
+        log.error(f"Invalid config file name: {kind}")
+        raise ValueError
 
 
 def comma_and_list(entries, sep1=", ", sep2=" and ", oxford=True):
