@@ -16,6 +16,7 @@ Integration into CLLD web apps is possible with [clld-markdown-plugin](https://g
 
 
 
-* Installation: `pip install pylingdocs`
-* Documentation: [pylingdocs.readthedocs.io](https://pylingdocs.readthedocs.io)
-* [Rudimentary editor](https://github.com/fmatter/pylingdocs-gui/)
+* installation: `pip install pylingdocs`
+* documentation: [pylingdocs.readthedocs.io](https://pylingdocs.readthedocs.io)
+* rudimentary editor: [pylingdocs-gui](https://github.com/fmatter/pylingdocs-gui/)
+
