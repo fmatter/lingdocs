@@ -23,7 +23,7 @@ copyright = "2022, Florian Matter"
 author = "Florian Matter"
 
 # The full version, including alpha/beta/rc tags
-version = release = "0.0.9"
+version = release = "0.0.10.dev"
 
 # -- General configuration ---------------------------------------------------
 

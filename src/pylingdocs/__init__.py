@@ -15,4 +15,4 @@ log.addHandler(handler)
 
 __author__ = "Florian Matter"
 __email__ = "florianmatter@gmail.com"
-__version__ = "0.0.9"
+__version__ = "0.0.10.dev"
