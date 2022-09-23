@@ -54,22 +54,22 @@ Any ``.md`` files in the content folder that are not in the structure file will 
 
 Writing
 --------
-Writing is done in plaintext, so you can use any old editor you like, though I strongly recommend `Sublime Text <https://www.sublimetext.com/>`_. 
+Writing is done in plaintext, so you can use any old editor you like, though I strongly recommend `Sublime Text <https://www.sublimetext.com/>`_ or `pylingdocs-gui <https://github.com/fmatter/pylingdocs-gui/>`_. 
 The basic format used is `markdown <https://www.markdowntutorial.com/>`_, with some :doc:`magic sprinkled on top <markdown_format>`.
 There is an `autocomplete plugin <https://github.com/fmatter/pylingdocs-autocomplete-sublime>`_ for Sublime Text.
 If set up correctly, the plugin will show data preview snippets when typing directives like ``mp:<this_is_you_typing>``, and will replace them with ``[mp](id)``.
 There is also the functionality to insert entities from your dataset via the "Tools" menu.
+``pylingdocs-gui`` does not have a database-editor connection yet.
 
 Preview
 ^^^^^^^^
 Since creating the database feeding a CLLD app or compiling LaTeX documents can take some time, there is a preview function (``pylingdocs preview``) which uses a lighter format (plaintext).
 This is supposed to take away the burning uncertainty about what the commands you're writing will correspond to in a document for humans.
+You can use ``pylingdocs preview --html`` to open a preview in your browser or ``--latex`` to create a pdf.
 You could also use the ``github`` format for previews and then use `grip <https://pypi.org/project/grip/>`_ for previewing.
 
 Commands
 -----------------------
-
-
 The central and only necessary command is ``pylingdocs build``, which transforms the pylingdocs-flavored markdown into the specified output formats.
 Below, the other commands are listed; you can also see them by calling ``pylingdocs --help``.
 For the default values of most arguments, check out :doc:`the default config file <config>`.
