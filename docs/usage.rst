@@ -1,8 +1,9 @@
 Usage
 ======
 
-``pylingdocs`` is currently only available via a command line interface, using ``pylingdocs <COMMAND> --<argument>`` (if you're a wizard you can use :doc:`the python API <modules>`).
+``pylingdocs`` is a command line application and is executed by using ``pylingdocs <COMMAND> --<argument>`` (if you're a wizard you can use :doc:`the python API <modules>`).
 If you have **no** previous exposure to command line interfaces, you may want to read a guide `like this <https://launchschool.com/books/command_line/read/introduction>`_ [#]_ -- though it appears you're handling linguistic databases already.
+There is also an `rudimentary editor <https://github.com/fmatter/pylingdocs-gui/>`_ with a graphical user interface.
 
 .. contents:: Table of Contents
    :depth: 2
@@ -16,50 +17,40 @@ Quick start
 1. ``pylingdocs new`` will let you enter some data to get started with a project
   * if you're impatient, the only information truly needed is the path to a valid CLDF metadata.json file
 2. The project will live in a new folder, and inside you will find the `content` folder. If you have installed Sublime Text, you can use ``subl`` to open the ``<FILENAME>.sublime-project`` file. Otherwise, use an editor of your choice to open one or all of the ``.md`` files.
-3. Get writing. You can use normal `markdown <https://www.markdownguide.org/cheat-sheet/>`_, and of course :doc:`pylingdocs markdown <markdown_format>`.
-  * if you are using Sublime Text and the ``pylingdocs`` plugin, you can use ``pylingdocs sublime`` and then autocomplete or Tools > pylingdocs > insert entity to add data points from your dataset.
+3. Get writing. You can use normal `markdown <https://www.markdownguide.org/cheat-sheet/>`_, as well as `cldfviz <https://github.com/cldf/cldfviz/blob/main/docs/text.md>`_ and :doc:`pylingdocs markdown <markdown_format>`.
+  * if you are using Sublime Text and the ``pylingdocs`` plugin, you can use ``pylingdocs sublime`` in your project directory. This will activate autocompletion and also enable you to use Tools > pylingdocs > insert entity to add data points from your dataset.
 4. To create output, run ``pylingdocs build`` in the project folder. By default, a :doc:`range of output formats <data_formats>` will be produced, in the folder ``output``
-  * you can add the option ``--latex`` to create a PDF from the generated ``.tex`` file. Note: you need to have a working LaTeX installation for this. 
+  * you can add the option ``--latex`` to create a PDF from the generated ``.tex`` file. Note: you need to have a working LaTeX installation with ``latexmk`` for this. 
 
 Projects
 ------------------------
-A project minimally consists of a folder containing markdown files, a YAML file describing how they should be combined, and a database containing the linguistic data.
+A project minimally consists of a folder containing markdown files, a YAML file describing how they should be combined, and a (link to a) database containing the linguistic data.
 You can create a new project by using ``pylingdocs new`` in the directory where you want your project folder to be created.
 For the moment, a database can only consist of :doc:`a CLDF dataset <data_formats>`.
 
 Multiple files
 ^^^^^^^^^^^^^^^^
-You can distribure your content into multiple files, which -- depending on the extent of your megalomania -- is often more practical than a single file.
+You can distribute your content into multiple files, which is often more practical than a single file.
 The order of these files is described in a `YAML <https://yaml.org/>`_ file, defaulting to `contents/structure.yaml`::
- document:
    title: My fantastic book
-   parts:
-     intro:
-       title: Introduction
-     verbs:
-       title: What is a verb, anyway?
-     results:
-       title: Turns out, a lot
-     comparison:
-       title: Comparative verbistics
-       abstract: You can put abstracts here if you like!
-       parts:
-         possession:
-           title: Person marking
-           abstract: This is a part of the comparison chapter, but it's in its own file.
-
+    intro:
+      title: Introduction
+    verbs:
+      title: What is a verb, anyway?
+    results:
+      title: Turns out, a lot
+    comparison:
+      title: Comparative verbistics
+      abstract: You can put abstracts here if you like!
+    possession:
+      title: Person marking
+      abstract: This is a part of the comparison chapter, but it's in its own file.
 This would assume a file structure with 5 files, identified by ``intro``, ``verbs``, ``results``, ``comparison``, and ``possession``.
-When using Sublime Text or some other editor that can open multiple text files but doesn't know how to sort them, you can use ``pylingdocs update-structure`` to rename your files.
-For this, the format ``<XXXX> <ID>.md`` is used, where ``XXXX`` is a number causing the files to be sorted correctly.
-The above YAML file would result in this list of files::
-  1000 intro.md
-  2000 verbs.md
-  3000 results.md
-  4000 comparison.md
-  4100 possession.md
+When using Sublime Text or some other editor that can open multiple text files but doesn't know how to sort them, you can set the ``content_file_prefix`` option to ``alpha`` or ``numerical`` and use ``pylingdocs update-structure`` to rename your files.
+This will create filenames like ``<[A-Z]> <ID>.md`` or ``<\d\d\d\d> <ID>.md``.
 
-You can also use the structure file to **create** files.
-Any ``.md`` files in the content folder that are not in the structure file will be moved to the ``bench`` folder, in case you want to include them again later (just put them in the structure file).
+You can also use the structure file to **create** files, by running ``update-structure``.
+Any ``.md`` files in the content folder that are not in the structure file will be moved to a ``bench`` folder, in case you want to include them again later (just put them in the structure file to do so).
 
 Writing
 --------
@@ -87,4 +78,4 @@ For the default values of most arguments, check out :doc:`the default config fil
    :prog: pylingdocs
    :nested: full
 
-.. [#] Don't go for any of the server stuff, though. Just think about what each command does before you press enter.
+.. [#] You don't need any of the server stuff, though. Just get familiar with using the command line.

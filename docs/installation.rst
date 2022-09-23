@@ -20,6 +20,7 @@ Installing dependencies
 Optional dependencies
 ------------------------
 * install `LaTeX <https://www.latex-project.org/get/>`_
+    * you might need to install `latexmk <https://mg.readthedocs.io/latexmk.html>`_ (and some other missing packages)
 * install `Sublime Text <https://www.sublimetext.com/>`_
     * install `the Sublime Text plugin <https://github.com/fmatter/pylingdocs-sublime/>`_
 * install `pylingdocs-gui <https://github.com/fmatter/pylingdocs-gui/>`_
