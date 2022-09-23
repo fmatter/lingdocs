@@ -78,4 +78,4 @@ For the default values of most arguments, check out :doc:`the default config fil
    :prog: pylingdocs
    :nested: full
 
-.. [#] You don't need any of the server stuff, though. Just get familiar with using the command line.
+.. [#] You don't need any of the server stuff, though. Just get comfortable using the command line.
