@@ -14,7 +14,7 @@ from pylingdocs.config import TABLE_DIR
 from pylingdocs.config import TABLE_MD
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import comma_and_list, get_example_data
-from pylingdocs.helpers import decorate_gloss_string
+from pylingdocs.helpers import html_gloss
 from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.helpers import sanitize_latex
