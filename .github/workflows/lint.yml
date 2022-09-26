@@ -29,7 +29,7 @@ jobs:
       - name: Upgrade pip and install dependencies
         run: |
           python3 -m pip install --upgrade pip setuptools
-          python3 -m pip install .[dev]
+          python3 -m pip install .[clld,dev]
       - name: Check style against standards using prospector
         run: |
           prospector src/ --ignore-paths=src/pylingdocs/data/format_templates/

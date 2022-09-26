@@ -29,12 +29,19 @@ def _read_metadata_file(metadata_file=METADATA_FILE, source_dir="."):
 
 bibtex_repl = {"location": "address"}
 bibtex_rev = {y: x for x, y in bibtex_repl.items()}
-remove_fields = []
 
 
 def _license_url(s):
     license_dic = {"CC-BY-SA-4.0": "http://creativecommons.org/licenses/by/4.0/"}
     return license_dic.get(s, "")
+
+
+def _fill_repo(md):
+    if "repository" in md:
+        if "version" in md:
+            md["url"] = md["repository"] + f"/tree/{md['version']}"
+        elif "url" not in md:
+            md["url"] = md["repository"]
 
 
 def _load_bib(metadata_file=METADATA_FILE):
@@ -72,11 +79,7 @@ def _load_bib(metadata_file=METADATA_FILE):
         md["title"] += f' (version {md["version"]})'
     else:
         md["version"] = "0.0.0"
-    if "repository" in md:
-        if "version" in md:
-            md["url"] = md["repository"] + f"/tree/{md['version']}"
-        elif "url" not in md:
-            md["url"] = md["repository"]
+    _fill_repo(md)
     bibtex_fields = {
         "author": " and ".join(author_string),
         "year": year,
@@ -85,8 +88,6 @@ def _load_bib(metadata_file=METADATA_FILE):
     for field, value in md.items():
         if field in good_fields:
             bibtex_fields[field] = value
-    for field in remove_fields:
-        bibtex_fields[field] = md.pop(field)
     bib_data = BibliographyData(
         {bibkey: Entry(entry_type, list(bibtex_fields.items()))}
     )
@@ -95,11 +96,7 @@ def _load_bib(metadata_file=METADATA_FILE):
 
 def _load_metadata(metadata_file=METADATA_FILE):
     md = _read_metadata_file(metadata_file)
-    if "repository" in md:
-        if "version" in md:
-            md["url"] = md["repository"] + f"/tree/{md['version']}"
-        elif "url" not in md:
-            md["url"] = md["repository"]
+    _fill_repo(md)
     if "authors" in md:
         for author in md["authors"]:
             if "orcid" in author and "http" not in author["orcid"]:

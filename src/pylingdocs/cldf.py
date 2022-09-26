@@ -31,6 +31,12 @@ def generate_autocomplete(ds, output_dir):
                 autocomplete_data.append(model.autocomplete_string(row))
         except SchemaError:
             del menu_data[model.name]
-
+    menu_data["Source"] = []
+    for src in ds.sources:
+        menu_data["Source"].append(
+            {"id": src.id, "content": [str(src), f"[src]({src.id})"]}
+        )
+        autocomplete_data.append([f"src:{src.id} {str(src)}", f"[src]({src.id})"])
+        autocomplete_data.append([f"psrc:{src.id} {str(src)}", f"[psrc]({src.id})"])
     jsonlib.dump(autocomplete_data, output_dir / ".pld_autocomplete.json", indent=4)
     jsonlib.dump(menu_data, output_dir / ".pld_menudata.json", indent=4)

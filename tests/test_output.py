@@ -1,8 +1,12 @@
 import logging
 import shutil
+from pylingdocs.config import CONTENT_FOLDER
+from pylingdocs.config import STRUCTURE_FILE
 
 # import pytest
+from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_structure
+from pylingdocs.helpers import load_content
 from pylingdocs.output import create_output
 
 
@@ -11,40 +15,35 @@ log = logging.getLogger(__name__)
 
 def test_structure(data, caplog):
     assert _load_structure(data / "content" / "structure.yaml") == {
-        "document": {
-            "title": "Test data",
-            "parts": {
-                "test": {"abstract": "Some text.", "title": "A test section"},
-                "verbs": {"title": "Verbs"},
-                "nouns": {
-                    "title": "Nouns",
-                    "abstract": "Some text about nouns.",
-                    "parts": {
-                        "possession": {
-                            "title": "Nominal possession",
-                            "abstract": "Another abstract",
-                            "parts": {
-                                "alien": {"title": "Alienable possession"},
-                                "inalien": {"title": "Inalienable possession"},
-                            },
-                        }
-                    },
-                },
-            },
-        }
+        "test": {"abstract": "Some text.", "title": "A test section"},
+        "verbs": {"title": "Verbs"},
+        "nouns": {"title": "Nouns", "abstract": "Some text about nouns."},
+        "possession": {"title": "Nominal possession", "abstract": "Another abstract"},
+        "alien": {},
+        "inalien": {"title": "Inalienable possession"},
     }
 
 
 def test_build(data, dataset, caplog, monkeypatch, tmp_path):
 
     shutil.copytree(data / "tables", tmp_path / "tables")
+    shutil.copytree(data / "figures", tmp_path / "figures")
+
     monkeypatch.chdir(tmp_path)
 
+    contents = load_content(
+        source_dir=data / CONTENT_FOLDER,
+        structure_file=_get_relative_file(
+            folder=data / CONTENT_FOLDER, file=STRUCTURE_FILE
+        ),
+    )
+
     create_output(
+        contents=contents,
         source_dir=data,
         output_dir="output",
         dataset=dataset,
-        formats=["plain", "latex", "clld"],
+        formats=["plain", "latex", "clld", "html"],
         structure=data / "content/structure.yaml",
         metadata={"project_title": "pylingdocs demo", "author": "Florian Matter"},
     )
@@ -69,3 +68,5 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
     assert "ex Ikpeng" in latex_output
     assert "label{my_custom_id}" in latex_output
     assert "morphemes: \\obj{-se}" in latex_output
+
+    latex_output = open(tmp_path / "output/html/index.html").read()

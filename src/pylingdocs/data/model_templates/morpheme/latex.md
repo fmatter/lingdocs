@@ -1,1 +1,11 @@
-\obj{% raw %}{{% endraw %}{{ ctx["Name"] }}{% raw %}}{% endraw %}
+{% import 'pylingdocs_util.md' as util%}
+{{util.lfts(
+    "\obj{"+ctx['Name']+"}",
+    entity=ctx,
+    with_language=with_language or False,
+    with_source=with_source or False,
+    source_str=source_str,
+    no_translation=no_translation,
+    translation=translation,
+    citation_mode="biblatex"
+)}}

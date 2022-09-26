@@ -1,4 +1,4 @@
-ID,Language_ID,Name,Comment,Parameter_ID
-tri-se,tri,-se,,S; U; P
-apa-se,apa,-se,,S; U; P
-apa-neg,apa,pɨra,,N; E; G
+ID,Language_ID,Name,Comment,Parameter_ID,Source,Meaning
+tri-se,tri,-se,,sup,triomeira1999[327],SUP
+apa-se,apa,-se,,sup,koehn1986apalai[77],SUP
+apa-neg,apa,pɨra,,neg,koehn1986apalai[77],NEG

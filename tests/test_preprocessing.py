@@ -6,14 +6,20 @@ log = logging.getLogger(__name__)
 
 
 def test_mp(dataset):
-    assert render_markdown("[mp](apa-neg)", dataset, output_format="plain") == "pɨra"
-    assert render_markdown("[mp](apa-neg)", dataset, output_format="github") == "_pɨra_"
     assert (
-        render_markdown("[mp](apa-neg)", dataset, output_format="latex")
-        == "\\obj{pɨra}"
+        render_markdown("[mp](apa-neg)", dataset, output_format="plain") == "pɨra ‘NEG’"
     )
     assert (
-        render_markdown("[mp](apa-neg)", dataset, output_format="html") == "<i>pɨra</i>"
+        render_markdown("[mp](apa-neg)", dataset, output_format="github")
+        == "_pɨra_ ‘NEG’"
+    )
+    assert (
+        render_markdown("[mp](apa-neg)", dataset, output_format="latex")
+        == "\\obj{pɨra} ‘NEG’"
+    )
+    assert (
+        render_markdown("[mp](apa-neg)", dataset, output_format="html")
+        == "<i>pɨra</i> ‘NEG’"
     )
 
     input_str = "[m](tri-se-1,tri-se-2,tri-se-3)"

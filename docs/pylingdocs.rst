@@ -36,6 +36,14 @@ pylingdocs.helpers module
    :undoc-members:
    :show-inheritance:
 
+pylingdocs.metadata module
+--------------------------
+
+.. automodule:: pylingdocs.metadata
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pylingdocs.models module
 ------------------------
 
@@ -48,14 +56,6 @@ pylingdocs.output module
 ------------------------
 
 .. automodule:: pylingdocs.output
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pylingdocs.pandoc\_filters module
----------------------------------
-
-.. automodule:: pylingdocs.pandoc_filters
    :members:
    :undoc-members:
    :show-inheritance:

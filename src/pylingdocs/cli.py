@@ -3,7 +3,8 @@ import logging
 import sys
 from pathlib import Path
 import click
-from pylingdocs.cldf import generate_autocomplete as autogen
+import yaml
+from pylingdocs.cldf import generate_autocomplete
 from pylingdocs.config import BUILDERS
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
@@ -14,7 +15,7 @@ from pylingdocs.config import PREVIEW
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_cldf_dataset
-from pylingdocs.helpers import _load_structure
+from pylingdocs.helpers import load_content
 from pylingdocs.helpers import new as create_new
 from pylingdocs.helpers import write_readme
 from pylingdocs.metadata import _load_metadata
@@ -85,18 +86,22 @@ def build(
     source = Path(source)
     output_dir = Path(output_dir)
     ds = _load_cldf_dataset(cldf)
-    metadata = _load_metadata(source / METADATA_FILE)
-    structure = _load_structure(
-        _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
+    contents = load_content(
+        source_dir=source / CONTENT_FOLDER,
+        structure_file=_get_relative_file(
+            folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
+        ),
     )
+    metadata = _load_metadata(source / METADATA_FILE)
     create_output(
+        contents,
         source,
         targets,
         ds,
         output_dir,
-        structure=structure,
         metadata=metadata,
         latex=latex,
+        release=release,
     )
     if CREATE_README:
         write_readme(source / METADATA_FILE, release=release)
@@ -125,18 +130,13 @@ def preview(  # pylint: disable=too-many-arguments
     """Create a live preview using a lightweight, human-readable output format"""
     source = Path(source)
     output_dir = Path(output_dir)
-    ds = _load_cldf_dataset(cldf)
-    metadata = _load_metadata(METADATA_FILE)
-    structure = _load_structure(
-        _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
-    )
+    metadata = _load_metadata(source / METADATA_FILE)
     run_preview(
+        cldf,
+        source,
+        output_dir,
         refresh=refresh,
-        source_dir=source,
         formats=targets,
-        dataset=ds,
-        output_dir=output_dir,
-        structure=structure,
         metadata=metadata,
         latex=latex,
         html=html,
@@ -149,10 +149,13 @@ def check(source, cldf, output_dir, latex):
     del output_dir
     del latex
     ds = _load_cldf_dataset(cldf)
-    structure = _load_structure(
-        _get_relative_file(folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE)
+    contents = load_content(
+        source_dir=source / CONTENT_FOLDER,
+        structure_file=_get_relative_file(
+            folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
+        ),
     )
-    check_ids(source, ds, structure=structure)
+    check_ids(contents, ds, source)
 
 
 @main.command()
@@ -181,11 +184,33 @@ def new():
 
 
 @main.command()
+def author_config():
+    """Create a config file with default values for new pylingdocs projects"""
+    val_dict = {
+        "author_family_name": "Your family name",
+        "author_given_name": "Your given name",
+        "email": "Your e-mail address",
+        "orcid": "Your ORCID",
+        "affiliation": "Your institutional affiliation(s)",
+    }
+    for val, info in val_dict.items():
+        val_dict[val] = input(f"{info}:\n")
+    conf_path = Path.home() / ".config/pld"
+    if not conf_path.is_dir():
+        log.info(f"Creating folder {conf_path}")
+    conf_path.mkdir(parents=True, exist_ok=True)
+    yaml_path = conf_path / "author_config.yaml"
+    log.info(f"Saving to {yaml_path}")
+    with open(yaml_path, "w", encoding="utf-8") as f:
+        yaml.dump(val_dict, f)
+
+
+@main.command()
 @click.option("--cldf", default=CLDF_MD, help="Path to metadata.json of CLDF dataset.")
 @click.option("--target", default=CONTENT_FOLDER, help="Content folder.")
 def sublime(cldf, target):
     ds = _load_cldf_dataset(cldf)
-    autogen(ds, target)
+    generate_autocomplete(ds, target)
 
 
 if __name__ == "__main__":

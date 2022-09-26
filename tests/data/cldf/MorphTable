@@ -1,5 +1,5 @@
-ID,Language_ID,Name,Segments,Comment,Morpheme_ID,Parameter_ID
-tri-se-1,tri,-se,,,tri-se,S; U; P
-tri-se-2,tri,-je,,,tri-se,S; U; P
-tri-se-3,tri,-e,,,tri-se,S; U; P
-apa-se-1,apa,-se,,,apa-se,S; U; P
+ID,Language_ID,Name,Segments,Comment,Morpheme_ID,Parameter_ID,Source,Meaning
+tri-se-1,tri,-se,,,tri-se,sup,triomeira1999[327],SUP
+tri-se-2,tri,-je,,,tri-se,sup,triomeira1999[327],SUP
+tri-se-3,tri,-e,,,tri-se,sup,triomeira1999[327],SUP
+apa-se-1,apa,-se,,,apa-se,sup,koehn1986apalai[77],SUP

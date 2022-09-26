@@ -6,7 +6,7 @@
 {% import 'html_util.md' as util %}
 {%if format=="subexample"%}
 ```{=html}
-{{ util.example(ctx, example_id="lol", class_="subexample") }}
+{{ util.example(ctx, example_id="irrelevant", class_="subexample") }}
 ```
 {%else%}
 ```{=html}

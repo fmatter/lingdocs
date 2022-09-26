@@ -74,10 +74,16 @@ div#toc {
     font-size: 65%;
     top: 3.5em;
     left: 1em;
+    line-height: 120%;
 }
 
+.version {
+  margin: 0.85rem 0;
+  text-align: center;
+  font-family: monospace;
+}
 
-/*from https://latex.vercel.app/style.css*/
+/*taken from https://latex.vercel.app/style.css*/
 
 /* Remove default margin */
 h1,
@@ -95,7 +101,7 @@ dd {
   margin: 0;
 }
 
-body {
+article {
   font-family: 'Latin Modern', Georgia, Cambria, 'Times New Roman', Times, serif;
   line-height: 1.8;
 

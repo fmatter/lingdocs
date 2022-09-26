@@ -6,6 +6,11 @@ from pylingdocs.config import DATA_DIR
 from pylingdocs.config import LATEX_EX_TEMPL
 
 
+try:
+    from importlib.resources import files  # pragma: no cover
+except ImportError:  # pragma: no cover
+    from importlib_resources import files  # pragma: no cover
+
 log = logging.getLogger(__name__)
 
 
@@ -113,10 +118,10 @@ class Morpheme(Entity):
     shortcut = "mp"
 
     templates = {
-        "plain": """{{ ctx["Name"] }}""",
-        "github": """_{{ ctx["Name"] }}_""",
+        "plain": load_template("morpheme", "plain"),
+        "github": load_template("morpheme", "github"),
         "latex": load_template("morpheme", "latex"),
-        "html": """<i>{{ctx["Name"]}}</i>""",
+        "html": load_template("morpheme", "html"),
     }
 
     list_templates = {
@@ -163,11 +168,10 @@ class Example(Entity):
         )
 
     @classmethod
-    def query_string(cls, url, *args, count_self=False, multiple=False, visualizer="cldfviz", **kwargs):
+    def query_string(cls, url, *args, multiple=False, visualizer="cldfviz", **kwargs):
         if visualizer == "cldfviz":
             cls.cnt += 1
-            if count_self:
-                kwargs.update({"example_id": cls.cnt})
+            kwargs.update({"example_counter": cls.cnt})
             if not multiple:
                 arg_str = cls._compile_cldfviz_args(args, kwargs)
                 return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:{url})"
@@ -208,7 +212,15 @@ class Cognateset(Entity):
     name = "Cognate set"
     cldf_table = "CognatesetTable"
     shortcut = "cogset"
-    templates = {"plain": "{{ ctx.name }}"}
+    # templates = {"plain": "{{ ctx.name }}"}
+    templates = {
+        "plain": open(  # pylint: disable=consider-using-with
+            files("cldfviz") / "templates/text/CognatesetTable_detail.md",
+            "r",
+            encoding="utf-8",
+        ).read(),
+        "html": load_template("cognateset", "html_detail"),
+    }
 
 
 class Form(Entity):
@@ -216,8 +228,15 @@ class Form(Entity):
     cldf_table = "FormTable"
     shortcut = "wf"
     templates = {
-        "plain": "{{ctx.cldf.form}} '{{ctx.data['Translation']}}'",
-        "latex": "\\obj{%raw%}{{%endraw%}{{ctx.cldf.form}}{%raw%}}{%endraw%} \\qu{%raw%}{{%endraw%}{{ctx.data['Translation']}}{%raw%}}{%endraw%}"
+        "html": load_template("wordform", "html"),
+        "plain": load_template("wordform", "plain"),
+        "latex": load_template("wordform", "latex"),
     }
+
+    list_templates = {
+        "plain": load_template("wordform", "plain_index"),
+        "html": load_template("wordform", "html_index"),
+    }
+
 
 models = [Morpheme, Morph, Example, Language, Text, Cognateset, Form]

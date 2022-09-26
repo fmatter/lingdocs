@@ -4,7 +4,6 @@ from pylingdocs.models import Text
 
 def test_model_cldf():
     assert "url" in Language.cldf_metadata()
-    assert "url" in Text.cldf_metadata()
 
 
 def test_model_vis():

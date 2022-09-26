@@ -7,7 +7,6 @@ from pathlib import Path
 import pandas as pd
 import yaml
 from cldfviz.text import render
-from clldutils import jsonlib
 from jinja2 import DictLoader
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import MANEX_DIR
@@ -16,10 +15,11 @@ from pylingdocs.config import TABLE_MD
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import comma_and_list, get_example_data
 from pylingdocs.helpers import decorate_gloss_string
+from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import get_md_pattern
-from pylingdocs.helpers import html_gloss
 from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
+from pylingdocs.helpers import src
 from pylingdocs.models import models
 
 
@@ -65,6 +65,13 @@ for model in models:
     for output_format in model.list_templates:
         if output_format not in list_templates:
             list_templates[output_format] = {}
+
+with open(DATA_DIR / "util.md", "r", encoding="utf-8") as f:
+    pylingdocs_util = f.read()
+
+for templ in templates.values():
+    templ["pylingdocs_util.md"] = pylingdocs_util
+    templ["ParameterTable_detail.md"] = "{{ctx.cldf.name}}"
 
 for output_format, env_dict in templates.items():
     for model in models:
@@ -113,6 +120,9 @@ for output_format, env_dict in templates.items():
     env_dict.update(list_templates[output_format])
     envs[output_format] = DictLoader(env_dict)
 
+bool_dic = {"True": True, "False": False}
+abbrev_dic = {"nt": "no_translation"}
+
 
 def preprocess_cldfviz(md):
     current = 0
@@ -127,9 +137,9 @@ def preprocess_cldfviz(md):
                 for arg in arguments.split("&"):
                     if "=" in arg:
                         k, v = arg.split("=")
-                        kwargs[k] = v
+                        kwargs[k] = bool_dic.get(v, v)
                     else:
-                        args.append(arg)
+                        args.append(abbrev_dic.get(arg, arg))
             if "," in url:
                 kwargs.update({"ids": url})
                 yield labels[key](
@@ -142,7 +152,13 @@ def preprocess_cldfviz(md):
     yield md[current:]
 
 
-def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
+def render_markdown(
+    md_str,
+    ds,
+    decorate_gloss_string=lambda x: x,
+    data_format="cldf",
+    output_format="plain",
+):
     if data_format == "cldf":
         if output_format != "clld":
             preprocessed = render(
@@ -155,7 +171,8 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
                     "split_ref": split_ref,
                     "decorate_gloss_string": decorate_gloss_string,
                     "html_gloss": html_gloss,
-                    "get_example_data": get_example_data
+                    "get_example_data": get_example_data,
+                    "src": src,
                 },
             )
             preprocessed = render(
@@ -185,7 +202,16 @@ def render_markdown(md_str, ds, data_format="cldf", output_format="plain"):
     return ""
 
 
-def load_tables(md, source_dir="."):
+def load_tables(md, tables, source_dir="."):
+    def decorate_cell(x):
+        if x != "":
+            return (
+                this_table_metadata.get("pre_cell", "")
+                + x
+                + this_table_metadata.get("post_cell", "")
+            )
+        return x
+
     current = 0
     for m in MD_LINK_PATTERN.finditer(md):
         yield md[current : m.start()]
@@ -196,8 +222,13 @@ def load_tables(md, source_dir="."):
                 log.error(f"Table file <{table_path.resolve()}> does not exist.")
                 sys.exit(1)
             else:
-                with open(table_path, "r", encoding="utf-8") as f:
-                    yield "\nPYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + f.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
+                temp_df = pd.read_csv(table_path, index_col=0, keep_default_na=False)
+                this_table_metadata = tables.get(url, {})
+                temp_df = temp_df.applymap(decorate_cell)
+                csv_buffer = StringIO()
+                temp_df.to_csv(csv_buffer, index=True)
+                csv_buffer.seek(0)
+                yield "\nPYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + csv_buffer.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
@@ -275,19 +306,25 @@ def insert_manex(md, builder, pattern, kind="plain"):
     yield md[current:]
 
 
-def preprocess(md_str, source_dir="."):
-    temp_str = "".join(load_manual_examples(md_str, source_dir))
-    return "".join(load_tables(temp_str, source_dir))
-
-
-def postprocess(md_str, builder, source_dir="."):
+def load_table_metadata(source_dir):
     table_md = _get_relative_file(source_dir / TABLE_DIR, TABLE_MD)
     if table_md.is_file():
         with open(table_md, encoding="utf-8") as f:
             tables = yaml.load(f, Loader=yaml.SafeLoader)
-        # tables = jsonlib.load(table_md)
     else:
+        log.warning(f"Specified table metadatafile {TABLE_MD} not found.")
         tables = {}
+    return tables
+
+
+def preprocess(md_str, source_dir="."):
+    tables = load_table_metadata(source_dir)
+    temp_str = "".join(load_manual_examples(md_str, source_dir))
+    return "".join(load_tables(temp_str, tables, source_dir))
+
+
+def postprocess(md_str, builder, source_dir="."):
+    tables = load_table_metadata(source_dir)
     md_str = "".join(insert_manex(md_str, builder, MANPEX_PATTERN, kind="multipart"))
     md_str = "".join(
         insert_manex(md_str, builder, MANPEX_ITEM_PATTERN, kind="subexample")

@@ -3,7 +3,6 @@ import logging
 import re
 import shutil
 import subprocess
-import sys
 import threading
 from http.server import SimpleHTTPRequestHandler
 from http.server import test
@@ -18,20 +17,25 @@ from jinja2 import PackageLoader
 from jinja2.exceptions import TemplateNotFound
 from slugify import slugify
 from pylingdocs.config import BENCH
+from pylingdocs.config import CONTENT_FILE_PREFIX
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
-from pylingdocs.config import GLOSS_ABBREVS
+from pylingdocs.config import FIGURE_DIR
+from pylingdocs.config import GLOSS_FILE_ADDRESS
 from pylingdocs.config import LATEX_TOPLEVEL
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
-from pylingdocs.helpers import _load_structure
+from pylingdocs.helpers import _load_cldf_dataset
 from pylingdocs.helpers import decorate_gloss_string
+from pylingdocs.helpers import get_structure
 from pylingdocs.helpers import html_example_wrap
+from pylingdocs.helpers import html_gloss
 from pylingdocs.helpers import latexify_table
+from pylingdocs.helpers import load_content
 from pylingdocs.helpers import refresh_clld_db
-from pylingdocs.helpers import split_ref
+from pylingdocs.helpers import src
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
 from pylingdocs.preprocessing import MD_LINK_PATTERN
@@ -41,19 +45,29 @@ from pylingdocs.preprocessing import render_markdown
 
 
 NUM_PRE = re.compile(r"[\d]+\ ")
+ABC_PRE = re.compile(r"[A-Z]+\ ")
 
 log = logging.getLogger(__name__)
 
 
-def blank_todo(url):
+def blank_todo(url, **_kwargs):
     del url
     return ""
 
 
-def html_todo(url):
+def html_todo(url, **kwargs):
+    if kwargs.get("release", False):
+        return ""
     if "?" in str(url):
         return f"<span title='{url}'>❓</span>"
     return f"<span title='{url}'>❗️</span>"
+
+
+def latex_todo(url, **kwargs):
+    if kwargs.get("release", False):
+        return ""
+    return f"\\todo{{{url}}}"
+
 
 def html_ref(url, **kwargs):
     kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
@@ -71,19 +85,19 @@ class OutputFormat:
     def ref_element(url, **kwargs):
         end = kwargs.pop("end", None)
         if end:
-            return f"[ref:{url}–{end}]"    
+            return f"[ref:{url}–{end}]"
         return f"[ref:{url}]"
 
-    def label_element(url):
+    def label_element(url, **_kwargs):
         return f"[lbl:{url}]"
 
-    def gloss_element(url):
+    def gloss_element(url, **_kwargs):
         return url.upper()
 
     def blank_exref(url, **kwargs):
         end = kwargs.pop("end", None)
         if end:
-            return f"[ex:{url}–{end}]"    
+            return f"[ex:{url}–{end}]"
         return f"[ex:{url}]"
 
     doc_elements = {
@@ -91,8 +105,12 @@ class OutputFormat:
         "label": label_element,
         "gl": gloss_element,
         "todo": blank_todo,
-        "exref": blank_exref
+        "exref": blank_exref,
     }
+
+    @classmethod
+    def decorate_gloss_string(cls, x):
+        return decorate_gloss_string(x, decoration=lambda x: x.upper())
 
     @classmethod
     def write_folder(
@@ -113,8 +131,10 @@ class OutputFormat:
             extra["author"] = cls.author_list([])
 
         if content is not None:
+            content = content.replace("![](", "![](images/")
             content = cls.preprocess(content)
             extra.update({"content": content})
+
         extra.update(**metadata)
         local_template_path = (
             Path("pld") / "output_templates" / cls.name / OUTPUT_TEMPLATES[cls.name]
@@ -132,6 +152,14 @@ class OutputFormat:
             overwrite_if_exists=True,
             no_input=True,
         )
+        if FIGURE_DIR.is_dir():
+            target_dir = output_dir / cls.name / FIGURE_DIR.name
+            if not target_dir.is_dir():
+                target_dir.mkdir()
+            for file in FIGURE_DIR.iterdir():
+                target = target_dir / file.name
+                if not target.is_file():
+                    shutil.copy(file, target)
 
     @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
@@ -158,7 +186,7 @@ class OutputFormat:
             f.write(template.render(content=content))
 
     @classmethod
-    def replace_commands(cls, content):
+    def replace_commands(cls, content, **kwargs):
         current = 0
         for m in MD_LINK_PATTERN.finditer(content):
             yield content[current : m.start()]
@@ -166,27 +194,21 @@ class OutputFormat:
             key = m.group("label")
             url = m.group("url")
             args = []
-            kwargs = {}
+            element_kwargs = {**{}, **kwargs}
             if "?" in url and key not in text_commands:
                 url, arguments = url.split("?")
                 for arg in arguments.split("&"):
                     if "=" in arg:
                         k, v = arg.split("=")
-                        kwargs[k] = v
+                        element_kwargs[k] = v
                     else:
                         args.append(arg)
-            if key in ["src", "psrc"]:
-                bibkey, pages = split_ref(url)
-                if pages:
-                    page_str = f": {pages}"
-                else:
-                    page_str = ""
-                if key == "src":
-                    yield f"[{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str}"  # noqa: E501
-                elif key == "psrc":
-                    yield f"([{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str})"  # noqa: E501
+            if key == "src":
+                yield src(url.split(","))
+            elif key == "psrc":
+                yield src(url.split(","), parens=True)
             elif key in cls.doc_elements:
-                yield cls.doc_elements[key](url, *args, **kwargs)
+                yield cls.doc_elements[key](url, *args, **element_kwargs)
             elif key == "abbrev_list":
                 yield cls.glossing_abbrevs_list(url)
             else:
@@ -194,8 +216,8 @@ class OutputFormat:
         yield content[current:]
 
     @classmethod
-    def preprocess_commands(cls, content):
-        processed = "".join(cls.replace_commands(content))
+    def preprocess_commands(cls, content, **kwargs):
+        processed = "".join(cls.replace_commands(content, **kwargs))
         return processed
 
     @classmethod
@@ -250,14 +272,18 @@ class HTML(OutputFormat):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
         return f'<a class="exref" example_id="{url}"{kw_str}></a>'
 
-    def html_gl(url):
+    def html_gl(url, **_kwargs):
+        return decorate_gloss_string(url.upper(), decoration=html_gloss)
+
+    def html_label(url, **_kwargs):
+        return "{#" + url + "}" + f"\n <a id='{url}'></a>"
+
+    @classmethod
+    def decorate_gloss_string(cls, x):
         return decorate_gloss_string(
-            url.upper(),
+            x,
             decoration=lambda x: f'<span class="gloss">{x} <span class="tooltiptext gloss-{x}" ></span></span>',
         )
-
-    def html_label(url):
-        return "{#" + url + "}" + f"\n <a id='{url}'></a>"
 
     doc_elements = {
         "exref": exref,
@@ -283,7 +309,7 @@ for (var i = 0; i < targets.length; i++) {{
     @classmethod
     def table(cls, df, caption, label):
         table = df.to_html(escape=False, index=False)
-        if not label:
+        if not caption:
             return table
         return table.replace(
             "<thead",
@@ -292,6 +318,13 @@ for (var i = 0; i < targets.length; i++) {{
 
     @classmethod
     def preprocess(cls, content):
+        if OUTPUT_TEMPLATES["html"] == "slides":
+            return panflute.convert_text(
+                content,
+                output_format="revealjs",
+                input_format="markdown",
+                extra_args=["--shift-heading-level-by=1"],
+            )
         return panflute.convert_text(
             content,
             output_format="html",
@@ -310,22 +343,21 @@ class GitHub(OutputFormat):
     name = "github"
     file_ext = "md"
 
-
-    def ref_element(url, **kwargs):
-        if "tab:" in url:
+    def ref_element(url, **_kwargs):
+        if "tab:" in str(url):
             return "[Table]"
         return f"<a href='#{url}'>click</a>"
 
-    def label_element(url):
+    def label_element(url, **_kwargs):
         return f"<a id='{url}'><a/>"
 
-    def gloss_element(url):
+    def gloss_element(url, **_kwargs):
         return url.upper()
 
     def blank_exref(url, **kwargs):
         end = kwargs.pop("end", None)
         if end:
-            return f"[ex:{url}–{end}]"    
+            return f"[ex:{url}–{end}]"
         return f"[ex:{url}]"
 
     doc_elements = {
@@ -333,7 +365,7 @@ class GitHub(OutputFormat):
         "label": label_element,
         "gl": gloss_element,
         "todo": blank_todo,
-        "exref": blank_exref
+        "exref": blank_exref,
     }
 
     @classmethod
@@ -349,18 +381,19 @@ class GitHub(OutputFormat):
         res = panflute.convert_text(
             content, output_format="gfm", input_format="markdown"
         )
-        return res.replace("WHITESPACE", " ").replace("\|", "")
+        return res.replace("WHITESPACE", " ").replace(r"\|", "")
+
 
 class CLLD(OutputFormat):
     name = "clld"
     file_ext = "md"
     single_output = False
 
-    def clld_label(url):
+    def clld_label(url, **_kwargs):
         return f"{{#{url}}}"
 
-    def clld_gloss(url):
-        return f"""<span class="smallcaps">{url}</span>"""
+    def clld_gloss(url, **_kwargs):
+        return "<span class='smallcaps'>" + url + "</span>"
 
     def clld_exref(url, **kwargs):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
@@ -380,8 +413,9 @@ class CLLD(OutputFormat):
             if len(df) == 0:
                 df = df.append({x: "" for x in df.columns}, ignore_index=True)
             return df.to_markdown(index=False)
+        cap = "".join(cls.replace_commands(caption))
         return (
-            f"<a id='tab:{label}'></a><div class='caption table' id='tab:{label}'>{caption}</div>\n\n"
+            f"<a id='tab:{label}'></a><div class='caption table' id='tab:{label}'>{cap}</div>\n\n"
             + df.to_markdown(index=False)
         )
 
@@ -403,12 +437,17 @@ class CLLD(OutputFormat):
         if not (my_output_dir).is_dir():
             (my_output_dir).mkdir()
         tent = "\n" + content
+        tent = tent.replace(
+            "![](", "![](/static/images/"
+        )  # rudely assume that all images live in the static dir
         delim = "\n# "
         parts = tent.split(delim)[1::]
-
-        if len(parts) == 0:
+        if len(parts) == 0 or OUTPUT_TEMPLATES["clld"] in ["slides", "article"]:
+            # these use # as section markers, so we add a level for the html output
+            tent = tent.replace("\n#", "\n##")
+            tent = f"# {metadata['title']}\n\n" + tent
             with open(my_output_dir / "content.txt", "w", encoding="utf-8") as f:
-                f.write(content)
+                f.write(tent)
         else:
             tag_dic = {}
             content_dic = {}
@@ -432,14 +471,18 @@ class CLLD(OutputFormat):
                 )
                 for subtag in tags + table_tags:
                     if subtag in tag_dic:
-                        print(f"duplicate tag {subtag} in {tag}: {tag_dic[subtag]}")
+                        log.warning(
+                            f"duplicate tag {subtag} in {tag}: {tag_dic[subtag]}"
+                        )
                     tag_dic[subtag] = tag
                 tag_dic[tag] = tag
 
             for tag, data in content_dic.items():
                 refs = re.findall(r"<a href='#(.*?)' .*?</a>", tent)
                 for ref in refs:
-                    if tag_dic[ref] != tag:
+                    if ref not in tag_dic:
+                        log.error(f"Tag {ref} not found.")
+                    elif tag_dic[ref] != tag:
                         data["content"] = re.sub(
                             rf"<a href='#{ref}'.*?</a>",
                             f"[crossref](ChapterTable?_anchor={ref}#cldf:{tag_dic[ref]})",
@@ -463,12 +506,12 @@ class Latex(OutputFormat):
     name = "latex"
     file_ext = "tex"
 
-    def latex_exref(url, end=None, suffix=""):
+    def latex_exref(url, end=None, suffix="", **_kwargs):
         if end:
             return f"\\exref[{suffix}][{end}]{{{url}}}"
         return f"\\exref[{suffix}]{{{url}}}"
 
-    def latex_label(url):
+    def latex_label(url, **_kwargs):
         return f"\\label{{{url}}}"
 
     def latex_ref(url, **kwargs):
@@ -477,7 +520,11 @@ class Latex(OutputFormat):
             return f"\\crefrange{{{url}}}{{{end}}}"
         return f"\\cref{{{url}}}"
 
-    def latex_gloss(url):
+    @classmethod
+    def decorate_gloss_string(cls, x):
+        return decorate_gloss_string(x)
+
+    def latex_gloss(url, **_kwargs):
         return decorate_gloss_string(url.upper())
 
     doc_elements = {
@@ -485,7 +532,7 @@ class Latex(OutputFormat):
         "ref": latex_ref,
         "label": latex_label,
         "gl": latex_gloss,
-        "todo": blank_todo,
+        "todo": latex_todo,
     }
 
     @classmethod
@@ -567,41 +614,29 @@ class Latex(OutputFormat):
         return " and ".join(out)
 
     @classmethod
-    def replace_commands(cls, content):  # pylint: disable=too-many-locals
+    def replace_commands(cls, content, **kwargs):
         current = 0
         for m in MD_LINK_PATTERN.finditer(content):
             yield content[current : m.start()]
             current = m.end()
             key = m.group("label")
             url = m.group("url")
-            kwargs = {}
             args = []
+            element_kwargs = {**{}, **kwargs}
             if "?" in url and key not in text_commands:
                 url, arguments = url.split("?")
                 for arg in arguments.split("&"):
                     if "=" in arg:
                         k, v = arg.split("=")
-                        kwargs[k] = v
+                        element_kwargs[k] = v
                     else:
                         args.append(arg)
-            if key in ["src", "psrc"]:
-                cite_string = []
-                for citation in url.split(","):
-                    bibkey, pages = split_ref(citation)
-                    if pages:
-                        page_str = f"[{pages}]"
-                    else:
-                        page_str = ""
-                    cite_string.append(f"{page_str}{{{bibkey}}}")
-                cite_string = "".join(cite_string)
-                if "," in url:
-                    cite_string = "s" + cite_string
-                if key == "src":
-                    yield f"\\textcite{cite_string}"
-                elif key == "psrc":
-                    yield f"\\parencite{cite_string}"
+            if key == "src":
+                yield src(url, mode="biblatex")
+            elif key == "psrc":
+                yield src(url, parens=True, mode="biblatex")
             elif key in cls.doc_elements:
-                yield cls.doc_elements[key](url, *args, **kwargs)
+                yield cls.doc_elements[key](url, *args, **element_kwargs)
             elif key == "abbrev_list":
                 yield cls.glossing_abbrevs_list(url)
             else:
@@ -612,26 +647,11 @@ class Latex(OutputFormat):
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD]}
 
 
-def _iterate_structure(structure, level, depths):
-    for child_id, child_data in structure.items():
-        depths[level] += 1
-        yield child_id, level, child_data["title"], "".join(
-            [str(x) for x in depths.values()]
-        )
-        if isinstance(child_data, dict) and "parts" in child_data:
-            for x in _iterate_structure(child_data["parts"], level + 1, depths):
-                yield x
-
-
-def iterate_structure(structure):
-    for x in _iterate_structure(
-        structure["document"]["parts"], level=0, depths={0: 0, 1: 0, 2: 0, 3: 0}
-    ):
-        yield x
-
-
 def update_structure(
-    content_dir=CONTENT_FOLDER, bench_dir=BENCH, structure_file=STRUCTURE_FILE
+    content_dir=CONTENT_FOLDER,
+    bench_dir=BENCH,
+    structure_file=STRUCTURE_FILE,
+    prefix_mode=CONTENT_FILE_PREFIX,
 ):
     log.info("Updating document structure")
 
@@ -640,24 +660,25 @@ def update_structure(
         if ".md" not in file.name:
             continue
         name = re.sub(NUM_PRE, "", file.stem)
+        name = re.sub(ABC_PRE, "", name)
         content_files[name] = file
 
     bench_files = {}
-    for file in bench_dir.iterdir():
-        if ".md" not in file.name:
-            continue
-        name = re.sub(NUM_PRE, "", file.stem)
-        bench_files[name] = file
+    if Path(bench_dir).is_dir():
+        for file in bench_dir.iterdir():
+            if ".md" not in file.name:
+                continue
+            name = re.sub(NUM_PRE, "", file.stem)
+            name = re.sub(ABC_PRE, "", name)
+            bench_files[name] = file
 
-    structure = _load_structure(
-        _get_relative_file(folder=content_dir, file=structure_file)
+    structure = get_structure(
+        prefix_mode=prefix_mode,
+        structure_file=_get_relative_file(content_dir, structure_file),
     )
 
-    for part_id, level, title, fileno in iterate_structure(structure):
-        del level  # unused
-        del title  # unused
-        fname = f"{fileno} {part_id}.md"
-        new_path = Path(content_dir, fname)
+    for part_id, data in structure.items():
+        new_path = Path(content_dir, data["filename"])
         if part_id in content_files:
             if part_id in bench_files:
                 log.warning(f"Conflict: {part_id}. Resolve manually.")
@@ -687,27 +708,9 @@ def update_structure(
 def compile_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
     log.info("Compiling LaTeX document.")
     with subprocess.Popen(
-        "latexmk --xelatex main.tex", shell=True, cwd=output_dir / "latex"
+        "latexmk --quiet --xelatex main.tex", shell=True, cwd=output_dir / "latex"
     ) as proc:
         del proc  # help, prospector is forcing me
-
-
-def _load_content(structure, source_dir=CONTENT_FOLDER):
-    source_dir = Path(source_dir)
-    contents = {}
-    parts = {}
-    for part_id, level, title, fileno in iterate_structure(structure):
-        del level  # unused
-        filename = f"{fileno} {part_id}.md"
-        try:
-            with open(source_dir / filename, "r", encoding="utf-8") as f:
-                content = f.read()
-        except FileNotFoundError:
-            log.error(f"File {(source_dir/filename).resolve()} does not exist.")
-            sys.exit(1)
-        contents[part_id] = content
-        parts[part_id] = title
-    return contents, parts
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -719,10 +722,21 @@ def run_server():
     test(Handler)
 
 
-def run_preview(refresh=True, **kwargs):
+def run_preview(cldf, source_dir, output_dir, refresh=True, **kwargs):
     log.info("Rendering preview")
-    watchfiles = [str(x) for x in kwargs["source_dir"].iterdir()]
-    watchfiles += [str(x) for x in (kwargs["source_dir"] / CONTENT_FOLDER).iterdir()]
+    watchfiles = [str(x) for x in source_dir.iterdir()]
+    watchfiles += [str(x) for x in (source_dir / CONTENT_FOLDER).iterdir()]
+    ds = _load_cldf_dataset(cldf)
+    structure_file = _get_relative_file(
+        folder=source_dir / CONTENT_FOLDER, file=STRUCTURE_FILE
+    )
+    contents = load_content(
+        structure_file=structure_file, source_dir=source_dir / CONTENT_FOLDER
+    )
+    kwargs["cldf"] = cldf
+    kwargs["dataset"] = ds
+    kwargs["source_dir"] = source_dir
+    kwargs["output_dir"] = output_dir
     if refresh:
         wkwargs = kwargs.copy()
         reloader = hupper.start_reloader(
@@ -738,6 +752,7 @@ def run_preview(refresh=True, **kwargs):
         kwargs["formats"] = list(kwargs["formats"]) + ["html"]
     if latex and "latex" not in kwargs["formats"]:
         kwargs["formats"] = list(kwargs["formats"]) + ["latex"]
+    kwargs["contents"] = contents
     create_output(**kwargs)
     if html:
         threading.Thread(target=run_server).start()
@@ -752,39 +767,35 @@ def clean_output(output_dir):
     output_dir.mkdir()
 
 
-def check_ids(source_dir, dataset, structure):
+def _write_file(part_id):
+    log.debug(f"Writing {part_id}")
 
-    if isinstance(structure, (str, PosixPath)):
-        structure = _load_structure(source_dir / CONTENT_FOLDER / structure)
 
-    source_dir = Path(source_dir)
-    contents, parts = _load_content(structure, source_dir / CONTENT_FOLDER)
-    del parts
-
+def check_ids(contents, dataset, source_dir):
     builder = builders["plain"]
-    content = "\n\n".join(contents.values())
-    preprocessed = preprocess(content, source_dir)
-    preprocessed = builder.preprocess_commands(preprocessed)
-    running = True
-    bad_ids = []
-    while running:
-        try:
-            render_markdown(preprocessed, dataset, output_format="plain")
-        except KeyError as e:
-            bad_id = str(e).strip("'")
-            preprocessed = preprocessed.replace(bad_id, "")
-            bad_ids.append(bad_id)
-        else:
-            running = False
-    if len(bad_ids) > 0:
-        bad_ids = "\n".join(bad_ids)
-        log.error(f"""IDs missing from the dataset:\n{bad_ids}""")
-    else:
-        log.info("All good!")
+    found = False
+    for filename, x in contents.items():
+        preprocessed = preprocess(x["content"], source_dir)
+        preprocessed = builder.preprocess_commands(preprocessed)
+        for i, line in enumerate(preprocessed.split("\n")):
+            try:
+                render_markdown(line, dataset, output_format="plain")
+            except KeyError as e:
+                log.error(f"Missing ID in file {filename}, L{i+1}:\n{str(e)} in {line}")
+                found = True
+    if not found:
+        log.info("No missing IDs found.")
 
 
 def create_output(
-    source_dir, formats, dataset, output_dir, structure, metadata=None, latex=False
+    contents,
+    source_dir,
+    formats,
+    dataset,
+    output_dir,
+    metadata=None,
+    latex=False,
+    **kwargs,
 ):  # pylint: disable=too-many-arguments
     """Run different builders.
 
@@ -798,9 +809,6 @@ def create_output(
         bool: blabla
 
     """
-    source_dir = Path(source_dir)
-    if isinstance(structure, (str, PosixPath)):
-        structure = _load_structure(source_dir / CONTENT_FOLDER / structure)
     if isinstance(metadata, (str, PosixPath)):
         metadata = _load_metadata(metadata)
     if metadata is None:
@@ -810,40 +818,49 @@ def create_output(
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir.resolve()}")
         output_dir.mkdir()
+    if "cldf:" in GLOSS_FILE_ADDRESS:
+        gloss_dict = {}
+    elif (Path(source_dir) / GLOSS_FILE_ADDRESS).is_file():
+        df = pd.read_csv(Path(source_dir) / GLOSS_FILE_ADDRESS)
+        gloss_dict = dict(zip(df["ID"].str.lower(), df["Description"]))
+    else:
+        gloss_dict = {}
 
-    contents, parts = _load_content(structure, source_dir / CONTENT_FOLDER)
     for output_format in formats:
         for m in models:
             m.reset_cnt()
         log.info(f"Rendering format [{output_format}]")
         builder = builders[output_format]
-        # log.debug(f"Writing skeleton to folder {output_dir}")
-        content = "\n\n".join(contents.values())
+        content = "\n\n".join([x["content"] for x in contents.values()])
         preprocessed = preprocess(content, source_dir)
-        preprocessed = builder.preprocess_commands(preprocessed)
+        preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
         preprocessed = render_markdown(
-            preprocessed, dataset, output_format=output_format
+            preprocessed,
+            dataset,
+            decorate_gloss_string=builder.decorate_gloss_string,
+            output_format=output_format,
         )
         preprocessed += "\n\n" + builder.reference_list()
         preprocessed = render_markdown(
-            preprocessed, dataset, output_format=output_format
+            preprocessed,
+            dataset,
+            decorate_gloss_string=builder.decorate_gloss_string,
+            output_format=output_format,
         )
         preprocessed = postprocess(preprocessed, builder, source_dir)
         if builder.single_output:
             builder.write_folder(
                 output_dir,
                 content=preprocessed,
-                parts=parts,
                 metadata=metadata,
-                abbrev_dict=GLOSS_ABBREVS,
+                abbrev_dict=gloss_dict,
             )
         elif builder.name == "clld":
             builder.write_folder(
                 output_dir,
                 content=preprocessed,
-                parts=parts,
                 metadata=metadata,
-                abbrev_dict=GLOSS_ABBREVS,
+                abbrev_dict=gloss_dict,
             )
             # builder.create_app()
             # write_clld(preprocessed)

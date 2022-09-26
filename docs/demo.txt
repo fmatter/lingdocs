@@ -1,8 +1,8 @@
-# Introduction
+# Introduction [label](sec:intro)
 
-This document serves both as a test for `pylingdocs` and a showcase of its capabilities.
-It aims to contain every feature and model currently available in `pylingdocs`.
-The `pylingdocs`-flavored markdown on which is it based can be found [here](https://github.com/fmatter/pylingdocs/blob/main/docs/demo.txt).
+This document does double service as a test for `pylingdocs` and a showcase of its capabilities.
+It aims to demonstrate every feature and model currently available in `pylingdocs`.
+The underlying `pylingdocs`-flavored markdown input can be found [here](https://github.com/fmatter/pylingdocs/blob/main/docs/demo.txt).
 It uses data from the CLDF [test dataset](https://github.com/fmatter/pylingdocs/tree/main/tests/data/cldf).
 
 We'll start with some generic markdown stuff.
@@ -19,15 +19,21 @@ Here is some **bold** and _italic_ text.
 * with
 * bullet points
 
-`pylingdocs` also supports general functionalities found in humanities studies:
-Here's a citation: [src](alvarez1998split), or maybe one in parentheses? [psrc](alvarez1998split).
-And the same with pages: [src](alvarez1998split[133-134]), [psrc](alvarez1998split[133-134])-
 Here's a cross reference to [ref](sec:linguistics).
 Here's a cross reference[^3] to [ref](tab:onetable).
 
-
 [^3]: And here is a (foot)note. You can use markdown in here: see [ref](sec:linguistics) for details about [mp](apa-se).
 
+# Citing literature
+
+`pylingdocs` supports citation styles commonly used in linguistics:
+
+* [src](alvarez1998split)
+* [psrc](alvarez1998split).
+* [src](alvarez1998split[133-134])
+* [psrc](alvarez1998split[133-134])
+* [src](alvarez1998split[133-134],triomeira1999[218])
+* [psrc](alvarez1998split[133-134],triomeira1999[218])
 # Integrating linguistic entities [label](sec:linguistics)
 
 The core functionality of `pylingdocs` is including linguistic data in your prose.
@@ -38,25 +44,29 @@ A number of models are built-in, at the moment:
 2. morphs: [m](tri-se-2)
 3. languages: [lg](tri)
 4. texts: [txt](ikp-ekiri)
+5. forms: [wf](tri-fire)
 
-You can also use cldfviz syntax: [Some label](LanguageTable#cldf:apa)
-
+You can use cldfviz syntax: [lg](apa) is the same as [Some label](LanguageTable#cldf:apa).
 
 You can also refer to multiple entities of the same kind:
 The [lg](tri) suffix [mp](tri-se) has the allomorphs [m](tri-se-1,tri-se-2,tri-se-3).
 [lg](apa,tri) are both Cariban languages, as are [lg](pem,ikp,uxc).
+This becomes very practical if you are citing data:
+
+1. [wf](tri-fire,apa-fire,wai-fire?with_source&with_language)
+1. [lg](tri) [wf](tri-with,tri-person,tri-us?with_source)
 
 ## Examples
 
 ### Interlinearized glossed examples
 
-Glossed examples are called like any other entity, but are rendered as follows:
+Glossed examples are inserted like any other entity, but are not rendered in-line:
 
 [ex](ekiri-1)
 
 [ex](ekiri-2,ekiri-3?example_id=mymultipartexample)
 
-Example references are quite versatile: [exref](ekiri-1), [exref](ekiri-3), [exref](mymultipartexample), [exref](mymultipartexample?suffix=a-b), [exref](ekiri-1?end=mymultipartexample), [exref](mymultipartexample?suffix=arbitrarysuffix)
+Example references should be versatile enough for most purposes: [exref](ekiri-1), [exref](ekiri-3), [exref](mymultipartexample), [exref](mymultipartexample?suffix=a-b), [exref](ekiri-1?end=mymultipartexample), [exref](mymultipartexample?suffix=arbitrarysuffix)
 
 ### Manual examples
 These can contain tables, lists, whatever:
@@ -69,17 +79,57 @@ They can also have multiple parts:
 
 
 ## Arguments
-Pass arguments to the visualizer:
+Pass arguments to the visualizer, with examples:
 
 [ex](ekiri-4?example_id=my_custom_id&with_primaryText)
 
 [exref](my_custom_id)
+
+
+Language labels, translations, and sources can be manipulated:
+
+1. [mp](tri-se?with_language)
+1. [m](tri-se-2?with_language)
+1. [wf](tri-fire?with_language)
+
+or
+
+1. [mp](tri-se?with_source)
+1. [m](tri-se-2?with_source)
+1. [wf](tri-fire?with_source)
+
+or
+
+1. [mp](tri-se?no_translation)
+1. [m](tri-se-2?no_translation)
+1. [wf](tri-fire?no_translation)
+
+or
+
+1. [mp](tri-se?with_source&with_language)
+1. [m](tri-se-2?with_source&with_language)
+1. [wf](tri-fire?with_source&with_language)
+
+or
+
+1. [mp](tri-se?with_source&with_language&no_translation)
+1. [m](tri-se-2?with_source&with_language&no_translation)
+1. [wf](tri-fire?with_source&with_language&no_translation)
+
+or
+
+1. [mp](tri-se?with_source&with_language&translation=supine)
+1. [wf](tri-fire?with_source&with_language&translation=people)
+
+[todo](this is a todo)
+
+[todo](can you ask questions here?)
 # Tables
 
 Tables are stored as `csv` files, which can contain `pylingdocs` markdown.
 
-[table](onetable)
 
+[table](onetable)
 ## A level 2 section
 
 Something about nominal possession.
@@ -93,3 +143,4 @@ Duis vel nunc facilisis, efficitur nulla volutpat, fringilla augue. Nullam sed f
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin rhoncus massa sit amet diam pellentesque, sit amet consequat mauris congue. In hac habitasse platea dictumst. Aenean gravida orci velit, at scelerisque magna imperdiet id. Phasellus condimentum quam ac sapien elementum, non luctus ipsum mollis. Curabitur vel consequat odio. Integer malesuada luctus lacus, a faucibus urna vestibulum eu. In non egestas nisi. Vestibulum feugiat arcu mauris, vitae dignissim elit tristique quis. Aliquam ullamcorper massa ac laoreet fermentum. Phasellus turpis orci, dictum non sapien quis, porttitor consectetur turpis. Ut neque orci, posuere et rhoncus sit amet, imperdiet eget ex. Proin ultricies elit non libero ultricies, sit amet fermentum mauris semper. Phasellus lacus turpis, euismod id leo at, venenatis dapibus nisl. Curabitur a dignissim elit. Nunc vel massa sit amet mi elementum mollis.
 
 Duis vel nunc facilisis, efficitur nulla volutpat, fringilla augue. Nullam sed felis non velit consequat vulputate non quis magna. Pellentesque nec magna eu mi eleifend elementum. Praesent mollis vitae purus vel commodo. Morbi sodales tortor sit amet enim ornare elementum. Nunc bibendum leo nec sapien tincidunt aliquam. Nulla facilisi. Maecenas ut purus porttitor quam convallis finibus. Integer condimentum leo at eros congue venenatis. Curabitur volutpat, ante in tincidunt viverra, lorem eros condimentum urna, ut elementum tortor quam eu turpis. Aenean ultrices, libero ac euismod vulputate, diam neque condimentum sapien, eu volutpat tellus leo id felis. Cras metus dui, mollis sed pulvinar id, tincidunt id ante. Nulla sed eros vel erat fermentum accumsan at venenatis leo.
+

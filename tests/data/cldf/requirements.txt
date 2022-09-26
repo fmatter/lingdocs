@@ -1,14 +1,16 @@
 appdirs==1.4.4
 certifi==2021.10.8
 chardet==4.0.0
-cldfbench==1.10.0
-cldfcatalog==1.4.0
-clld==9.0.2
--e git+ssh://git@github.com/fmatter/clld-morphology-plugin.git@826cf0fc614346a530ab08c346ad11fae7912fda#egg=clld_morphology_plugin
+cldfbench==1.12.0
+cldfcatalog==1.5.1
+cldfviz==0.9.0
+clld==9.2.1
+-e git+ssh://git@github.com/fmatter/clld-corpus-plugin.git@b1d60262bbd75c53f556dc14d171619e158a7f7a#egg=clld_corpus_plugin
+-e git+ssh://git@github.com/fmatter/clld-morphology-plugin.git@f27a424bdefc9d440ca1b0c750a0a0b5704c66e2#egg=clld_morphology_plugin
 clldutils==3.11.1
 colorlog==6.6.0
 csvw==2.0.0
-DateTime==4.4
+DateTime==4.7
 gitdb==4.0.9
 greenlet==1.1.2
 idna==3.3
@@ -21,15 +23,16 @@ numpy==1.21.6
 pandas==1.3.5
 purl==1.6
 pybtex==0.24.0
-pycldf==1.25.1
+pycldf==1.27.0
 pycountry==22.3.5
 pyglottolog==3.7.0
--e git+ssh://git@github.com/fmatter/pylingdocs.git@f42e5643347201606f767670d901e03a0c25f091#egg=pylingdocs
+-e git+ssh://git@github.com/fmatter/pylingdocs.git@fc348987e5bb2112e2859b0cf4090da3360db6cc#egg=pylingdocs
 pyramid==2.0
 python-dateutil==2.8.2
-python-gettext==4.0
-pytz==2021.3
-rdflib==6.1.1
+python-gettext==4.1
+python-slugify==6.1.1
+pytz==2022.1
+rdflib==6.2.0
 requests==2.27.1
 rfc3986==1.5.0
 six==1.16.0
@@ -39,12 +42,12 @@ tabulate==0.8.9
 termcolor==1.1.0
 tqdm==4.64.0
 transaction==3.0.1
+translationstring==1.4
 typing_extensions==4.2.0
 uritemplate==4.1.1
 urllib3==1.26.9
 venusian==3.0.0
-wcwidth==0.2.5
 WebHelpers2==2.0
 WebOb==1.8.7
 zipp==3.8.0
-Zope==5.5.1
+Zope==5.6

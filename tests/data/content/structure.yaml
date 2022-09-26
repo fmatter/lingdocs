@@ -1,22 +1,14 @@
-document:
-  title: Test data
-  parts:
-    # manex:
-    #   title: manual examples!
-    test:
-      title: A test section
-      abstract: Some text.
-    verbs:
-      title: Verbs
-    nouns:
-      title: Nouns
-      abstract: Some text about nouns.
-      parts:
-        possession:
-          title: Nominal possession
-          abstract: Another abstract
-          parts:
-            alien:
-              title: Alienable possession
-            inalien:
-              title: Inalienable possession
+test:
+  title: A test section
+  abstract: Some text.
+verbs:
+  title: Verbs
+nouns:
+  title: Nouns
+  abstract: Some text about nouns.
+possession:
+  title: Nominal possession
+  abstract: Another abstract
+alien: {}
+inalien:
+  title: Inalienable possession

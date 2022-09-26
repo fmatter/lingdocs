@@ -6,15 +6,26 @@ import sys
 from pathlib import Path
 import pandas as pd
 import panflute
+import pybtex
 import yaml
 from cookiecutter.main import cookiecutter
 from pycldf import Dataset
+from pycldf import Source
 from pylingdocs import __version__
+from pylingdocs.config import ADD_BIB
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CLLD_URI
+from pylingdocs.config import CONF_PATH
+from pylingdocs.config import CONTENT_FILE_PREFIX
+from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import METADATA_FILE, EX_LG_LABEL
+from pylingdocs.config import FIGURE_DIR
+from pylingdocs.config import FIGURE_MD
+from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import STRUCTURE_FILE
+from pylingdocs.config import TABLE_DIR
+from pylingdocs.config import TABLE_MD
 from pylingdocs.metadata import ORCID_STR
 from pylingdocs.metadata import _load_bib
 from pylingdocs.metadata import _load_metadata
@@ -23,10 +34,49 @@ from pylingdocs.metadata import _load_metadata
 log = logging.getLogger(__name__)
 
 
+def _src(string, mode="cldfviz"):
+    if mode == "cldfviz":
+        bibkey, pages = split_ref(string)
+        if pages:
+            page_str = f": {pages}"
+        else:
+            page_str = ""
+        return f"[{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str}"  # noqa: E501
+    if mode == "biblatex":
+        cite_string = []
+        for citation in string.split(","):
+            bibkey, pages = split_ref(citation)
+            if pages:
+                page_str = f"[{pages}]"
+            else:
+                page_str = ""
+            cite_string.append(f"{page_str}{{{bibkey}}}")
+        cite_string = "".join(cite_string)
+        return cite_string
+    log.error("mode=(cldfviz,biblatex)")
+    sys.exit()
+
+
+def src(cite_input, mode="cldfviz", parens=False):
+    if isinstance(cite_input, str):
+        cite_input = [cite_input]
+    citations = []
+    for string in cite_input:
+        if string == "":
+            log.warning("Empty citation")
+            return ""
+        citations.append(_src(string, mode=mode))
+    if mode == "biblatex":
+        if parens:
+            return "\\parencites" + "".join(citations)
+        return "\\textcites" + "".join(citations)
+    if parens:
+        return "(" + ", ".join(citations) + ")"
+    return ", ".join(citations)
+
+
 def html_gloss(s):
-    return (
-        f'<span class="gloss">{s} <span class="tooltiptext gloss-{s}" ></span></span>'
-    )
+    return f"<span class='gloss'>{s}<span class='tooltiptext gloss-{s}'></span></span>"
 
 
 def html_example_wrap(tag, content, kind="example"):
@@ -70,6 +120,11 @@ def sanitize_latex(unsafe_str):
     return unsafe_str
 
 
+def get_prefixed_filename(structure, file_id):
+    print(file_id)
+    return structure
+
+
 def split_ref(s):
     if "[" in s:
         bibkey, pages = s.split("[")
@@ -81,7 +136,12 @@ def split_ref(s):
 
 def _load_cldf_dataset(cldf_path=CLDF_MD):
     try:
-        return Dataset.from_metadata(cldf_path)
+        ds = Dataset.from_metadata(cldf_path)
+        if Path(ADD_BIB).is_file():
+            bib = pybtex.database.parse_file(ADD_BIB, bib_format="bibtex")
+            sources = [Source.from_entry(k, e) for k, e in bib.entries.items()]
+            ds.add_sources(*sources)
+        return ds
     except FileNotFoundError as e:
         log.error(e)
         log.error(
@@ -99,17 +159,126 @@ def _load_structure(structure_file=STRUCTURE_FILE):
         return yaml.load(open(structure_file, encoding="utf-8"), Loader=yaml.SafeLoader)
 
 
-def comma_and_list(entries, sep1=", ", sep2=", and "):
+def get_structure(prefix_mode=None, structure_file=STRUCTURE_FILE):
+    counters = {1: 0, 2: 0, 3: 0, 4: 0}
+    files = _load_structure(structure_file)
+    contents = {}
+    prefix_choices = ["alpha", "numerical"]
+    for file, values in files.items():
+        contents[file] = values
+        if prefix_mode not in prefix_choices:
+            prefix = ""
+        else:
+            level = values.get("level", 1)
+            i = 4
+            while i > level:
+                counters[i] = 0
+                i -= 1
+            counters[level] += 1
+            numbering = ".".join([str(x) for x in counters.values() if x > 0])
+            if prefix_mode == "numerical":
+                prefix = "".join([str(x) for x in counters.values()]) + " "
+            else:
+                prefix = (
+                    "".join([chr(x + 64) for x in counters.values() if x > 0]) + " "
+                )
+            contents[file]["numbering"] = numbering
+        contents[file]["filename"] = prefix + file + ".md"
+    return contents
+
+
+def load_content(source_dir=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
+    contents = get_structure(
+        prefix_mode=CONTENT_FILE_PREFIX, structure_file=structure_file
+    )
+    for data in contents.values():
+        with open(Path(source_dir) / data["filename"], "r", encoding="utf-8") as f:
+            data["content"] = f.read()
+    return contents
+
+
+def write_file(
+    file_id,
+    content,
+    prefix_mode=CONTENT_FILE_PREFIX,
+    source_dir=CONTENT_FOLDER,
+    structure_file=STRUCTURE_FILE,
+):
+    contents = get_structure(prefix_mode=prefix_mode, structure_file=structure_file)
+    if file_id not in contents:
+        log.error(
+            f"File with handle {file_id} not found, please check your structure.yaml file and your content files"
+        )
+        raise ValueError
+    w_path = Path(source_dir) / contents[file_id]["filename"]
+    with open(w_path, "w", encoding="utf-8") as f:
+        f.write(content)
+        log.info(f"Wrote to file {w_path}")
+
+
+def read_config_file(kind):
+    def getfile(path):
+        if Path(path).is_file():
+            return open(path, "r", encoding="utf-8").read()
+        return ""
+
+    if kind == "settings":
+        return getfile(CONF_PATH)
+    if kind == "metadata":
+        return getfile(METADATA_FILE)
+    if kind == "structure":
+        return getfile(CONTENT_FOLDER / STRUCTURE_FILE)
+    if kind == "figures":
+        return getfile(FIGURE_DIR / FIGURE_MD)
+    if kind == "tables":
+        return getfile(TABLE_DIR / TABLE_MD)
+    log.error(f"Invalid config file name: {kind}")
+    raise ValueError
+
+
+def write_config_file(kind, content):
+    def writefile(file, content):
+        with open(file, "w", encoding="utf-8") as f:
+            f.write(content)
+
+    if kind == "settings":
+        writefile(CONF_PATH, content)
+    elif kind == "metadata":
+        writefile(METADATA_FILE, content)
+    elif kind == "structure":
+        writefile(CONTENT_FOLDER / STRUCTURE_FILE, content)
+    elif kind == "figures":
+        writefile(FIGURE_DIR / FIGURE_MD, content)
+    elif kind == "tables":
+        writefile(TABLE_DIR / TABLE_MD, content)
+    else:
+        log.error(f"Invalid config file name: {kind}")
+        raise ValueError
+
+
+def comma_and_list(entries, sep1=", ", sep2=" and ", oxford=True):
     output = entries[0]
     for entry in entries[1:-1]:
         output += sep1 + entry
+    if oxford and len(entries) > 2:
+        output += sep1.strip()
     output += sep2 + entries[-1]
     return output
 
 
 def new():
     """Create a new pylingdocs project"""
-    cookiecutter(str(DATA_DIR / "project_template"), overwrite_if_exists=True)
+    conf_path = Path.home() / ".config/pld" / "author_config.yaml"
+    if conf_path.is_file():
+        with open(conf_path, "r", encoding="utf-8") as f:
+            extra = yaml.load(f, Loader=yaml.SafeLoader)
+    else:
+        extra = {}
+    cookiecutter(
+        str(DATA_DIR / "project_template"),
+        extra_context=extra,
+        overwrite_if_exists=True,
+    )
 
 
 def get_md_pattern(m):
@@ -273,20 +442,21 @@ def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
 
 def refresh_clld_db(clld_folder):
     df = pd.read_csv(clld_folder / "chapters.csv", keep_default_na=False)
-    chapters = [
-        {
-            "ID": chapter["ID"],
-            "Name": chapter["title"],
-            "Number": chapter["Number"],
-            "Description": open(
-                clld_folder / chapter["Filename"], "r", encoding="utf-8"
-            ).read(),
-        }
-        for chapter in df.to_dict("records")
-    ]
+    chapters = []
+    for chapter in df.to_dict("records"):
+        with open(clld_folder / chapter["Filename"], "r", encoding="utf-8") as f:
+            content = f.read()
+        chapters.append(
+            {
+                "ID": chapter["ID"],
+                "Name": chapter["title"],
+                "Number": chapter["Number"],
+                "Description": content,
+            }
+        )
     spec = importlib.util.find_spec("clld_document_plugin")
     if spec:
-        from clld_document_plugin.util import refresh_documents
+        from clld_document_plugin.util import refresh_documents  # noqa: E402
 
         refresh_documents(CLLD_URI, chapters)
     else:

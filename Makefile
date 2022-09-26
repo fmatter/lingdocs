@@ -80,7 +80,7 @@ release:
 	git commit -am "release $(VERSION)" 
 	git tag -a $(VERSION) -m"$(VERSION) release"
 	git push; git push --tags
-# 	make pypi
+	make pypi
 	bump2version patch
 	git commit -am "bump"; git push
 
@@ -102,3 +102,6 @@ demo:
 testdata:
 	 python3 var/create_test_data.py 
 	 cldf validate tests/data/cldf/metadata.json
+	 cldf validate tests/data/cldf_single_nparam/metadata.json
+	 cldf validate tests/data/cldf_single_param/metadata.json
+	 cldf validate tests/data/cldf_multi_nparam/metadata.json
