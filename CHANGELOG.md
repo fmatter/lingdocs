@@ -10,12 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * methods for reading and writing project configuration files
 
-### Removed
-
-### Changed
-
-### Fixed
-
 ## [0.0.9] -- 2022-09-19
 
 ### Changed
