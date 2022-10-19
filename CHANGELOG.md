@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 ### Changed
+* if a non-existing table is requested, a CSV file is generated
 
 ### Fixed
 

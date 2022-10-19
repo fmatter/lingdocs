@@ -215,16 +215,16 @@ def load_tables(md, tables, source_dir="."):
         if key == "table":
             table_path = source_dir / TABLE_DIR / f"{url}.csv"
             if not table_path.is_file():
-                log.error(f"Table file <{table_path.resolve()}> does not exist.")
-                sys.exit(1)
-            else:
-                temp_df = pd.read_csv(table_path, index_col=0, keep_default_na=False)
-                this_table_metadata = tables.get(url, {})
-                temp_df = temp_df.applymap(decorate_cell)
-                csv_buffer = StringIO()
-                temp_df.to_csv(csv_buffer, index=True)
-                csv_buffer.seek(0)
-                yield "\nPYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + csv_buffer.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
+                log.info(f"Table file <{table_path.resolve()}> does not exist, creating...")
+                with open(table_path.resolve(), 'w') as new_file:
+                    new_file.write("Header,row\nContent,row")
+            temp_df = pd.read_csv(table_path, index_col=0, keep_default_na=False)
+            this_table_metadata = tables.get(url, {})
+            temp_df = temp_df.applymap(decorate_cell)
+            csv_buffer = StringIO()
+            temp_df.to_csv(csv_buffer, index=True)
+            csv_buffer.seek(0)
+            yield "\nPYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + csv_buffer.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
