@@ -73,5 +73,8 @@ for builder in BUILDERS + PREVIEW + ["plain", "github", "html", "latex", "clld"]
 LATEX_EX_TEMPL = get_config("latex", "interlinear_tool")
 LATEX_TOPLEVEL = get_config("latex", "toplevel")
 
-EX_LG_LABEL = get_config("example", "ex_lg_label", as_boolean=True)
+EX_SHOW_LG = get_config("examples", "show_language", as_boolean=True)
+EX_SHOW_PRIMARY = get_config("examples", "show_primary", as_boolean=True)
+EX_SRC_POS = get_config("examples", "source_position")
+
 CONTENT_FILE_PREFIX = get_config("input", "content_file_prefix")

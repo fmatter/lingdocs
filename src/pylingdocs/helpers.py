@@ -19,7 +19,7 @@ from pylingdocs.config import CONF_PATH
 from pylingdocs.config import CONTENT_FILE_PREFIX
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
-from pylingdocs.config import METADATA_FILE, EX_LG_LABEL
+from pylingdocs.config import METADATA_FILE, EX_SHOW_LG, EX_SHOW_PRIMARY, EX_SRC_POS
 from pylingdocs.config import FIGURE_DIR
 from pylingdocs.config import FIGURE_MD
 from pylingdocs.config import METADATA_FILE
@@ -29,6 +29,7 @@ from pylingdocs.config import TABLE_MD
 from pylingdocs.metadata import ORCID_STR
 from pylingdocs.metadata import _load_bib
 from pylingdocs.metadata import _load_metadata
+from jinja2.runtime import Undefined
 
 
 log = logging.getLogger(__name__)
@@ -462,26 +463,61 @@ def refresh_clld_db(clld_folder):
     else:
         log.error("clld-document-plugin not found")
 
-def get_example_data(lg, primary, title=None, ref_string=None, show_language=EX_LG_LABEL, corpus_string="", custom_source="", hide_primary=False):
-    data = {}
-    if str(title) != "":
-        data["title"] = title
-    elif show_language not in ["0", "False", "false"]:
-        data["title"] = lg
+
+bool_dic = {"true": True, "True": True, 1: True}
+
+
+def _resolve_jinja(var, default, name):
+    if isinstance(var, Undefined):
+        return EX_SHOW_PRIMARY
+    elif not isinstance(var, bool):
+        if var in bool_dic:
+            return bool_dic[var]
+        else:
+            log.warning(f"Invalid value for [{name}]: {var} ({type(var)}).")
+            return default
+
+
+def get_example_data(
+    lg,
+    source_string,
+    title=None,
+    comment=None,
+    show_language=EX_SHOW_LG,
+    source_position=EX_SRC_POS,
+    show_primary=EX_SHOW_PRIMARY,
+):
+
+    show_primary = _resolve_jinja(show_primary, EX_SHOW_PRIMARY, "with_primaryText")
+    show_language = _resolve_jinja(show_language, EX_SHOW_LG, "with_primaryText")
+    valid_sp = ["after_translation", "after_header"]
+    if source_position not in valid_sp:
+        log.warning(
+            f"Invalid value for [source_position]: {source_position}. Use {' or '.join(valid_sp)}"
+        )
+        source_position = EX_SRC_POS
+
+    if isinstance(source_position, Undefined):
+        source_position = EX_SRC_POS
+
+    if isinstance(show_language, Undefined):
+        show_language = EX_SHOW_LG
+
+    if not isinstance(title, Undefined):
+        header = title
+    elif show_language:
+        header = lg
     else:
-        data["title"] = ""
-    if custom_source:
-        data["source"] = custom_source
-    elif corpus_string:
-        data["source"] = corpus_string
-        if ref_string:
-            data["source"] += ", " + ref_string.strip()
-    elif ref_string:
-        data["source"] = ref_string.strip()
+        header = ""
+
+    if comment:
+        post_translation = "(" + comment + ")"
     else:
-        data["source"] = ""
-    if hide_primary:
-        data["primary"] = ""
+        post_translation = ""
+
+    if source_position == "after_header":
+        header += " (" + source_string + ")"
     else:
-        data["primary"] = primary
-    return data
+        post_translation += " (" + source_string + ")"
+
+    return header, show_primary, post_translation

@@ -32,6 +32,27 @@ Glossed examples are inserted like any other entity, but are not rendered in-lin
 
 Example references should be versatile enough for most purposes: [exref](ekiri-1), [exref](ekiri-3), [exref](mymultipartexample), [exref](mymultipartexample?suffix=a-b), [exref](ekiri-1?end=mymultipartexample), [exref](mymultipartexample?suffix=arbitrarysuffix)
 
+
+### Arguments
+Pass arguments to the visualizer, with examples:
+
+[ex](ekiri-4?label=Ω)
+
+[ex](ekiri-4?title=My beautiful example title)
+
+[ex](ekiri-4?show_language=False)
+
+[ex](tri-1)
+
+[ex](tri-1?source=Elicited data)
+
+[ex](tri-1?source=Personal knowledge)
+
+[ex](tri-1?hide_primary)
+
+[exref](my_custom_id)
+
+
 ### Manual examples
 These can contain tables, lists, whatever:
 
@@ -43,11 +64,6 @@ They can also have multiple parts:
 
 
 ## Arguments
-Pass arguments to the visualizer, with examples:
-
-[ex](ekiri-4?example_id=my_custom_id&with_primaryText)
-
-[exref](my_custom_id)
 
 
 Language labels, translations, and sources can be manipulated:

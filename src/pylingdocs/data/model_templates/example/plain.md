@@ -1,22 +1,24 @@
 {# 
   Render an example object as IGT (if possible). 
   `with_primaryText`
+  `with_languageLabel`
   `with_internal_ref_link`
-  `example_id`
-  `get_example_data`: obligatory
+  `label`
+  `get_example_data`
   `title`
   `source`
 #}
 {% import 'util.md' as util %}
-{% set example_data = get_example_data(
-    ctx.related('languageReference').name,
-    title,
-    ref_string=util.reference(ctx.references[0]),
-    corpus_string=ctx.data["Text_ID"],
-    custom_source=source
+{% set header, show_primary, post_translation = get_example_data(
+    ctx.language.name,
+    show_language=with_languageLabel,
+    show_primary=with_primaryText,
+    source_string="my source yes",
+    title=title
 ) %}
-({{ example_id or ctx.id }}) {{example_data["title"]}} ({{ ctx.id }})  
-{% if (ctx.cldf.analyzedWord == [] or with_primaryText) and ctx.cldf.primaryText != None %}{{ ctx.cldf.primaryText }}
+
+({{ label or ctx.id }}) {{ header }}  
+{% if (ctx.cldf.analyzedWord == [] or show_primary) and ctx.cldf.primaryText != None %}{{ ctx.cldf.primaryText }}
 {% endif %}
 {% if ctx.cldf.analyzedWord != [] %}
 {% set obj, gloss = pad_ex(ctx.cldf.analyzedWord, ctx.cldf.gloss) %}
@@ -24,5 +26,5 @@
 {{ gloss.replace(" ", "|WHITESPACE|") }}  
 {% endif %}
 {% if ctx.cldf.translatedText != None %}
-‘{{ ctx.cldf.translatedText }}’{% endif %} ({{example_data["source"]}})  
+‘{{ ctx.cldf.translatedText }}’{% endif %} {{ post_translation }}
 
