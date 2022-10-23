@@ -416,6 +416,8 @@ def resolve_glossing_combination(input_string):
 
 
 def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
+    if not input_string:
+        return ""
     words_list = input_string.split(" ")
     for i, word in enumerate(words_list):  # pylint: disable=too-many-nested-blocks
         output = " "
