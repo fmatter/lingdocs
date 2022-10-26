@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * if a non-existing table is requested, a CSV file is generated
+* smaller font sizes for titles
+* center align figures in HTML
 
 ### Fixed
 * unglossed words don't throw errors
