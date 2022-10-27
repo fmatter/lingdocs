@@ -215,8 +215,10 @@ def load_tables(md, tables, source_dir="."):
         if key == "table":
             table_path = source_dir / TABLE_DIR / f"{url}.csv"
             if not table_path.is_file():
-                log.info(f"Table file <{table_path.resolve()}> does not exist, creating...")
-                with open(table_path.resolve(), 'w') as new_file:
+                log.info(
+                    f"Table file <{table_path.resolve()}> does not exist, creating..."
+                )
+                with open(table_path.resolve(), "w", encoding="utf-8") as new_file:
                     new_file.write("Header,row\nContent,row")
             temp_df = pd.read_csv(table_path, index_col=0, keep_default_na=False)
             this_table_metadata = tables.get(url, {})
