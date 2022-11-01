@@ -220,9 +220,12 @@ def load_tables(md, tables, source_dir="."):
                 )
                 with open(table_path.resolve(), "w", encoding="utf-8") as new_file:
                     new_file.write("Header,row\nContent,row")
-            temp_df = pd.read_csv(table_path, index_col=0, keep_default_na=False)
             this_table_metadata = tables.get(url, {})
+            temp_df = pd.read_csv(table_path, index_col=0, keep_default_na=False)
             temp_df = temp_df.applymap(decorate_cell)
+            with_header_col = this_table_metadata.get("header_column", True)
+            if not with_header_col:
+                temp_df.index = temp_df.index.map(decorate_cell)
             csv_buffer = StringIO()
             temp_df.to_csv(csv_buffer, index=True)
             csv_buffer.seek(0)

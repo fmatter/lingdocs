@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+* in the table metadata file, `header_column` can be set to `false` if the first column should be treated as a "content" column
 
 ### Removed
 
