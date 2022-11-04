@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * if a non-existing table is requested, a CSV file is generated
 * smaller font sizes for titles
 * center align figures in HTML
+* more line spacing in HTML table cells (when using line breaks)
 
 ### Fixed
 * unglossed words don't throw errors
