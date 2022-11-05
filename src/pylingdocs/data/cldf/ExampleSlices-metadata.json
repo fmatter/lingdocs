@@ -24,9 +24,9 @@
                 "datatype": "string"
             },
             {
-                "name": "Slice",
-                "required": false,
-                "dc:description": "Specifies the slice of forms.",
+                "name": "Index",
+                "required": true,
+                "dc:description": "Specifies the position of a form in a sentence.",
                 "datatype": {
                     "base": "string",
                     "format": "\\d+(:\\d+)?"
