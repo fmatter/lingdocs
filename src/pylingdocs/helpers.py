@@ -34,37 +34,30 @@ log = logging.getLogger(__name__)
 
 
 def _src(string, mode="cldfviz"):
+    bibkey, pages = split_ref(string)
     if mode == "cldfviz":
-        bibkey, pages = split_ref(string)
         if pages:
             page_str = f": {pages}"
         else:
             page_str = ""
         return f"[{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str}"  # noqa: E501
     if mode == "biblatex":
-        cite_string = []
-        for citation in string.split(","):
-            bibkey, pages = split_ref(citation)
-            if pages:
-                page_str = f"[{pages}]"
-            else:
-                page_str = ""
-            cite_string.append(f"{page_str}{{{bibkey}}}")
-        cite_string = "".join(cite_string)
-        return cite_string
+        if pages:
+            page_str = f"[{pages}]"
+        else:
+            page_str = ""
+        return f"{page_str}{{{bibkey}}}"
     log.error("mode=(cldfviz,biblatex)")
     sys.exit()
 
 
 def src(cite_input, mode="cldfviz", parens=False):
-    if isinstance(cite_input, str):
-        cite_input = [cite_input]
+    if cite_input == "":
+        log.warning("Empty citation")
+        return ""
     citations = []
-    for string in cite_input:
-        if string == "":
-            log.warning("Empty citation")
-            return ""
-        citations.append(_src(string, mode=mode))
+    for x in re.finditer(r"[A-Za-z0-9]+(\[[^\]]*])?", cite_input):
+        citations.append(_src(x.group(0), mode=mode))
     if mode == "biblatex":
         if parens:
             return "\\parencites" + "".join(citations)
@@ -72,6 +65,69 @@ def src(cite_input, mode="cldfviz", parens=False):
     if parens:
         return "(" + ", ".join(citations) + ")"
     return ", ".join(citations)
+
+
+def expand_pages(pages):
+    out_pages = []
+    for pranges in pages:
+        for page in pranges.split(","):
+            page = page.strip()
+            page = page.replace("–", "-")
+            if "-" in page:
+                ps = page.split("-")
+                if ps[0].isdigit() and ps[1].isdigit():
+                    out_pages.extend(list(range(int(ps[0]), int(ps[1]))))
+                else:
+                    out_pages.append(page)
+            else:
+                out_pages.append(page)
+    out_pages = [
+        int(x) if (isinstance(x, int) or x.isdigit()) else x for x in out_pages
+    ]
+    numeric = [x for x in out_pages if isinstance(x, int)]
+    non_numeric = [x for x in out_pages if not isinstance(x, int)]
+    return sorted(set(numeric)), list(set(non_numeric))
+
+
+def combine_pages(pages):
+    numeric, non_numeric = expand_pages(pages)
+    out_pages = []
+    for page in numeric:
+        if not out_pages:
+            out_pages.append([page, page])
+        else:
+            if out_pages[-1][-1] == page - 1:
+                out_pages[-1][-1] = page
+            else:
+                out_pages.append([page, page])
+    return ", ".join(
+        non_numeric
+        + [f"{x[0]}-{x[1]}" if x[0] != x[1] else str(x[0]) for x in out_pages]
+    )
+
+
+def combine_sources(source_list, sep="; "):
+    bibdict = {}
+    for source_entry in source_list:
+        for source in source_entry.split(sep):
+            bibkey, pages = split_ref(source)
+            if bibkey in bibdict:
+                if not pages or None in bibdict[bibkey]:
+                    raise ValueError(f"Citing {bibkey} with and without pages")
+                bibdict[bibkey].extend(pages.split(","))
+            else:
+                bibdict[bibkey] = [pages]
+    out = []
+    for bibkey, pages in bibdict.items():
+        out_string = bibkey
+        if bibkey != "pc":
+            page_string = combine_pages(pages)
+        else:
+            page_string = ", ".join(list(set(pages)))
+        if pages:
+            out_string += f"[{page_string}]"
+        out.append(out_string)
+    return out
 
 
 def html_gloss(s):

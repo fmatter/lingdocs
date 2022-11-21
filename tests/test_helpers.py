@@ -4,6 +4,7 @@ from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import load_content
 from pylingdocs.helpers import split_ref
+from pylingdocs.helpers import src
 from pylingdocs.helpers import write_file
 
 

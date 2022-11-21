@@ -1,20 +1,21 @@
-"ID","Description"
-"part","particle"
-"aff","affirmative"
-"rem","remote past"
-"cor","coreferential"
-"cont","continuous"
-"pert","pertensive"
-"obl","oblique"
-3,"third person"
-1,"first person"
-"poss","possessive"
-"inan","inanimate"
-"dist","distal"
-"uncert","uncertain"
-"ideo","ideophone"
-"iter","iterative"
-"sg","singular"
-"sup","supine"
-"pl","plural"
-"1+2","first person inclusive"
+ID,Description
+part,particle
+aff,affirmative
+rem,remote past
+cor,coreferential
+cont,continuous
+pert,pertensive
+obl,oblique
+3,third person
+1,first person
+poss,possessive
+inan,inanimate
+dist,distal
+uncert,uncertain
+ideo,ideophone
+iter,iterative
+sg,singular
+sup,supine
+pl,plural
+1+2,first person inclusive
+neg,negative

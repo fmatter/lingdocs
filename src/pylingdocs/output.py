@@ -204,9 +204,9 @@ class OutputFormat:
                     else:
                         args.append(arg)
             if key == "src":
-                yield src(url.split(","))
+                yield src(url)
             elif key == "psrc":
-                yield src(url.split(","), parens=True)
+                yield src(url, parens=True)
             elif key in cls.doc_elements:
                 yield cls.doc_elements[key](url, *args, **element_kwargs)
             elif key == "abbrev_list":
