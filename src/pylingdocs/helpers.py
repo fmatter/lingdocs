@@ -350,6 +350,7 @@ def latexify_table(cell):
 
 def write_readme(metadata_file=METADATA_FILE, release=False):
     bib = _load_bib(metadata_file)
+    citation = bib.to_string("bibtex")
     md = _load_metadata(metadata_file)
     author_string = []
     for author in md["authors"]:
@@ -369,7 +370,6 @@ def write_readme(metadata_file=METADATA_FILE, release=False):
         author_string = f"authors:\n{author_string}"
     else:
         author_string = f"author: {author_string[0]}"
-    citation = bib.to_string("bibtex")
     if not release:
         readme_text = "## Do not cite from this branch!"
         if "url" in md:

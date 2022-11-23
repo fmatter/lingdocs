@@ -1,8 +1,13 @@
 from pathlib import Path
+import pandas as pd
 import pycldf
 from clldutils import jsonlib
+from pycldf import Source
 from pycldf.dataset import SchemaError
+from pylingdocs import __version__
 from pylingdocs.config import DATA_DIR
+from pylingdocs.metadata import _load_bib
+from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
 
 
@@ -15,6 +20,56 @@ def metadata(table_name):
             / f"{table_name}-metadata.json"
         )
     return jsonlib.load(path)
+
+
+def create_cldf(ds, output_dir, metadata_file):
+    ds.copy(dest=output_dir / "cldf")
+    orig_id = ds.metadata_dict.get("rdf:ID", None)
+    ds = pycldf.Dataset.from_metadata(output_dir / "cldf/metadata.json")
+    ds.add_provenance(wasDerivedFrom=orig_id)
+
+    bib_data = _load_bib(metadata_file)
+    for key, entry in bib_data.entries.items():
+        citation = Source.from_entry(key, entry)
+    ds.properties["dc:bibliographicCitation"] = str(citation)
+
+    metadata_dict = _load_metadata(metadata_file)
+    ds.properties[
+        "dc:title"
+    ] = f"""{metadata_dict["title"]} (v{metadata_dict["version"]})"""
+    ds.properties["dc:license"] = metadata_dict["license"]
+    ds.properties["dc:description"] = metadata_dict["abstract"]
+    ds.properties["rdf:ID"] = metadata_dict["id"]
+
+    ds.add_provenance(
+        wasGeneratedBy=[
+            {
+                "dc:title": "pylingdocs",
+                "dc:description": __version__,
+                "dc:url": "https://pypi.org/project/pylingdocs",
+            }
+        ]
+    )
+
+    ds.add_component(metadata("ChapterTable"))
+
+    clld_path = output_dir / "clld"
+    chapters = pd.read_csv(clld_path / "chapters.csv")
+    chapter_list = []
+    for chapter in chapters.to_dict("records"):
+        with open(clld_path / chapter["Filename"], "r", encoding="utf-8") as f:
+            chapter_content = f.read()
+            chapter_list.append(
+                {
+                    "ID": chapter["ID"],
+                    "Name": chapter["title"],
+                    "Number": chapter["Number"],
+                    "Description": chapter_content,
+                }
+            )
+    ds.write(
+        ChapterTable=chapter_list,
+    )
 
 
 def generate_autocomplete(ds, output_dir):

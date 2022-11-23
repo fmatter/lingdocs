@@ -499,6 +499,7 @@ class CLLD(OutputFormat):
                     f.write(content)
             chapter_data = pd.DataFrame.from_dict(content_dic, orient="index")
             chapter_data.index.name = "ID"
+            chapter_data.index = chapter_data.index.map(slugify)
             chapter_data.to_csv(my_output_dir / "chapters.csv")
 
 

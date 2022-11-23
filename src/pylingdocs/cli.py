@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 import click
 import yaml
+from pylingdocs.cldf import create_cldf
 from pylingdocs.cldf import generate_autocomplete
 from pylingdocs.config import BUILDERS
 from pylingdocs.config import CLDF_MD
@@ -44,6 +45,7 @@ class OutputCommand(click.Command):
                     ("--output-dir",),
                     default=OUTPUT_DIR,
                     help="Folder where output is generated.",
+                    type=click.Path(path_type=Path),
                 )
             ]
         )
@@ -84,7 +86,6 @@ def build(
 ):  # pylint: disable=too-many-arguments
     """Create formatted output of pylingdocs project."""
     source = Path(source)
-    output_dir = Path(output_dir)
     ds = _load_cldf_dataset(cldf)
     contents = load_content(
         source_dir=source / CONTENT_FOLDER,
@@ -129,7 +130,6 @@ def preview(  # pylint: disable=too-many-arguments
 ):
     """Create a live preview using a lightweight, human-readable output format"""
     source = Path(source)
-    output_dir = Path(output_dir)
     metadata = _load_metadata(source / METADATA_FILE)
     run_preview(
         cldf,
@@ -158,6 +158,28 @@ def check(source, cldf, output_dir, latex):
     check_ids(contents, ds, source)
 
 
+@main.command(cls=BuildCommand)
+def cldf(source, cldf, output_dir, latex):
+    del latex
+    ds = _load_cldf_dataset(cldf)
+    contents = load_content(
+        source_dir=source / CONTENT_FOLDER,
+        structure_file=_get_relative_file(
+            folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
+        ),
+    )
+    metadata = _load_metadata(source / METADATA_FILE)
+    create_output(
+        contents,
+        source,
+        ["clld"],
+        ds,
+        output_dir,
+        metadata=metadata,
+    )
+    create_cldf(ds, output_dir, source / METADATA_FILE)
+
+
 @main.command()
 def update_structure():
     do_update_structure()
@@ -166,14 +188,12 @@ def update_structure():
 @main.command(cls=OutputCommand)
 def compile_latex(output_dir):  # pragma: no cover
     """Compile the generated LaTeX output"""
-    output_dir = Path(output_dir)
     cmplatex(output_dir=output_dir)
 
 
 @main.command(cls=OutputCommand)
 def clean(output_dir):  # pragma: no cover
     """Compile the generated LaTeX output"""
-    output_dir = Path(output_dir)
     clean_output(output_dir=output_dir)
 
 

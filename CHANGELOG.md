@@ -10,14 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * in the table metadata file, `header_column` can be set to `false` if the first column should be treated as a "content" column
 * more sophisticated citing facilities
+* cldf dataset creation with `ChapterTable`
 
 ### Removed
 
 ### Changed
 * if a non-existing table is requested, a CSV file is generated
-* smaller font sizes for titles
-* center align figures in HTML
-* more line spacing in HTML table cells (when using line breaks)
+* HTML: smaller font sizes for titles
+* HTML: center align figures
+* HTML: more line spacing in table cells (when using line breaks)
 
 ### Fixed
 * unglossed words don't throw errors
