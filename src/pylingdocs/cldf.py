@@ -1,14 +1,19 @@
+import logging
 from pathlib import Path
 import pandas as pd
 import pycldf
 from clldutils import jsonlib
 from pycldf import Source
 from pycldf.dataset import SchemaError
+from slugify import slugify
 from pylingdocs import __version__
 from pylingdocs.config import DATA_DIR
 from pylingdocs.metadata import _load_bib
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
+
+
+log = logging.getLogger(__name__)
 
 
 def metadata(table_name):
@@ -22,6 +27,36 @@ def metadata(table_name):
     return jsonlib.load(path)
 
 
+def get_contributors(metadata_dict):
+    contributor_list = []
+    for contributor in metadata_dict["authors"]:
+        name = contributor["given-names"] + " " + contributor["family-names"]
+        c_id = contributor.get("id", slugify(name))
+        c_dict = {"ID": c_id, "Name": name}
+        for k, v in contributor.items():
+            c_dict[k.capitalize()] = v
+        contributor_list.append(c_dict)
+    return contributor_list
+
+
+def get_chapters(output_dir):
+    clld_path = output_dir / "clld"
+    chapters = pd.read_csv(clld_path / "chapters.csv")
+    chapter_list = []
+    for chapter in chapters.to_dict("records"):
+        with open(clld_path / chapter["Filename"], "r", encoding="utf-8") as f:
+            chapter_content = f.read()
+            chapter_list.append(
+                {
+                    "ID": chapter["ID"],
+                    "Name": chapter["title"],
+                    "Number": chapter["Number"],
+                    "Description": chapter_content,
+                }
+            )
+    return chapter_list
+
+
 def create_cldf(ds, output_dir, metadata_file):
     ds.copy(dest=output_dir / "cldf")
     orig_id = ds.metadata_dict.get("rdf:ID", None)
@@ -30,8 +65,7 @@ def create_cldf(ds, output_dir, metadata_file):
 
     bib_data = _load_bib(metadata_file)
     for key, entry in bib_data.entries.items():
-        citation = Source.from_entry(key, entry)
-    ds.properties["dc:bibliographicCitation"] = str(citation)
+        ds.properties["dc:bibliographicCitation"] = Source.from_entry(key, entry)
 
     metadata_dict = _load_metadata(metadata_file)
     ds.properties[
@@ -52,23 +86,15 @@ def create_cldf(ds, output_dir, metadata_file):
     )
 
     ds.add_component(metadata("ChapterTable"))
+    ds.remove_table("ContributorTable")
+    ds.add_component(metadata("ContributorTable"))
 
-    clld_path = output_dir / "clld"
-    chapters = pd.read_csv(clld_path / "chapters.csv")
-    chapter_list = []
-    for chapter in chapters.to_dict("records"):
-        with open(clld_path / chapter["Filename"], "r", encoding="utf-8") as f:
-            chapter_content = f.read()
-            chapter_list.append(
-                {
-                    "ID": chapter["ID"],
-                    "Name": chapter["title"],
-                    "Number": chapter["Number"],
-                    "Description": chapter_content,
-                }
-            )
     ds.write(
-        ChapterTable=chapter_list,
+        ChapterTable=get_chapters(output_dir),
+        ContributorTable=get_contributors(metadata_dict),
+    )
+    log.info(
+        f"Wrote CLDF dataset with ChapterTable to {(ds.directory / ds.filename).resolve()}"
     )
 
 

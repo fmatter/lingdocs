@@ -18,6 +18,9 @@
                 "name": "Email"
             },
             {
+                "name": "Orcid"
+            },
+            {
                 "name": "Url"
             },
             {
