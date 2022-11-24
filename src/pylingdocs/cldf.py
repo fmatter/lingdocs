@@ -71,6 +71,14 @@ def create_cldf(ds, output_dir, metadata_file):
     ds.properties[
         "dc:title"
     ] = f"""{metadata_dict["title"]} (v{metadata_dict["version"]})"""
+    if "domain" in metadata_dict:
+        domain = metadata_dict["domain"]
+        if "http" not in domain:
+            domain = "https://" + domain
+        ds.properties["dc:identifier"] = domain
+    elif "id" in metadata_dict:
+        ds.properties["dc:identifier"] = metadata_dict["id"]
+
     ds.properties["dc:license"] = metadata_dict["license"]
     ds.properties["dc:description"] = metadata_dict["abstract"]
     ds.properties["rdf:ID"] = metadata_dict["id"]
