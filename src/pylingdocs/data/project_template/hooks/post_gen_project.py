@@ -35,6 +35,5 @@ with open(PROJECT_DIR / "pylingdocs.cfg", "w", encoding="utf-8") as configfile:
     config.write(configfile)
 
 if "Yes" == "{{ cookiecutter.use_sublime_text }}":
-    print("{{ cookiecutter.cldf }}")
-    ds = _load_cldf_dataset("{{ cookiecutter.cldf }}")
+    ds = _load_cldf_dataset(path)
     generate_autocomplete(ds, PROJECT_DIR)
