@@ -8,6 +8,7 @@
    "document_type": ["article", "book", "unpublished"],
    "latex_template": ["article", "handout"],
    "files": "file1,file2",
+   "use_sublime_text": ["Yes", "No"],
    "author_family_name": "author1-family",
    "author_given_name": "author1-given",
    "email": "",

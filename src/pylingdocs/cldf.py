@@ -94,7 +94,10 @@ def create_cldf(ds, output_dir, metadata_file):
     )
 
     ds.add_component(metadata("ChapterTable"))
-    ds.remove_table("ContributorTable")
+    if "ContributorTable" in list(ds.components.keys()) + [
+        str(x.url) for x in ds.tables
+    ]:  # a list of tables in the dataset
+        ds.remove_table("ContributorTable")
     ds.add_component(metadata("ContributorTable"))
 
     ds.write(
