@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.11] - 2022-11-27
+
+## [0.0.11] - 2022-11-27
+
 ### Added
 * in the table metadata file, `header_column` can be set to `false` if the first column should be treated as a "content" column
 * more sophisticated citing facilities
@@ -163,6 +167,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release.
 
 [Unreleased]: https://github.com/fmatter/pylingdocs/compare/0.0.10...HEAD
+[0.0.11]: https://github.com/fmatter/pylingdocs/compare/0.0.10...0.0.10
+[0.0.11]: https://github.com/fmatter/pylingdocs/compare/0.0.10...0.0.10
 [0.0.10]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.10
 [0.0.9]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.9
 [0.0.8]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.8
