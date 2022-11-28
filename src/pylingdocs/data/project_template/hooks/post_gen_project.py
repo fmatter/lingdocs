@@ -1,8 +1,9 @@
 from configparser import ConfigParser
 from pathlib import Path
 import cookiecutter
-from pylingdocs.helpers import _load_cldf_dataset
 from pylingdocs.cldf import generate_autocomplete
+from pylingdocs.helpers import _load_cldf_dataset
+
 
 PROJECT_DIR = Path.cwd().resolve()
 
@@ -15,7 +16,9 @@ def create_file(file):
     filename = file + ".md"
     filepath = PROJECT_DIR / "content" / filename
     with open(filepath, "w") as f:
-        f.write(f"# {file.capitalize()} [label]({file})\n\nInsert your content here (find this file at {filepath.resolve()})")
+        f.write(
+            f"# {file.capitalize()} [label]({file})\n\nInsert your content here (find this file at {filepath.resolve()})"
+        )
 
 
 if "No license" == "{{ cookiecutter.license }}":
@@ -24,10 +27,10 @@ if "No license" == "{{ cookiecutter.license }}":
 for i, file in enumerate({{cookiecutter.files.split(",")}}):
     create_file(file)
 
+# add .. to path if relative to pylingdocs project
 config = ConfigParser()
 config.read(PROJECT_DIR / "pylingdocs.cfg")
-
-path = config.get("paths", "cldf")
+path = "{{ cookiecutter.cldf }}"
 if not path.startswith("/"):
     path = Path("..") / path
 config.set("paths", "cldf", str(path))

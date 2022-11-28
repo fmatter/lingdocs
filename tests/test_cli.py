@@ -119,6 +119,7 @@ def test_cli_sublime(caplog, tmp_path, md_path, data, monkeypatch):
 
 
 def test_new(caplog, md_path, tmpdir, data, monkeypatch):
+    shutil.copytree(md_path.parents[0], tmpdir / md_path.parents[0].name)
     monkeypatch.chdir(tmpdir)
     runner = CliRunner()
     result = runner.invoke(new)
