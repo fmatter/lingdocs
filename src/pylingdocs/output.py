@@ -385,7 +385,7 @@ class GitHub(OutputFormat):
                 level = line.count("#")
                 tag = re.findall("{#(.*?)}", title)
                 if len(tag) == 0:
-                    tag = slugify(title)
+                    tag = slugify(title, allow_unicode=True)
                 else:
                     tag = tag[0]
                     title = title.replace(tag, "")
