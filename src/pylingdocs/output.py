@@ -378,8 +378,20 @@ class GitHub(OutputFormat):
 
     @classmethod
     def preprocess(cls, content):
+        toc = []
+        for line in content.split("\n"):
+            if line.startswith("#"):
+                title = line.split(" ", 1)[1]
+                level = line.count("#")
+                tag = re.findall("{#(.*?)}", title)
+                if len(tag) == 0:
+                    tag = slugify(title)
+                else:
+                    tag = tag[0]
+                    title = title.replace(tag, "")
+                toc.append("  "*level + f"* [{title}](#{tag})")
         res = panflute.convert_text(
-            content, output_format="gfm", input_format="markdown"
+            "\n".join(toc) + content, output_format="gfm", input_format="markdown"
         )
         return res.replace("WHITESPACE", " ").replace(r"\|", "")
 
