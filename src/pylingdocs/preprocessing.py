@@ -74,8 +74,12 @@ for templ in templates.values():
 for output_format, env_dict in templates.items():
     for model in models:
         model_output = model.representation(output_format)
+        # if output_format == "github" and model.name == "Example":
+        #     log.debug(f"Format {output_format} for model {model}")
+        #     log.debug(model_output)
         if model_output is not None:
             env_dict[model.cldf_table + "_detail.md"] = model_output
+            # log.debug(f"Format {output_format} for model {model}")
 
 for output_format, env_dict in list_templates.items():
     for model in models:
@@ -86,23 +90,17 @@ for output_format, env_dict in list_templates.items():
 if Path("pld/model_templates").is_dir():
     for model in Path("pld/model_templates").iterdir():
         for output_format, template_collection in templates.items():
-
-            templ_path = model / output_format / "detail.md"
-            if not templ_path.is_file():
-                templ_path = model / "plain" / "detail.md"
-            if templ_path.is_file():
-                with open(templ_path, "r", encoding="utf-8") as f:
-                    templ_content = f.read()
-                template_collection[model.name + "_detail.md"] = templ_content
-
-            templ_path = model / output_format / "index.md"
-            if not templ_path.is_file():
-                templ_path = model / "plain" / "index.md"
-            if templ_path.is_file():
-                with open(templ_path, "r", encoding="utf-8") as f:
-                    templ_content = f.read()
-                template_collection[model.name + "_index.md"] = templ_content
-
+            for kind in ["detail", "index"]:
+                templ_path = model / output_format / f"{kind}.md"
+                if not templ_path.is_file():
+                    continue
+                if templ_path.is_file():
+                    with open(templ_path, "r", encoding="utf-8") as f:
+                        templ_content = f.read()
+                    # log.debug(f"Using custom template {templ_path} for model {model.name} for format {output_format}")
+                    template_collection[
+                        model.name.capitalize() + f"Table_{kind}.md"
+                    ] = templ_content
 
 with open(DATA_DIR / "model_templates" / "latex_util.md", "r", encoding="utf-8") as f:
     latex_util = f.read()
@@ -150,6 +148,19 @@ def preprocess_cldfviz(md):
     yield md[current:]
 
 
+def pad_ex(*lines, sep=" "):
+    out = {}
+    for glossbundle in zip(*lines):
+        longest = len(max(glossbundle, key=len))
+        for i, obj in enumerate(glossbundle):
+            diff = longest - len(obj)
+            out.setdefault(i, [])
+            out[i].append(obj + " " * diff)
+    for k in out.copy():
+        out[k] = sep.join(out[k])
+    return tuple(out.values())
+
+
 def render_markdown(
     md_str,
     ds,
@@ -169,6 +180,7 @@ def render_markdown(
                     "split_ref": split_ref,
                     "decorate_gloss_string": decorate_gloss_string,
                     "src": src,
+                    "flexible_pad_ex": pad_ex,
                 },
             )
             preprocessed = render(

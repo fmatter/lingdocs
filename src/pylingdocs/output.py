@@ -389,9 +389,11 @@ class GitHub(OutputFormat):
                 else:
                     tag = tag[0]
                     title = title.replace(tag, "")
-                toc.append("   "*level + f"1. [{title}](#{tag})")
+                toc.append("   " * level + f"1. [{title}](#{tag})")
         res = panflute.convert_text(
-            "\n".join(toc) + "\n\n" + content, output_format="gfm", input_format="markdown"
+            "\n".join(toc) + "\n\n" + content,
+            output_format="gfm",
+            input_format="markdown",
         )
         return res.replace("WHITESPACE", " ").replace(r"\|", "")
 
