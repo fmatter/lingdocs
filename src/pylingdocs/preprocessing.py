@@ -90,24 +90,40 @@ for output_format, env_dict in list_templates.items():
 if Path("pld/model_templates").is_dir():
     for model in Path("pld/model_templates").iterdir():
         for output_format, template_collection in templates.items():
-            for kind in ["detail", "index"]:
-                templ_path = model / output_format / f"{kind}.md"
-                if not templ_path.is_file():
-                    continue
-                if templ_path.is_file():
-                    with open(templ_path, "r", encoding="utf-8") as f:
-                        templ_content = f.read()
-                    # log.debug(f"Using custom template {templ_path} for model {model.name} for format {output_format}")
-                    template_collection[
-                        model.name.capitalize() + f"Table_{kind}.md"
-                    ] = templ_content
+            templ_path = model / output_format / "detail.md"
+            if not templ_path.is_file():
+                continue
+            if templ_path.is_file():
+                with open(templ_path, "r", encoding="utf-8") as f:
+                    templ_content = f.read()
+                # log.debug(f"Using custom template {templ_path} for model {model.name} for format {output_format}")
+                template_collection[
+                    model.name.capitalize() + f"Table_detail.md"
+                ] = templ_content
+        for output_format, template_collection in list_templates.items():
+            templ_path = model / output_format / "index.md"
+            if not templ_path.is_file():
+                continue
+            if templ_path.is_file():
+                with open(templ_path, "r", encoding="utf-8") as f:
+                    templ_content = f.read()
+                # log.debug(f"Using custom template {templ_path} for model {model.name} for format {output_format}")
+                template_collection[
+                    model.name.capitalize() + f"Table_index.md"
+                ] = templ_content
+
 
 with open(DATA_DIR / "model_templates" / "latex_util.md", "r", encoding="utf-8") as f:
     latex_util = f.read()
 
 templates["latex"]["latex_util.md"] = latex_util
 
-with open(DATA_DIR / "model_templates" / "html_util.md", "r", encoding="utf-8") as f:
+if Path("pld/model_templates/html_util.md").is_file():
+    html_util_path = Path("pld/model_templates/html_util.md")
+else:
+    html_util_path = DATA_DIR / "model_templates" / "html_util.md"
+
+with open(html_util_path, "r", encoding="utf-8") as f:
     html_util = f.read()
 
 templates["html"]["html_util.md"] = html_util
@@ -170,6 +186,10 @@ def render_markdown(
 ):
     if data_format == "cldf":
         if output_format != "clld":
+            # if "MediaTable" in ds.components:
+            #     audio_dict = {x["ID"]: {"url": x.get("Download_URL", "").unsplit(), "type": x["Media_Type"]} for x in ds.iter_rows("MediaTable")}
+            # else:
+            #     audio_dict = {}
             preprocessed = render(
                 doc="".join(preprocess_cldfviz(md_str)),
                 cldf_dict=ds,
@@ -181,6 +201,7 @@ def render_markdown(
                     "decorate_gloss_string": decorate_gloss_string,
                     "src": src,
                     "flexible_pad_ex": pad_ex,
+                    "get_audio": lambda x: audio_dict.get(x, None)
                 },
             )
             preprocessed = render(
@@ -215,7 +236,7 @@ def load_tables(md, tables, source_dir="."):
         if x != "":
             return (
                 this_table_metadata.get("pre_cell", "")
-                + x
+                + str(x)
                 + this_table_metadata.get("post_cell", "")
             )
         return x

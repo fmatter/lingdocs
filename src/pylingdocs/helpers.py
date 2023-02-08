@@ -341,6 +341,7 @@ def get_md_pattern(m):
 
 
 def latexify_table(cell):
+    cell = str(cell)
     if "_" in cell or "*" in cell:
         return panflute.convert_text(
             cell, output_format="latex", input_format="markdown"

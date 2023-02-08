@@ -282,7 +282,7 @@ class HTML(OutputFormat):
     def decorate_gloss_string(cls, x):
         return decorate_gloss_string(
             x,
-            decoration=lambda x: f'<span class="gloss">{x} <span class="tooltiptext gloss-{x}" ></span></span>',
+            decoration=lambda x: f'<span class="gloss">{x}<span class="tooltiptext gloss-{x}" ></span></span>',
         )
 
     doc_elements = {
@@ -321,10 +321,10 @@ for (var i = 0; i < targets.length; i++) {{
         if OUTPUT_TEMPLATES["html"] == "slides":
             return panflute.convert_text(
                 content,
-                output_format="revealjs",
+                output_format="html",
                 input_format="markdown",
                 extra_args=["--shift-heading-level-by=1"],
-            )
+            ).replace("\n<h", "\n---\n<h")
         return panflute.convert_text(
             content,
             output_format="html",
@@ -768,6 +768,7 @@ def run_preview(cldf, source_dir, output_dir, refresh=True, **kwargs):
     if latex and "latex" not in kwargs["formats"]:
         kwargs["formats"] = list(kwargs["formats"]) + ["latex"]
     kwargs["contents"] = contents
+
     create_output(**kwargs)
     if html:
         threading.Thread(target=run_server).start()
