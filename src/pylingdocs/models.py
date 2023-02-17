@@ -114,7 +114,7 @@ class Entity:
 class Morpheme(Entity):
 
     name = "Morpheme"
-    cldf_table = "MorphsetTable"
+    cldf_table = "morphemes.csv"
     shortcut = "mp"
 
     templates = {
@@ -135,7 +135,7 @@ class Morpheme(Entity):
 class Morph(Morpheme):
 
     name = "Morph"
-    cldf_table = "MorphTable"
+    cldf_table = "morphs.csv"
     shortcut = "m"
 
 
@@ -202,7 +202,7 @@ class Language(Entity):
 class Text(Entity):
 
     name = "Text"
-    cldf_table = "TextTable"
+    cldf_table = "texts.csv"
     shortcut = "txt"
     templates = {"plain": "“{{ ctx['Title'] }}”"}
 

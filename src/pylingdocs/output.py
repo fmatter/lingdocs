@@ -660,7 +660,10 @@ class Latex(OutputFormat):
 
 
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD]}
-
+if Path("custom_pld_builders.py").is_file():
+    from custom_pld_builders import builders as custom_builders
+    for k, v in custom_builders.items():
+        builders[k] = v
 
 def update_structure(
     content_dir=CONTENT_FOLDER,
