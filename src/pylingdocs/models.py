@@ -138,6 +138,22 @@ class Morph(Morpheme):
     cldf_table = "morphs.csv"
     shortcut = "m"
 
+class Wordform(Morpheme):
+
+    name = "Wordform"
+    cldf_table = "wordforms.csv"
+    shortcut = "wf"
+
+    templates = {"html": """{% import 'pylingdocs_util.md' as util%}
+{{util.lfts(
+    "<i>" + ctx["Form"] + "</i>",
+    entity=ctx,
+    with_language=with_language or False,
+    with_source=with_source or False,
+    source_str=source_str,
+    no_translation=no_translation,
+    translation=translation
+)}}"""}
 
 class Example(Entity):
 
@@ -226,17 +242,17 @@ class Cognateset(Entity):
 class Form(Entity):
     name = "Form"
     cldf_table = "FormTable"
-    shortcut = "wf"
+    shortcut = "f"
     templates = {
-        "html": load_template("wordform", "html"),
-        "plain": load_template("wordform", "plain"),
-        "latex": load_template("wordform", "latex"),
+        "html": load_template("form", "html"),
+        "plain": load_template("form", "plain"),
+        "latex": load_template("form", "latex"),
     }
 
     list_templates = {
-        "plain": load_template("wordform", "plain_index"),
-        "html": load_template("wordform", "html_index"),
+        "plain": load_template("form", "plain_index"),
+        "html": load_template("form", "html_index"),
     }
 
 
-models = [Morpheme, Morph, Example, Language, Text, Cognateset, Form]
+models = [Morpheme, Morph, Wordform, Example, Language, Text, Cognateset, Form]

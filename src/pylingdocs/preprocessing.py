@@ -64,7 +64,7 @@ for model in models:
         if output_format not in list_templates:
             list_templates[output_format] = {}
 
-with open(DATA_DIR / "util.md", "r", encoding="utf-8") as f:
+with open(DATA_DIR / "util.j2", "r", encoding="utf-8") as f:
     pylingdocs_util = f.read()
 
 for templ in templates.values():
