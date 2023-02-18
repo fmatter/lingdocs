@@ -499,7 +499,7 @@ class CLLD(OutputFormat):
                     elif tag_dic[ref] != tag:
                         data["content"] = re.sub(
                             rf"<a href='#{ref}'.*?</a>",
-                            f"[crossref](ChapterTable?_anchor={ref}#cldf:{tag_dic[ref]})",
+                            f"[crossref]({ChapterTable['url']}?_anchor={ref}#cldf:{tag_dic[ref]})",
                             data["content"],
                         )
 

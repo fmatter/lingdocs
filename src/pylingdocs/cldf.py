@@ -12,7 +12,6 @@ from pylingdocs.metadata import _load_bib
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
 
-
 log = logging.getLogger(__name__)
 
 
@@ -26,6 +25,8 @@ def metadata(table_name):
         )
     return jsonlib.load(path)
 
+ContributorTable = metadata("ContributorTable")
+ChapterTable = metadata("ChapterTable")
 
 def get_contributors(metadata_dict):
     contributor_list = []
@@ -93,17 +94,15 @@ def create_cldf(ds, output_dir, metadata_file):
         ]
     )
 
-    ds.add_component(metadata("ChapterTable"))
-    if "ContributorTable" in list(ds.components.keys()) + [
+    ds.add_component(ChapterTable)
+    if ContributorTable["url"] in list(ds.components.keys()) + [
         str(x.url) for x in ds.tables
     ]:  # a list of tables in the dataset
-        ds.remove_table("ContributorTable")
-    ds.add_component(metadata("ContributorTable"))
+        ds.remove_table(ContributorTable["url"])
+    ds.add_component(ContributorTable)
 
-    ds.write(
-        ChapterTable=get_chapters(output_dir),
-        ContributorTable=get_contributors(metadata_dict),
-    )
+    ds.write(**{ChapterTable["url"]: get_chapters(output_dir), ContributorTable["url"]: get_contributors(metadata_dict)})
+
     log.info(
         f"Wrote CLDF dataset with ChapterTable to {(ds.directory / ds.filename).resolve()}"
     )
