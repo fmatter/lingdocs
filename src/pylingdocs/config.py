@@ -74,5 +74,10 @@ for builder in BUILDERS + PREVIEW + ["plain", "github", "html", "latex", "clld"]
 
 LATEX_EX_TEMPL = get_config("latex", "interlinear_tool")
 LATEX_TOPLEVEL = get_config("latex", "toplevel")
+if not LATEX_TOPLEVEL:
+    if OUTPUT_TEMPLATES["latex"] in ["book"]:
+        LATEX_TOPLEVEL = "chapter"
+    else:
+        LATEX_TOPLEVEL = "section"
 
 CONTENT_FILE_PREFIX = get_config("input", "content_file_prefix")
