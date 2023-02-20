@@ -1,0 +1,38 @@
+\documentclass{memoir}
+\setsecnumdepth{subsubsection}
+\usepackage{tikz}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage[some]{background}
+
+\definecolor{titlepagecolor}{RGB}{208, 84, 0}
+
+\backgroundsetup{
+scale=1,
+angle=0,
+opacity=1,
+contents={\begin{tikzpicture}[remember picture,overlay]
+ \path [fill=titlepagecolor] (-0.5\paperwidth,5) rectangle (0.5\paperwidth,10);  
+\end{tikzpicture}}
+}
+
+\font\hugefont="Brill" at 38pt
+
+\input{preamble.tex}
+\addbibresource{% raw %}{{% endraw %}{{ cookiecutter.bibfile }}{% raw %}}{% endraw %}
+\lingset{everygla=\itshape, belowglpreambleskip=0ex, aboveglftskip=0ex}
+
+\title{% raw %}{{% endraw %}{{ cookiecutter.project_title }}{% raw %}}{% endraw %}
+\author{% raw %}{{% endraw %}{{ cookiecutter.author }}{% raw %}}{% endraw %}
+
+{{ cookiecutter.glossing_abbrevs }}
+
+\begin{document}
+
+\input{titlepage.tex}
+
+\tableofcontents
+
+{{ cookiecutter.content }}
+
+\end{document}

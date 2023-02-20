@@ -1,0 +1,19 @@
+{
+    "part_name":"new_file",
+    "project_title":"A great title",
+    "name":"github",
+    "content":"Content goes here",
+    "references":"There should be references here",
+    "parts":{
+        "list":{
+            "label1":"file1",
+            "label2":"file2"
+        }
+    },
+    "bibfile":"<BIBFILE_PLACEHOLDER>",
+    "author":"The author's name",
+    "_copy_without_render":[
+        "expex-acro.sty"
+    ],
+    "glossing_abbrevs": ""
+}
