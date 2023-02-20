@@ -29,9 +29,9 @@ from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_cldf_dataset
 from pylingdocs.helpers import decorate_gloss_string
-from pylingdocs.helpers import get_structure
+from pylingdocs.helpers import get_structure, is_gloss_abbr_candidate, resolve_glossing_combination
 from pylingdocs.helpers import html_example_wrap
-from pylingdocs.helpers import html_gloss
+from pylingdocs.helpers import html_gloss, split_word
 from pylingdocs.helpers import latexify_table
 from pylingdocs.helpers import load_content
 from pylingdocs.helpers import refresh_clld_db
@@ -42,6 +42,7 @@ from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import postprocess
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
+import yaml
 
 
 NUM_PRE = re.compile(r"[\d]+\ ")
@@ -807,6 +808,30 @@ def check_ids(contents, dataset, source_dir):
     if not found:
         log.info("No missing IDs found.")
 
+def check_abbrevs(dataset, source_dir):
+    leipzig = yaml.load(open(DATA_DIR / "leipzig.yaml", encoding="utf-8"), Loader=yaml.SafeLoader)
+    gloss_cands = []
+    if "ExampleTable" in dataset:
+        for ex in dataset.iter_rows("ExampleTable"):
+            for word in ex["Gloss"]:
+                parts = split_word(word)
+                for j, part in enumerate(parts):
+                    if is_gloss_abbr_candidate(part, parts, j):
+                        # take care of numbered genders
+                        if not (part[0] == "G" and re.match(r"\d", part[1:])):
+                            for gloss in resolve_glossing_combination(part):
+                                if gloss not in gloss_cands:
+                                    gloss_cands.append(gloss)
+    if (Path(source_dir) / GLOSS_FILE_ADDRESS).is_file():
+        df = pd.read_csv(Path(source_dir) / GLOSS_FILE_ADDRESS)
+        gloss_dict = dict(zip(df["ID"].str.lower(), df["Description"]))
+    for i, x in enumerate(map(str.lower, set(gloss_cands))):
+        gloss_dict[x] = leipzig.get(x, "unknown abbreviation")
+    unaccounted = [x for x in set(gloss_cands) if gloss_dict[x.lower()] == "unknown abbreviation"]
+    if len(unaccounted) > 0:
+        log.warning("Glosses identified as abbreviations but not specified in glossing abbreviation table:")
+        print("\n".join(unaccounted))
+    return gloss_dict
 
 def create_output(
     contents,
@@ -842,8 +867,7 @@ def create_output(
     if "cldf:" in GLOSS_FILE_ADDRESS:
         gloss_dict = {}
     elif (Path(source_dir) / GLOSS_FILE_ADDRESS).is_file():
-        df = pd.read_csv(Path(source_dir) / GLOSS_FILE_ADDRESS)
-        gloss_dict = dict(zip(df["ID"].str.lower(), df["Description"]))
+        gloss_dict = check_abbrevs(dataset, source_dir)
     else:
         gloss_dict = {}
 

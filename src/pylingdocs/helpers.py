@@ -422,7 +422,7 @@ def is_gloss_abbr_candidate(part, parts, j):
     return (
         part == part.upper()  # needs to be uppercase
         and part not in glossing_delimiters + ["[", "]", "\\"]  # and not a delimiter
-        and part != "?"  # question marks may be used for unknown or ambiguous analyses
+        and part not in ["?", "???"]  # question marks may be used for unknown or ambiguous analyses
         and not (
             len(parts) > j + 2
             and parts[j + 2] in glossing_delimiters
