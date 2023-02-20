@@ -25,8 +25,10 @@ def metadata(table_name):
         )
     return jsonlib.load(path)
 
+
 ContributorTable = metadata("ContributorTable")
 ChapterTable = metadata("ChapterTable")
+
 
 def get_contributors(metadata_dict):
     contributor_list = []
@@ -101,7 +103,12 @@ def create_cldf(ds, output_dir, metadata_file):
         ds.remove_table(ContributorTable["url"])
     ds.add_component(ContributorTable)
 
-    ds.write(**{ChapterTable["url"]: get_chapters(output_dir), ContributorTable["url"]: get_contributors(metadata_dict)})
+    ds.write(
+        **{
+            ChapterTable["url"]: get_chapters(output_dir),
+            ContributorTable["url"]: get_contributors(metadata_dict),
+        }
+    )
 
     log.info(
         f"Wrote CLDF dataset with ChapterTable to {(ds.directory / ds.filename).resolve()}"

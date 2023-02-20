@@ -17,7 +17,7 @@ for filename in [
     "crossref.js",
     "alignment.css",
     "alignment.js",
-    "slides.css"
+    "slides.css",
 ]:
     source = Path(WEB_DIR / filename)
     target = Path(".")

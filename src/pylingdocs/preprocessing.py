@@ -45,6 +45,7 @@ model_dict = {x.name.lower(): x for x in models}
 if Path("custom_pld_models.py").is_file():
     sys.path.append(os.getcwd())
     from custom_pld_models import models as custom_models  # noqa
+
     for model in custom_models:
         model_dict[model.__name__.lower()] = model
 models = model_dict.values()
@@ -96,7 +97,9 @@ if Path("pld/model_templates").is_dir():
             if templ_path.is_file():
                 with open(templ_path, "r", encoding="utf-8") as f:
                     templ_content = f.read()
-                log.warning(f"Using custom template {templ_path} for model {model.name} for format {output_format}")
+                log.warning(
+                    f"Using custom template {templ_path} for model {model.name} for format {output_format}"
+                )
                 template_collection[
                     model_dict[model.name].cldf_table + f"_detail.md"
                 ] = templ_content
@@ -186,7 +189,13 @@ def render_markdown(
     if data_format == "cldf":
         if output_format != "clld":
             if "MediaTable" in ds.components:
-                audio_dict = {x["ID"]: {"url": x.get("Download_URL", "").unsplit(), "type": x["Media_Type"]} for x in ds.iter_rows("MediaTable")}
+                audio_dict = {
+                    x["ID"]: {
+                        "url": x.get("Download_URL", "").unsplit(),
+                        "type": x["Media_Type"],
+                    }
+                    for x in ds.iter_rows("MediaTable")
+                }
             else:
                 audio_dict = {}
             preprocessed = render(
@@ -200,7 +209,7 @@ def render_markdown(
                     "decorate_gloss_string": decorate_gloss_string,
                     "src": src,
                     "flexible_pad_ex": pad_ex,
-                    "get_audio": lambda x: audio_dict.get(x, None)
+                    "get_audio": lambda x: audio_dict.get(x, None),
                 },
             )
             preprocessed = render(

@@ -138,13 +138,24 @@ class Morph(Morpheme):
     cldf_table = "morphs.csv"
     shortcut = "m"
 
+    @classmethod
+    def autocomplete_string(cls, entry):
+        return (
+            f"{cls.shortcut}:{entry['Name']} '{entry['Description']}'",
+            f"[{cls.shortcut}]({entry['ID']})",
+        )
+        log.warning(f"Nothing found for {entry['ID']}")
+        return entry["ID"]
+
+
 class Wordform(Morpheme):
 
     name = "Wordform"
     cldf_table = "wordforms.csv"
     shortcut = "wf"
 
-    templates = {"html": """{% import 'pylingdocs_util.md' as util%}
+    templates = {
+        "html": """{% import 'pylingdocs_util.md' as util%}
 {{util.lfts(
     "<i>" + ctx["Form"] + "</i>",
     entity=ctx,
@@ -153,7 +164,9 @@ class Wordform(Morpheme):
     source_str=source_str,
     no_translation=no_translation,
     translation=translation
-)}}"""}
+)}}"""
+    }
+
 
 class Example(Entity):
 

@@ -33,7 +33,9 @@ def get_config(section, label, as_path=False, as_boolean=False):
         return config.getboolean(
             section, label, fallback=default_config.getboolean(section, label)
         )
-    value = config.get(section, label, fallback=default_config.get(section, label, fallback=None))
+    value = config.get(
+        section, label, fallback=default_config.get(section, label, fallback=None)
+    )
     if as_path:
         path = Path(value)
         return path
@@ -42,6 +44,7 @@ def get_config(section, label, as_path=False, as_boolean=False):
 
 def get_path(label):
     return get_config("paths", label, as_path=True)
+
 
 CONTENT_FOLDER = get_path("content")
 OUTPUT_DIR = get_path("output")
