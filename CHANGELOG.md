@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * option to choose LaTeX `book` template
 * leipzig glossing abbreviations
 
+### Fixed
+* LaTeX examples
+
 ## [0.0.11] - 2022-11-27
 
 ### Added
