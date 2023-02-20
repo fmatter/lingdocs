@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * table of contents in markdown output
+* option to choose LaTeX `book` template
 
 ## [0.0.11] - 2022-11-27
 

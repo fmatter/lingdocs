@@ -624,7 +624,7 @@ class Latex(OutputFormat):
         out = []
         for author in authors:
             out.append(f'{author["given-names"]} {author["family-names"]}')
-        if OUTPUT_TEMPLATES["latex"] == "memoir":
+        if OUTPUT_TEMPLATES["latex"] == "book":
             return ";".join(out)  # may want to use this for all templates at some point
         return " and ".join(out)
 
