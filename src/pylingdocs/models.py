@@ -163,8 +163,18 @@ class Wordform(Morpheme):
     with_source=with_source or False,
     source_str=source_str,
     no_translation=no_translation,
-    translation=translation
-)}}"""
+    translation=translation)}}""",
+        "latex": """{% import 'pylingdocs_util.md' as util %}
+{{util.lfts(
+    "\\obj{"+ctx["Form"]+"}",
+    entity=ctx,
+    with_language=with_language or False,
+    with_source=with_source or False,
+    source_str=source_str,
+    no_translation=no_translation,
+    translation=translation,
+    citation_mode="biblatex")}}""",
+        "plain": "",
     }
 
 

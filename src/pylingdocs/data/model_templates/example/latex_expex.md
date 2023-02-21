@@ -12,7 +12,7 @@
 {% set ref_string = "" %}
 {% endif %}
 ```{=latex}
-{% if format=="subexample" %}\a{%else%}\ex{%endif%} {{ ctx.related('languageReference').name }}{{ref_string}}
+{% if format=="subexample" %}\a{%else%}\ex{%endif%} {{ ctx.related('languageReference').name }}{{ref_string}}\\
 \label{% raw %}{{% endraw %}{{ example_id or ctx.id }}{% raw %}}{% endraw %}
 {% if ctx.cldf.analyzedWord != [] %}
     \begingl
