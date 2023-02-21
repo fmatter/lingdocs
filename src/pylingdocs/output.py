@@ -25,6 +25,7 @@ from pylingdocs.config import GLOSS_FILE_ADDRESS
 from pylingdocs.config import LATEX_TOPLEVEL
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import OUTPUT_TEMPLATES
+from pylingdocs.cldf import ChapterTable
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_cldf_dataset

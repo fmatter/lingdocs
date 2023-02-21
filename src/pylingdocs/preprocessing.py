@@ -97,7 +97,7 @@ if Path("pld/model_templates").is_dir():
             if templ_path.is_file():
                 with open(templ_path, "r", encoding="utf-8") as f:
                     templ_content = f.read()
-                log.warning(
+                log.info(
                     f"Using custom template {templ_path} for model {model.name} for format {output_format}"
                 )
                 template_collection[
