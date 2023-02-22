@@ -667,11 +667,11 @@ class Latex(OutputFormat):
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD]}
 try:
     from custom_pld_builders import builders as custom_builders
+    for k, v in custom_builders.items():
+        builders[k] = v
 except ImportError:
     pass
 
-for k, v in custom_builders.items():
-    builders[k] = v
 
 
 def update_structure(
