@@ -20,6 +20,7 @@ You can use ``pylingdocs`` to create data-rich linguistic documents, with a vari
    config
    extending
    modules
+   topic_index
 
 
 

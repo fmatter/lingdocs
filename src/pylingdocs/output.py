@@ -47,7 +47,7 @@ from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import postprocess
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
-
+from clldutils import jsonlib
 
 NUM_PRE = re.compile(r"[\d]+\ ")
 ABC_PRE = re.compile(r"[A-Z]+\ ")
@@ -77,6 +77,35 @@ def latex_todo(url, **kwargs):
 def html_ref(url, **kwargs):
     kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
     return f"<a href='#{url}' class='crossref' name='{url}' {kw_str}>ref</a>"
+
+
+def compile_tag_dics(parts):
+    tag_dic = {}
+    content_dic = {}
+    for (i, part) in enumerate(parts):
+        title, content = part.split("\n", 1)
+        tag = re.findall("{#(.*?)}", title)
+        title = title.split("{#")[0].strip()
+        if len(tag) == 0:
+            tag = slugify(title)
+        else:
+            tag = tag[0]
+        content_dic[tag] = {
+            "title": title,
+            "content": f"<a id='{tag}'></a>" + content,
+        }
+
+        tags = re.findall("{#(.*?)}", content_dic[tag]["content"])
+        table_tags = re.findall(
+            "<div class='caption table' id='(.*?)'>",
+            content_dic[tag]["content"],
+        )
+        for subtag in tags + table_tags:
+            if subtag in tag_dic:
+                log.warning(f"duplicate tag {subtag} in {tag}: {tag_dic[subtag]}")
+            tag_dic[subtag] = tag
+        tag_dic[tag] = tag
+    return tag_dic, content_dic
 
 
 text_commands = ["todo"]
@@ -468,34 +497,7 @@ class CLLD(OutputFormat):
             with open(my_output_dir / "content.txt", "w", encoding="utf-8") as f:
                 f.write(tent)
         else:
-            tag_dic = {}
-            content_dic = {}
-            for (i, part) in enumerate(parts):
-                title, content = part.split("\n", 1)
-                tag = re.findall("{#(.*?)}", title)
-                title = title.split("{#")[0].strip()
-                if len(tag) == 0:
-                    tag = slugify(title)
-                else:
-                    tag = tag[0]
-                content_dic[tag] = {
-                    "title": title,
-                    "content": f"<a id='{tag}'></a>" + content,
-                }
-
-                tags = re.findall("{#(.*?)}", content_dic[tag]["content"])
-                table_tags = re.findall(
-                    "<div class='caption table' id='(.*?)'>",
-                    content_dic[tag]["content"],
-                )
-                for subtag in tags + table_tags:
-                    if subtag in tag_dic:
-                        log.warning(
-                            f"duplicate tag {subtag} in {tag}: {tag_dic[subtag]}"
-                        )
-                    tag_dic[subtag] = tag
-                tag_dic[tag] = tag
-
+            tag_dic, content_dic = compile_tag_dics(parts)
             for tag, data in content_dic.items():
                 refs = re.findall(r"<a href='#(.*?)' .*?</a>", tent)
                 for ref in refs:
@@ -520,6 +522,7 @@ class CLLD(OutputFormat):
             chapter_data.index.name = "ID"
             chapter_data.index = chapter_data.index.map(slugify)
             chapter_data.to_csv(my_output_dir / "chapters.csv")
+            print(jsonlib.dump(tag_dic, my_output_dir / "tags.json"))
 
 
 class Latex(OutputFormat):
@@ -667,11 +670,11 @@ class Latex(OutputFormat):
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD]}
 try:
     from custom_pld_builders import builders as custom_builders
+
     for k, v in custom_builders.items():
         builders[k] = v
 except ImportError:
     pass
-
 
 
 def update_structure(

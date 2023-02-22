@@ -15,6 +15,8 @@ from pylingdocs.models import models
 
 log = logging.getLogger(__name__)
 
+TOPIC_PATH = Path("./topic_index.csv")
+
 
 def metadata(table_name):
     path = DATA_DIR / "cldf" / f"{table_name}-metadata.json"
@@ -29,6 +31,7 @@ def metadata(table_name):
 
 ContributorTable = metadata("ContributorTable")
 ChapterTable = metadata("ChapterTable")
+TopicTable = metadata("TopicTable")
 
 
 def get_contributors(metadata_dict):
@@ -59,6 +62,22 @@ def get_chapters(output_dir):
                 }
             )
     return chapter_list
+
+
+def get_topics(output_dir):
+    clld_path = output_dir / "clld"
+    tag_dic = jsonlib.load(clld_path / "tags.json")
+    topics = []
+    if TOPIC_PATH.is_file():
+        topic_index = pd.read_csv(TOPIC_PATH)
+        for topic in topic_index.to_dict("records"):
+            topic["ID"] = slugify(topic["Name"])
+            topic["References"] = [
+                [tag_dic[section], section] for section in topic["Sections"].split(",")
+            ]
+            topics.append(topic)
+    print(topics)
+    return topics
 
 
 def create_cldf(ds, output_dir, metadata_file):
@@ -98,6 +117,10 @@ def create_cldf(ds, output_dir, metadata_file):
     )
 
     ds.add_component(ChapterTable)
+    TOPIC_PATH = Path("./topic_index.csv")
+    if TOPIC_PATH.is_file():
+        ds.add_component(TopicTable)
+
     if ContributorTable["url"] in list(ds.components.keys()) + [
         str(x.url) for x in ds.tables
     ]:  # a list of tables in the dataset
@@ -108,6 +131,7 @@ def create_cldf(ds, output_dir, metadata_file):
         **{
             ChapterTable["url"]: get_chapters(output_dir),
             ContributorTable["url"]: get_contributors(metadata_dict),
+            TopicTable["url"]: get_topics(output_dir),
         }
     )
 
