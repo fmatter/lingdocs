@@ -20,7 +20,8 @@ from pylingdocs.helpers import load_content
 from pylingdocs.helpers import new as create_new
 from pylingdocs.helpers import write_readme
 from pylingdocs.metadata import _load_metadata
-from pylingdocs.output import check_ids, check_abbrevs
+from pylingdocs.output import check_abbrevs
+from pylingdocs.output import check_ids
 from pylingdocs.output import clean_output
 from pylingdocs.output import compile_latex as cmplatex
 from pylingdocs.output import create_output

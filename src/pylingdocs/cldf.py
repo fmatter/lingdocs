@@ -12,6 +12,7 @@ from pylingdocs.metadata import _load_bib
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
 
+
 log = logging.getLogger(__name__)
 
 

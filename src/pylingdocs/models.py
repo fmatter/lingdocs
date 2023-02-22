@@ -144,8 +144,6 @@ class Morph(Morpheme):
             f"{cls.shortcut}:{entry['Name']} '{entry['Description']}'",
             f"[{cls.shortcut}]({entry['ID']})",
         )
-        log.warning(f"Nothing found for {entry['ID']}")
-        return entry["ID"]
 
 
 class Wordform(Morpheme):

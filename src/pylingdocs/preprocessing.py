@@ -101,7 +101,7 @@ if Path("pld/model_templates").is_dir():
                     f"Using custom template {templ_path} for model {model.name} for format {output_format}"
                 )
                 template_collection[
-                    model_dict[model.name].cldf_table + f"_detail.md"
+                    f"{model_dict[model.name].cldf_table}_detail.md"
                 ] = templ_content
         for output_format, template_collection in list_templates.items():
             templ_path = model / output_format / "index.md"
@@ -112,7 +112,7 @@ if Path("pld/model_templates").is_dir():
                     templ_content = f.read()
                 # log.debug(f"Using custom template {templ_path} for model {model.name} for format {output_format}")
                 template_collection[
-                    model.name.capitalize() + f"Table_index.md"
+                    f"{model.name.capitalize()}Table_index.md"
                 ] = templ_content
 
 with open(DATA_DIR / "model_templates" / "latex_util.md", "r", encoding="utf-8") as f:

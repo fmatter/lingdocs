@@ -11,11 +11,13 @@ from pathlib import PosixPath
 import hupper
 import pandas as pd
 import panflute
+import yaml
 from cookiecutter.main import cookiecutter
 from jinja2 import Environment
 from jinja2 import PackageLoader
 from jinja2.exceptions import TemplateNotFound
 from slugify import slugify
+from pylingdocs.cldf import ChapterTable
 from pylingdocs.config import BENCH
 from pylingdocs.config import CONTENT_FILE_PREFIX
 from pylingdocs.config import CONTENT_FOLDER
@@ -25,21 +27,19 @@ from pylingdocs.config import GLOSS_FILE_ADDRESS
 from pylingdocs.config import LATEX_TOPLEVEL
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import OUTPUT_TEMPLATES
-from pylingdocs.cldf import ChapterTable
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_cldf_dataset
 from pylingdocs.helpers import decorate_gloss_string
-from pylingdocs.helpers import (
-    get_structure,
-    is_gloss_abbr_candidate,
-    resolve_glossing_combination,
-)
+from pylingdocs.helpers import get_structure
 from pylingdocs.helpers import html_example_wrap
-from pylingdocs.helpers import html_gloss, split_word
+from pylingdocs.helpers import html_gloss
+from pylingdocs.helpers import is_gloss_abbr_candidate
 from pylingdocs.helpers import latexify_table
 from pylingdocs.helpers import load_content
 from pylingdocs.helpers import refresh_clld_db
+from pylingdocs.helpers import resolve_glossing_combination
+from pylingdocs.helpers import split_word
 from pylingdocs.helpers import src
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
@@ -47,7 +47,6 @@ from pylingdocs.preprocessing import MD_LINK_PATTERN
 from pylingdocs.preprocessing import postprocess
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
-import yaml
 
 
 NUM_PRE = re.compile(r"[\d]+\ ")
@@ -666,11 +665,13 @@ class Latex(OutputFormat):
 
 
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD]}
-if Path("custom_pld_builders.py").is_file():
+try:
     from custom_pld_builders import builders as custom_builders
+except ImportError:
+    pass
 
-    for k, v in custom_builders.items():
-        builders[k] = v
+for k, v in custom_builders.items():
+    builders[k] = v
 
 
 def update_structure(
@@ -814,30 +815,33 @@ def check_ids(contents, dataset, source_dir):
         log.info("No missing IDs found.")
 
 
+def get_glosses(word, gloss_cands):
+    parts = split_word(word)
+    for j, part in enumerate(parts):
+        if is_gloss_abbr_candidate(part, parts, j):
+            # take care of numbered genders
+            if not (part[0] == "G" and re.match(r"\d", part[1:])):
+                for gloss in resolve_glossing_combination(part):
+                    if gloss not in gloss_cands:
+                        yield gloss
+
+
 def check_abbrevs(dataset, source_dir):
-    leipzig = yaml.load(
-        open(DATA_DIR / "leipzig.yaml", encoding="utf-8"), Loader=yaml.SafeLoader
-    )
+    with open(DATA_DIR / "leipzig.yaml", encoding="utf-8") as f:
+        leipzig = yaml.load(f, Loader=yaml.SafeLoader)
     gloss_cands = []
     if "ExampleTable" in dataset:
         for ex in dataset.iter_rows("ExampleTable"):
             for word in ex["Gloss"]:
                 if not word:
                     continue
-                parts = split_word(word)
-                for j, part in enumerate(parts):
-                    if is_gloss_abbr_candidate(part, parts, j):
-                        # take care of numbered genders
-                        if not (part[0] == "G" and re.match(r"\d", part[1:])):
-                            for gloss in resolve_glossing_combination(part):
-                                if gloss not in gloss_cands:
-                                    gloss_cands.append(gloss)
+                gloss_cands.extend(get_glosses(word, gloss_cands))
     if (Path(source_dir) / GLOSS_FILE_ADDRESS).is_file():
         df = pd.read_csv(Path(source_dir) / GLOSS_FILE_ADDRESS)
         gloss_dict = dict(zip(df["ID"].str.lower(), df["Description"]))
     else:
         gloss_dict = {}
-    for i, x in enumerate(map(str.lower, set(gloss_cands))):
+    for x in map(str.lower, set(gloss_cands)):
         gloss_dict[x] = leipzig.get(x, "unknown abbreviation")
     unaccounted = [
         x for x in set(gloss_cands) if gloss_dict[x.lower()] == "unknown abbreviation"
