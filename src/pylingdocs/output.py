@@ -107,6 +107,19 @@ def compile_tag_dics(parts):
         tag_dic[tag] = tag
     return tag_dic, content_dic
 
+def get_sections(content):
+    for line in content.split("\n"):
+        if line.startswith("#"):
+            title = line.split(" ", 1)[1]
+            level = line.count("#")
+            tag = re.findall("{#(.*?)}", title)
+            if len(tag) == 0:
+                tag = slugify(title, allow_unicode=True)
+            else:
+                tag = tag[0]
+                title = title.replace(tag, "")
+            yield level, title, tag
+
 
 text_commands = ["todo"]
 
@@ -413,17 +426,8 @@ class GitHub(OutputFormat):
     @classmethod
     def preprocess(cls, content):
         toc = []
-        for line in content.split("\n"):
-            if line.startswith("#"):
-                title = line.split(" ", 1)[1]
-                level = line.count("#")
-                tag = re.findall("{#(.*?)}", title)
-                if len(tag) == 0:
-                    tag = slugify(title, allow_unicode=True)
-                else:
-                    tag = tag[0]
-                    title = title.replace(tag, "")
-                toc.append("   " * level + f"1. [{title}](#{tag})")
+        for level, title, tag in get_sections(content):
+            toc.append("   " * level + f"1. [{title}](#{tag})")
         res = panflute.convert_text(
             "\n".join(toc) + "\n\n" + content,
             output_format="gfm",
@@ -478,9 +482,19 @@ class CLLD(OutputFormat):
         return html_example_wrap(tag, content, kind=kind)
 
     @classmethod
+    def preprocess(cls, content):
+        print("WEEEEE")
+        title_dic = {}
+        for level, title, tag in get_sections(content):
+            title_dic[tag] = title
+        print(title_dic)
+
+
+    @classmethod
     def write_folder(
         cls, output_dir, content=None, parts=None, metadata=None, abbrev_dict=None
     ):  # pylint: disable=too-many-arguments disable=too-many-locals
+        print(content)
         my_output_dir = output_dir / cls.name
         if not (my_output_dir).is_dir():
             (my_output_dir).mkdir()
@@ -522,7 +536,8 @@ class CLLD(OutputFormat):
             chapter_data.index.name = "ID"
             chapter_data.index = chapter_data.index.map(slugify)
             chapter_data.to_csv(my_output_dir / "chapters.csv")
-            print(jsonlib.dump(tag_dic, my_output_dir / "tags.json"))
+            jsonlib.dump(tag_dic, my_output_dir / "tags.json")
+            jsonlib.dump(content_dic, my_output_dir / "sections.json")
 
 
 class Latex(OutputFormat):

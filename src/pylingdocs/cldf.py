@@ -67,16 +67,16 @@ def get_chapters(output_dir):
 def get_topics(output_dir):
     clld_path = output_dir / "clld"
     tag_dic = jsonlib.load(clld_path / "tags.json")
+    section_dic = jsonlib.load(clld_path / "sections.json")
     topics = []
     if TOPIC_PATH.is_file():
         topic_index = pd.read_csv(TOPIC_PATH)
         for topic in topic_index.to_dict("records"):
             topic["ID"] = slugify(topic["Name"])
             topic["References"] = [
-                [tag_dic[section], section] for section in topic["Sections"].split(",")
+                [tag_dic[section], section, section_dic[section]["title"]] for section in topic["Sections"].split(",")
             ]
             topics.append(topic)
-    print(topics)
     return topics
 
 
@@ -116,23 +116,24 @@ def create_cldf(ds, output_dir, metadata_file):
         ]
     )
 
+    table_dic = {
+            ChapterTable["url"]: get_chapters(output_dir),
+        }
+
     ds.add_component(ChapterTable)
     TOPIC_PATH = Path("./topic_index.csv")
     if TOPIC_PATH.is_file():
         ds.add_component(TopicTable)
-
+        table_dic[TopicTable["url"]] = get_topics(output_dir)
     if ContributorTable["url"] in list(ds.components.keys()) + [
         str(x.url) for x in ds.tables
     ]:  # a list of tables in the dataset
         ds.remove_table(ContributorTable["url"])
+        table_dic[ContributorTable["url"]] = get_contributors(metadata_dict)
     ds.add_component(ContributorTable)
 
     ds.write(
-        **{
-            ChapterTable["url"]: get_chapters(output_dir),
-            ContributorTable["url"]: get_contributors(metadata_dict),
-            TopicTable["url"]: get_topics(output_dir),
-        }
+        **table_dic
     )
 
     log.info(
