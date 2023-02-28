@@ -99,7 +99,7 @@ class OutputFormat:
     def gloss_element(url, **_kwargs):
         return url.upper()
 
-    def blank_exref(url, **kwargs):
+    def blank_exref(url, *args, **kwargs):
         end = kwargs.pop("end", None)
         if end:
             return f"[ex:{url}–{end}]"
@@ -359,7 +359,7 @@ class GitHub(OutputFormat):
     def gloss_element(url, **_kwargs):
         return url.upper()
 
-    def blank_exref(url, **kwargs):
+    def blank_exref(url, *args, **kwargs):
         end = kwargs.pop("end", None)
         if end:
             return f"[ex:{url}–{end}]"
