@@ -235,7 +235,7 @@ class Text(Entity):
     name = "Text"
     cldf_table = "texts.csv"
     shortcut = "txt"
-    templates = {"plain": "“{{ ctx['Title'] }}”"}
+    templates = {"plain": "“{{ ctx['Name'] }}”"}
 
 
 class Cognateset(Entity):
