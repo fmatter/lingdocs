@@ -68,10 +68,10 @@ dd {
   grid-column-start: 2;
 }
 
-div#toc {
+div#toc-wrapper {
     position:fixed;
-    /*width: 40em;*/
-    font-size: 65%;
+    width: 40em;
+/*    font-size: 65%;*/
     top: 3.5em;
     left: 1em;
     line-height: 120%;
@@ -112,7 +112,6 @@ article {
   padding: 2rem 1.25rem;
 
   color: hsl(0, 5%, 10%);
-  background-color: hsl(210, 20%, 98%);
 
   text-rendering: optimizeLegibility;
 }
@@ -263,4 +262,18 @@ h4,
 h5,
 h6 {
   margin-bottom: 0.8rem;
+}
+
+/* Center title and paragraph */
+.abstract,
+.abstract p {
+  text-align: center;
+  margin-top: 0;
+}
+.abstract {
+  margin: 2.25rem 0;
+}
+.abstract > h2 {
+  font-size: 1rem;
+  margin-bottom: -0.2rem;
 }
