@@ -23,7 +23,7 @@ from pylingdocs.config import CONTENT_FILE_PREFIX
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import FIGURE_DIR
-from pylingdocs.config import GLOSS_FILE_ADDRESS
+from pylingdocs.config import ABBREV_FILE
 from pylingdocs.config import LATEX_TOPLEVEL
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import OUTPUT_TEMPLATES
@@ -860,22 +860,28 @@ def check_abbrevs(dataset, source_dir, content):
                 gloss_cands.extend(get_glosses(word, gloss_cands))
     for text_gloss in re.findall(r"\[gl\]\((.*?)\)", content):
         gloss_cands.append(text_gloss)
-    if (Path(source_dir) / GLOSS_FILE_ADDRESS).is_file():
-        df = pd.read_csv(Path(source_dir) / GLOSS_FILE_ADDRESS)
-        gloss_dict = dict(zip(df["ID"].str.lower(), df["Description"]))
-    else:
-        gloss_dict = {}
+    abbrev_dict = {}
+    if (Path(source_dir) / ABBREV_FILE).is_file(): # add abbreviations added locally
+        for rec in pd.read_csv(Path(source_dir) / ABBREV_FILE).to_dict("records"):
+            abbrev_dict[rec["ID"]] = rec["Description"]
+    for table in dataset.tables: # add abbreviations found in the CLDF dataset
+        if str(table.url) == "abbreviations.csv":
+            for rec in table:
+                abbrev_dict[rec["ID"]] = rec["Description"]
+            dataset.write(**{"abbreviations.csv": [{"ID": k, "Description": v} for k, v in abbrev_dict.items()]})
+
     for x in map(str.lower, set(gloss_cands)):
-        gloss_dict[x] = leipzig.get(x, "unknown abbreviation")
+        if x not in abbrev_dict:
+            abbrev_dict[x] = leipzig.get(x, "unknown abbreviation")
     unaccounted = [
-        x for x in set(gloss_cands) if gloss_dict[x.lower()] == "unknown abbreviation"
+        x for x in set(gloss_cands) if abbrev_dict[x.lower()] == "unknown abbreviation"
     ]
     if len(unaccounted) > 0:
         log.warning(
             "Glosses identified as abbreviations but not specified in glossing abbreviation table:"
         )
         print("\n".join(unaccounted))
-    return gloss_dict
+    return abbrev_dict
 
 
 def create_output(
@@ -909,10 +915,7 @@ def create_output(
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir.resolve()}")
         output_dir.mkdir()
-    if "cldf:" in GLOSS_FILE_ADDRESS:
-        gloss_dict = {}
-    else:
-        gloss_dict = check_abbrevs(
+    abbrev_dict = check_abbrevs(
             dataset, source_dir, "\n\n".join([x["content"] for x in contents.values()])
         )
 
@@ -944,14 +947,14 @@ def create_output(
                 output_dir,
                 content=preprocessed,
                 metadata=metadata,
-                abbrev_dict=gloss_dict,
+                abbrev_dict=abbrev_dict,
             )
         elif builder.name == "clld":
             builder.write_folder(
                 output_dir,
                 content=preprocessed,
                 metadata=metadata,
-                abbrev_dict=gloss_dict,
+                abbrev_dict=abbrev_dict,
             )
             # builder.create_app()
             # write_clld(preprocessed)

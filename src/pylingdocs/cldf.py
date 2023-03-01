@@ -29,7 +29,8 @@ def metadata(table_name):
 
 ContributorTable = metadata("ContributorTable")
 ChapterTable = metadata("ChapterTable")
-
+AbbreviationTable = metadata("AbbreviationTable")
+tables = [ContributorTable, ChapterTable, AbbreviationTable]
 
 def get_contributors(metadata_dict):
     contributor_list = []
