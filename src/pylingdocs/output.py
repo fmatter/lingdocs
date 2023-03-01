@@ -565,7 +565,6 @@ class Latex(OutputFormat):
     def gloss_cmd(cls, url, **kwargs):
         return decorate_gloss_string(url.upper())
 
-
     @classmethod
     def decorate_gloss_string(cls, x):
         return decorate_gloss_string(x)

@@ -1,6 +1,6 @@
 {% macro get_translation_dict(f, all_translations=False) -%}
 {% set translation = [] %}
-{% for label in ["Description", "Meaning", "Translation"] %}
+{% for label in ["Parameter_ID", "Description", "Translation", "Meaning"] %}
     {%if label in f and f[label] %}
         {% if f[label] is not string %}
             {% for t in f[label] %}
@@ -15,7 +15,7 @@
 {%- endmacro %}
 
 {% macro get_translation_orm(f, all_translations=False) -%}
-{% if f.parameters %}
+{% if f.parameter %}
     {% set translation = [] %}
     {%for p in f.parameters %}
         {% set translation = translation.append(p.name) %}
