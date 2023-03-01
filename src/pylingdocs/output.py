@@ -100,6 +100,7 @@ class OutputFormat:
         return url.upper()
 
     def blank_exref(url, *args, **kwargs):
+        del args
         end = kwargs.pop("end", None)
         if end:
             return f"[ex:{url}–{end}]"
@@ -667,11 +668,11 @@ class Latex(OutputFormat):
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD]}
 try:
     from custom_pld_builders import builders as custom_builders
+
     for k, v in custom_builders.items():
         builders[k] = v
 except ImportError:
     pass
-
 
 
 def update_structure(
