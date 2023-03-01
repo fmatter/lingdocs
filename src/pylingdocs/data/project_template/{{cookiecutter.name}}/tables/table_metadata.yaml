@@ -1,4 +1,6 @@
 ---
-example_table:
+consonants:
   caption: This is a table
-  preprocess:
+  preprocess:  # this is a placeholder
+  pre_cell: [
+  post_cell: ]

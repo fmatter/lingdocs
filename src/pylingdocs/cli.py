@@ -132,6 +132,8 @@ def preview(  # pylint: disable=too-many-arguments
     """Create a live preview using a lightweight, human-readable output format"""
     source = Path(source)
     metadata = _load_metadata(source / METADATA_FILE)
+    # if html:
+    #     targets = [""]
     run_preview(
         cldf,
         source,

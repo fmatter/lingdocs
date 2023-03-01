@@ -39,12 +39,12 @@ from pylingdocs.helpers import latexify_table
 from pylingdocs.helpers import load_content
 from pylingdocs.helpers import refresh_clld_db
 from pylingdocs.helpers import resolve_glossing_combination
-from pylingdocs.helpers import split_word
+from pylingdocs.helpers import split_word, read_config_file
 from pylingdocs.helpers import src
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
 from pylingdocs.preprocessing import MD_LINK_PATTERN
-from pylingdocs.preprocessing import postprocess
+from pylingdocs.postprocessing import postprocess
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
 
@@ -55,7 +55,7 @@ ABC_PRE = re.compile(r"[A-Z]+\ ")
 log = logging.getLogger(__name__)
 
 
-def blank_todo(url, **_kwargs):
+def blank_todo(url, **kwargs):
     del url
     return ""
 
@@ -74,12 +74,13 @@ def latex_todo(url, **kwargs):
     return f"\\todo{{{url}}}"
 
 
-def html_ref(url, **kwargs):
+def html_ref(url, *args, **kwargs):
     kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
     return f"<a href='#{url}' class='crossref' name='{url}' {kw_str}>ref</a>"
 
 
 text_commands = ["todo"]
+figure_metadata = read_config_file("figures")
 
 
 class OutputFormat:
@@ -87,32 +88,37 @@ class OutputFormat:
     file_ext = "txt"
     single_output = True
 
-    def ref_element(url, **kwargs):
+    @classmethod
+    def ref_cmd(cls, url, *args, **kwargs):
         end = kwargs.pop("end", None)
         if end:
-            return f"[ref:{url}–{end}]"
-        return f"[ref:{url}]"
+            return f"[ref/{url}–{end}]"
+        return f"[ref/{url}]"
 
-    def label_element(url, **_kwargs):
-        return f"[lbl:{url}]"
+    @classmethod
+    def label_cmd(cls, url, *args, **kwargs):
+        return f"[{url}]"
 
-    def gloss_element(url, **_kwargs):
+    @classmethod
+    def todo_cmd(cls, url, *args, **kwargs):
+        return f"[todo: {url}]"
+
+    @classmethod
+    def gloss_cmd(cls, url, *args, **kwargs):
         return url.upper()
 
-    def blank_exref(url, *args, **kwargs):
-        del args
+    @classmethod
+    def exref_cmd(cls, url, *args, **kwargs):
         end = kwargs.pop("end", None)
         if end:
             return f"[ex:{url}–{end}]"
         return f"[ex:{url}]"
 
-    doc_elements = {
-        "ref": ref_element,
-        "label": label_element,
-        "gl": gloss_element,
-        "todo": blank_todo,
-        "exref": blank_exref,
-    }
+    @classmethod
+    def figure_cmd(cls, url, *args, **kwargs):
+        caption = figure_metadata[url].get("caption", "")
+        filename = figure_metadata[url].get("filename", "")
+        return f"[{caption}: {filename}]"
 
     @classmethod
     def decorate_gloss_string(cls, x):
@@ -193,6 +199,14 @@ class OutputFormat:
 
     @classmethod
     def replace_commands(cls, content, **kwargs):
+        doc_elements = {
+            "ref": cls.ref_cmd,  # crossreferences
+            "label": cls.label_cmd,  # anchors for crossreferences
+            "gl": cls.gloss_cmd,  # a glossing abbreviation
+            "todo": cls.todo_cmd,  # a todo
+            "exref": cls.exref_cmd,  # an example reference
+            "figure": cls.figure_cmd,  # an image with a caption
+        }
         current = 0
         for m in MD_LINK_PATTERN.finditer(content):
             yield content[current : m.start()]
@@ -200,21 +214,21 @@ class OutputFormat:
             key = m.group("label")
             url = m.group("url")
             args = []
-            element_kwargs = {**{}, **kwargs}
+            cmd_kwargs = {}
             if "?" in url and key not in text_commands:
                 url, arguments = url.split("?")
                 for arg in arguments.split("&"):
                     if "=" in arg:
                         k, v = arg.split("=")
-                        element_kwargs[k] = v
+                        cmd_kwargs[k] = v
                     else:
                         args.append(arg)
             if key == "src":
                 yield src(url)
             elif key == "psrc":
                 yield src(url, parens=True)
-            elif key in cls.doc_elements:
-                yield cls.doc_elements[key](url, *args, **element_kwargs)
+            elif key in doc_elements:
+                yield doc_elements[key](url, *args, **cmd_kwargs)
             elif key == "abbrev_list":
                 yield cls.glossing_abbrevs_list(url)
             else:
@@ -236,7 +250,7 @@ class OutputFormat:
         tabular = df.to_markdown(index=False, tablefmt="grid")
         if not caption:
             return tabular
-        return caption + f": [lbl:{label}]\n\n" + tabular
+        return caption + f": [{label}]\n\n" + tabular
 
     @classmethod
     def manex(cls, tag, content, kind):
@@ -273,16 +287,35 @@ class HTML(OutputFormat):
     name = "html"
     file_ext = "html"
 
-    def exref(url, *args, **kwargs):
-        del args  # unused
-        kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
-        return f'<a class="exref" example_id="{url}"{kw_str}></a>'
+    @classmethod
+    def exref_cmd(cls, url, *args, **kwargs):
+        kw_str = " ".join(
+            [f"""{x}="{y}" """ for x, y in kwargs.items()] + [x for x in args]
+        )
+        return f'<a class="exref" example_id="{url}" {kw_str}></a>'
 
-    def html_gl(url, **_kwargs):
+    @classmethod
+    def gloss_cmd(cls, url, *args, **kwargs):
         return decorate_gloss_string(url.upper(), decoration=html_gloss)
 
-    def html_label(url, **_kwargs):
+    @classmethod
+    def label_cmd(cls, url, *args, **kwargs):
         return "{#" + url + "}" + f"\n <a id='{url}'></a>"
+
+    @classmethod
+    def ref_cmd(cls, url, *args, **kwargs):
+        return html_ref(url, *args, **kwargs)
+
+    @classmethod
+    def figure_cmd(cls, url, *args, **kwargs):
+        if url in figure_metadata:
+            caption = figure_metadata[url].get("caption", "")
+            filename = figure_metadata[url].get("filename", "")
+            return f"""<figure>
+<img src="figures/{filename}" alt="{caption}" />
+<figcaption id="fig:{url}" aria-hidden="true">{caption}</figcaption>
+</figure>"""
+        return f"![Alt text](figures/{url}.jpg)"
 
     @classmethod
     def decorate_gloss_string(cls, x):
@@ -290,14 +323,6 @@ class HTML(OutputFormat):
             x,
             decoration=lambda x: f'<span class="gloss">{x}<span class="tooltiptext gloss-{x}" ></span></span>',
         )
-
-    doc_elements = {
-        "exref": exref,
-        "gl": html_gl,
-        "ref": html_ref,
-        "label": html_label,
-        "todo": html_todo,
-    }
 
     @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
@@ -324,19 +349,21 @@ for (var i = 0; i < targets.length; i++) {{
 
     @classmethod
     def preprocess(cls, content):
-        if OUTPUT_TEMPLATES["html"] == "slides":
-            return panflute.convert_text(
-                content,
-                output_format="html",
-                input_format="markdown",
-                extra_args=["--shift-heading-level-by=1"],
-            ).replace("\n<h", "\n---\n<h")
-        return panflute.convert_text(
+        html_output = panflute.convert_text(
             content,
             output_format="html",
             input_format="markdown",
             extra_args=["--shift-heading-level-by=1"],
         )
+        unresolved_labels = re.findall(r"{#(.*?)}", html_output)
+        if unresolved_labels:
+            log.warning("Unresolved labels:")
+        for label in unresolved_labels:
+            log.warning(label)
+            html_output = html_output.replace(f"{{#{label}}}", "")
+        if OUTPUT_TEMPLATES["html"] == "slides":
+            return html_output.replace("\n<h", "\n---\n<h")
+        return html_output
 
     @classmethod
     def manex(cls, tag, content, kind):
@@ -349,30 +376,26 @@ class GitHub(OutputFormat):
     name = "github"
     file_ext = "md"
 
-    def ref_element(url, **_kwargs):
+    @classmethod
+    def ref_cmd(cls, url, *args, **kwargs):
         if "tab:" in str(url):
             return "[Table]"
         return f"<a href='#{url}'>click</a>"
 
-    def label_element(url, **_kwargs):
-        return f"<a id='{url}'><a/>"
+    @classmethod
+    def label_cmd(cls, url, *args, **kwargs):
+        return f"<a id>='{url}'><a/>"
 
-    def gloss_element(url, **_kwargs):
+    @classmethod
+    def gloss_cmd(cls, url, *args, **kwargs):
         return url.upper()
 
-    def blank_exref(url, *args, **kwargs):
+    @classmethod
+    def exref_cmd(cls, url, *args, **kwargs):
         end = kwargs.pop("end", None)
         if end:
             return f"[ex:{url}–{end}]"
         return f"[ex:{url}]"
-
-    doc_elements = {
-        "ref": ref_element,
-        "label": label_element,
-        "gl": gloss_element,
-        "todo": blank_todo,
-        "exref": blank_exref,
-    }
 
     @classmethod
     def table(cls, df, caption, label):
@@ -389,7 +412,7 @@ class GitHub(OutputFormat):
             if line.startswith("#"):
                 title = line.split(" ", 1)[1]
                 level = line.count("#")
-                tag = re.findall("{#(.*?)}", title)
+                tag = re.findall(r"{#(.*?)}", title)
                 if len(tag) == 0:
                     tag = slugify(title, allow_unicode=True)
                 else:
@@ -409,23 +432,18 @@ class CLLD(OutputFormat):
     file_ext = "md"
     single_output = False
 
-    def clld_label(url, **_kwargs):
+    @classmethod
+    def label_cmd(url, *args, **kwargs):
         return f"{{#{url}}}"
 
-    def clld_gloss(url, **_kwargs):
+    @classmethod
+    def gloss_cmd(url, *args, **kwargs):
         return "<span class='smallcaps'>" + url + "</span>"
 
-    def clld_exref(url, **kwargs):
+    @classmethod
+    def exref_cmd(url, **kwargs):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
         return f'<a class="exref" example_id="{url}"{kw_str}></a>'
-
-    doc_elements = {
-        "ref": html_ref,
-        "label": clld_label,
-        "gl": clld_gloss,
-        "exref": clld_exref,
-        "todo": html_todo,
-    }
 
     @classmethod
     def table(cls, df, caption, label):
@@ -471,9 +489,9 @@ class CLLD(OutputFormat):
         else:
             tag_dic = {}
             content_dic = {}
-            for (i, part) in enumerate(parts):
+            for i, part in enumerate(parts):
                 title, content = part.split("\n", 1)
-                tag = re.findall("{#(.*?)}", title)
+                tag = re.findall(r"{#(.*?)}", title)
                 title = title.split("{#")[0].strip()
                 if len(tag) == 0:
                     tag = slugify(title)
@@ -484,7 +502,7 @@ class CLLD(OutputFormat):
                     "content": f"<a id='{tag}'></a>" + content,
                 }
 
-                tags = re.findall("{#(.*?)}", content_dic[tag]["content"])
+                tags = re.findall(r"{#(.*?)}", content_dic[tag]["content"])
                 table_tags = re.findall(
                     "<div class='caption table' id='(.*?)'>",
                     content_dic[tag]["content"],
@@ -508,7 +526,6 @@ class CLLD(OutputFormat):
                             f"[crossref]({ChapterTable['url']}?_anchor={ref}#cldf:{tag_dic[ref]})",
                             data["content"],
                         )
-
             for i, (chapter, data) in enumerate(content_dic.items()):
                 content = data.pop("content")
                 number = i + 1
@@ -527,34 +544,31 @@ class Latex(OutputFormat):
     name = "latex"
     file_ext = "tex"
 
-    def latex_exref(url, end=None, suffix="", **_kwargs):
+    @classmethod
+    def exref_cmd(cls, url, end=None, suffix="", **kwargs):
         if end:
             return f"\\exref[{suffix}][{end}]{{{url}}}"
         return f"\\exref[{suffix}]{{{url}}}"
 
-    def latex_label(url, **_kwargs):
+    @classmethod
+    def label_cmd(cls, url, *args, **kwargs):
         return f"\\label{{{url}}}"
 
-    def latex_ref(url, **kwargs):
+    @classmethod
+    def ref_cmd(cls, url, *args, **kwargs):
         end = kwargs.pop("end", None)
         if end:
             return f"\\crefrange{{{url}}}{{{end}}}"
         return f"\\cref{{{url}}}"
 
     @classmethod
-    def decorate_gloss_string(cls, x):
-        return decorate_gloss_string(x)
-
-    def latex_gloss(url, **_kwargs):
+    def gloss_cmd(cls, url, **kwargs):
         return decorate_gloss_string(url.upper())
 
-    doc_elements = {
-        "exref": latex_exref,
-        "ref": latex_ref,
-        "label": latex_label,
-        "gl": latex_gloss,
-        "todo": latex_todo,
-    }
+
+    @classmethod
+    def decorate_gloss_string(cls, x):
+        return decorate_gloss_string(x)
 
     @classmethod
     def manex(cls, tag, content, kind):
@@ -636,6 +650,14 @@ class Latex(OutputFormat):
 
     @classmethod
     def replace_commands(cls, content, **kwargs):
+        doc_elements = {
+            "ref": cls.ref_cmd,  # crossreferences
+            "label": cls.label_cmd,  # anchors for crossreferences
+            "gl": cls.gloss_cmd,  # a glossing abbreviation
+            "todo": cls.todo_cmd,  # a todo
+            "exref": cls.exref_cmd,  # an example reference
+            "figure": cls.figure_cmd,  # an image with a caption
+        }
         current = 0
         for m in MD_LINK_PATTERN.finditer(content):
             yield content[current : m.start()]
@@ -643,21 +665,21 @@ class Latex(OutputFormat):
             key = m.group("label")
             url = m.group("url")
             args = []
-            element_kwargs = {**{}, **kwargs}
+            elementkwargs = {**{}, **kwargs}
             if "?" in url and key not in text_commands:
                 url, arguments = url.split("?")
                 for arg in arguments.split("&"):
                     if "=" in arg:
                         k, v = arg.split("=")
-                        element_kwargs[k] = v
+                        elementkwargs[k] = v
                     else:
                         args.append(arg)
             if key == "src":
                 yield src(url, mode="biblatex")
             elif key == "psrc":
                 yield src(url, parens=True, mode="biblatex")
-            elif key in cls.doc_elements:
-                yield cls.doc_elements[key](url, *args, **element_kwargs)
+            elif key in doc_elements:
+                yield doc_elements[key](url, *args, **elementkwargs)
             elif key == "abbrev_list":
                 yield cls.glossing_abbrevs_list(url)
             else:
@@ -827,7 +849,7 @@ def get_glosses(word, gloss_cands):
                         yield gloss
 
 
-def check_abbrevs(dataset, source_dir):
+def check_abbrevs(dataset, source_dir, content):
     with open(DATA_DIR / "leipzig.yaml", encoding="utf-8") as f:
         leipzig = yaml.load(f, Loader=yaml.SafeLoader)
     gloss_cands = []
@@ -837,6 +859,8 @@ def check_abbrevs(dataset, source_dir):
                 if not word:
                     continue
                 gloss_cands.extend(get_glosses(word, gloss_cands))
+    for text_gloss in re.findall(r"\[gl\]\((.*?)\)", content):
+        gloss_cands.append(text_gloss)
     if (Path(source_dir) / GLOSS_FILE_ADDRESS).is_file():
         df = pd.read_csv(Path(source_dir) / GLOSS_FILE_ADDRESS)
         gloss_dict = dict(zip(df["ID"].str.lower(), df["Description"]))
@@ -889,7 +913,9 @@ def create_output(
     if "cldf:" in GLOSS_FILE_ADDRESS:
         gloss_dict = {}
     else:
-        gloss_dict = check_abbrevs(dataset, source_dir)
+        gloss_dict = check_abbrevs(
+            dataset, source_dir, "\n\n".join([x["content"] for x in contents.values()])
+        )
 
     for output_format in formats:
         for m in models:
@@ -906,6 +932,7 @@ def create_output(
             output_format=output_format,
         )
         preprocessed += "\n\n" + builder.reference_list()
+        # second run to insert reference list
         preprocessed = render_markdown(
             preprocessed,
             dataset,

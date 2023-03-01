@@ -76,7 +76,9 @@ function capitalizeFirstLetter(string) {
 
 function number_captions(){
     var captions = document.querySelectorAll("caption"); // get all captions
-    var kinds = ["table", "figure"] // only these two types for now
+    var figcaptions = document.querySelectorAll("figcaption"); // get all captions
+    console.log(figcaptions)
+    var kinds = ["table"] // might need "maps" or "plots" or sth. at some point
     var counters = {"table": 0, "figure": 0}
     captions.forEach(function(caption, i) {
         kinds.forEach(function(kind, j) {
@@ -90,6 +92,14 @@ function number_captions(){
             }
         });
     });
+    figcaptions.forEach(function(caption, i) {
+        counters["figure"] += 1
+        ref_counter = capitalizeFirstLetter("figure") + " " + counters["figure"];
+        if (!caption.textContent.startsWith(ref_counter + ": ")){
+            caption.textContent = ref_counter + ": " + caption.textContent
+        }
+        stored[caption.id] = ref_counter // store the value for resolve_crossrefs below
+    })
 }
 
 // iterate all a.crossref and insert the calculated values; for floats and sections

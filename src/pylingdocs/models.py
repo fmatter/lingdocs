@@ -112,7 +112,6 @@ class Entity:
 
 
 class Morpheme(Entity):
-
     name = "Morpheme"
     cldf_table = "morphemes.csv"
     shortcut = "mp"
@@ -133,7 +132,6 @@ class Morpheme(Entity):
 
 
 class Morph(Morpheme):
-
     name = "Morph"
     cldf_table = "morphs.csv"
     shortcut = "m"
@@ -147,7 +145,6 @@ class Morph(Morpheme):
 
 
 class Wordform(Morpheme):
-
     name = "Wordform"
     cldf_table = "wordforms.csv"
     shortcut = "wf"
@@ -177,7 +174,6 @@ class Wordform(Morpheme):
 
 
 class Example(Entity):
-
     name = "Example"
     cldf_table = "ExampleTable"
     shortcut = "ex"
@@ -222,7 +218,6 @@ class Example(Entity):
 
 
 class Language(Entity):
-
     name = "Language"
     fallback = None
     cldf_table = "LanguageTable"
@@ -237,7 +232,6 @@ class Language(Entity):
 
 
 class Text(Entity):
-
     name = "Text"
     cldf_table = "texts.csv"
     shortcut = "txt"
@@ -245,7 +239,6 @@ class Text(Entity):
 
 
 class Cognateset(Entity):
-
     name = "Cognate set"
     cldf_table = "CognatesetTable"
     shortcut = "cogset"
