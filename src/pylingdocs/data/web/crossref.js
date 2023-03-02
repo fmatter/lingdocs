@@ -10,8 +10,7 @@ function get_number_label(counters, level) {
 //used for storing both section labels and float counters
 var stored = {}
 
-
-function number_sections(start=0){
+function numberSections(start=0){
     var toc = document.getElementById("toc") // get the table of contents
     var counters = {}; // initialize counters for every heading level except h1 (below)
     var levels = ["h2", "h3", "h4", "h5", "h6"];
@@ -36,6 +35,7 @@ function number_sections(start=0){
 
     // iterate all headings
     var headings = document.querySelectorAll("h2, h3, h4, h5, h6");
+    var lastNodes = {}
     headings.forEach(function(heading, i) {
         var level = heading.tagName.toLowerCase();
         counters[level] += 1
@@ -46,13 +46,42 @@ function number_sections(start=0){
         
 
         if (toc) {
-            toclink = document.createElement('a') // insert links into the TOC
-            toclink.textContent = '\xa0\xa0'.repeat(level.charAt(level.length - 1)-2)+heading.textContent
-            toclink.href = "#"+heading.id
-            tocdiv = document.createElement('div')
-            tocdiv.appendChild(toclink);
-            toc.appendChild(tocdiv);
+            tocLink = document.createElement('a')
+            tocLink.textContent = '\xa0\xa0'.repeat(level.charAt(level.length - 1)-2)+heading.textContent
+            levelInt = level.charAt(level.length - 1)
+            tocLink.href = "#"+heading.id
+            tocDiv = document.createElement('div')
+            tocDiv.classList = ["toc-div"]
+            tocDiv.id = "toc-"+heading.id
+            if (levelInt > 2){
+                tocDiv.style.display = "none"
+            }
+            lastNodes[levelInt] = tocDiv
+            btn = document.createElement('div')
+            btn.style.display = "inline-block"
+            btn.textContent = "🞂"
+            btn.onclick = function() {
+                let sec = document.getElementById("toc-"+heading.id);
+                kids = sec.getElementsByClassName('toc-div')
+                for (const [pos, kid] of Object.entries(kids)) {
+                    if (kid.style.display === "none") {
+                        kid.style.display = "block";
+                        this.textContent = "🞃"
+                    } else {
+                        kid.style.display = "none";
+                        this.textContent = "🞂"
+                    }
+                };
+            };
+            tocDiv.appendChild(btn)
+            tocDiv.appendChild(tocLink);
+            if (levelInt-1 in lastNodes){
+                lastNodes[levelInt-1].appendChild(tocDiv);
+            } else {
+                toc.appendChild(tocDiv);                
+            }
         }
+
 
         stored[heading.id] = prefix + number // for crossref resolution
 
@@ -67,11 +96,21 @@ function number_sections(start=0){
             }
         });
     });
+    var tocDivs = document.getElementsByClassName("toc-div");
+    for (const [pos, tocDiv] of Object.entries(tocDivs)) {
+        kids = tocDiv.getElementsByClassName('toc-div')
+        if (kids.length == 0){
+            tocDiv.children[0].textContent = "\xa0\xa0"
+            // tocDiv.children[0].remove()
+        }
+    }
+
 }
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
 
 
 function number_captions(){

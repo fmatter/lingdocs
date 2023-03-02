@@ -71,10 +71,9 @@ dd {
 div#toc-wrapper {
     position:fixed;
     width: 40em;
-/*    font-size: 65%;*/
-    top: 3.5em;
+    height: 100vh;
+    top: 1em;
     left: 1em;
-    line-height: 120%;
 }
 
 .version {
