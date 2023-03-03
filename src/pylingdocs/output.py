@@ -433,15 +433,15 @@ class CLLD(OutputFormat):
     single_output = False
 
     @classmethod
-    def label_cmd(url, *args, **kwargs):
+    def label_cmd(cls, url, *args, **kwargs):
         return f"{{#{url}}}"
 
     @classmethod
-    def gloss_cmd(url, *args, **kwargs):
+    def gloss_cmd(cls, url, *args, **kwargs):
         return "<span class='smallcaps'>" + url + "</span>"
 
     @classmethod
-    def exref_cmd(url, **kwargs):
+    def exref_cmd(cls, url, **kwargs):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
         return f'<a class="exref" example_id="{url}"{kw_str}></a>'
 
