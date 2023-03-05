@@ -307,6 +307,12 @@ class HTML(OutputFormat):
         return html_ref(url, *args, **kwargs)
 
     @classmethod
+    def todo_cmd(cls, url, *args, **kwargs):
+        return html_todo(url, **kwargs)
+
+
+
+    @classmethod
     def figure_cmd(cls, url, *args, **kwargs):
         if url in figure_metadata:
             caption = figure_metadata[url].get("caption", "")
@@ -441,9 +447,17 @@ class CLLD(OutputFormat):
         return "<span class='smallcaps'>" + url + "</span>"
 
     @classmethod
-    def exref_cmd(cls, url, **kwargs):
+    def exref_cmd(cls, url, *args, **kwargs):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in kwargs.items()])
         return f'<a class="exref" example_id="{url}"{kw_str}></a>'
+
+    @classmethod
+    def ref_cmd(cls, url, *args, **kwargs):
+        return html_ref(url, *args, **kwargs)
+
+    @classmethod
+    def todo_cmd(cls, url, *args, **kwargs):
+        return html_todo(url, **kwargs)
 
     @classmethod
     def table(cls, df, caption, label):
