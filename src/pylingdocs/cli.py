@@ -159,7 +159,7 @@ def check(source, cldf, output_dir, latex):
         ),
     )
     check_ids(contents, ds, source)
-    check_abbrevs(ds, source)
+    check_abbrevs(ds, source, contents)
 
 
 @main.command(cls=BuildCommand)
