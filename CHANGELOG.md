@@ -11,11 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * table of contents in markdown output
 * option to choose LaTeX `book` template
 * leipzig glossing abbreviations
+* add additional external chapters when creating a CLDF dataset
 
 ### Fixed
 * LaTeX examples
 * handling of abbreviations
 * revamped document commands
+* abbrev checking
 
 ### Changed
 * if undefined, `LATEX_TOPLEVEL` is determined based on the LaTeX template

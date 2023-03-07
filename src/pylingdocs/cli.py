@@ -27,6 +27,7 @@ from pylingdocs.output import compile_latex as cmplatex
 from pylingdocs.output import create_output
 from pylingdocs.output import run_preview
 from pylingdocs.output import update_structure as do_update_structure
+from pylingdocs.preprocessing import preprocess_cldfviz
 
 
 log = logging.getLogger(__name__)
@@ -159,11 +160,18 @@ def check(source, cldf, output_dir, latex):
         ),
     )
     check_ids(contents, ds, source)
-    check_abbrevs(ds, source, contents)
+    check_abbrevs(ds, source, "\n".join([x["content"] for x in contents.values()]))
 
 
 @main.command(cls=BuildCommand)
-def cldf(source, cldf, output_dir, latex):
+@click.option(
+    "--add",
+    default=None,
+    multiple=True,
+    help="Additional documents",
+    type=click.Path(exists=True, path_type=Path),
+)
+def cldf(source, cldf, output_dir, latex, add):
     del latex
     ds = _load_cldf_dataset(cldf)
     contents = load_content(
@@ -173,6 +181,11 @@ def cldf(source, cldf, output_dir, latex):
         ),
     )
     metadata = _load_metadata(source / METADATA_FILE)
+    add_docs = []
+    for add_doc in add:
+        with open(add_doc, "r", encoding="utf-8") as f:
+            content = f.read()
+            add_docs.append({"ID": add_doc.stem, "Name": add_doc.stem.capitalize(), "Description": "".join(preprocess_cldfviz(content))})
     create_output(
         contents,
         source,
@@ -181,7 +194,7 @@ def cldf(source, cldf, output_dir, latex):
         output_dir,
         metadata=metadata,
     )
-    create_cldf(ds, output_dir, source / METADATA_FILE)
+    create_cldf(ds, output_dir, source / METADATA_FILE, add_documents=add_docs)
 
 
 @main.command()

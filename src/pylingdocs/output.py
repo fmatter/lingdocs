@@ -932,7 +932,6 @@ def create_output(
     abbrev_dict = check_abbrevs(
             dataset, source_dir, "\n\n".join([x["content"] for x in contents.values()])
         )
-
     for output_format in formats:
         for m in models:
             m.reset_cnt()

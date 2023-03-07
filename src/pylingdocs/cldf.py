@@ -62,7 +62,7 @@ def get_chapters(output_dir):
     return chapter_list
 
 
-def create_cldf(ds, output_dir, metadata_file):
+def create_cldf(ds, output_dir, metadata_file, add_documents=None):
     ds.copy(dest=output_dir / "cldf")
     orig_id = ds.metadata_dict.get("rdf:ID", None)
     ds = pycldf.Dataset.from_metadata(output_dir / "cldf" / ds.filename)
@@ -105,9 +105,14 @@ def create_cldf(ds, output_dir, metadata_file):
         ds.remove_table(ContributorTable["url"])
     ds.add_component(ContributorTable)
 
+    chapters = get_chapters(output_dir)
+    if add_documents:
+        for d in add_documents:
+            chapters.append(d)
+
     ds.write(
         **{
-            ChapterTable["url"]: get_chapters(output_dir),
+            ChapterTable["url"]: chapters,
             ContributorTable["url"]: get_contributors(metadata_dict),
         }
     )
