@@ -185,7 +185,13 @@ def cldf(source, cldf, output_dir, latex, add):
     for add_doc in add:
         with open(add_doc, "r", encoding="utf-8") as f:
             content = f.read()
-            add_docs.append({"ID": add_doc.stem, "Name": add_doc.stem.capitalize(), "Description": "".join(preprocess_cldfviz(content))})
+            add_docs.append(
+                {
+                    "ID": add_doc.stem,
+                    "Name": add_doc.stem.capitalize(),
+                    "Description": "".join(preprocess_cldfviz(content)),
+                }
+            )
     create_output(
         contents,
         source,

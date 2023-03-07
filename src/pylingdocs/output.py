@@ -107,6 +107,7 @@ def compile_tag_dics(parts):
         tag_dic[tag] = tag
     return tag_dic, content_dic
 
+
 def get_sections(content):
     for line in content.split("\n"):
         if line.startswith("#"):
@@ -352,8 +353,6 @@ class HTML(OutputFormat):
     def todo_cmd(cls, url, *args, **kwargs):
         return html_todo(url, **kwargs)
 
-
-
     @classmethod
     def figure_cmd(cls, url, *args, **kwargs):
         if url in figure_metadata:
@@ -456,22 +455,8 @@ class GitHub(OutputFormat):
     @classmethod
     def preprocess(cls, content):
         toc = []
-<<<<<<< HEAD
         for level, title, tag in get_sections(content):
             toc.append("   " * level + f"1. [{title}](#{tag})")
-=======
-        for line in content.split("\n"):
-            if line.startswith("#"):
-                title = line.split(" ", 1)[1]
-                level = line.count("#")
-                tag = re.findall(r"{#(.*?)}", title)
-                if len(tag) == 0:
-                    tag = slugify(title, allow_unicode=True)
-                else:
-                    tag = tag[0]
-                    title = title.replace(tag, "")
-                toc.append("   " * level + f"1. [{title}](#{tag})")
->>>>>>> main
         res = panflute.convert_text(
             "\n".join(toc) + "\n\n" + content,
             output_format="gfm",
@@ -535,7 +520,6 @@ class CLLD(OutputFormat):
         for level, title, tag in get_sections(content):
             title_dic[tag] = title
         print(title_dic)
-
 
     @classmethod
     def write_folder(
@@ -907,14 +891,20 @@ def check_abbrevs(dataset, source_dir, content):
     for text_gloss in re.findall(r"\[gl\]\((.*?)\)", content):
         gloss_cands.append(text_gloss)
     abbrev_dict = {}
-    if (Path(source_dir) / ABBREV_FILE).is_file(): # add abbreviations added locally
+    if (Path(source_dir) / ABBREV_FILE).is_file():  # add abbreviations added locally
         for rec in pd.read_csv(Path(source_dir) / ABBREV_FILE).to_dict("records"):
             abbrev_dict[rec["ID"]] = rec["Description"]
-    for table in dataset.tables: # add abbreviations found in the CLDF dataset
+    for table in dataset.tables:  # add abbreviations found in the CLDF dataset
         if str(table.url) == "abbreviations.csv":
             for rec in table:
                 abbrev_dict[rec["ID"]] = rec["Description"]
-            dataset.write(**{"abbreviations.csv": [{"ID": k, "Description": v} for k, v in abbrev_dict.items()]})
+            dataset.write(
+                **{
+                    "abbreviations.csv": [
+                        {"ID": k, "Description": v} for k, v in abbrev_dict.items()
+                    ]
+                }
+            )
 
     for x in map(str.lower, set(gloss_cands)):
         if x not in abbrev_dict:
@@ -962,8 +952,8 @@ def create_output(
         log.info(f"Creating output folder {output_dir.resolve()}")
         output_dir.mkdir()
     abbrev_dict = check_abbrevs(
-            dataset, source_dir, "\n\n".join([x["content"] for x in contents.values()])
-        )
+        dataset, source_dir, "\n\n".join([x["content"] for x in contents.values()])
+    )
     for output_format in formats:
         for m in models:
             m.reset_cnt()

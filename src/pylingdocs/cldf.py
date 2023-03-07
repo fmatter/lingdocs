@@ -31,13 +31,10 @@ def metadata(table_name):
 
 ContributorTable = metadata("ContributorTable")
 ChapterTable = metadata("ChapterTable")
-<<<<<<< HEAD
 TopicTable = metadata("TopicTable")
-
-=======
 AbbreviationTable = metadata("AbbreviationTable")
-tables = [ContributorTable, ChapterTable, AbbreviationTable]
->>>>>>> main
+tables = [ContributorTable, ChapterTable, AbbreviationTable, TopicTable]
+
 
 def get_contributors(metadata_dict):
     contributor_list = []
@@ -79,7 +76,8 @@ def get_topics(output_dir):
         for topic in topic_index.to_dict("records"):
             topic["ID"] = slugify(topic["Name"])
             topic["References"] = [
-                [tag_dic[section], section, section_dic[section]["title"]] for section in topic["Sections"].split(",")
+                [tag_dic[section], section, section_dic[section]["title"]]
+                for section in topic["Sections"].split(",")
             ]
             topics.append(topic)
     return topics
@@ -121,9 +119,14 @@ def create_cldf(ds, output_dir, metadata_file, add_documents=None):
         ]
     )
 
+    chapters = get_chapters(output_dir)
+    if add_documents:
+        for d in add_documents:
+            chapters.append(d)
+
     table_dic = {
-            ChapterTable["url"]: get_chapters(output_dir),
-        }
+        ChapterTable["url"]: chapters,
+    }
 
     ds.add_component(ChapterTable)
     TOPIC_PATH = Path("./topic_index.csv")
@@ -137,21 +140,7 @@ def create_cldf(ds, output_dir, metadata_file, add_documents=None):
         table_dic[ContributorTable["url"]] = get_contributors(metadata_dict)
     ds.add_component(ContributorTable)
 
-    chapters = get_chapters(output_dir)
-    if add_documents:
-        for d in add_documents:
-            chapters.append(d)
-
-    ds.write(
-<<<<<<< HEAD
-        **table_dic
-=======
-        **{
-            ChapterTable["url"]: chapters,
-            ContributorTable["url"]: get_contributors(metadata_dict),
-        }
->>>>>>> main
-    )
+    ds.write(**table_dic)
 
     log.info(
         f"Wrote CLDF dataset with ChapterTable to {(ds.directory / ds.filename).resolve()}"
