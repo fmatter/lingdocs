@@ -31,8 +31,13 @@ def metadata(table_name):
 
 ContributorTable = metadata("ContributorTable")
 ChapterTable = metadata("ChapterTable")
+<<<<<<< HEAD
 TopicTable = metadata("TopicTable")
 
+=======
+AbbreviationTable = metadata("AbbreviationTable")
+tables = [ContributorTable, ChapterTable, AbbreviationTable]
+>>>>>>> main
 
 def get_contributors(metadata_dict):
     contributor_list = []
@@ -80,7 +85,7 @@ def get_topics(output_dir):
     return topics
 
 
-def create_cldf(ds, output_dir, metadata_file):
+def create_cldf(ds, output_dir, metadata_file, add_documents=None):
     ds.copy(dest=output_dir / "cldf")
     orig_id = ds.metadata_dict.get("rdf:ID", None)
     ds = pycldf.Dataset.from_metadata(output_dir / "cldf" / ds.filename)
@@ -132,8 +137,20 @@ def create_cldf(ds, output_dir, metadata_file):
         table_dic[ContributorTable["url"]] = get_contributors(metadata_dict)
     ds.add_component(ContributorTable)
 
+    chapters = get_chapters(output_dir)
+    if add_documents:
+        for d in add_documents:
+            chapters.append(d)
+
     ds.write(
+<<<<<<< HEAD
         **table_dic
+=======
+        **{
+            ChapterTable["url"]: chapters,
+            ContributorTable["url"]: get_contributors(metadata_dict),
+        }
+>>>>>>> main
     )
 
     log.info(

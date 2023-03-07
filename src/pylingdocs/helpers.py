@@ -55,9 +55,12 @@ def src(cite_input, mode="cldfviz", parens=False):
     if cite_input == "":
         log.warning("Empty citation")
         return ""
-    citations = []
-    for x in re.finditer(r"[A-Za-z0-9]+(\[[^\]]*])?", cite_input):
-        citations.append(_src(x.group(0), mode=mode))
+    if isinstance(cite_input, list):
+        citations = [_src(x, mode=mode) for x in cite_input]
+    else:
+        citations = []
+        for x in re.finditer(r"[A-Za-z0-9]+(\[[^\]]*])?", cite_input):
+            citations.append(_src(x.group(0), mode=mode))
     if mode == "biblatex":
         if parens:
             return "\\parencites" + "".join(citations)
@@ -65,6 +68,17 @@ def src(cite_input, mode="cldfviz", parens=False):
     if parens:
         return "(" + ", ".join(citations) + ")"
     return ", ".join(citations)
+
+
+def load_table_metadata(source_dir):
+    table_md = _get_relative_file(source_dir / TABLE_DIR, TABLE_MD)
+    if table_md.is_file():
+        with open(table_md, encoding="utf-8") as f:
+            tables = yaml.load(f, Loader=yaml.SafeLoader)
+    else:
+        log.warning(f"Specified table metadatafile {TABLE_MD} not found.")
+        tables = {}
+    return tables
 
 
 def expand_pages(pages):
@@ -272,13 +286,20 @@ def write_file(
 
 
 def read_config_file(kind):
-    def getfile(path):
+    def getfile(path, mode="yaml"):
         if Path(path).is_file():
-            return open(path, "r", encoding="utf-8").read()
+            if mode == "yaml":
+                return yaml.load(
+                    open(path, "r", encoding="utf-8"), Loader=yaml.SafeLoader
+                )
+            if mode == "plain":
+                return open(path, "r", encoding="utf-8").read()
+            raise ValueError(f"Unknown mode for reading config files: '{mode}'")
+        log.warning(f"File {path} does not exist.")
         return ""
 
     if kind == "settings":
-        return getfile(CONF_PATH)
+        return getfile(CONF_PATH, mode="plain")
     if kind == "metadata":
         return getfile(METADATA_FILE)
     if kind == "structure":

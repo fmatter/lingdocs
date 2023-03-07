@@ -1,0 +1,22 @@
+{
+    "url": "abbreviations.csv",
+    "tableSchema": {
+        "columns": [
+          {
+            "datatype": {
+              "base": "string",
+              "format": "[a-zA-Z0-9_\\-]+"
+            },
+            "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
+            "required": true,
+            "name": "ID"
+          },
+          {
+            "datatype": "string",
+            "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#description",
+            "required": true,
+            "name": "Description"
+          }
+        ]
+    }
+}

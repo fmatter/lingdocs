@@ -62,7 +62,7 @@ ADD_BIB = get_path("add_bib")
 BUILDERS = get_config("output", "builders").split(" ")
 PREVIEW = get_config("output", "preview").split(" ")
 CLLD_URI = get_config("clld", "db_uri")
-GLOSS_FILE_ADDRESS = get_config("input", "glossing_abbrevs")
+ABBREV_FILE = get_config("input", "abbreviation_file")
 
 CREATE_README = get_config("output", "readme", as_boolean=True)
 

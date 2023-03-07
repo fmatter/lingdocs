@@ -3,6 +3,7 @@
     "project_title":"<TITLE_PLACEHOLDER>",
     "name":"github",
     "author": "The author's name",
+    "abstract": "An abstract.",
     "content":"<CONTENT_PLACEHOLDER>",
     "references":"<REFERENCES_PLACEHOLDER>",
     "parts":{
