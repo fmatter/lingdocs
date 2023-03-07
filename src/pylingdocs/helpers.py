@@ -1,5 +1,6 @@
 """Various helpers"""
 import importlib.util
+import json
 import logging
 import re
 import sys
@@ -11,7 +12,9 @@ import yaml
 from cookiecutter.main import cookiecutter
 from pycldf import Dataset
 from pycldf import Source
+from slugify import slugify
 from pylingdocs import __version__
+from pylingdocs.config import ABBREV_FILE
 from pylingdocs.config import ADD_BIB
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CLLD_URI
@@ -31,6 +34,82 @@ from pylingdocs.metadata import _load_metadata
 
 
 log = logging.getLogger(__name__)
+
+
+def read_file(path, mode=None, encoding="utf-8"):
+    with open(path, "r", encoding=encoding) as f:
+        if mode == "yaml" or path.suffix == ".yaml":
+            return yaml.load(f, Loader=yaml.SafeLoader)
+        if mode == "json" or path.suffix == ".json":
+            return json.load(f)
+        return f.read()
+
+
+def get_sections(content):
+    for line in content.split("\n"):
+        if line.startswith("#"):
+            title = line.split(" ", 1)[1]
+            level = line.count("#")
+            tag = re.findall("{#(.*?)}", title)
+            if len(tag) == 0:
+                tag = slugify(title, allow_unicode=True)
+            else:
+                tag = tag[0]
+                title = title.replace(tag, "")
+            yield level, title, tag
+
+
+def get_glosses(word, gloss_cands):
+    parts = split_word(word)
+    for j, part in enumerate(parts):
+        if is_gloss_abbr_candidate(part, parts, j):
+            # take care of numbered genders
+            if not (part[0] == "G" and re.match(r"\d", part[1:])):
+                for gloss in resolve_glossing_combination(part):
+                    if gloss not in gloss_cands:
+                        yield gloss
+
+
+def check_abbrevs(dataset, source_dir, content):
+    with open(DATA_DIR / "leipzig.yaml", encoding="utf-8") as f:
+        leipzig = yaml.load(f, Loader=yaml.SafeLoader)
+    gloss_cands = []
+    if "ExampleTable" in dataset:
+        for ex in dataset.iter_rows("ExampleTable"):
+            for word in ex["Gloss"]:
+                if not word:
+                    continue
+                gloss_cands.extend(get_glosses(word, gloss_cands))
+    for text_gloss in re.findall(r"\[gl\]\((.*?)\)", content):
+        gloss_cands.append(text_gloss)
+    abbrev_dict = {}
+    if (Path(source_dir) / ABBREV_FILE).is_file():  # add abbreviations added locally
+        for rec in pd.read_csv(Path(source_dir) / ABBREV_FILE).to_dict("records"):
+            abbrev_dict[rec["ID"]] = rec["Description"]
+    for table in dataset.tables:  # add abbreviations found in the CLDF dataset
+        if str(table.url) == "abbreviations.csv":
+            for rec in table:
+                abbrev_dict[rec["ID"]] = rec["Description"]
+            dataset.write(
+                **{
+                    "abbreviations.csv": [
+                        {"ID": k, "Description": v} for k, v in abbrev_dict.items()
+                    ]
+                }
+            )
+
+    for x in map(str.lower, set(gloss_cands)):
+        if x not in abbrev_dict:
+            abbrev_dict[x] = leipzig.get(x, "unknown abbreviation")
+    unaccounted = [
+        x for x in set(gloss_cands) if abbrev_dict[x.lower()] == "unknown abbreviation"
+    ]
+    if len(unaccounted) > 0:
+        log.warning(
+            "Glosses identified as abbreviations but not specified in glossing abbreviation table:"
+        )
+        print("\n".join(unaccounted))
+    return abbrev_dict
 
 
 def _src(string, mode="cldfviz"):

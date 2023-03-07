@@ -1,4 +1,5 @@
 import logging
+import re
 from pathlib import Path
 import pandas as pd
 import pycldf
@@ -8,9 +9,17 @@ from pycldf.dataset import SchemaError
 from slugify import slugify
 from pylingdocs import __version__
 from pylingdocs.config import DATA_DIR
+from pylingdocs.config import OUTPUT_TEMPLATES
+from pylingdocs.formats import CLLD
+from pylingdocs.helpers import check_abbrevs
+from pylingdocs.helpers import get_sections
+from pylingdocs.helpers import read_file
 from pylingdocs.metadata import _load_bib
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
+from pylingdocs.postprocessing import postprocess
+from pylingdocs.preprocessing import preprocess
+from pylingdocs.preprocessing import render_markdown
 
 
 log = logging.getLogger(__name__)
@@ -34,6 +43,13 @@ ChapterTable = metadata("ChapterTable")
 TopicTable = metadata("TopicTable")
 AbbreviationTable = metadata("AbbreviationTable")
 tables = [ContributorTable, ChapterTable, AbbreviationTable, TopicTable]
+
+Reference_Column = {
+    "name": "References",
+    "required": False,
+    "dc:description": "Locations in the grammar relevant for the entity",
+    "datatype": "json",
+}
 
 
 def get_contributors(metadata_dict):
@@ -66,24 +82,98 @@ def get_chapters(output_dir):
     return chapter_list
 
 
-def get_topics(output_dir):
-    clld_path = output_dir / "clld"
-    tag_dic = jsonlib.load(clld_path / "tags.json")
-    section_dic = jsonlib.load(clld_path / "sections.json")
+def get_topics(title_dic, tag_dic):
     topics = []
     if TOPIC_PATH.is_file():
         topic_index = pd.read_csv(TOPIC_PATH)
         for topic in topic_index.to_dict("records"):
             topic["ID"] = slugify(topic["Name"])
             topic["References"] = [
-                [tag_dic[section], section, section_dic[section]["title"]]
+                {
+                    "Chapter": tag_dic[section],
+                    "ID": section,
+                    "Label": title_dic[section],
+                }
                 for section in topic["Sections"].split(",")
             ]
             topics.append(topic)
     return topics
 
 
-def create_cldf(ds, output_dir, metadata_file, add_documents=None):
+def create_cldf(
+    chapter_dic, ds, source_dir, output_dir, metadata_file, add_documents=None, **kwargs
+):
+    content = "\n\n".join([x["content"] for x in chapter_dic.values()])
+    check_abbrevs(ds, source_dir, content)
+    metadata_dict = _load_metadata(metadata_file)
+    preprocessed = preprocess(content, source_dir)
+    preprocessed = CLLD.preprocess_commands(preprocessed, **kwargs)
+    preprocessed = render_markdown(
+        preprocessed,
+        ds,
+        decorate_gloss_string=CLLD.decorate_gloss_string,
+        output_format="clld",
+    )
+    preprocessed = "\n" + postprocess(preprocessed, CLLD, source_dir)
+    tent = preprocessed.replace(
+        "![](", "![](/static/images/"
+    )  # rudely assume that all images live in the static dir
+    delim = "\n# "
+    parts = tent.split(delim)[1::]
+    if len(parts) == 0 or OUTPUT_TEMPLATES["clld"] in ["slides", "article"]:
+        # these use # as section markers, so we add a level for the html output
+        tent = tent.replace("\n#", "\n##")
+        tent = f"# {metadata_dict['title']}\n\n" + tent
+    else:
+        chapters = []
+        title_dic = {}
+        tag_dic = {}
+        chapter_dic = {}
+        for part in parts:
+            chtitle, content = part.split("\n", 1)
+            chtag = re.findall("{#(.*?)}", chtitle)
+            if len(chtag) == 0:
+                chtag = slugify(chtitle)
+            else:
+                chtag = chtag[0]
+            chtitle = chtitle.split("{#")[0].strip()
+            title_dic[chtag] = chtitle
+            tag_dic[chtag] = chtag
+
+            for lvl, title, tag in get_sections(part):
+                del lvl
+                title_dic[tag] = title.split("{#")[0].strip()
+                tag_dic[tag] = chtag
+
+            for table_tag in re.findall(
+                "<div class='caption table' id='(.*?)'>",
+                content,
+            ):
+                tag_dic[table_tag] = chtag
+
+            chapter_dic[chtag] = content
+
+        for i, (tag, content) in enumerate(chapter_dic.items()):
+            refs = re.findall(r"<a href='#(.*?)' .*?</a>", content)
+            for ref in refs:
+                if ref not in tag_dic:
+                    log.error(f"Tag {ref} not found.")
+                elif tag_dic[ref] != tag:
+                    label = title_dic.get(ref, "")
+                    content = re.sub(
+                        rf"<a href='#{ref}'.*?</a>",
+                        f"[crossref](chapters.csv?_anchor={ref}&label={label}#cldf:{tag_dic[ref]})",
+                        content,
+                    )
+            chapters.append(
+                {
+                    "ID": tag,
+                    "Description": content,
+                    "Name": title_dic[tag],
+                    "Number": i + 1,
+                }
+            )
+
     ds.copy(dest=output_dir / "cldf")
     orig_id = ds.metadata_dict.get("rdf:ID", None)
     ds = pycldf.Dataset.from_metadata(output_dir / "cldf" / ds.filename)
@@ -93,7 +183,6 @@ def create_cldf(ds, output_dir, metadata_file, add_documents=None):
     for key, entry in bib_data.entries.items():
         ds.properties["dc:bibliographicCitation"] = Source.from_entry(key, entry)
 
-    metadata_dict = _load_metadata(metadata_file)
     ds.properties[
         "dc:title"
     ] = f"""{metadata_dict["title"]} (v{metadata_dict["version"]})"""
@@ -119,10 +208,39 @@ def create_cldf(ds, output_dir, metadata_file, add_documents=None):
         ]
     )
 
-    chapters = get_chapters(output_dir)
     if add_documents:
         for d in add_documents:
+            d["Description"] = postprocess(
+                render_markdown(
+                    CLLD.preprocess_commands(
+                        preprocess(d["Description"], source_dir), **kwargs
+                    ),
+                    ds,
+                    decorate_gloss_string=CLLD.decorate_gloss_string,
+                    output_format="clld",
+                ),
+                CLLD,
+                source_dir,
+            )
             chapters.append(d)
+
+    if (source_dir / "entity_refs.yaml").is_file():
+        add_dic = read_file(source_dir / "entity_refs.yaml")
+        for table, repl in add_dic.items():
+            records = []
+            ds.add_columns(table, Reference_Column)
+            for row in ds.iter_rows(table):
+                if row["ID"] in repl:
+                    row["References"] = [
+                        {
+                            "Chapter": tag_dic[sec],
+                            "ID": sec,
+                            "Label": title_dic[sec],
+                        }
+                        for sec in repl[row["ID"]].split(",")
+                    ]
+                records.append(row)
+            ds.write(**{table: records})
 
     table_dic = {
         ChapterTable["url"]: chapters,
@@ -132,7 +250,7 @@ def create_cldf(ds, output_dir, metadata_file, add_documents=None):
     TOPIC_PATH = Path("./topic_index.csv")
     if TOPIC_PATH.is_file():
         ds.add_component(TopicTable)
-        table_dic[TopicTable["url"]] = get_topics(output_dir)
+        table_dic[TopicTable["url"]] = get_topics(title_dic, tag_dic)
     if ContributorTable["url"] in list(ds.components.keys()) + [
         str(x.url) for x in ds.tables
     ]:  # a list of tables in the dataset

@@ -59,7 +59,10 @@ class BuildCommand(OutputCommand):
         self.params.extend(
             [
                 click.core.Option(
-                    ("--source",), default=".", help="Source folder to process."
+                    ("--source",),
+                    default=".",
+                    help="Source folder to process.",
+                    type=click.Path(exists=True, path_type=Path),
                 ),
                 click.core.Option(
                     ("--cldf",),
@@ -180,7 +183,6 @@ def cldf(source, cldf, output_dir, latex, add):
             folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
         ),
     )
-    metadata = _load_metadata(source / METADATA_FILE)
     add_docs = []
     for add_doc in add:
         with open(add_doc, "r", encoding="utf-8") as f:
@@ -192,15 +194,14 @@ def cldf(source, cldf, output_dir, latex, add):
                     "Description": "".join(preprocess_cldfviz(content)),
                 }
             )
-    create_output(
+    create_cldf(
         contents,
-        source,
-        ["clld"],
         ds,
+        source,
         output_dir,
-        metadata=metadata,
+        metadata_file=METADATA_FILE,
+        add_documents=add_docs,
     )
-    create_cldf(ds, output_dir, source / METADATA_FILE, add_documents=add_docs)
 
 
 @main.command()

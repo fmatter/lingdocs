@@ -1,8 +1,9 @@
-from pylingdocs.helpers import load_table_metadata
-import re
 import logging
-import pandas as pd
+import re
 from io import StringIO
+import pandas as pd
+from pylingdocs.helpers import load_table_metadata
+
 
 log = logging.getLogger(__name__)
 

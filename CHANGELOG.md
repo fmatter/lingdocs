@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * option to choose LaTeX `book` template
 * leipzig glossing abbreviations
 * add additional external chapters when creating a CLDF dataset
+* `topics_index.csv` will be added as a TopicTable
+* `entity_refs.yaml` allows to add section references to entries in the database
 
 ### Fixed
 * LaTeX examples

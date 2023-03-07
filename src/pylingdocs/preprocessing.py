@@ -11,13 +11,12 @@ from jinja2 import DictLoader
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import MANEX_DIR
 from pylingdocs.config import TABLE_DIR
-from pylingdocs.config import TABLE_MD
-from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import get_md_pattern
+from pylingdocs.helpers import load_table_metadata
 from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
-from pylingdocs.helpers import src, load_table_metadata
+from pylingdocs.helpers import src
 from pylingdocs.models import models
 
 
