@@ -592,7 +592,7 @@ def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
                 if is_gloss_abbr_candidate(part, parts, j):
                     # take care of numbered genders
                     if part[0] == "G" and re.match(r"\d", part[1:]):
-                        output += f"\\gl{{{part.lower()}}}"
+                        output += decoration(part[0].lower())+part[1:]
                     else:
                         for gloss in resolve_glossing_combination(part):
                             output += decoration(gloss.lower())
