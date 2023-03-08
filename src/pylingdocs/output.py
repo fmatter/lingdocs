@@ -10,8 +10,9 @@ from pathlib import Path
 from pathlib import PosixPath
 import hupper
 from pylingdocs.config import BENCH
-from pylingdocs.config import CONTENT_FILE_PREFIX, OUTPUT_DIR
+from pylingdocs.config import CONTENT_FILE_PREFIX
 from pylingdocs.config import CONTENT_FOLDER
+from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.formats import builders
 from pylingdocs.helpers import _get_relative_file

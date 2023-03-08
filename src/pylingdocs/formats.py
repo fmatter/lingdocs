@@ -262,8 +262,9 @@ class HTML(OutputFormat):
 
     @classmethod
     def exref_cmd(cls, url, *_args, **_kwargs):
-        kw_str = " ".join(
-            [f"""{x}="{y}" """ for x, y in _kwargs.items()]) + " ".join(_args)
+        kw_str = " ".join([f"""{x}="{y}" """ for x, y in _kwargs.items()]) + " ".join(
+            _args
+        )
         return f'<a class="exref" example_id="{url}" {kw_str}></a>'
 
     @classmethod

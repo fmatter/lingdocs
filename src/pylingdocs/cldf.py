@@ -167,7 +167,7 @@ def create_cldf(
                     )
             chapters.append(
                 {
-                    "ID": tag,
+                    "ID": slugify(tag),
                     "Description": content,
                     "Name": title_dic[tag],
                     "Number": i + 1,
