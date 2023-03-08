@@ -89,7 +89,7 @@ def check_abbrevs(dataset, source_dir, content):
     for table in dataset.tables:  # add abbreviations found in the CLDF dataset
         if str(table.url) == "abbreviations.csv":
             for rec in table:
-                abbrev_dict[rec["ID"]] = rec["Description"]
+                abbrev_dict[rec["ID"].lower()] = rec["Description"]
             dataset.write(
                 **{
                     "abbreviations.csv": [
