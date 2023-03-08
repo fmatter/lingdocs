@@ -15,7 +15,7 @@ from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.formats import builders
-from pylingdocs.helpers import _get_relative_file
+from pylingdocs.helpers import _get_relative_file, read_file, write_file
 from pylingdocs.helpers import _load_cldf_dataset
 from pylingdocs.helpers import check_abbrevs
 from pylingdocs.helpers import get_structure
@@ -201,7 +201,6 @@ def create_output(
         metadata = _load_metadata(metadata)
     if metadata is None:
         metadata = {}
-    metadata.update({"bibfile": Path(dataset.bibpath).resolve()})
     output_dir = Path(output_dir)
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir.resolve()}")
@@ -232,6 +231,8 @@ def create_output(
             output_format=output_format,
         )
         preprocessed = postprocess(preprocessed, builder, source_dir)
+        if builder.name == "latex":
+            metadata["bibfile"] = dataset.bibpath.name
         if builder.single_output:
             builder.write_folder(
                 output_dir,
@@ -239,18 +240,8 @@ def create_output(
                 metadata=metadata,
                 abbrev_dict=abbrev_dict,
             )
-        elif builder.name == "clld":
-            builder.write_folder(
-                output_dir,
-                content=preprocessed,
-                metadata=metadata,
-                abbrev_dict=abbrev_dict,
-            )
-            # builder.create_app()
-            # write_clld(preprocessed)
-            # with open("clld_output.txt", "w", encoding="utf-8") as f:
-            #     f.write(preprocessed)
-        else:
-            pass
+        if builder.name == "latex":
+            contents = read_file(dataset.bibpath)
+            write_file(contents.replace(" &", " \\&"), output_dir / builder.name / dataset.bibpath.name)
     if latex:
         compile_latex()

@@ -44,6 +44,15 @@ def read_file(path, mode=None, encoding="utf-8"):
             return json.load(f)
         return f.read()
 
+def write_file(content, path, mode=None, encoding="utf-8"):
+    with open(path, "w", encoding=encoding) as f:
+        if mode == "yaml" or path.suffix == ".yaml":
+            yaml.dump(f, content)
+        elif mode == "json" or path.suffix == ".json":
+            json.dump(content, f, ensure_ascii=False, indent=4)
+        else:
+            f.write(content)
+
 
 def get_sections(content):
     for line in content.split("\n"):
@@ -345,7 +354,7 @@ def load_content(source_dir=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
     return contents
 
 
-def write_file(
+def write_content_file(
     file_id,
     content,
     prefix_mode=CONTENT_FILE_PREFIX,
