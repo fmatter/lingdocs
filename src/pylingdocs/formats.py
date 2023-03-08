@@ -452,6 +452,9 @@ class Latex(OutputFormat):
     def exref_cmd(cls, url, *_args, **_kwargs):
         end = _kwargs.get("end", None)
         suffix = _kwargs.get("suffix", "")
+        bare = "bare" in _args
+        if bare:
+            return f"\\ref{{{url}}}"
         if end:
             return f"\\exref[{suffix}][{end}]{{{url}}}"
         return f"\\exref[{suffix}]{{{url}}}"
