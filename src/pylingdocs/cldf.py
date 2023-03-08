@@ -264,6 +264,8 @@ def create_cldf(
         f"Wrote CLDF dataset with ChapterTable to {(ds.directory / ds.filename).resolve()}"
     )
 
+    ds.validate(log=log)
+
 
 def generate_autocomplete(ds, output_dir):
     output_dir = Path(output_dir)
