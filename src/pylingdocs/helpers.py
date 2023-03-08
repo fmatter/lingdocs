@@ -522,6 +522,7 @@ def is_gloss_abbr_candidate(part, parts, j):
     return (
         part == part.upper()  # needs to be uppercase
         and part not in glossing_delimiters + ["[", "]", "\\"]  # and not a delimiter
+        and part != "I" # english lol
         and part
         not in [
             "?",
