@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * handling of abbreviations
 * revamped document commands
 * abbrev checking
+* lfts macro
 
 ### Changed
 * if undefined, `LATEX_TOPLEVEL` is determined based on the LaTeX template

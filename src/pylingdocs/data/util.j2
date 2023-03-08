@@ -1,16 +1,22 @@
 {% macro get_translation_dict(f, single_translation=False) -%}
 {% set translation = [] %}
-{% for label in ["Parameter_ID", "Description", "Translation", "Meaning"] %}
-    {%if label in f and f[label] %}
-        {% if f[label] is not string %}
-            {% for t in f[label] %}
-                {% set translation = translation.append(t) %}
-            {%endfor%}
-        {%else%}
-            {% set translation = translation.append(f[label]) %}
-        {% endif %}
+{% if "Parameter_ID" in f and f["Parameter_ID"] %}
+    {% if f["Parameter_ID"] is not string %}
+        {% for t in f["Parameter_ID"] %}
+            {% set translation = translation.append(t) %}
+        {%endfor%}
+    {%else%}
+        {% set translation = translation.append(f["Parameter_ID"]) %}
     {% endif %}
-{% endfor %}
+{% elif "Description" in f and f["Description"] %}
+    {% if f["Description"] is not string %}
+        {% for t in f["Description"] %}
+            {% set translation = translation.append(t) %}
+        {%endfor%}
+    {%else%}
+        {% set translation = translation.append(f["Description"]) %}
+    {% endif %}
+{% endif %}
 {%if not single_translation%}{{" / ".join(translation)}}{%else%}{{translation[0]}}{%endif%}
 {%- endmacro %}
 
@@ -22,7 +28,7 @@
     {%endfor%}
 {%if not single_translation%}{{" / ".join(translation)}}{%else%}{{translation[0]}}{%endif%}
 {%else%}
-{{ get_translation_dict(f.data) }}
+{{ f.cldf.parameterReference }}
 {%endif%}
 {%- endmacro %}
 
