@@ -16,12 +16,14 @@
             <button onclick="toggleTOC()">Toggle TOC</button>
             <div id="toc"></div>
         </div>
+        {% if cookiecutter.abstract %}
         <div class="abstract">
             <b>Abstract</b>
             <p>
                 {{ cookiecutter.abstract }}
             </p>
         </div>
+        {% endif %}
 
         {{ cookiecutter.content }}
 
