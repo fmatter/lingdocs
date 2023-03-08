@@ -255,7 +255,7 @@ def create_cldf(
         str(x.url) for x in ds.tables
     ]:  # a list of tables in the dataset
         ds.remove_table(ContributorTable["url"])
-        table_dic[ContributorTable["url"]] = get_contributors(metadata_dict)
+    table_dic[ContributorTable["url"]] = get_contributors(metadata_dict)
     ds.add_component(ContributorTable)
 
     ds.write(**table_dic)
