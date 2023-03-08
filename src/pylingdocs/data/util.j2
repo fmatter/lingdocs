@@ -1,4 +1,4 @@
-{% macro get_translation_dict(f, all_translations=False) -%}
+{% macro get_translation_dict(f, single_translation=False) -%}
 {% set translation = [] %}
 {% for label in ["Parameter_ID", "Description", "Translation", "Meaning"] %}
     {%if label in f and f[label] %}
@@ -11,16 +11,16 @@
         {% endif %}
     {% endif %}
 {% endfor %}
-{%if all_translations%}{{" / ".join(translation)}}{%else%}{{translation[0]}}{%endif%}
+{%if not single_translation%}{{" / ".join(translation)}}{%else%}{{translation[0]}}{%endif%}
 {%- endmacro %}
 
-{% macro get_translation_orm(f, all_translations=False) -%}
+{% macro get_translation_orm(f, single_translation=False) -%}
 {% if f.parameter %}
     {% set translation = [] %}
     {%for p in f.parameters %}
         {% set translation = translation.append(p.name) %}
     {%endfor%}
-{%if all_translations%}{{" / ".join(translation)}}{%else%}{{translation[0]}}{%endif%}
+{%if not single_translation%}{{" / ".join(translation)}}{%else%}{{translation[0]}}{%endif%}
 {%else%}
 {{ get_translation_dict(f.data) }}
 {%endif%}
@@ -34,7 +34,7 @@ with_source=False,
 no_translation=False,
 mode="dict",
 translation=None,
-all_translations=Fall,
+single_translation=False,
 quot_left="‘",
 quot_right="’",
 citation_mode="cldfviz",
