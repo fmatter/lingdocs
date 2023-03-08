@@ -121,7 +121,7 @@ def check_abbrevs(dataset, source_dir, content):
     return abbrev_dict
 
 
-def _src(string, mode="cldfviz"):
+def _src(string, mode="cldfviz", full=False):
     bibkey, pages = split_ref(string)
     if mode == "cldfviz":
         if pages:
@@ -139,7 +139,7 @@ def _src(string, mode="cldfviz"):
     sys.exit()
 
 
-def src(cite_input, mode="cldfviz", parens=False):
+def src(cite_input, mode="cldfviz", parens=False, full=False):
     if cite_input == "":
         log.warning("Empty citation")
         return ""
@@ -148,8 +148,10 @@ def src(cite_input, mode="cldfviz", parens=False):
     else:
         citations = []
         for x in re.finditer(r"[A-Za-z0-9]+(\[[^\]]*])?", cite_input):
-            citations.append(_src(x.group(0), mode=mode))
+            citations.append(_src(x.group(0), mode=mode, full=full))
     if mode == "biblatex":
+        if full:
+            return "\\fullcite" + "".join(citations)
         if parens:
             return "\\parencites" + "".join(citations)
         return "\\textcites" + "".join(citations)
@@ -278,7 +280,6 @@ def sanitize_latex(unsafe_str):
 
 
 def get_prefixed_filename(structure, file_id):
-    print(file_id)
     return structure
 
 

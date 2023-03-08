@@ -580,9 +580,9 @@ class Latex(OutputFormat):
                     else:
                         args.append(arg)
             if key == "src":
-                yield src(url, mode="biblatex")
+                yield src(url, mode="biblatex", full="full" in args)
             elif key == "psrc":
-                yield src(url, parens=True, mode="biblatex")
+                yield src(url, parens=True, mode="biblatex", full="full" in args)
             elif key in doc_elements:
                 yield doc_elements[key](url, *args, **elementkwargs)
             elif key == "abbrev_list":
