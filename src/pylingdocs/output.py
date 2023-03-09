@@ -241,7 +241,7 @@ def create_output(
                 abbrev_dict=abbrev_dict,
             )
         if builder.name == "latex":
-            contents = read_file(dataset.bibpath)
-            write_file(contents.replace(" &", " \\&"), output_dir / builder.name / dataset.bibpath.name)
+            bibcontents = read_file(dataset.bibpath)
+            write_file(bibcontents.replace(" &", " \\&"), output_dir / builder.name / dataset.bibpath.name)
     if latex:
         compile_latex()

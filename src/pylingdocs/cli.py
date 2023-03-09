@@ -99,6 +99,7 @@ def build(
         ),
     )
     metadata = _load_metadata(source / METADATA_FILE)
+
     create_output(
         contents,
         source,

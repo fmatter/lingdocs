@@ -103,7 +103,7 @@ class Entity:
                     f"{cls.shortcut}:{entry[label]}",
                     f"[{cls.shortcut}]({entry['ID']})",
                 )
-        log.warning(f"Nothing found for {entry['ID']}")
+        log.warning(f"Unable to generate preview string for {entry['ID']}")
         return entry["ID"]
 
     @classmethod
@@ -130,18 +130,21 @@ class Morpheme(Entity):
         "html": load_template("morpheme", "html_index"),
     }
 
+    @classmethod
+    def autocomplete_string(cls, entry):
+        print(entry)
+        return (
+            f"{cls.shortcut}:{entry['Name']} '{entry['Parameter_ID']}'",
+            f"[{cls.shortcut}]({entry['ID']})",
+        )
+
+
 
 class Morph(Morpheme):
     name = "Morph"
     cldf_table = "morphs.csv"
     shortcut = "m"
 
-    @classmethod
-    def autocomplete_string(cls, entry):
-        return (
-            f"{cls.shortcut}:{entry['Name']} '{entry['Description']}'",
-            f"[{cls.shortcut}]({entry['ID']})",
-        )
 
 
 class Wordform(Morpheme):
@@ -171,6 +174,13 @@ class Wordform(Morpheme):
     citation_mode="biblatex")}}""",
         "plain": "",
     }
+
+    @classmethod
+    def autocomplete_string(cls, entry):
+        return (
+            f"{cls.shortcut}:{entry['Form']} '{entry['Parameter_ID']}'",
+            f"[{cls.shortcut}]({entry['ID']})",
+        )
 
 
 class Example(Entity):
