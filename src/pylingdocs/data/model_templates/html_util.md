@@ -1,4 +1,4 @@
-{% macro example(ctx, class_="example", example_id=None, highlight=[]) -%}
+{% macro example(ctx, class_="example", example_id=None, highlight=[], with_language=True) -%}
 {% if ctx.references %}
 {% set ref = ctx.references[0] %}
 {% set bibkey, pages = split_ref(ref.__str__()) %}
@@ -6,7 +6,7 @@
 {% endif %}
 <li class={{class_}} id ="{{ example_id or ctx.id }}">
   <div class="interlinear">
-    {{ ctx.related("languageReference").name }}
+    {% if with_language %}{{ ctx.related("languageReference").name }}{% endif %}
     {% if ctx.cldf.primaryText != None %} {% if ref%}(<a href="#source-{{ref.source.id}}">{{ref.source.refkey(year_brackets=None)}}</a>{%if ref.description%}: {{ref.description}}{%endif%})
 {%endif%}
       <div class="surf">{{ ctx.cldf.primaryText }}</div>
