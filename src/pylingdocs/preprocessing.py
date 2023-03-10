@@ -169,6 +169,7 @@ def render_markdown(
     decorate_gloss_string=lambda x: x,
     data_format="cldf",
     output_format="plain",
+    **kwargs
 ):
     if data_format == "cldf":
         if output_format != "clld":
@@ -182,11 +183,7 @@ def render_markdown(
                 }
             else:
                 audio_dict = {}
-            preprocessed = render(
-                doc="".join(preprocess_cldfviz(md_str)),
-                cldf_dict=ds,
-                loader=envs[output_format],
-                func_dict={
+            func_dict = {
                     "comma_and_list": comma_and_list,
                     "sanitize_latex": sanitize_latex,
                     "split_ref": split_ref,
@@ -194,7 +191,14 @@ def render_markdown(
                     "src": src,
                     "flexible_pad_ex": pad_ex,
                     "get_audio": lambda x: audio_dict.get(x, None),
-                },
+                }
+            for func, val in kwargs.get("func_dict", {}).items():
+                func_dict[func] = val
+            preprocessed = render(
+                doc="".join(preprocess_cldfviz(md_str)),
+                cldf_dict=ds,
+                loader=envs[output_format],
+                func_dict=func_dict,
             )
             preprocessed = render(
                 doc=preprocessed,
