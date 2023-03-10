@@ -22,7 +22,7 @@
     <div class="freetrans">‘{{ ctx.cldf.translatedText }}’</div>
     {% set audio = get_audio(ctx.id) %}
     {% if audio %}
-        <audio controls src="{{ audio }}"></audio>
+        <audio controls src="{{ audio['url'] }}" type="{{ audio['type'] }}"></audio>
     {% endif %}
   </div>
 </li>
