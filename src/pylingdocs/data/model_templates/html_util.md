@@ -19,8 +19,11 @@
         </div>
       {% endfor %}
     {% endif %}
-    <div class="freetrans">‘{{ ctx.cldf.translatedText }}’
-        </div>
+    <div class="freetrans">‘{{ ctx.cldf.translatedText }}’</div>
+    {% set audio = get_audio(ctx.id) %}
+    {% if audio %}
+        <audio controls src="{{ audio }}"></audio>
+    {% endif %}
   </div>
 </li>
 {%- endmacro %}
