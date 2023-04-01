@@ -1,0 +1,9 @@
+ID,Language_ID,Form,Description,Part_Of_Speech,Parameter_ID,Morpho_Segments,Stem_ID,Segments,Comment,Source
+tri-person,tri,wïtoto-ton,people,,people,,,,,triomeira1999[139]
+tri-now,tri,menjaarë,now,,now,,,,,
+tri-us,tri,kïmë-njamo,we,,we,,,,,triomeira1999[140]
+apa-fire,apa,apoto,fire,,fire,,,,,koehn1986apalai[59]
+tri-fire,tri,mahto,fire,,fire,,,,,triomeira1999[314]
+wai-fire,wai,wehto,fire,,fire,,,,,howard2001wrought[485]
+tri-with,tri,akëërë-ne,with (PL),,with (PL),,,,,triomeira1999[375]
+tri-kure,tri,kure,"good, pretty, well",,good; pretty; well,,,,,triomeira1999[345]

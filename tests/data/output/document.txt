@@ -1,0 +1,144 @@
+Introduction [sec:intro]
+
+This document does double service as a test for pylingdocs and a
+showcase of its capabilities. It aims to demonstrate every feature and
+model currently available in pylingdocs.
+
+Common markdown
+
+You can use all the familiar markdown components. Here is a link to the
+pylingdocs github repo. Here is some bold and italic and bold italic
+text.
+
+1.  here
+2.  is
+3.  a
+4.  numbered
+5.  list
+
+and of course here is
+
+-   and one
+-   with
+-   bullet points[1]
+
+A quote:
+
+  Locating an individual language on a given point of the
+  ergativity-nominativity axis and the diachronic interpretation of this
+  axis seem to be conceptually different concerns, even if we were to
+  assume that there are principies favouring one direction over the
+  other. (Álvarez 1997: 71)
+
+Pylingdocs markdown [pld-md]
+
+Apart from database references, discussed in [ref/sec:sources], there
+are a number of pylingdocs-specific commands, all patterning like links:
+
+-   cross-references: [ref/common-markdown] or [ref/sec:intro], see
+    corresponding label commands
+-   example references:
+    -   single [ex:ekiri-13]
+    -   subexample [ex:ekiri-10]
+    -   range: [ex:ekiri-13–ekiri-11]
+    -   or bare: [ex:ekiri-11]
+-   glosses: ACC
+-   todos: [todo: we need to talk about this]
+-   tables (with automatically generated table labels like
+    [ref/tab:consonants]):
+
+Consonant phonemes of Yawarana: [consonants]
+
+  -----------------------------------------------------------------------
+              bilabial     alveolar     palatal     velar     glottal
+  ----------- ------------ ------------ ----------- --------- -----------
+  occlusive   /p /         /t /         /t͡ʃ/ |      /k/ |     
+
+  nasal       /m /         /n /         /j/                   
+
+  fricative                /s /                               /j /
+
+  liquid                   /r /                               
+
+  glide       /w /                      /y/                   
+  -----------------------------------------------------------------------
+
+-   figures (with automatically generated table labels like
+    [ref/fig:cognates]):
+
+[Cognate identification strategy: cognates.jpg]
+
+Other linguistic data [sec:data]
+
+Native CLDF components
+
+-   Tiriyó pakoro se wae ‘I want a house’ (Meira 1999: 417)
+-   Hixkaryána
+
+louse-1
+
+  Form    Language   -   -   -   -   -
+  ------- ---------- --- --- --- --- ---
+  jamï    Tiriyó     -   j   a   m   o
+  azamo   Apalaí     a   z   a   m   o
+  əjamo   Wayana     ə   j   a   m   o
+
+Non-native components
+
+Tiriyó -e ‘SUP’ (Meira 1999: 327) is a variant of -(s)e. Neither occur
+on , because it is a noun. They are related to -se and -(h)e. This is
+thus a cognate set shared by Apalaí, Tiriyó, and Wayana.
+
+-   If has too long a translation, try .
+
+-   This dataset contains the Ikpeng text “The old man”.
+
+Interlinear examples
+
+(1) Ikpeng (ekiri-13)
+    nen        tan   nen        ɨ-wɨ-n
+    INAN.PROX  here  INAN.PROX  1POSS-machete-PERT
+    ‘“My machete is here.”’
+
+()
+
+(a) Ikpeng (ekiri-9)
+    otumunto  mun        eto     ɨ-wɨ-n              otumunto
+    where     INAN.DIST  UNCERT  1POSS-machete-PERT  where
+    ‘“Where might my machete be, where?”’
+
+(b) Ikpeng (ekiri-10)
+    nen-to         nen-to         j-eŋ-lɨ      ɨ-wɨ-n
+    INAN.PROX-LOC  INAN.PROX-LOC  1>3-put-HOD  1POSS-machete-PERT
+    ‘“Here, here I put my machete.”’
+
+(3) Ikpeng (ekiri-11)
+    an-k-aŋ         man  i-mu-n
+    3-say-REM.CONT  AFF  3>3-son-PERT
+    ‘His son said:’
+
+Citing literature [sec:sources]
+
+-   see Álvarez 1997 or Álvarez 1997: 133-134
+-   with parentheses:
+    -   “Locating an individual language on a given point of the
+        ergativity-nominativity axis and the diachronic interpretation
+        of this axis seem to be conceptually different concerns”
+        (Álvarez 1997)
+    -   “Locating an individual language on a given point of the
+        ergativity-nominativity axis and the diachronic interpretation
+        of this axis seem to be conceptually different concerns”
+        (Álvarez 1997: 71)
+-   multiple citations:
+    -   Álvarez 1997: 133-134, Meira 1999: 218
+    -   (Álvarez 1997: 133-134, Meira 1999: 218)
+
+References
+
+-    Álvarez, José. 1997. Split Ergativity and Complementary
+    Distribution of NP’s and Pronominal Affixes in Pemón (Cariban).
+    Opción 13. 69–94.
+-    Meira, Sérgio. 1999. A Grammar of Tiriyó. (Doctoral dissertation).
+
+[1] And here is a (foot)note. You can use markdown in here: see
+[ref/sec:data] for details about -se ‘SUP’.
