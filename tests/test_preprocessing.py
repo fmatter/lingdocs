@@ -22,7 +22,7 @@ def test_mp(dataset):
         == "<i>pɨra</i> ‘NEG’"
     )
 
-    input_str = "[m](tri-se-1,tri-se-2,tri-se-3)"
+    input_str = "[m](tri-se-1,tri-se-2,tri-se-3?nt)"
     formats = {
         "plain": "-se, -je, and -e",
         "github": "_-se_, _-je_, and _-e_",

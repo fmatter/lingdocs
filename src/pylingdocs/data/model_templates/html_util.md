@@ -16,6 +16,7 @@
         <div class="intlin">
           <span class="obj">{{ obj }}</span>
           <span class="trans">{{ decorate_gloss_string(ctx.cldf.gloss[loop.index-1]) }}</span>
+          {%if "Part_Of_Speech" in ctx.data %}<span class="pos">{{ ctx.data["Part_Of_Speech"][loop.index-1]}}</span>{% endif %}
         </div>
       {% endfor %}
     {% endif %}

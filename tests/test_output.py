@@ -7,8 +7,9 @@ from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import load_content
-from pylingdocs.output import create_output, PlainText
-from pylingdocs.preprocessing import postprocess
+from pylingdocs.output import create_output
+from pylingdocs.formats import PlainText
+from pylingdocs.postprocessing import postprocess
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
 

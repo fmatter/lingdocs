@@ -6,8 +6,7 @@
         }
     ],
     "dc:conformsTo": "http://cldf.clld.org/v1.0/terms.rdf#Generic",
-    "dc:description": "A dataset for testing.",
-    "dc:title": "Test set",
+    "dc:source": "sources.bib",
     "prov:wasGeneratedBy": [
         {
             "dc:title": "python",
@@ -18,11 +17,424 @@
             "dc:relation": "requirements.txt"
         }
     ],
-    "rdf:ID": "test_set",
     "rdf:type": "http://www.w3.org/ns/dcat#Distribution",
     "tables": [
         {
+            "dc:extent": 8,
+            "tableSchema": {
+                "columns": [
+                    {
+                        "datatype": {
+                            "base": "string",
+                            "format": "[a-zA-Z0-9_\\-]+"
+                        },
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
+                        "required": true,
+                        "name": "ID"
+                    },
+                    {
+                        "dc:description": "A reference to a language (or variety) the form belongs to",
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#languageReference",
+                        "required": true,
+                        "name": "Language_ID"
+                    },
+                    {
+                        "dc:description": "The written expression of the form.",
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#form",
+                        "required": true,
+                        "name": "Form"
+                    },
+                    {
+                        "dc:description": "A human-readable description",
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#description",
+                        "required": false,
+                        "name": "Description"
+                    },
+                    {
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#partOfSpeech",
+                        "required": false,
+                        "name": "Part_Of_Speech"
+                    },
+                    {
+                        "dc:description": "A reference to the meaning denoted by the form",
+                        "dc:extent": "multivalued",
+                        "datatype": "string",
+                        "required": true,
+                        "separator": "; ",
+                        "name": "Parameter_ID"
+                    },
+                    {
+                        "dc:description": "A representation of the morphologically segmented form.",
+                        "dc:extent": "multivalued",
+                        "datatype": "string",
+                        "required": false,
+                        "separator": " ",
+                        "name": "Morpho_Segments"
+                    },
+                    {
+                        "dc:description": "The stem of which this wordform is an inflected form.",
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "required": false,
+                        "name": "Stem_ID"
+                    },
+                    {
+                        "dc:extent": "multivalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#segments",
+                        "required": false,
+                        "separator": " ",
+                        "name": "Segments"
+                    },
+                    {
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#comment",
+                        "required": false,
+                        "name": "Comment"
+                    },
+                    {
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#source",
+                        "required": false,
+                        "separator": ";",
+                        "name": "Source"
+                    }
+                ],
+                "foreignKeys": [
+                    {
+                        "columnReference": [
+                            "Language_ID"
+                        ],
+                        "reference": {
+                            "resource": "languages.csv",
+                            "columnReference": [
+                                "ID"
+                            ]
+                        }
+                    }
+                ],
+                "primaryKey": [
+                    "ID"
+                ]
+            },
+            "url": "wordforms.csv"
+        },
+        {
+            "dc:extent": 4,
+            "tableSchema": {
+                "columns": [
+                    {
+                        "dc:extent": "singlevalued",
+                        "datatype": {
+                            "base": "string",
+                            "format": "[a-zA-Z0-9_\\-]+"
+                        },
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
+                        "required": true,
+                        "name": "ID"
+                    },
+                    {
+                        "dc:description": "A reference to a language (or variety) the form belongs to",
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#languageReference",
+                        "required": true,
+                        "name": "Language_ID"
+                    },
+                    {
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#name",
+                        "required": true,
+                        "name": "Name"
+                    },
+                    {
+                        "dc:description": "A human-readable description.",
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#description",
+                        "required": false,
+                        "name": "Description"
+                    },
+                    {
+                        "dc:extent": "multivalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#segments",
+                        "required": false,
+                        "separator": " ",
+                        "name": "Segments"
+                    },
+                    {
+                        "dc:description": "The morpheme this form belongs to.",
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "required": false,
+                        "name": "Morpheme_ID"
+                    },
+                    {
+                        "dc:description": "A reference to the meaning denoted by the morph.",
+                        "dc:extent": "multivalued",
+                        "datatype": "string",
+                        "required": false,
+                        "separator": "; ",
+                        "name": "Parameter_ID"
+                    },
+                    {
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#comment",
+                        "required": false,
+                        "name": "Comment"
+                    },
+                    {
+                        "dc:extent": "multivalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#source",
+                        "required": false,
+                        "separator": "; ",
+                        "name": "Source"
+                    }
+                ],
+                "foreignKeys": [
+                    {
+                        "columnReference": [
+                            "Language_ID"
+                        ],
+                        "reference": {
+                            "resource": "languages.csv",
+                            "columnReference": [
+                                "ID"
+                            ]
+                        }
+                    },
+                    {
+                        "columnReference": [
+                            "Morpheme_ID"
+                        ],
+                        "reference": {
+                            "resource": "morphemes.csv",
+                            "columnReference": [
+                                "ID"
+                            ]
+                        }
+                    }
+                ],
+                "primaryKey": [
+                    "ID"
+                ]
+            },
+            "url": "morphs.csv"
+        },
+        {
+            "dc:extent": 4,
+            "tableSchema": {
+                "columns": [
+                    {
+                        "datatype": {
+                            "base": "string",
+                            "format": "[a-zA-Z0-9_\\-]+"
+                        },
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
+                        "required": true,
+                        "name": "ID"
+                    },
+                    {
+                        "dc:description": "A reference to a language (or variety) the morpheme belongs to.",
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#languageReference",
+                        "required": true,
+                        "name": "Language_ID"
+                    },
+                    {
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#name",
+                        "required": true,
+                        "name": "Name"
+                    },
+                    {
+                        "dc:description": "A human-readable description.",
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#description",
+                        "required": false,
+                        "name": "Description"
+                    },
+                    {
+                        "dc:description": "A reference to the meaning denoted by the morpheme.",
+                        "dc:extent": "multivalued",
+                        "datatype": "string",
+                        "required": false,
+                        "separator": "; ",
+                        "name": "Parameter_ID"
+                    },
+                    {
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#comment",
+                        "required": false,
+                        "name": "Comment"
+                    },
+                    {
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#source",
+                        "required": false,
+                        "separator": "; ",
+                        "name": "Source"
+                    }
+                ],
+                "foreignKeys": [
+                    {
+                        "columnReference": [
+                            "Language_ID"
+                        ],
+                        "reference": {
+                            "resource": "languages.csv",
+                            "columnReference": [
+                                "ID"
+                            ]
+                        }
+                    }
+                ],
+                "primaryKey": [
+                    "ID"
+                ]
+            },
+            "url": "morphemes.csv"
+        },
+        {
+            "dc:extent": 1,
+            "tableSchema": {
+                "columns": [
+                    {
+                        "datatype": {
+                            "base": "string",
+                            "format": "[a-zA-Z0-9_\\-]+"
+                        },
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
+                        "required": true,
+                        "name": "ID"
+                    },
+                    {
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#name",
+                        "required": true,
+                        "name": "Name"
+                    },
+                    {
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#description",
+                        "required": false,
+                        "name": "Description"
+                    },
+                    {
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#comment",
+                        "required": false,
+                        "name": "Comment"
+                    },
+                    {
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#source",
+                        "required": false,
+                        "separator": ";",
+                        "name": "Source"
+                    },
+                    {
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "required": false,
+                        "name": "Type"
+                    },
+                    {
+                        "dc:extent": "singlevalued",
+                        "datatype": "json",
+                        "required": false,
+                        "name": "Metadata"
+                    }
+                ],
+                "primaryKey": [
+                    "ID"
+                ]
+            },
+            "url": "texts.csv"
+        },
+        {
+            "dc:extent": 14,
+            "tableSchema": {
+                "columns": [
+                    {
+                        "datatype": {
+                            "base": "string",
+                            "format": "[a-zA-Z0-9_\\-]+"
+                        },
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
+                        "required": true,
+                        "name": "ID"
+                    },
+                    {
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#description",
+                        "required": true,
+                        "name": "Description"
+                    }
+                ],
+                "primaryKey": [
+                    "ID"
+                ]
+            },
+            "url": "abbreviations.csv"
+        },
+        {
+            "dc:conformsTo": "http://cldf.clld.org/v1.0/terms.rdf#CognatesetTable",
+            "dc:extent": 1,
+            "tableSchema": {
+                "columns": [
+                    {
+                        "datatype": {
+                            "base": "string",
+                            "format": "[a-zA-Z0-9_\\-]+"
+                        },
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
+                        "required": true,
+                        "name": "ID"
+                    },
+                    {
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#description",
+                        "required": false,
+                        "name": "Description"
+                    },
+                    {
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#source",
+                        "required": false,
+                        "separator": ";",
+                        "name": "Source"
+                    }
+                ],
+                "primaryKey": [
+                    "ID"
+                ]
+            },
+            "url": "cognatesets.csv"
+        },
+        {
             "dc:conformsTo": "http://cldf.clld.org/v1.0/terms.rdf#ExampleTable",
+            "dc:extent": 15,
             "tableSchema": {
                 "columns": [
                     {
@@ -90,17 +502,22 @@
                         "name": "Comment"
                     },
                     {
-                        "dc:description": "The text to which this record belongs",
-                        "dc:extent": "singlevalued",
+                        "dc:description": "The larger discourse context in which this record was uttered.",
                         "datatype": "string",
+                        "required": false,
                         "name": "Text_ID"
                     },
                     {
-                        "datatype": "string",
-                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#source",
+                        "dc:description": "The positions of this record in the text.",
+                        "datatype": "integer",
                         "required": false,
-                        "separator": ";",
-                        "name": "Source"
+                        "name": "Record_Number"
+                    },
+                    {
+                        "dc:description": "The speaker who uttered this record.",
+                        "datatype": "string",
+                        "required": false,
+                        "name": "Speaker_ID"
                     }
                 ],
                 "foreignKeys": [
@@ -125,6 +542,17 @@
                                 "ID"
                             ]
                         }
+                    },
+                    {
+                        "columnReference": [
+                            "Text_ID"
+                        ],
+                        "reference": {
+                            "resource": "texts.csv",
+                            "columnReference": [
+                                "ID"
+                            ]
+                        }
                     }
                 ],
                 "primaryKey": [
@@ -135,6 +563,7 @@
         },
         {
             "dc:conformsTo": "http://cldf.clld.org/v1.0/terms.rdf#LanguageTable",
+            "dc:extent": 50,
             "tableSchema": {
                 "columns": [
                     {
@@ -205,7 +634,95 @@
             "url": "languages.csv"
         },
         {
+            "dc:conformsTo": "http://cldf.clld.org/v1.0/terms.rdf#CognateTable",
+            "dc:extent": 3,
+            "tableSchema": {
+                "columns": [
+                    {
+                        "datatype": {
+                            "base": "string",
+                            "format": "[a-zA-Z0-9_\\-]+"
+                        },
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
+                        "required": true,
+                        "name": "ID"
+                    },
+                    {
+                        "dc:description": "References the form which is judged to belong to a cognate set.",
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#formReference",
+                        "required": true,
+                        "name": "Form_ID"
+                    },
+                    {
+                        "dc:description": "References the cognate set a form is judged to belong to.",
+                        "dc:extent": "singlevalued",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#cognatesetReference",
+                        "required": true,
+                        "name": "Cognateset_ID"
+                    },
+                    {
+                        "dc:description": "Specifies the slice of morphemes of the form in case of partial cognacy.",
+                        "datatype": {
+                            "base": "string",
+                            "format": "\\d+(:\\d+)?"
+                        },
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#segmentSlice",
+                        "required": false,
+                        "separator": " ",
+                        "name": "Segment_Slice"
+                    },
+                    {
+                        "dc:description": "The segments of the form aligned with respect to all other forms in the cognate set",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#alignment",
+                        "required": false,
+                        "separator": " ",
+                        "name": "Alignment"
+                    },
+                    {
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#source",
+                        "required": false,
+                        "separator": ";",
+                        "name": "Source"
+                    }
+                ],
+                "foreignKeys": [
+                    {
+                        "columnReference": [
+                            "Cognateset_ID"
+                        ],
+                        "reference": {
+                            "resource": "cognatesets.csv",
+                            "columnReference": [
+                                "ID"
+                            ]
+                        }
+                    },
+                    {
+                        "columnReference": [
+                            "Form_ID"
+                        ],
+                        "reference": {
+                            "resource": "forms.csv",
+                            "columnReference": [
+                                "ID"
+                            ]
+                        }
+                    }
+                ],
+                "primaryKey": [
+                    "ID"
+                ]
+            },
+            "url": "cognates.csv"
+        },
+        {
             "dc:conformsTo": "http://cldf.clld.org/v1.0/terms.rdf#FormTable",
+            "dc:extent": 4,
             "tableSchema": {
                 "columns": [
                     {
@@ -224,6 +741,13 @@
                         "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#languageReference",
                         "required": true,
                         "name": "Language_ID"
+                    },
+                    {
+                        "dc:description": "A reference to the meaning denoted by the form",
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#parameterReference",
+                        "required": true,
+                        "name": "Parameter_ID"
                     },
                     {
                         "dc:description": "The written expression of the form. If possible the transcription system used for the written form should be described in CLDF metadata (e.g. via adding a common property `dc:conformsTo` to the column description using concept URLs of the GOLD Ontology (such as [phonemicRep](http://linguistics-ontology.org/gold/2010/phonemicRep) or [phoneticRep](http://linguistics-ontology.org/gold/2010/phoneticRep)) as values).",
@@ -255,18 +779,12 @@
                         "name": "Source"
                     },
                     {
-                        "dc:description": "A reference to the meaning denoted by the form",
+                        "dc:description": "The form, segmented into morphological segments.",
+                        "dc:extent": "multivalued",
                         "datatype": "string",
-                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#parameterReference",
-                        "required": true,
-                        "separator": "; ",
-                        "name": "Parameter_ID"
-                    },
-                    {
-                        "dc:description": "Part of speech",
-                        "dc:extent": "singlevalued",
-                        "datatype": "string",
-                        "name": "POS"
+                        "required": false,
+                        "separator": " ",
+                        "name": "Morpho_Segments"
                     }
                 ],
                 "foreignKeys": [
@@ -280,17 +798,6 @@
                                 "ID"
                             ]
                         }
-                    },
-                    {
-                        "columnReference": [
-                            "Parameter_ID"
-                        ],
-                        "reference": {
-                            "resource": "parameters.csv",
-                            "columnReference": [
-                                "ID"
-                            ]
-                        }
                     }
                 ],
                 "primaryKey": [
@@ -298,44 +805,6 @@
                 ]
             },
             "url": "forms.csv"
-        },
-        {
-            "dc:conformsTo": "http://cldf.clld.org/v1.0/terms.rdf#ParameterTable",
-            "tableSchema": {
-                "columns": [
-                    {
-                        "datatype": {
-                            "base": "string",
-                            "format": "[a-zA-Z0-9_\\-]+"
-                        },
-                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#id",
-                        "required": true,
-                        "name": "ID"
-                    },
-                    {
-                        "datatype": "string",
-                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#name",
-                        "required": false,
-                        "name": "Name"
-                    },
-                    {
-                        "datatype": "string",
-                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#description",
-                        "required": false,
-                        "name": "Description"
-                    },
-                    {
-                        "datatype": "json",
-                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#columnSpec",
-                        "required": false,
-                        "name": "ColumnSpec"
-                    }
-                ],
-                "primaryKey": [
-                    "ID"
-                ]
-            },
-            "url": "parameters.csv"
         }
     ]
 }
