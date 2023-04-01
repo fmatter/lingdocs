@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 import click
 import yaml
+from pylingdocs.cldf import create_cldf
 from pylingdocs.cldf import generate_autocomplete
 from pylingdocs.config import BUILDERS
 from pylingdocs.config import CLDF_MD
@@ -19,12 +20,14 @@ from pylingdocs.helpers import load_content
 from pylingdocs.helpers import new as create_new
 from pylingdocs.helpers import write_readme
 from pylingdocs.metadata import _load_metadata
+from pylingdocs.output import check_abbrevs
 from pylingdocs.output import check_ids
 from pylingdocs.output import clean_output
 from pylingdocs.output import compile_latex as cmplatex
 from pylingdocs.output import create_output
 from pylingdocs.output import run_preview
 from pylingdocs.output import update_structure as do_update_structure
+from pylingdocs.preprocessing import preprocess_cldfviz
 
 
 log = logging.getLogger(__name__)
@@ -44,6 +47,7 @@ class OutputCommand(click.Command):
                     ("--output-dir",),
                     default=OUTPUT_DIR,
                     help="Folder where output is generated.",
+                    type=click.Path(path_type=Path),
                 )
             ]
         )
@@ -55,7 +59,10 @@ class BuildCommand(OutputCommand):
         self.params.extend(
             [
                 click.core.Option(
-                    ("--source",), default=".", help="Source folder to process."
+                    ("--source",),
+                    default=".",
+                    help="Source folder to process.",
+                    type=click.Path(exists=True, path_type=Path),
                 ),
                 click.core.Option(
                     ("--cldf",),
@@ -84,7 +91,6 @@ def build(
 ):  # pylint: disable=too-many-arguments
     """Create formatted output of pylingdocs project."""
     source = Path(source)
-    output_dir = Path(output_dir)
     ds = _load_cldf_dataset(cldf)
     contents = load_content(
         source_dir=source / CONTENT_FOLDER,
@@ -93,6 +99,7 @@ def build(
         ),
     )
     metadata = _load_metadata(source / METADATA_FILE)
+
     create_output(
         contents,
         source,
@@ -129,8 +136,9 @@ def preview(  # pylint: disable=too-many-arguments
 ):
     """Create a live preview using a lightweight, human-readable output format"""
     source = Path(source)
-    output_dir = Path(output_dir)
     metadata = _load_metadata(source / METADATA_FILE)
+    # if html:
+    #     targets = [""]
     run_preview(
         cldf,
         source,
@@ -156,6 +164,45 @@ def check(source, cldf, output_dir, latex):
         ),
     )
     check_ids(contents, ds, source)
+    check_abbrevs(ds, source, "\n".join([x["content"] for x in contents.values()]))
+
+
+@main.command(cls=BuildCommand)
+@click.option(
+    "--add",
+    default=None,
+    multiple=True,
+    help="Additional documents",
+    type=click.Path(exists=True, path_type=Path),
+)
+def cldf(source, cldf, output_dir, latex, add):
+    del latex
+    ds = _load_cldf_dataset(cldf)
+    contents = load_content(
+        source_dir=source / CONTENT_FOLDER,
+        structure_file=_get_relative_file(
+            folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
+        ),
+    )
+    add_docs = []
+    for add_doc in add:
+        with open(add_doc, "r", encoding="utf-8") as f:
+            content = f.read()
+            add_docs.append(
+                {
+                    "ID": add_doc.stem,
+                    "Name": add_doc.stem.capitalize(),
+                    "Description": "".join(preprocess_cldfviz(content)),
+                }
+            )
+    create_cldf(
+        contents,
+        ds,
+        source,
+        output_dir,
+        metadata_file=METADATA_FILE,
+        add_documents=add_docs,
+    )
 
 
 @main.command()
@@ -166,14 +213,12 @@ def update_structure():
 @main.command(cls=OutputCommand)
 def compile_latex(output_dir):  # pragma: no cover
     """Compile the generated LaTeX output"""
-    output_dir = Path(output_dir)
     cmplatex(output_dir=output_dir)
 
 
 @main.command(cls=OutputCommand)
 def clean(output_dir):  # pragma: no cover
     """Compile the generated LaTeX output"""
-    output_dir = Path(output_dir)
     clean_output(output_dir=output_dir)
 
 

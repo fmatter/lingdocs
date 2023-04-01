@@ -1,5 +1,6 @@
 """Various helpers"""
 import importlib.util
+import json
 import logging
 import re
 import sys
@@ -11,7 +12,9 @@ import yaml
 from cookiecutter.main import cookiecutter
 from pycldf import Dataset
 from pycldf import Source
+from slugify import slugify
 from pylingdocs import __version__
+from pylingdocs.config import ABBREV_FILE
 from pylingdocs.config import ADD_BIB
 from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CLLD_URI
@@ -35,45 +38,202 @@ from jinja2.runtime import Undefined
 log = logging.getLogger(__name__)
 
 
-def _src(string, mode="cldfviz"):
+def read_file(path, mode=None, encoding="utf-8"):
+    with open(path, "r", encoding=encoding) as f:
+        if mode == "yaml" or path.suffix == ".yaml":
+            return yaml.load(f, Loader=yaml.SafeLoader)
+        if mode == "json" or path.suffix == ".json":
+            return json.load(f)
+        return f.read()
+
+def write_file(content, path, mode=None, encoding="utf-8"):
+    with open(path, "w", encoding=encoding) as f:
+        if mode == "yaml" or path.suffix == ".yaml":
+            yaml.dump(f, content)
+        elif mode == "json" or path.suffix == ".json":
+            json.dump(content, f, ensure_ascii=False, indent=4)
+        else:
+            f.write(content)
+
+
+def get_sections(content):
+    for line in content.split("\n"):
+        if line.startswith("#"):
+            title = line.split(" ", 1)[1]
+            level = line.count("#")
+            tag = re.findall("{#(.*?)}", title)
+            if len(tag) == 0:
+                tag = slugify(title, allow_unicode=True)
+            else:
+                tag = tag[0]
+                title = title.replace(tag, "")
+            yield level, title, tag
+
+
+def get_glosses(word, gloss_cands):
+    parts = split_word(word)
+    for j, part in enumerate(parts):
+        if is_gloss_abbr_candidate(part, parts, j):
+            # take care of numbered genders
+            if not (part[0] == "G" and re.match(r"\d", part[1:])):
+                for gloss in resolve_glossing_combination(part):
+                    if gloss not in gloss_cands:
+                        yield gloss
+
+
+def check_abbrevs(dataset, source_dir, content):
+    with open(DATA_DIR / "leipzig.yaml", encoding="utf-8") as f:
+        leipzig = yaml.load(f, Loader=yaml.SafeLoader)
+    gloss_cands = []
+    if "ExampleTable" in dataset:
+        for ex in dataset.iter_rows("ExampleTable"):
+            for word in ex["Gloss"]:
+                if not word:
+                    continue
+                gloss_cands.extend(get_glosses(word, gloss_cands))
+    for text_gloss in re.findall(r"\[gl\]\((.*?)\)", content):
+        gloss_cands.append(text_gloss)
+    abbrev_dict = {}
+    if (Path(source_dir) / ABBREV_FILE).is_file():  # add abbreviations added locally
+        for rec in pd.read_csv(Path(source_dir) / ABBREV_FILE).to_dict("records"):
+            abbrev_dict[rec["ID"]] = rec["Description"]
+    for table in dataset.tables:  # add abbreviations found in the CLDF dataset
+        if str(table.url) == "abbreviations.csv":
+            for rec in table:
+                abbrev_dict[rec["ID"].lower()] = rec["Description"]
+            dataset.write(
+                **{
+                    "abbreviations.csv": [
+                        {"ID": k, "Description": v} for k, v in abbrev_dict.items()
+                    ]
+                }
+            )
+
+    for x in map(str.lower, set(gloss_cands)):
+        if x not in abbrev_dict:
+            abbrev_dict[x] = leipzig.get(x, "unknown abbreviation")
+    unaccounted = [
+        x for x in set(gloss_cands) if abbrev_dict[x.lower()] == "unknown abbreviation"
+    ]
+    if len(unaccounted) > 0:
+        log.warning(
+            "Glosses identified as abbreviations but not specified in glossing abbreviation table:"
+        )
+        print("\n".join(unaccounted))
+    return abbrev_dict
+
+
+def _src(string, mode="cldfviz", full=False):
+    bibkey, pages = split_ref(string)
     if mode == "cldfviz":
-        bibkey, pages = split_ref(string)
         if pages:
             page_str = f": {pages}"
         else:
             page_str = ""
         return f"[{bibkey}](sources.bib?with_internal_ref_link&ref#cldf:{bibkey}){page_str}"  # noqa: E501
     if mode == "biblatex":
-        cite_string = []
-        for citation in string.split(","):
-            bibkey, pages = split_ref(citation)
-            if pages:
-                page_str = f"[{pages}]"
-            else:
-                page_str = ""
-            cite_string.append(f"{page_str}{{{bibkey}}}")
-        cite_string = "".join(cite_string)
-        return cite_string
+        if pages:
+            page_str = f"[{pages}]"
+        else:
+            page_str = ""
+        return f"{page_str}{{{bibkey}}}"
     log.error("mode=(cldfviz,biblatex)")
     sys.exit()
 
 
-def src(cite_input, mode="cldfviz", parens=False):
-    if isinstance(cite_input, str):
-        cite_input = [cite_input]
-    citations = []
-    for string in cite_input:
-        if string == "":
-            log.warning("Empty citation")
-            return ""
-        citations.append(_src(string, mode=mode))
+def src(cite_input, mode="cldfviz", parens=False, full=False):
+    if cite_input == "":
+        log.warning("Empty citation")
+        return ""
+    if isinstance(cite_input, list):
+        citations = [_src(x, mode=mode) for x in cite_input]
+    else:
+        citations = []
+        for x in re.finditer(r"[A-Za-z0-9]+(\[[^\]]*])?", cite_input):
+            citations.append(_src(x.group(0), mode=mode, full=full))
     if mode == "biblatex":
+        if full:
+            return "\\fullcite" + "".join(citations)
         if parens:
             return "\\parencites" + "".join(citations)
         return "\\textcites" + "".join(citations)
     if parens:
         return "(" + ", ".join(citations) + ")"
     return ", ".join(citations)
+
+
+def load_table_metadata(source_dir):
+    table_md = _get_relative_file(source_dir / TABLE_DIR, TABLE_MD)
+    if table_md.is_file():
+        with open(table_md, encoding="utf-8") as f:
+            tables = yaml.load(f, Loader=yaml.SafeLoader)
+    else:
+        log.warning(f"Specified table metadatafile {TABLE_MD} not found.")
+        tables = {}
+    return tables
+
+
+def expand_pages(pages):
+    out_pages = []
+    for pranges in pages:
+        for page in pranges.split(","):
+            page = page.strip()
+            page = page.replace("–", "-")
+            if "-" in page:
+                ps = page.split("-")
+                if ps[0].isdigit() and ps[1].isdigit():
+                    out_pages.extend(list(range(int(ps[0]), int(ps[1]))))
+                else:
+                    out_pages.append(page)
+            else:
+                out_pages.append(page)
+    out_pages = [
+        int(x) if (isinstance(x, int) or x.isdigit()) else x for x in out_pages
+    ]
+    numeric = [x for x in out_pages if isinstance(x, int)]
+    non_numeric = [x for x in out_pages if not isinstance(x, int)]
+    return sorted(set(numeric)), list(set(non_numeric))
+
+
+def combine_pages(pages):
+    numeric, non_numeric = expand_pages(pages)
+    out_pages = []
+    for page in numeric:
+        if not out_pages:
+            out_pages.append([page, page])
+        else:
+            if out_pages[-1][-1] == page - 1:
+                out_pages[-1][-1] = page
+            else:
+                out_pages.append([page, page])
+    return ", ".join(
+        non_numeric
+        + [f"{x[0]}-{x[1]}" if x[0] != x[1] else str(x[0]) for x in out_pages]
+    )
+
+
+def combine_sources(source_list, sep="; "):
+    bibdict = {}
+    for source_entry in source_list:
+        for source in source_entry.split(sep):
+            bibkey, pages = split_ref(source)
+            if bibkey in bibdict:
+                if not pages or None in bibdict[bibkey]:
+                    raise ValueError(f"Citing {bibkey} with and without pages")
+                bibdict[bibkey].extend(pages.split(","))
+            else:
+                bibdict[bibkey] = [pages]
+    out = []
+    for bibkey, pages in bibdict.items():
+        out_string = bibkey
+        if bibkey != "pc":
+            page_string = combine_pages(pages)
+        else:
+            page_string = ", ".join(list(set(pages)))
+        if pages:
+            out_string += f"[{page_string}]"
+        out.append(out_string)
+    return out
 
 
 def html_gloss(s):
@@ -122,7 +282,6 @@ def sanitize_latex(unsafe_str):
 
 
 def get_prefixed_filename(structure, file_id):
-    print(file_id)
     return structure
 
 
@@ -198,7 +357,7 @@ def load_content(source_dir=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
     return contents
 
 
-def write_file(
+def write_content_file(
     file_id,
     content,
     prefix_mode=CONTENT_FILE_PREFIX,
@@ -218,13 +377,20 @@ def write_file(
 
 
 def read_config_file(kind):
-    def getfile(path):
+    def getfile(path, mode="yaml"):
         if Path(path).is_file():
-            return open(path, "r", encoding="utf-8").read()
+            if mode == "yaml":
+                return yaml.load(
+                    open(path, "r", encoding="utf-8"), Loader=yaml.SafeLoader
+                )
+            if mode == "plain":
+                return open(path, "r", encoding="utf-8").read()
+            raise ValueError(f"Unknown mode for reading config files: '{mode}'")
+        log.warning(f"File {path} does not exist.")
         return ""
 
     if kind == "settings":
-        return getfile(CONF_PATH)
+        return getfile(CONF_PATH, mode="plain")
     if kind == "metadata":
         return getfile(METADATA_FILE)
     if kind == "structure":
@@ -287,6 +453,7 @@ def get_md_pattern(m):
 
 
 def latexify_table(cell):
+    cell = str(cell)
     if "_" in cell or "*" in cell:
         return panflute.convert_text(
             cell, output_format="latex", input_format="markdown"
@@ -296,6 +463,7 @@ def latexify_table(cell):
 
 def write_readme(metadata_file=METADATA_FILE, release=False):
     bib = _load_bib(metadata_file)
+    citation = bib.to_string("bibtex")
     md = _load_metadata(metadata_file)
     author_string = []
     for author in md["authors"]:
@@ -315,7 +483,6 @@ def write_readme(metadata_file=METADATA_FILE, release=False):
         author_string = f"authors:\n{author_string}"
     else:
         author_string = f"author: {author_string[0]}"
-    citation = bib.to_string("bibtex")
     if not release:
         readme_text = "## Do not cite from this branch!"
         if "url" in md:
@@ -367,7 +534,12 @@ def is_gloss_abbr_candidate(part, parts, j):
     return (
         part == part.upper()  # needs to be uppercase
         and part not in glossing_delimiters + ["[", "]", "\\"]  # and not a delimiter
-        and part != "?"  # question marks may be used for unknown or ambiguous analyses
+        and part != "I" # english lol
+        and part
+        not in [
+            "?",
+            "???",
+        ]  # question marks may be used for unknown or ambiguous analyses
         and not (
             len(parts) > j + 2
             and parts[j + 2] in glossing_delimiters
@@ -418,6 +590,8 @@ def resolve_glossing_combination(input_string):
 
 
 def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
+    if not input_string:
+        return ""
     words_list = input_string.split(" ")
     for i, word in enumerate(words_list):  # pylint: disable=too-many-nested-blocks
         output = " "
@@ -430,7 +604,7 @@ def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
                 if is_gloss_abbr_candidate(part, parts, j):
                     # take care of numbered genders
                     if part[0] == "G" and re.match(r"\d", part[1:]):
-                        output += f"\\gl{{{part.lower()}}}"
+                        output += decoration(part[0].lower())+part[1:]
                     else:
                         for gloss in resolve_glossing_combination(part):
                             output += decoration(gloss.lower())

@@ -1,5 +1,5 @@
 {
-    "url": "ChapterTable",
+    "url": "chapters.csv",
     "tableSchema": {
         "columns": [
             {
@@ -21,7 +21,9 @@
                 "name": "Description",
                 "required": false,
                 "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#description",
-                "datatype": "string"
+                "datatype": "string",
+                "dc:format": "text/markdown",
+                "dc:conformsTo": "CLDF Markdown"
             },
             {
                 "name": "Number",

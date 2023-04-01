@@ -68,13 +68,12 @@ dd {
   grid-column-start: 2;
 }
 
-div#toc {
+div#toc-wrapper {
     position:fixed;
-    /*width: 40em;*/
-    font-size: 65%;
-    top: 3.5em;
+    width: 40em;
+    height: 100vh;
+    top: 1em;
     left: 1em;
-    line-height: 120%;
 }
 
 .version {
@@ -112,10 +111,20 @@ article {
   padding: 2rem 1.25rem;
 
   color: hsl(0, 5%, 10%);
-  background-color: hsl(210, 20%, 98%);
 
   text-rendering: optimizeLegibility;
 }
+
+article img{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+article figcaption {
+    text-align: center;
+}
+
 
 /* Justify and hyphenate all paragraphs */
 p {
@@ -143,7 +152,7 @@ td, th {
  border:  none;
   text-align: left;
   padding: 0.5rem;
-  line-height: 1.1;
+  line-height: 1.5;
 }
 
 thead {
@@ -192,19 +201,19 @@ h1:first-child {
 
 /* Heading typography */
 h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   line-height: 3.25rem;
   margin-bottom: 1.625rem;
 }
 
 h2 {
-  font-size: 1.7rem;
+  font-size: 1.4rem;
   line-height: 2rem;
   margin-top: 3rem;
 }
 
 h3 {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   margin-top: 2.5rem;
 }
 
@@ -252,4 +261,18 @@ h4,
 h5,
 h6 {
   margin-bottom: 0.8rem;
+}
+
+/* Center title and paragraph */
+.abstract,
+.abstract p {
+  text-align: center;
+  margin-top: 0;
+}
+.abstract {
+  margin: 2.25rem 0;
+}
+.abstract > h2 {
+  font-size: 1rem;
+  margin-bottom: -0.2rem;
 }

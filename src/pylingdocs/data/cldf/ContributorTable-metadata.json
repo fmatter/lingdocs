@@ -1,7 +1,5 @@
 {
-    "url": "ContributorTable",
-    "dc:conformsTo": null,
-    "dc:extent": 55,
+    "url": "contributors.csv",
     "tableSchema": {
         "columns": [
             {
@@ -16,6 +14,9 @@
             },
             {
                 "name": "Email"
+            },
+            {
+                "name": "Orcid"
             },
             {
                 "name": "Url"

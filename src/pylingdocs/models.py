@@ -103,7 +103,7 @@ class Entity:
                     f"{cls.shortcut}:{entry[label]}",
                     f"[{cls.shortcut}]({entry['ID']})",
                 )
-        log.warning(f"Nothing found for {entry['ID']}")
+        log.warning(f"Unable to generate preview string for {entry['ID']}")
         return entry["ID"]
 
     @classmethod
@@ -112,9 +112,8 @@ class Entity:
 
 
 class Morpheme(Entity):
-
     name = "Morpheme"
-    cldf_table = "MorphsetTable"
+    cldf_table = "morphemes.csv"
     shortcut = "mp"
 
     templates = {
@@ -131,16 +130,60 @@ class Morpheme(Entity):
         "html": load_template("morpheme", "html_index"),
     }
 
+    @classmethod
+    def autocomplete_string(cls, entry):
+        print(entry)
+        return (
+            f"{cls.shortcut}:{entry['Name']} '{entry['Parameter_ID']}'",
+            f"[{cls.shortcut}]({entry['ID']})",
+        )
+
+
 
 class Morph(Morpheme):
-
     name = "Morph"
-    cldf_table = "MorphTable"
+    cldf_table = "morphs.csv"
     shortcut = "m"
 
 
-class Example(Entity):
 
+class Wordform(Morpheme):
+    name = "Wordform"
+    cldf_table = "wordforms.csv"
+    shortcut = "wf"
+
+    templates = {
+        "html": """{% import 'pylingdocs_util.md' as util%}
+{{util.lfts(
+    "<i>" + ctx["Form"] + "</i>",
+    entity=ctx,
+    with_language=with_language or False,
+    with_source=with_source or False,
+    source_str=source_str,
+    no_translation=no_translation,
+    translation=translation)}}""",
+        "latex": """{% import 'pylingdocs_util.md' as util %}
+{{util.lfts(
+    "\\obj{"+ctx["Form"]+"}",
+    entity=ctx,
+    with_language=with_language or False,
+    with_source=with_source or False,
+    source_str=source_str,
+    no_translation=no_translation,
+    translation=translation,
+    citation_mode="biblatex")}}""",
+        "plain": "",
+    }
+
+    @classmethod
+    def autocomplete_string(cls, entry):
+        return (
+            f"{cls.shortcut}:{entry['Form']} '{entry['Parameter_ID']}'",
+            f"[{cls.shortcut}]({entry['ID']})",
+        )
+
+
+class Example(Entity):
     name = "Example"
     cldf_table = "ExampleTable"
     shortcut = "ex"
@@ -185,7 +228,6 @@ class Example(Entity):
 
 
 class Language(Entity):
-
     name = "Language"
     fallback = None
     cldf_table = "LanguageTable"
@@ -200,15 +242,13 @@ class Language(Entity):
 
 
 class Text(Entity):
-
     name = "Text"
-    cldf_table = "TextTable"
+    cldf_table = "texts.csv"
     shortcut = "txt"
-    templates = {"plain": "“{{ ctx['Title'] }}”"}
+    templates = {"plain": "“{{ ctx['Name'] }}”"}
 
 
 class Cognateset(Entity):
-
     name = "Cognate set"
     cldf_table = "CognatesetTable"
     shortcut = "cogset"
@@ -226,17 +266,17 @@ class Cognateset(Entity):
 class Form(Entity):
     name = "Form"
     cldf_table = "FormTable"
-    shortcut = "wf"
+    shortcut = "f"
     templates = {
-        "html": load_template("wordform", "html"),
-        "plain": load_template("wordform", "plain"),
-        "latex": load_template("wordform", "latex"),
+        "html": load_template("form", "html"),
+        "plain": load_template("form", "plain"),
+        "latex": load_template("form", "latex"),
     }
 
     list_templates = {
-        "plain": load_template("wordform", "plain_index"),
-        "html": load_template("wordform", "html_index"),
+        "plain": load_template("form", "plain_index"),
+        "html": load_template("form", "html_index"),
     }
 
 
-models = [Morpheme, Morph, Example, Language, Text, Cognateset, Form]
+models = [Morpheme, Morph, Wordform, Example, Language, Text, Cognateset, Form]

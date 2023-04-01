@@ -2,7 +2,7 @@ Usage
 ======
 
 ``pylingdocs`` is a command line application and is executed by using ``pylingdocs <COMMAND> --<argument>`` (if you're a wizard you can use :doc:`the python API <modules>`).
-If you have **no** previous exposure to command line interfaces, you may want to read a guide `like this <https://launchschool.com/books/command_line/read/introduction>`_ [#]_ -- though it appears you're handling linguistic databases already.
+If you have **no** previous exposure to command line interfaces, you may want to read a guide `like this <https://github.com/dictionaria/pydictionaria/blob/master/docs/intro-commandline.md>`_ or `this <https://launchschool.com/books/command_line/read/introduction>`_ [#]_ -- though it appears you're handling linguistic databases already.
 There is also an `rudimentary editor <https://github.com/fmatter/pylingdocs-gui/>`_ with a graphical user interface.
 
 .. contents:: Table of Contents
@@ -18,7 +18,7 @@ Quick start
   * if you're impatient, the only information truly needed is the path to a valid CLDF metadata.json file
 2. The project will live in a new folder, and inside you will find the `content` folder. If you have installed Sublime Text, you can use ``subl`` to open the ``<FILENAME>.sublime-project`` file. Otherwise, use an editor of your choice to open one or all of the ``.md`` files.
 3. Get writing. You can use normal `markdown <https://www.markdownguide.org/cheat-sheet/>`_, as well as `cldfviz <https://github.com/cldf/cldfviz/blob/main/docs/text.md>`_ and :doc:`pylingdocs markdown <markdown_format>`.
-  * if you are using Sublime Text and the ``pylingdocs`` plugin, you can use ``pylingdocs sublime`` in your project directory. This will activate autocompletion and also enable you to use Tools > pylingdocs > insert entity to add data points from your dataset.
+  * if you are using Sublime Text and the ``pylingdocs`` plugin, you can use ``pylingdocs sublime`` in your project directory. This will activate autocompletion and also enable you to use ``Tools > pylingdocs > insert entity`` to add data points from your dataset.
 4. To create output, run ``pylingdocs build`` in the project folder. By default, a :doc:`range of output formats <data_formats>` will be produced, in the folder ``output``
   * you can add the option ``--latex`` to create a PDF from the generated ``.tex`` file. Note: you need to have a working LaTeX installation with ``latexmk`` for this. 
 

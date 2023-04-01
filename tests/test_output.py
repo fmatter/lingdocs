@@ -8,7 +8,10 @@ from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_structure
 from pylingdocs.helpers import load_content
 from pylingdocs.output import create_output
-
+from pylingdocs.formats import PlainText
+from pylingdocs.postprocessing import postprocess
+from pylingdocs.preprocessing import preprocess
+from pylingdocs.preprocessing import render_markdown
 
 log = logging.getLogger(__name__)
 
@@ -22,6 +25,18 @@ def test_structure(data, caplog):
         "alien": {},
         "inalien": {"title": "Inalienable possession"},
     }
+
+
+def test_citing(dataset):
+    preprocessed = preprocess(
+        "[src](abbott1976estrutura[2,3,5],abbott2015dictionary[89-91; 101])"
+    )
+    preprocessed = PlainText.preprocess_commands(preprocessed)
+    preprocessed = render_markdown(preprocessed, dataset, output_format="html")
+    assert (
+        preprocessed
+        == "[Abbott 1976](#source-abbott1976estrutura): 2,3,5, [Abbott et al. 2015](#source-abbott2015dictionary): 89-91; 101"
+    )
 
 
 def test_build(data, dataset, caplog, monkeypatch, tmp_path):

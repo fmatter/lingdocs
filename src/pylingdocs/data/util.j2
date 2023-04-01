@@ -1,0 +1,54 @@
+{% macro get_translation_dict(f, single_translation=False) -%}
+{% set translation = [] %}
+{% if "Parameter_ID" in f and f["Parameter_ID"] %}
+    {% if f["Parameter_ID"] is not string %}
+        {% for t in f["Parameter_ID"] %}
+            {% set translation = translation.append(t) %}
+        {%endfor%}
+    {%else%}
+        {% set translation = translation.append(f["Parameter_ID"]) %}
+    {% endif %}
+{% elif "Description" in f and f["Description"] %}
+    {% if f["Description"] is not string %}
+        {% for t in f["Description"] %}
+            {% set translation = translation.append(t) %}
+        {%endfor%}
+    {%else%}
+        {% set translation = translation.append(f["Description"]) %}
+    {% endif %}
+{% endif %}
+{%if not single_translation%}{{" / ".join(translation)}}{%else%}{{translation[0]}}{%endif%}
+{%- endmacro %}
+
+{% macro get_translation_orm(f, single_translation=False) -%}
+{% if f.parameter %}
+    {% set translation = [] %}
+    {%for p in f.parameters %}
+        {% set translation = translation.append(p.name) %}
+    {%endfor%}
+{%if not single_translation%}{{" / ".join(translation)}}{%else%}{{translation[0]}}{%endif%}
+{%else%}
+{{ f.cldf.parameterReference }}
+{%endif%}
+{%- endmacro %}
+
+{% macro lfts(
+form_str,
+entity=None,
+with_language=False,
+with_source=False,
+no_translation=False,
+mode="dict",
+translation=None,
+single_translation=False,
+quot_left="‘",
+quot_right="’",
+citation_mode="cldfviz",
+source_str=None
+) -%}
+{%if with_language %}{% if mode=="orm" %}{{entity.language.name}} {% else %}[](LanguageTable#cldf:{{entity["Language_ID"]}}) {%endif%}
+{%endif%}
+{{form_str}}{%if translation %} {{quot_left}}{{decorate_gloss_string(translation)}}{{quot_right}}{% elif not no_translation %}{% if mode=="orm" %} {{quot_left}}{{decorate_gloss_string(get_translation_orm(entity))}}{{quot_right}}{% else %} {{quot_left}}{{decorate_gloss_string(get_translation_dict(entity))}}{{quot_right}}{% endif %}{% endif %}
+{% if source_str or with_source %}{%if mode == "orm" %} {{src(entity.references[0].__str__(), mode=citation_mode, parens=True)}}{%else%} {{src(entity["Source"], mode=citation_mode, parens=True)}}{%endif%}
+{% endif %}
+{%- endmacro %}

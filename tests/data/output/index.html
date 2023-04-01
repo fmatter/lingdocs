@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="examples.css">
+    <link rel="stylesheet" href="styling.css">
+    <link rel="stylesheet" href="alignment.css">
+    <title>Pylingdocs: A Demo</title>
+</head>
+<body>
+    <article>
+        <h1>Pylingdocs: A Demo</h1>
+        <div class="author">Florian Matter</div>
+        <div class="version"> version 0.0.1.draft </div>
+        <div id="toc-wrapper">
+            <button onclick="toggleTOC()">Toggle TOC</button>
+            <div id="toc"></div>
+        </div>
+        
+        <div class="abstract">
+            <b>Abstract</b>
+            <p>
+                This is a short document demonstrating the capabilities (and limits?) of pylingdocs.
+            </p>
+        </div>
+        
+
+        <h2 id="sec:intro">Introduction</h2>
+<p><a id='sec:intro'></a></p>
+<p>This document does double service as a test for
+<code>pylingdocs</code> and a showcase of its capabilities. It aims to
+demonstrate every feature and model currently available in
+<code>pylingdocs</code>.</p>
+<h2 id="common-markdown">Common markdown</h2>
+<p>You can use all the familiar markdown components. Here is a link to
+the <a href="https://github.com/fmatter/pylingdocs/">pylingdocs github
+repo</a>. Here is some <strong>bold</strong> and <em>italic</em> and
+<strong><em>bold italic</em></strong> text.</p>
+<ol type="1">
+<li>here</li>
+<li>is</li>
+<li>a</li>
+<li>numbered</li>
+<li>list</li>
+</ol>
+<p>and of course here is</p>
+<ul>
+<li>and one</li>
+<li>with</li>
+<li>bullet points<a href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a></li>
+</ul>
+<p>A quote:</p>
+<blockquote>
+<p>Locating an individual language on a given point of the
+ergativity-nominativity axis and the diachronic interpretation of this
+axis seem to be conceptually different concerns, even if we were to
+assume that there are principies favouring one direction over the other.
+(<a href="#source-alvarez1998split">Álvarez 1997</a>: 71)</p>
+</blockquote>
+<h2 id="pld-md">Pylingdocs markdown</h2>
+<p><a id='pld-md'></a></p>
+<p>Apart from database references, discussed in
+<a href='#sec:sources' class='crossref' name='sec:sources' >ref</a>,
+there are a number of <code>pylingdocs</code>-specific commands, all
+patterning like links:</p>
+<ul>
+<li>cross-references:
+<a href='#common-markdown' class='crossref' name='common-markdown' >ref</a>
+or <a href='#sec:intro' class='crossref' name='sec:intro' >ref</a>, see
+corresponding <code>label</code> commands</li>
+<li>example references:
+<ul>
+<li>single <a class="exref" example_id="ekiri-13" ></a></li>
+<li>subexample <a class="exref" example_id="ekiri-10" ></a></li>
+<li>range:
+<a class="exref" example_id="ekiri-13" end="ekiri-11" ></a></li>
+<li>or bare: <a class="exref" example_id="ekiri-11" bare></a></li>
+</ul></li>
+<li>glosses: <span class="gloss">acc<span
+class="tooltiptext gloss-acc"></span></span></li>
+<li>todos: <span title="we need to talk about this">❗️</span></li>
+<li>tables (with automatically generated table labels like
+<a href='#tab:consonants' class='crossref' name='tab:consonants' >ref</a>):</li>
+</ul>
+<table border="1" class="dataframe">
+<caption class="table" id="tab:consonants">
+Consonant phonemes of Yawarana
+</caption>
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+bilabial
+</th>
+<th>
+alveolar
+</th>
+<th>
+palatal
+</th>
+<th>
+velar
+</th>
+<th>
+glottal
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+occlusive
+</td>
+<td>
+/p /
+</td>
+<td>
+/t /
+</td>
+<td>
+/t͡ʃ/
+</td>
+<td>
+/k/
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+nasal
+</td>
+<td>
+/m /
+</td>
+<td>
+/n /
+</td>
+<td>
+/j/
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+fricative
+</td>
+<td>
+</td>
+<td>
+/s /
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+/j /
+</td>
+</tr>
+<tr>
+<td>
+liquid
+</td>
+<td>
+</td>
+<td>
+/r /
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+glide
+</td>
+<td>
+/w /
+</td>
+<td>
+</td>
+<td>
+/y/
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>figures (with automatically generated table labels like
+<a href='#fig:cognates' class='crossref' name='fig:cognates' >ref</a>):</li>
+</ul>
+<figure>
+<img src="figures/cognates.jpg" alt="Cognate identification strategy" />
+<figcaption id="fig:cognates" aria-hidden="true">
+Cognate identification strategy
+</figcaption>
+</figure>
+<h2 id="sec:data">Other linguistic data</h2>
+<p><a id='sec:data'></a></p>
+<h3 id="native-cldf-components">Native CLDF components</h3>
+<ul>
+<li><p>Tiriyó <i>pakoro se wae</i> ‘I want a house’ (<a
+href="#source-triomeira1999">Meira 1999</a>: 417)</p></li>
+<li><p>Hixkaryána</p>
+<table>
+<thead>
+<tr>
+<td>
+<p>Form</p>
+</td>
+<td>
+<p>Language</p>
+</td>
+<td>
+<p>Alignment</p>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<p><em>jamï</em></p>
+</td>
+<td>
+<p>Tiriyó</p>
+</td>
+<td>
+<p><span class="alignment"> - j a m o </span></p>
+</td>
+<td>
+</tr>
+<tr>
+<td>
+<p><em>azamo</em></p>
+</td>
+<td>
+<p>Apalaí</p>
+</td>
+<td>
+<p><span class="alignment"> a z a m o </span></p>
+</td>
+<td>
+</tr>
+<tr>
+<td>
+<p><em>əjamo</em></p>
+</td>
+<td>
+<p>Wayana</p>
+</td>
+<td>
+<p><span class="alignment"> ə j a m o </span></p>
+</td>
+<td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+<h3 id="non-native-components">Non-native components</h3>
+<p>Tiriyó <i>-e</i> ‘<span class="gloss">sup<span
+class="tooltiptext gloss-sup"></span></span>’ (<a
+href="#source-triomeira1999">Meira 1999</a>: 327) is a variant of
+<i>-(s)e</i>. Neither occur on <i>mahto</i> ‘fire’ (<a
+href="#source-triomeira1999">Meira 1999</a>: 314), because it is a noun.
+They are related to Apalaí <i>-se</i> (<a
+href="#source-koehn1986apalai">Koehn and Koehn 1986</a>: 77) and Wayana
+<i>-(h)e</i> (<a href="#source-wayanatavares2005">Tavares 2005</a>:
+236). This is thus a cognate set shared by Apalaí, Tiriyó, and
+Wayana.</p>
+<ul>
+<li><p>If <i>kure</i> ‘good / pretty / well’ has too long a translation,
+try <i>kure</i> ‘good’.</p></li>
+<li><p>This dataset contains the Ikpeng text “The old man”.</p></li>
+</ul>
+<h2 id="interlinear-examples">Interlinear examples</h2>
+<ol class="example">
+<li class=example id ="ekiri-13">
+  <div class="interlinear">
+    Ikpeng
+       <div class="surf">nen tan nen ïwïn.</div>
+        <div class="intlin">
+          <span class="obj">nen</span>
+          <span class="trans"><span class="gloss">inan<span class="tooltiptext gloss-inan" ></span></span>.<span class="gloss">prox<span class="tooltiptext gloss-prox" ></span></span></span>
+        </div>
+        <div class="intlin">
+          <span class="obj">tan</span>
+          <span class="trans">here</span>
+        </div>
+        <div class="intlin">
+          <span class="obj">nen</span>
+          <span class="trans"><span class="gloss">inan<span class="tooltiptext gloss-inan" ></span></span>.<span class="gloss">prox<span class="tooltiptext gloss-prox" ></span></span></span>
+        </div>
+        <div class="intlin">
+          <span class="obj">ɨ-wɨ-n</span>
+          <span class="trans"><span class="gloss">1<span class="tooltiptext gloss-1" ></span></span><span class="gloss">poss<span class="tooltiptext gloss-poss" ></span></span>-machete-<span class="gloss">pert<span class="tooltiptext gloss-pert" ></span></span></span>
+        </div>
+    <div class="freetrans">‘“My machete is here.”’
+        </div>
+  </div>
+</li>
+</ol>
+<ol class="example">
+    <li class="example" id="">
+        <ol class="subexample">
+                <li class=subexample id ="ekiri-9">
+  <div class="interlinear">
+    Ikpeng
+       <div class="surf">otumunto mun eto ïwïn otumunto</div>
+        <div class="intlin">
+          <span class="obj">otumunto</span>
+          <span class="trans">where</span>
+        </div>
+        <div class="intlin">
+          <span class="obj">mun</span>
+          <span class="trans"><span class="gloss">inan<span class="tooltiptext gloss-inan" ></span></span>.<span class="gloss">dist<span class="tooltiptext gloss-dist" ></span></span></span>
+        </div>
+        <div class="intlin">
+          <span class="obj">eto</span>
+          <span class="trans"><span class="gloss">uncert<span class="tooltiptext gloss-uncert" ></span></span></span>
+        </div>
+        <div class="intlin">
+          <span class="obj">ɨ-wɨ-n</span>
+          <span class="trans"><span class="gloss">1<span class="tooltiptext gloss-1" ></span></span><span class="gloss">poss<span class="tooltiptext gloss-poss" ></span></span>-machete-<span class="gloss">pert<span class="tooltiptext gloss-pert" ></span></span></span>
+        </div>
+        <div class="intlin">
+          <span class="obj">otumunto</span>
+          <span class="trans">where</span>
+        </div>
+    <div class="freetrans">‘“Where might my machete be, where?”’
+        </div>
+  </div>
+</li>
+                <li class=subexample id ="ekiri-10">
+  <div class="interlinear">
+    Ikpeng
+       <div class="surf">nento nento yengli ïwïn</div>
+        <div class="intlin">
+          <span class="obj">nen-to</span>
+          <span class="trans"><span class="gloss">inan<span class="tooltiptext gloss-inan" ></span></span>.<span class="gloss">prox<span class="tooltiptext gloss-prox" ></span></span>-<span class="gloss">loc<span class="tooltiptext gloss-loc" ></span></span></span>
+        </div>
+        <div class="intlin">
+          <span class="obj">nen-to</span>
+          <span class="trans"><span class="gloss">inan<span class="tooltiptext gloss-inan" ></span></span>.<span class="gloss">prox<span class="tooltiptext gloss-prox" ></span></span>-<span class="gloss">loc<span class="tooltiptext gloss-loc" ></span></span></span>
+        </div>
+        <div class="intlin">
+          <span class="obj">j-eŋ-lɨ</span>
+          <span class="trans"><span class="gloss">1<span class="tooltiptext gloss-1" ></span></span>><span class="gloss">3<span class="tooltiptext gloss-3" ></span></span>-put-<span class="gloss">hod<span class="tooltiptext gloss-hod" ></span></span></span>
+        </div>
+        <div class="intlin">
+          <span class="obj">ɨ-wɨ-n</span>
+          <span class="trans"><span class="gloss">1<span class="tooltiptext gloss-1" ></span></span><span class="gloss">poss<span class="tooltiptext gloss-poss" ></span></span>-machete-<span class="gloss">pert<span class="tooltiptext gloss-pert" ></span></span></span>
+        </div>
+    <div class="freetrans">‘“Here, here I put my machete.”’
+        </div>
+  </div>
+</li>
+        </ol>
+    </li>
+</ol>
+<ol class="example">
+<li class=example id ="ekiri-11">
+  <div class="interlinear">
+    Ikpeng
+       <div class="surf">ankang man imun:</div>
+        <div class="intlin">
+          <span class="obj">an-k-aŋ</span>
+          <span class="trans"><span class="gloss">3<span class="tooltiptext gloss-3" ></span></span>-say-<span class="gloss">rem<span class="tooltiptext gloss-rem" ></span></span>.<span class="gloss">cont<span class="tooltiptext gloss-cont" ></span></span></span>
+        </div>
+        <div class="intlin">
+          <span class="obj">man</span>
+          <span class="trans"><span class="gloss">aff<span class="tooltiptext gloss-aff" ></span></span></span>
+        </div>
+        <div class="intlin">
+          <span class="obj">i-mu-n</span>
+          <span class="trans"><span class="gloss">3<span class="tooltiptext gloss-3" ></span></span>><span class="gloss">3<span class="tooltiptext gloss-3" ></span></span>-son-<span class="gloss">pert<span class="tooltiptext gloss-pert" ></span></span></span>
+        </div>
+    <div class="freetrans">‘His son said:’
+        </div>
+  </div>
+</li>
+</ol>
+<h2 id="sec:sources">Citing literature</h2>
+<p><a id='sec:sources'></a></p>
+<ul>
+<li>see <a href="#source-alvarez1998split">Álvarez 1997</a> or <a
+href="#source-alvarez1998split">Álvarez 1997</a>: 133-134</li>
+<li>with parentheses:
+<ul>
+<li>“Locating an individual language on a given point of the
+ergativity-nominativity axis and the diachronic interpretation of this
+axis seem to be conceptually different concerns” (<a
+href="#source-alvarez1998split">Álvarez 1997</a>)</li>
+<li>“Locating an individual language on a given point of the
+ergativity-nominativity axis and the diachronic interpretation of this
+axis seem to be conceptually different concerns” (<a
+href="#source-alvarez1998split">Álvarez 1997</a>: 71)</li>
+</ul></li>
+<li>multiple citations:
+<ul>
+<li><a href="#source-alvarez1998split">Álvarez 1997</a>: 133-134, <a
+href="#source-triomeira1999">Meira 1999</a>: 218</li>
+<li>(<a href="#source-alvarez1998split">Álvarez 1997</a>: 133-134, <a
+href="#source-triomeira1999">Meira 1999</a>: 218)</li>
+</ul></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a id="source-alvarez1998split"> </a>Álvarez, José. 1997. Split
+Ergativity and Complementary Distribution of NP’s and Pronominal Affixes
+in Pemón (Cariban). Opción 13. 69–94.</li>
+<li><a id="source-koehn1986apalai"> </a>Koehn, Edward and Koehn, Sally.
+1986. Apalai. In Derbyshire, Desmond C. and Pullum, Geoffrey K. (eds.),
+Handbook of Amazonian Languages, 33–127. Berlin/New York: Mouton de
+Gruyter.</li>
+<li><a id="source-triomeira1999"> </a>Meira, Sérgio. 1999. A Grammar of
+Tiriyó. (Doctoral dissertation).</li>
+<li><a id="source-wayanatavares2005"> </a>Tavares, Petronila da Silva.
+2005. A grammar of Wayana. UMI. (Doctoral dissertation).</li>
+</ul>
+<section class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>And here is a (foot)note. You can use
+markdown in here: see
+<a href='#sec:data' class='crossref' name='sec:data' >ref</a> for
+details about <i>-se</i> ‘<span class="gloss">sup<span
+class="tooltiptext gloss-sup"></span></span>’.<a href="#fnref1"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+        <script>var abbrev_dict={'cor': 'coreferential', 'hod': 'hodiernal past', 'cont': 'continuous', 'part': 'particle', 'ideo': 'ideophone', 'iter': 'iterative', 'rem': 'remove past', 'uncert': 'uncertainty', 'inan': 'inanimate', 'aff': 'affirmative', 'npst': 'non-past', 'pert': 'pertensive', 'ill': 'illative', 'sup': 'supine', 'acc': 'accusative', 'loc': 'locative', 'poss': 'possessive', 'cop': 'copula', '3': 'third person', 'ins': 'instrumental', 'obl': 'oblique', 'aux': 'auxiliary', 'voc': 'vocative', '2': 'second person', 'nmlz': 'nominalizer/nominalization', 'pl': 'plural', '1': 'first person', 'dist': 'distal', 'prox': 'proximal/proximate', 'rel': 'relative'}; for (var key in abbrev_dict){
+var targets = document.getElementsByClassName('gloss-'+key)
+for (var i = 0; i < targets.length; i++) {
+    targets[i].innerHTML = abbrev_dict[key];
+}
+};</script>
+
+    </article>
+
+    <script src="examples.js"></script> 
+    <script src="glossing.js"></script> 
+    <script src="crossref.js"></script>
+    <script src="alignment.js"></script>
+    <script type="text/javascript" src="https://livejs.com/live.js"></script>
+    <script>
+        number_examples()
+        numberSections()
+        numberCaptions()
+        resolveCrossrefs()
+    </script>
+    <script>
+        function toggleTOC() {
+          var x = document.getElementById("toc");
+          if (x.style.display === "none") {
+            x.style.display = "block";
+          } else {
+            x.style.display = "none";
+          }
+        } 
+    </script>
+    <script>
+        var alignments = document.getElementsByClassName("alignment");
+        for (var i=0,alignment; alignment=alignments[i]; i++) {
+            alignment.innerHTML = plotWord(alignment.innerHTML, 'span');
+        }
+    </script>
+
+</body>
+</html> 

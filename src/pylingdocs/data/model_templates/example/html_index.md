@@ -11,8 +11,8 @@
 <ol class="example">
     <li class="example" id="{{example_id}}">
         <ol class="subexample">
-            {% for example_id, example in gathered_examples.items() %}
-                {{ util.example(example, class_="subexample") }}
+            {% for example_id in ids %}
+                {{ util.example(gathered_examples[example_id], class_="subexample") }}
             {% endfor %}
         </ol>
     </li>

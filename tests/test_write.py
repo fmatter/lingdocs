@@ -1,4 +1,4 @@
-from pylingdocs.helpers import write_file
+from pylingdocs.helpers import write_content_file
 import shutil
 
 
@@ -6,7 +6,7 @@ def test_write(data, dataset, caplog, monkeypatch, tmp_path):
     shutil.copytree(data / "content", tmp_path / "content")
     new_content = "a test"
 
-    write_file(
+    write_content_file(
         "verbs",
         new_content,
         prefix_mode=None,

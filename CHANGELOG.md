@@ -8,12 +8,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+* table of contents in markdown output
+* option to choose LaTeX `book` template
+* leipzig glossing abbreviations
+* add additional external chapters when creating a CLDF dataset
+* `topics_index.csv` will be added as a TopicTable
+* `entity_refs.yaml` allows to add section references to entries in the database
+* `full` argument for citations
+* `bare` argument for exrefs
+
+### Fixed
+* LaTeX examples
+* handling of abbreviations
+* revamped document commands
+* abbrev checking
+* lfts macro
+
+### Changed
+* if undefined, `LATEX_TOPLEVEL` is determined based on the LaTeX template
+* using [cldf-ldd](https://github.com/fmatter/cldf-ldd/)
+* better HTML output
+
+## [0.0.11] - 2022-11-27
+
+### Added
+* in the table metadata file, `header_column` can be set to `false` if the first column should be treated as a "content" column
+* more sophisticated citing facilities
+* cldf dataset creation with `ChapterTable`
+* option to create sublime autocompletion data upon project initialization
 
 ### Removed
 
 ### Changed
+* if a non-existing table is requested, a CSV file is generated
+* HTML: smaller font sizes for titles
+* HTML: center align figures
+* HTML: more line spacing in table cells (when using line breaks)
 
 ### Fixed
+* unglossed words don't throw errors
 
 ## [0.0.10] -- 2022-10-15
 
@@ -154,6 +187,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release.
 
 [Unreleased]: https://github.com/fmatter/pylingdocs/compare/0.0.10...HEAD
+[0.0.11]: https://github.com/fmatter/pylingdocs/compare/0.0.10...0.0.10
+[0.0.11]: https://github.com/fmatter/pylingdocs/compare/0.0.10...0.0.10
 [0.0.10]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.10
 [0.0.9]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.9
 [0.0.8]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.8

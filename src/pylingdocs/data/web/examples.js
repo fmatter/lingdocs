@@ -16,7 +16,10 @@ function number_examples() {
     exrefs.forEach(function(x, i) {
         example_id = x.getAttribute("example_id")
         x.setAttribute("href", "#" + example_id)
-        x.textContent = "("+get_example_marker(example_id)
+        if (!x.hasAttribute("bare")) {
+            x.textContent += "("
+        }
+        x.textContent += get_example_marker(example_id)
         if (x.hasAttribute("end")) {
             end = x.getAttribute("end")
             x.textContent += "-" + get_example_marker(end)
@@ -24,7 +27,9 @@ function number_examples() {
         if (x.hasAttribute("suffix")) {
             x.textContent += x.getAttribute("suffix")
         }
-        x.textContent += ")"
+        if (!x.hasAttribute("bare")) {
+            x.textContent += ")"
+        }
     });
 }
 

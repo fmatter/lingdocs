@@ -1,0 +1,287 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\today}
+% \lhead{}
+\rhead{\footnotesize \itshape Made with \href{https://github.com/fmatter/pylingdocs/}{pylingdocs}}
+\cfoot{\thepage}
+
+\input{preamble.tex}
+\addbibresource{sources.bib}
+
+\title{Pylingdocs: A Demo}
+\author{Florian Matter}
+\date{\today\\version 0.0.1.draft}
+\newGlossingAbbrev{cor}{coreferential}
+\newGlossingAbbrev{hod}{hodiernal past}
+\newGlossingAbbrev{cont}{continuous}
+\newGlossingAbbrev{part}{particle}
+\newGlossingAbbrev{ideo}{ideophone}
+\newGlossingAbbrev{iter}{iterative}
+\newGlossingAbbrev{rem}{remove past}
+\newGlossingAbbrev{uncert}{uncertainty}
+\newGlossingAbbrev{inan}{inanimate}
+\newGlossingAbbrev{aff}{affirmative}
+\newGlossingAbbrev{npst}{non-past}
+\newGlossingAbbrev{pert}{pertensive}
+\newGlossingAbbrev{ill}{illative}
+\newGlossingAbbrev{sup}{supine}
+\newGlossingAbbrev{acc}{accusative}
+\newGlossingAbbrev{loc}{locative}
+\newGlossingAbbrev{poss}{possessive}
+\newGlossingAbbrev{cop}{copula}
+\newGlossingAbbrev{3}{third person}
+\newGlossingAbbrev{ins}{instrumental}
+\newGlossingAbbrev{obl}{oblique}
+\newGlossingAbbrev{aux}{auxiliary}
+\newGlossingAbbrev{voc}{vocative}
+\newGlossingAbbrev{2}{second person}
+\newGlossingAbbrev{nmlz}{nominalizer/nominalization}
+\newGlossingAbbrev{pl}{plural}
+\newGlossingAbbrev{1}{first person}
+\newGlossingAbbrev{dist}{distal}
+\newGlossingAbbrev{prox}{proximal/proximate}
+\newGlossingAbbrev{rel}{relative}
+
+
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+
+\section{\texorpdfstring{Introduction \label{sec:intro}}{Introduction }}
+
+This document does double service as a test for \texttt{pylingdocs} and
+a showcase of its capabilities. It aims to demonstrate every feature and
+model currently available in \texttt{pylingdocs}.
+
+\section{Common markdown}
+
+You can use all the familiar markdown components. Here is a link to the
+\href{https://github.com/fmatter/pylingdocs/}{pylingdocs github repo}.
+Here is some \textbf{bold} and \emph{italic} and \textbf{\emph{bold
+italic}} text.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  here
+\item
+  is
+\item
+  a
+\item
+  numbered
+\item
+  list
+\end{enumerate}
+
+and of course here is
+
+\begin{itemize}
+\tightlist
+\item
+  and one
+\item
+  with
+\item
+  bullet points\footnote{And here is a (foot)note. You can use markdown
+    in here: see \cref{sec:data} for details about \obj{-se} `\gl{sup}'.}
+\end{itemize}
+
+A quote:
+
+\begin{quote}
+Locating an individual language on a given point of the
+ergativity-nominativity axis and the diachronic interpretation of this
+axis seem to be conceptually different concerns, even if we were to
+assume that there are principies favouring one direction over the other.
+\parencites[71]{alvarez1998split}
+\end{quote}
+
+\section{\texorpdfstring{Pylingdocs markdown
+\label{pld-md}}{Pylingdocs markdown }}
+
+Apart from database references, discussed in \cref{sec:sources}, there
+are a number of \texttt{pylingdocs}-specific commands, all patterning
+like links:
+
+\begin{itemize}
+\tightlist
+\item
+  cross-references: \cref{common-markdown} or \cref{sec:intro}, see
+  corresponding \texttt{label} commands
+\item
+  example references:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    single \exref[]{ekiri-13}
+  \item
+    subexample \exref[]{ekiri-10}
+  \item
+    range: \exref[][ekiri-11]{ekiri-13}
+  \item
+    or bare: \ref{ekiri-11}
+  \end{itemize}
+\item
+  glosses: \gl{acc}
+\item
+  todos: {[}todo: we need to talk about this{]}
+\item
+  tables (with automatically generated table labels like
+  \cref{tab:consonants}):
+\end{itemize}
+
+\begin{table}
+\caption{Consonant phonemes of Yawarana}
+\label{tab:consonants}
+\centering
+\begin{tabular}{llllll}
+\toprule
+          & bilabial & alveolar & palatal & velar & glottal \\
+\midrule
+occlusive &     /p / &     /t / &   /t͡ʃ/ &   /k/ &         \\
+    nasal &     /m / &     /n / &     /j/ &       &         \\
+fricative &          &     /s / &         &       &    /j / \\
+   liquid &          &     /r / &         &       &         \\
+    glide &     /w / &          &     /y/ &       &         \\
+\bottomrule
+\end{tabular}
+
+\end{table}
+
+\begin{itemize}
+\tightlist
+\item
+  figures (with automatically generated table labels like
+  \cref{fig:cognates}):
+\end{itemize}
+
+{[}Cognate identification strategy: cognates.jpg{]}
+
+\section{\texorpdfstring{Other linguistic data
+\label{sec:data}}{Other linguistic data }}
+
+\subsection{Native CLDF components}
+
+\begin{itemize}
+\tightlist
+\item
+  Tiriyó \obj{pakoro se wae} `I want a house'
+  \parencites[417]{triomeira1999}
+\item
+  Hixkaryána
+\end{itemize}
+
+louse-1
+
+\begin{longtable}[]{@{}lllllll@{}}
+\toprule()
+Form & Language & - & - & - & - & - \\
+\midrule()
+\endhead
+\emph{jamï} & Tiriyó & - & j & a & m & o \\
+\emph{azamo} & Apalaí & a & z & a & m & o \\
+\emph{əjamo} & Wayana & ə & j & a & m & o \\
+\bottomrule()
+\end{longtable}
+
+\subsection{Non-native components}
+
+Tiriyó \obj{-e} `\gl{sup}' \parencites[327]{triomeira1999} is a variant
+of \obj{-(s)e}. Neither occur on \obj{mahto} `fire'
+\parencites[314]{triomeira1999}, because it is a noun. They are related
+to \obj{-se} and \obj{-(h)e}. This is thus a cognate set shared by
+Apalaí, Tiriyó, and Wayana.
+
+\begin{itemize}
+\item
+  If \obj{kure} `good / pretty / well' has too long a translation, try
+  \obj{kure} `good'.
+\item
+  This dataset contains the Ikpeng text ``The old man''.
+\end{itemize}
+
+\section{Interlinear examples}
+
+\ex Ikpeng\\
+\label{ekiri-13}    \begingl
+    \glpreamble nen tan nen ïwïn. //
+    \gla nen tan nen ɨ-wɨ-n//
+    \glb \gl{inan}.\gl{prox} here \gl{inan}.\gl{prox} \gl{1}\gl{poss}-machete-\gl{pert}//
+        \glft ‘“My machete is here.”’//  
+    \endgl 
+\xe
+
+\pex\label{}    \a Ikpeng\\
+    \label{ekiri-9}        \begingl
+        \glpreamble otumunto mun eto ïwïn otumunto //
+        \gla otumunto mun eto ɨ-wɨ-n otumunto//
+        \glb where \gl{inan}.\gl{dist} \gl{uncert} \gl{1}\gl{poss}-machete-\gl{pert} where//
+            \glft ‘“Where might my machete be, where?”’//  
+        \endgl 
+    \a Ikpeng\\
+    \label{ekiri-10}        \begingl
+        \glpreamble nento nento yengli ïwïn //
+        \gla nen-to nen-to j-eŋ-lɨ ɨ-wɨ-n//
+        \glb \gl{inan}.\gl{prox}-\gl{loc} \gl{inan}.\gl{prox}-\gl{loc} \gl{1}>\gl{3}-put-\gl{hod} \gl{1}\gl{poss}-machete-\gl{pert}//
+            \glft ‘“Here, here I put my machete.”’//  
+        \endgl 
+\xe
+
+\ex Ikpeng\\
+\label{ekiri-11}    \begingl
+    \glpreamble ankang man imun: //
+    \gla an-k-aŋ man i-mu-n//
+    \glb \gl{3}-say-\gl{rem}.\gl{cont} \gl{aff} \gl{3}>\gl{3}-son-\gl{pert}//
+        \glft ‘His son said:’//  
+    \endgl 
+\xe
+
+\section{\texorpdfstring{Citing literature
+\label{sec:sources}}{Citing literature }}
+
+\begin{itemize}
+\tightlist
+\item
+  see \textcites{alvarez1998split} or
+  \textcites[133-134]{alvarez1998split}
+\item
+  with parentheses:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    ``Locating an individual language on a given point of the
+    ergativity-nominativity axis and the diachronic interpretation of
+    this axis seem to be conceptually different concerns''
+    \parencites{alvarez1998split}
+  \item
+    ``Locating an individual language on a given point of the
+    ergativity-nominativity axis and the diachronic interpretation of
+    this axis seem to be conceptually different concerns''
+    \parencites[71]{alvarez1998split}
+  \end{itemize}
+\item
+  multiple citations:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textcites[133-134]{alvarez1998split}[218]{triomeira1999}
+  \item
+    \parencites[133-134]{alvarez1998split}[218]{triomeira1999}
+  \end{itemize}
+\end{itemize}
+
+\printbibliography
+
+\end{document}

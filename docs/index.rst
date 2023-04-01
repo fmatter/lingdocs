@@ -21,6 +21,7 @@ You can use ``pylingdocs`` to create data-rich linguistic documents, with a vari
    examples
    extending
    modules
+   topic_index
 
 
 

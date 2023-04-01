@@ -11,12 +11,9 @@ from jinja2 import DictLoader
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import MANEX_DIR
 from pylingdocs.config import TABLE_DIR
-from pylingdocs.config import TABLE_MD
-from pylingdocs.helpers import _get_relative_file
-from pylingdocs.helpers import comma_and_list, get_example_data
-from pylingdocs.helpers import html_gloss
 from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import get_md_pattern
+from pylingdocs.helpers import load_table_metadata
 from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
 from pylingdocs.helpers import src
@@ -27,29 +24,15 @@ log = logging.getLogger(__name__)
 
 MD_LINK_PATTERN = re.compile(r"\[(?P<label>[^]]*)]\((?P<url>[^)]+)\)")
 
-TABLE_PATTERN = re.compile(
-    r"PYLINGDOCS_RAW_TABLE_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
-)
 
-MANEX_PATTERN = re.compile(
-    r"PYLINGDOCS_MANEX_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_MANEX_END"  # noqa: E501
-)
-
-MANPEX_PATTERN = re.compile(
-    r"PYLINGDOCS_MANPEX_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_MANPEX_END"  # noqa: E501
-)
-
-MANPEX_ITEM_PATTERN = re.compile(
-    r"PYLINGDOCS_MANPEXITEM_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_MANPEXITEM_END"  # noqa: E501
-)
-
-
+model_dict = {x.name.lower(): x for x in models}
 if Path("custom_pld_models.py").is_file():
     sys.path.append(os.getcwd())
     from custom_pld_models import models as custom_models  # noqa
 
-    models += custom_models
-
+    for model in custom_models:
+        model_dict[model.__name__.lower()] = model
+models = model_dict.values()
 
 log.info("Loading templates")
 labels = {}
@@ -66,7 +49,7 @@ for model in models:
         if output_format not in list_templates:
             list_templates[output_format] = {}
 
-with open(DATA_DIR / "util.md", "r", encoding="utf-8") as f:
+with open(DATA_DIR / "util.j2", "r", encoding="utf-8") as f:
     pylingdocs_util = f.read()
 
 for templ in templates.values():
@@ -76,8 +59,12 @@ for templ in templates.values():
 for output_format, env_dict in templates.items():
     for model in models:
         model_output = model.representation(output_format)
+        # if output_format == "github" and model.name == "Example":
+        #     log.debug(f"Format {output_format} for model {model}")
+        #     log.debug(model_output)
         if model_output is not None:
             env_dict[model.cldf_table + "_detail.md"] = model_output
+            # log.debug(f"Format {output_format} for model {model}")
 
 for output_format, env_dict in list_templates.items():
     for model in models:
@@ -88,30 +75,41 @@ for output_format, env_dict in list_templates.items():
 if Path("pld/model_templates").is_dir():
     for model in Path("pld/model_templates").iterdir():
         for output_format, template_collection in templates.items():
-
             templ_path = model / output_format / "detail.md"
             if not templ_path.is_file():
-                templ_path = model / "plain" / "detail.md"
+                continue
             if templ_path.is_file():
                 with open(templ_path, "r", encoding="utf-8") as f:
                     templ_content = f.read()
-                template_collection[model.name + "_detail.md"] = templ_content
-
+                log.info(
+                    f"Using custom template {templ_path} for model {model.name} for format {output_format}"
+                )
+                template_collection[
+                    f"{model_dict[model.name].cldf_table}_detail.md"
+                ] = templ_content
+        for output_format, template_collection in list_templates.items():
             templ_path = model / output_format / "index.md"
             if not templ_path.is_file():
-                templ_path = model / "plain" / "index.md"
+                continue
             if templ_path.is_file():
                 with open(templ_path, "r", encoding="utf-8") as f:
                     templ_content = f.read()
-                template_collection[model.name + "_index.md"] = templ_content
-
+                # log.debug(f"Using custom template {templ_path} for model {model.name} for format {output_format}")
+                template_collection[
+                    f"{model.name.capitalize()}Table_index.md"
+                ] = templ_content
 
 with open(DATA_DIR / "model_templates" / "latex_util.md", "r", encoding="utf-8") as f:
     latex_util = f.read()
 
 templates["latex"]["latex_util.md"] = latex_util
 
-with open(DATA_DIR / "model_templates" / "html_util.md", "r", encoding="utf-8") as f:
+if Path("pld/model_templates/html_util.md").is_file():
+    html_util_path = Path("pld/model_templates/html_util.md")
+else:
+    html_util_path = DATA_DIR / "model_templates" / "html_util.md"
+
+with open(html_util_path, "r", encoding="utf-8") as f:
     html_util = f.read()
 
 templates["html"]["html_util.md"] = html_util
@@ -152,20 +150,40 @@ def preprocess_cldfviz(md):
     yield md[current:]
 
 
+def pad_ex(*lines, sep=" "):
+    out = {}
+    for glossbundle in zip(*lines):
+        longest = len(max(glossbundle, key=len))
+        for i, obj in enumerate(glossbundle):
+            diff = longest - len(obj)
+            out.setdefault(i, [])
+            out[i].append(obj + " " * diff)
+    for k in out.copy():
+        out[k] = sep.join(out[k])
+    return tuple(out.values())
+
+
 def render_markdown(
     md_str,
     ds,
     decorate_gloss_string=lambda x: x,
     data_format="cldf",
     output_format="plain",
+    **kwargs
 ):
     if data_format == "cldf":
         if output_format != "clld":
-            preprocessed = render(
-                doc="".join(preprocess_cldfviz(md_str)),
-                cldf_dict=ds,
-                loader=envs[output_format],
-                func_dict={
+            if "MediaTable" in ds.components:
+                audio_dict = {
+                    x["ID"]: {
+                        "url": x.get("Download_URL", "").unsplit(),
+                        "type": x["Media_Type"],
+                    }
+                    for x in ds.iter_rows("MediaTable")
+                }
+            else:
+                audio_dict = {}
+            func_dict = {
                     "comma_and_list": comma_and_list,
                     "sanitize_latex": sanitize_latex,
                     "split_ref": split_ref,
@@ -173,7 +191,16 @@ def render_markdown(
                     "html_gloss": html_gloss,
                     "get_example_data": get_example_data,
                     "src": src,
-                },
+                    "flexible_pad_ex": pad_ex,
+                    "get_audio": lambda x: audio_dict.get(x, None),
+                }
+            for func, val in kwargs.get("func_dict", {}).items():
+                func_dict[func] = val
+            preprocessed = render(
+                doc="".join(preprocess_cldfviz(md_str)),
+                cldf_dict=ds,
+                loader=envs[output_format],
+                func_dict=func_dict,
             )
             preprocessed = render(
                 doc=preprocessed,
@@ -207,7 +234,7 @@ def load_tables(md, tables, source_dir="."):
         if x != "":
             return (
                 this_table_metadata.get("pre_cell", "")
-                + x
+                + str(x)
                 + this_table_metadata.get("post_cell", "")
             )
         return x
@@ -219,16 +246,21 @@ def load_tables(md, tables, source_dir="."):
         if key == "table":
             table_path = source_dir / TABLE_DIR / f"{url}.csv"
             if not table_path.is_file():
-                log.error(f"Table file <{table_path.resolve()}> does not exist.")
-                sys.exit(1)
-            else:
-                temp_df = pd.read_csv(table_path, index_col=0, keep_default_na=False)
-                this_table_metadata = tables.get(url, {})
-                temp_df = temp_df.applymap(decorate_cell)
-                csv_buffer = StringIO()
-                temp_df.to_csv(csv_buffer, index=True)
-                csv_buffer.seek(0)
-                yield "\nPYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + csv_buffer.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
+                log.info(
+                    f"Table file <{table_path.resolve()}> does not exist, creating..."
+                )
+                with open(table_path.resolve(), "w", encoding="utf-8") as new_file:
+                    new_file.write("Header,row\nContent,row")
+            this_table_metadata = tables.get(url, {})
+            temp_df = pd.read_csv(table_path, index_col=0, keep_default_na=False)
+            temp_df = temp_df.applymap(decorate_cell)
+            with_header_col = this_table_metadata.get("header_column", True)
+            if not with_header_col:
+                temp_df.index = temp_df.index.map(decorate_cell)
+            csv_buffer = StringIO()
+            temp_df.to_csv(csv_buffer, index=True)
+            csv_buffer.seek(0)
+            yield "\nPYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + csv_buffer.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
@@ -276,58 +308,7 @@ def load_manual_examples(md, source_dir="."):
     yield md[current:]
 
 
-def insert_tables(md, builder, tables):
-    current = 0
-    for m in TABLE_PATTERN.finditer(md):
-        yield md[current : m.start()]
-        current = m.end()
-        label = m.group("label")
-        content = m.group("content")
-        df = pd.read_csv(StringIO(content), keep_default_na=False)
-        df.columns = [col if "Unnamed: " not in col else "" for col in df.columns]
-        if label not in tables:
-            log.warning(f"Could not find metadata for table {label}.")
-            yield builder.table(df=df, caption=None, label=None)
-        else:
-            yield builder.table(
-                df=df, caption=tables[label].get("caption", None), label=label
-            )
-    yield md[current:]
-
-
-def insert_manex(md, builder, pattern, kind="plain"):
-    current = 0
-    for m in pattern.finditer(md):
-        yield md[current : m.start()]
-        current = m.end()
-        label = m.group("label")
-        content = m.group("content")
-        yield builder.manex(label, content=content, kind=kind)
-    yield md[current:]
-
-
-def load_table_metadata(source_dir):
-    table_md = _get_relative_file(source_dir / TABLE_DIR, TABLE_MD)
-    if table_md.is_file():
-        with open(table_md, encoding="utf-8") as f:
-            tables = yaml.load(f, Loader=yaml.SafeLoader)
-    else:
-        log.warning(f"Specified table metadatafile {TABLE_MD} not found.")
-        tables = {}
-    return tables
-
-
 def preprocess(md_str, source_dir="."):
     tables = load_table_metadata(source_dir)
     temp_str = "".join(load_manual_examples(md_str, source_dir))
     return "".join(load_tables(temp_str, tables, source_dir))
-
-
-def postprocess(md_str, builder, source_dir="."):
-    tables = load_table_metadata(source_dir)
-    md_str = "".join(insert_manex(md_str, builder, MANPEX_PATTERN, kind="multipart"))
-    md_str = "".join(
-        insert_manex(md_str, builder, MANPEX_ITEM_PATTERN, kind="subexample")
-    )
-    md_str = "".join(insert_manex(md_str, builder, MANEX_PATTERN))
-    return "".join(insert_tables(md_str, builder, tables))

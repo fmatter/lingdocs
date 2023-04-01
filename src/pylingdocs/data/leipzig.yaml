@@ -1,0 +1,84 @@
+'1': first person
+'2': second person
+'3': third person
+a: agent-like argument of canonical transitive verb
+abl: ablative
+abs: absolutive
+acc: accusative
+adj: adjective
+adv: adverb(ial)
+agr: agreement
+all: allative
+antip: antipassive
+appl: applicative
+art: article
+aux: auxiliary
+ben: benefactive
+caus: causative
+clf: classifier
+com: comitative
+comp: complementizer
+compl: completive
+cond: conditional
+cop: copula
+cvb: converb
+dat: dative
+decl: declarative
+def: definite
+dem: demonstrative
+det: determiner
+dist: distal
+distr: distributive
+du: dual
+dur: durative
+erg: ergative
+excl: exclusive
+f: feminine
+foc: focus
+fut: future
+gen: genitive
+imp: imperative
+incl: inclusive
+ind: indicative
+indf: indefinite
+inf: infinitive
+ins: instrumental
+intr: intransitive
+ipfv: imperfective
+irr: irrealis
+loc: locative
+m: masculine
+n: neuter
+n-: non-
+neg: negation/negative
+nmlz: nominalizer/nominalization
+nom: nominative
+obj: object
+obl: oblique
+p: patient-like argument of canonical transitive verb
+pass: passive
+pfv: perfective
+pl: plural
+poss: possessive
+pred: predicative
+prf: perfect
+prog: progressive
+proh: prohibitive
+prox: proximal/proximate
+prs: present
+pst: past
+ptcp: participle
+purp: purposive
+q: question particle/marker
+quot: quotative
+recp: reciprocal
+refl: reflexive
+rel: relative
+res: resultative
+s: single argument of canonical intransitive verb
+sbj: subject
+sbjv: subjunctive
+sg: singular
+top: topic
+tr: transitive
+voc: vocative

@@ -33,7 +33,9 @@ def get_config(section, label, as_path=False, as_boolean=False):
         return config.getboolean(
             section, label, fallback=default_config.getboolean(section, label)
         )
-    value = config.get(section, label, fallback=default_config.get(section, label))
+    value = config.get(
+        section, label, fallback=default_config.get(section, label, fallback=None)
+    )
     if as_path:
         path = Path(value)
         return path
@@ -60,7 +62,7 @@ ADD_BIB = get_path("add_bib")
 BUILDERS = get_config("output", "builders").split(" ")
 PREVIEW = get_config("output", "preview").split(" ")
 CLLD_URI = get_config("clld", "db_uri")
-GLOSS_FILE_ADDRESS = get_config("input", "glossing_abbrevs")
+ABBREV_FILE = get_config("input", "abbreviation_file")
 
 CREATE_README = get_config("output", "readme", as_boolean=True)
 
@@ -72,6 +74,11 @@ for builder in BUILDERS + PREVIEW + ["plain", "github", "html", "latex", "clld"]
 
 LATEX_EX_TEMPL = get_config("latex", "interlinear_tool")
 LATEX_TOPLEVEL = get_config("latex", "toplevel")
+if not LATEX_TOPLEVEL:
+    if OUTPUT_TEMPLATES["latex"] in ["book"]:
+        LATEX_TOPLEVEL = "chapter"
+    else:
+        LATEX_TOPLEVEL = "section"
 
 EX_SHOW_LG = get_config("examples", "show_language", as_boolean=True)
 EX_SHOW_PRIMARY = get_config("examples", "show_primary", as_boolean=True)
