@@ -139,12 +139,10 @@ class Morpheme(Entity):
         )
 
 
-
 class Morph(Morpheme):
     name = "Morph"
     cldf_table = "morphs.csv"
     shortcut = "m"
-
 
 
 class Wordform(Morpheme):

@@ -221,7 +221,7 @@ def create_output(
             dataset,
             decorate_gloss_string=builder.decorate_gloss_string,
             output_format=output_format,
-            **kwargs
+            **kwargs,
         )
         preprocessed += "\n\n" + builder.reference_list()
         # second run to insert reference list
@@ -230,7 +230,7 @@ def create_output(
             dataset,
             decorate_gloss_string=builder.decorate_gloss_string,
             output_format=output_format,
-            **kwargs
+            **kwargs,
         )
         preprocessed = postprocess(preprocessed, builder, source_dir)
         if builder.name == "latex":
@@ -244,6 +244,9 @@ def create_output(
             )
         if builder.name == "latex":
             bibcontents = read_file(dataset.bibpath)
-            write_file(bibcontents.replace(" &", " \\&"), output_dir / builder.name / dataset.bibpath.name)
+            write_file(
+                bibcontents.replace(" &", " \\&"),
+                output_dir / builder.name / dataset.bibpath.name,
+            )
     if latex:
         compile_latex()

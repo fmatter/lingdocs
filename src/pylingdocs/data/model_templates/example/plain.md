@@ -4,12 +4,12 @@
   `with_languageLabel`
   `with_internal_ref_link`
   `label`
-  `get_example_data`
+  `build_example`
   `title`
   `source`
 #}
 {% import 'util.md' as util %}
-{% set header, show_primary, post_translation = get_example_data(
+{% set header, show_primary, post_translation = build_example(
     ctx.language.name,
     show_language=with_languageLabel,
     show_primary=with_primaryText,

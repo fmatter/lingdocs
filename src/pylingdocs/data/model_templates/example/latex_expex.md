@@ -4,7 +4,7 @@
   `with_internal_ref_link`
   `example_id`
   `format`
-  `get_example_data`: obligatory
+  `build_example`: obligatory
   `title`
   `show_language`
   `source`
@@ -22,7 +22,7 @@
 {%else%}
 {%set corpus_string = ""%}
 {%endif%}
-{% set example_data = get_example_data(
+{% set example_data = build_example(
     ctx.related('languageReference').name,
     sanitize_latex(ctx.cldf.primaryText),
     title,

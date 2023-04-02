@@ -46,6 +46,7 @@ def read_file(path, mode=None, encoding="utf-8"):
             return json.load(f)
         return f.read()
 
+
 def write_file(content, path, mode=None, encoding="utf-8"):
     with open(path, "w", encoding=encoding) as f:
         if mode == "yaml" or path.suffix == ".yaml":
@@ -534,7 +535,7 @@ def is_gloss_abbr_candidate(part, parts, j):
     return (
         part == part.upper()  # needs to be uppercase
         and part not in glossing_delimiters + ["[", "]", "\\"]  # and not a delimiter
-        and part != "I" # english lol
+        and part != "I"  # english lol
         and part
         not in [
             "?",
@@ -604,7 +605,7 @@ def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
                 if is_gloss_abbr_candidate(part, parts, j):
                     # take care of numbered genders
                     if part[0] == "G" and re.match(r"\d", part[1:]):
-                        output += decoration(part[0].lower())+part[1:]
+                        output += decoration(part[0].lower()) + part[1:]
                     else:
                         for gloss in resolve_glossing_combination(part):
                             output += decoration(gloss.lower())
@@ -642,8 +643,8 @@ bool_dic = {"true": True, "True": True, 1: True}
 
 
 def _resolve_jinja(var, default, name):
-    if isinstance(var, Undefined):
-        return EX_SHOW_PRIMARY
+    if isinstance(var, Undefined) or var is None:
+        return default
     elif not isinstance(var, bool):
         if var in bool_dic:
             return bool_dic[var]
@@ -652,46 +653,56 @@ def _resolve_jinja(var, default, name):
             return default
 
 
-def get_example_data(
-    lg,
-    source_string,
+def build_example(
+    obj,
+    gls,
+    ftr,
+    txt=None,
+    lng=None,
+    src=None,
+    ex_id="example",
     title=None,
-    comment=None,
     show_language=EX_SHOW_LG,
+    ftr_explanation=None,
+    additional_translations=None,
+    comment=None,
     source_position=EX_SRC_POS,
-    show_primary=EX_SHOW_PRIMARY,
+    show_primary=True,
+    quotes=("‘", "’"),
+    translation_sep=" / "
 ):
+    ex_dic = {"obj": obj, "gls": gls, "id": ex_id}
+    preamble = ""
+    postamble = ""
 
-    show_primary = _resolve_jinja(show_primary, EX_SHOW_PRIMARY, "with_primaryText")
-    show_language = _resolve_jinja(show_language, EX_SHOW_LG, "with_primaryText")
-    valid_sp = ["after_translation", "after_header"]
-    if source_position not in valid_sp:
-        log.warning(
-            f"Invalid value for [source_position]: {source_position}. Use {' or '.join(valid_sp)}"
-        )
-        source_position = EX_SRC_POS
+    show_primary = _resolve_jinja(show_primary, EX_SHOW_PRIMARY, "show_primary")
+    source_position = _resolve_jinja(source_position, EX_SRC_POS, "source_position")
 
-    if isinstance(source_position, Undefined):
-        source_position = EX_SRC_POS
 
-    if isinstance(show_language, Undefined):
-        show_language = EX_SHOW_LG
-
-    if not isinstance(title, Undefined):
-        header = title
-    elif show_language:
-        header = lg
-    else:
-        header = ""
-
+    if title:
+        preamble += title
+    elif lng and show_language:
+        preamble += lng
     if comment:
-        post_translation = "(" + comment + ")"
+        postamble += f" ({comment})"
+    if source_position == "in_preamble":
+        preamble += " " + src
+    elif source_position == "after_translation":
+        postamble += " " +  src
     else:
-        post_translation = ""
-
-    if source_position == "after_header":
-        header += " (" + source_string + ")"
+        raise ValueError(source_position)
+    if txt and show_primary:
+        ex_dic["srf"] = txt
     else:
-        post_translation += " (" + source_string + ")"
+        ex_dic["srf"] = None
+    if ftr_explanation:
+        ftr += f" ({ftr_explanation})"
+    trans_string = [f"{quotes[0]}{ftr}{quotes[1]}"]
+    if additional_translations:
+        trans_string.extend([quotes[0] + add + quotes[1] for add in additional_translations])
+    ex_dic["translation"] = translation_sep.join(trans_string)    
+    ex_dic["preamble"] = preamble.strip(" ")
+    ex_dic["postamble"] = postamble.strip(" ")
+    return ex_dic
 
-    return header, show_primary, post_translation
+

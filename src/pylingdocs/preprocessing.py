@@ -12,7 +12,7 @@ from pylingdocs.config import DATA_DIR
 from pylingdocs.config import MANEX_DIR
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.helpers import comma_and_list
-from pylingdocs.helpers import get_md_pattern
+from pylingdocs.helpers import get_md_pattern, build_example
 from pylingdocs.helpers import load_table_metadata
 from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
@@ -169,7 +169,7 @@ def render_markdown(
     decorate_gloss_string=lambda x: x,
     data_format="cldf",
     output_format="plain",
-    **kwargs
+    **kwargs,
 ):
     if data_format == "cldf":
         if output_format != "clld":
@@ -184,16 +184,15 @@ def render_markdown(
             else:
                 audio_dict = {}
             func_dict = {
-                    "comma_and_list": comma_and_list,
-                    "sanitize_latex": sanitize_latex,
-                    "split_ref": split_ref,
-                    "decorate_gloss_string": decorate_gloss_string,
-                    "html_gloss": html_gloss,
-                    "get_example_data": get_example_data,
-                    "src": src,
-                    "flexible_pad_ex": pad_ex,
-                    "get_audio": lambda x: audio_dict.get(x, None),
-                }
+                "comma_and_list": comma_and_list,
+                "sanitize_latex": sanitize_latex,
+                "split_ref": split_ref,
+                "decorate_gloss_string": decorate_gloss_string,
+                "build_example": build_example,
+                "src": src,
+                "flexible_pad_ex": pad_ex,
+                "get_audio": lambda x: audio_dict.get(x, None),
+            }
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val
             preprocessed = render(

@@ -3,16 +3,29 @@
   `example_id`
   `format`
   `with_language`
+  `title`
+  `comment`
+  `source`
 #}
 {% import 'html_util.md' as util %}
-{%if format=="subexample"%}
 ```{=html}
-{{ util.example(ctx, example_id="irrelevant", class_="subexample", with_language=with_language) }}
-```
-{%else%}
-```{=html}
-<ol class="example">
-{{ util.example(ctx, example_id=example_id, with_language=with_language) }}
+{% if format=="subexample" %}
+    {% set class_="subexample" %}
+{% else %}
+    {% set class_="example" %}
+    <ol class="example">
+{% endif %}
+{{ util.example(ctx,
+    example_id=example_id,
+    title=title,
+    comment=comment,
+    source=source,
+    with_language=with_language,
+    source_position=src_pos,
+    show_primary=with_txt
+    )
+}}
+{% if class_=="example" %}
 </ol>
+{% endif %}
 ```
-{%endif%}
