@@ -12,13 +12,13 @@ from pylingdocs.config import DATA_DIR
 from pylingdocs.config import MANEX_DIR
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.helpers import comma_and_list
-from pylingdocs.helpers import get_md_pattern, build_example
+from pylingdocs.helpers import get_md_pattern, build_example, build_examples
 from pylingdocs.helpers import load_table_metadata
 from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
 from pylingdocs.helpers import src
 from pylingdocs.models import models
-
+from writio import load
 
 log = logging.getLogger(__name__)
 
@@ -99,20 +99,12 @@ if Path("pld/model_templates").is_dir():
                     f"{model.name.capitalize()}Table_index.md"
                 ] = templ_content
 
-with open(DATA_DIR / "model_templates" / "latex_util.md", "r", encoding="utf-8") as f:
-    latex_util = f.read()
 
-templates["latex"]["latex_util.md"] = latex_util
-
-if Path("pld/model_templates/html_util.md").is_file():
-    html_util_path = Path("pld/model_templates/html_util.md")
-else:
-    html_util_path = DATA_DIR / "model_templates" / "html_util.md"
-
-with open(html_util_path, "r", encoding="utf-8") as f:
-    html_util = f.read()
-
-templates["html"]["html_util.md"] = html_util
+for output_format in ["latex", "html", "github", "plain"]:
+    util_path = Path(f"pld/model_templates/{output_format}_util.md")
+    if not util_path.is_file():
+        util_path = DATA_DIR / "model_templates" / f"{output_format}_util.md"
+    templates[output_format]["pld_util.md"] = load(util_path)
 
 for output_format, env_dict in templates.items():
     env_dict.update(list_templates[output_format])
@@ -189,6 +181,7 @@ def render_markdown(
                 "split_ref": split_ref,
                 "decorate_gloss_string": decorate_gloss_string,
                 "build_example": build_example,
+                "build_examples": build_examples,
                 "src": src,
                 "flexible_pad_ex": pad_ex,
                 "get_audio": lambda x: audio_dict.get(x, None),

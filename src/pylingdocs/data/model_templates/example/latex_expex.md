@@ -1,16 +1,15 @@
 {# 
   Render an example object as IGT (if possible). 
+  `build_example`: obligatory
   `with_primaryText`
-  `with_internal_ref_link`
+  `with_language`
   `example_id`
   `format`
-  `build_example`: obligatory
   `title`
-  `show_language`
+  `comment`
   `source`
-  `hide_primary`
 #}
-{% import 'latex_util.md' as util %}
+{% import 'pld_util.md' as util %}
 {% if ctx.references %}
 {% set ref_string = " " + util.references(ctx.references) %}
 {% else %}

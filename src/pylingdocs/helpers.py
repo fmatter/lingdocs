@@ -653,7 +653,8 @@ def _resolve_jinja(var, default, name):
             return default
 
 
-def build_example(
+
+def _build_example(
     obj,
     gls,
     ftr,
@@ -672,23 +673,23 @@ def build_example(
     translation_sep=" / "
 ):
     ex_dic = {"obj": obj, "gls": gls, "id": ex_id}
-    preamble = ""
-    postamble = ""
+    preamble = []
+    postamble = []
 
     show_primary = _resolve_jinja(show_primary, EX_SHOW_PRIMARY, "show_primary")
     source_position = _resolve_jinja(source_position, EX_SRC_POS, "source_position")
-
+    show_language = _resolve_jinja(show_language, EX_SHOW_LG, "show_language")
 
     if title:
         preamble += title
     elif lng and show_language:
-        preamble += lng
+        preamble.append(lng)
     if comment:
-        postamble += f" ({comment})"
+        postamble.append(comment)
     if source_position == "in_preamble":
-        preamble += " " + src
+        preamble.append(src)
     elif source_position == "after_translation":
-        postamble += " " +  src
+        postamble.append(src)
     else:
         raise ValueError(source_position)
     if txt and show_primary:
@@ -700,9 +701,30 @@ def build_example(
     trans_string = [f"{quotes[0]}{ftr}{quotes[1]}"]
     if additional_translations:
         trans_string.extend([quotes[0] + add + quotes[1] for add in additional_translations])
-    ex_dic["translation"] = translation_sep.join(trans_string)    
-    ex_dic["preamble"] = preamble.strip(" ")
-    ex_dic["postamble"] = postamble.strip(" ")
+    ex_dic["ftr"] = translation_sep.join(trans_string)
+    ex_dic["preamble"] = "; ".join(preamble)
+    ex_dic["postamble"] = "; ".join(postamble)
     return ex_dic
 
 
+def build_example(data):
+    obj = data.pop("obj")
+    gls = data.pop("gls")
+    ftr = data.pop("ftr")
+    return _build_example(obj, gls, ftr, **data)
+
+def build_examples(datas):
+    ex_dicts = []
+    single_language = True
+    first_language = datas[0].get("lng", None)
+    full_preamble = ""
+    for data in datas[1::]:
+        if data.get("lng", None) != first_language:
+            single_language = False
+    if single_language:
+        full_preamble += first_language
+    for data in datas:
+        if single_language:
+            data["show_language"] = False
+        ex_dicts.append(build_example(data))
+    return ex_dicts, full_preamble

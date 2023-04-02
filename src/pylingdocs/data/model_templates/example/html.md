@@ -1,13 +1,15 @@
 {# 
   Render an example object as IGT (if possible). 
+  `build_example`: obligatory
+  `with_primaryText`
+  `with_language`
   `example_id`
   `format`
-  `with_language`
   `title`
   `comment`
   `source`
 #}
-{% import 'html_util.md' as util %}
+{% import 'pld_util.md' as util %}
 ```{=html}
 {% if format=="subexample" %}
     {% set class_="subexample" %}
@@ -15,16 +17,21 @@
     {% set class_="example" %}
     <ol class="example">
 {% endif %}
-{{ util.example(ctx,
-    example_id=example_id,
+{% set data=dict(
+    obj=ctx.cldf.analyzedWord,
+    gls=ctx.cldf.gloss,
+    ftr=ctx.cldf.translatedText,
+    txt=ctx.cldf.primaryText,
+    lng=ctx.related("languageReference").name,
+    src=util.get_src_string(ctx, source),
+    ex_id=example_id or ctx.cldf.id,
     title=title,
     comment=comment,
-    source=source,
-    with_language=with_language,
+    show_language=with_language,
     source_position=src_pos,
-    show_primary=with_txt
-    )
-}}
+    show_primary=with_primaryText
+    ) %}
+{{ util.render_example(class_, build_example(data))}}
 {% if class_=="example" %}
 </ol>
 {% endif %}
