@@ -518,7 +518,7 @@ class Latex(OutputFormat):
     def register_glossing_abbrevs(cls, abbrev_dict):
         return "\n".join(
             [
-                f"\\newGlossingAbbrev{{{x.lower()}}}{{{y}}}"
+                f"\\newGlossingAbbrev{{{x.lower()}}}{{{y.split('(')[0].replace(',', ';')}}}"
                 for x, y in abbrev_dict.items()
             ]
         )

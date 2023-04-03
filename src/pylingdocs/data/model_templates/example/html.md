@@ -10,7 +10,6 @@
   `source`
 #}
 {% import 'pld_util.md' as util %}
-```{=html}
 {% if format=="subexample" %}
     {% set class_="subexample" %}
 {% else %}
@@ -31,6 +30,7 @@
     source_position=src_pos,
     show_primary=with_primaryText
     ) %}
+```{=html}
 {{ util.render_example(class_, build_example(data))}}
 {% if class_=="example" %}
 </ol>
