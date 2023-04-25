@@ -685,7 +685,7 @@ def _build_example(
     elif lng and show_language:
         preamble.append(lng)
     if comment:
-        postamble.append(comment)
+        postamble.append("("+comment+")")
     if source_position == "in_preamble":
         preamble.append(src)
     elif source_position == "after_translation":
@@ -703,7 +703,7 @@ def _build_example(
         trans_string.extend([quotes[0] + add + quotes[1] for add in additional_translations])
     ex_dic["ftr"] = translation_sep.join(trans_string)
     ex_dic["preamble"] = "; ".join(preamble)
-    ex_dic["postamble"] = "; ".join(postamble)
+    ex_dic["postamble"] = " ".join(postamble)
     return ex_dic
 
 

@@ -9,12 +9,14 @@
   `source`
 #}
 {% import 'util.md' as util %}
-{% set header, show_primary, post_translation = build_example(
-    ctx.language.name,
+{% set data = build_example(
+    dict(obj=ctx.cldf.analyzedWord,
+    gls=ctx.cldf.gloss,
+    ftr=ctx.cldf.translatedText,
     show_language=with_languageLabel,
     show_primary=with_primaryText,
-    source_string="my source yes",
-    title=title
+    src="my source yes",
+    title=title)
 ) %}
 
 ({{ label or ctx.id }}) {{ header }}  
