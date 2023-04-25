@@ -24,7 +24,7 @@ personal knowledge
 
 
 {% macro render_example(format, res) -%}
-{% if format=="subexample" %}\a{%else%}\ex{%endif%} {%if res["preamble"]%}{{ res["preamble"] }} \\{%endif%}
+{% if format=="subexample" %}\a{%else%}\ex{%endif%} {% if res["title"] or res["posttitle"] %} {{ res["title"] }} {{ res["posttitle"] }} \\{%endif%}
 \label{% raw %}{{% endraw %}{{ res["id"] }}{% raw %}}{% endraw %}
 {% if res["obj"] != [] %}
 
@@ -42,7 +42,7 @@ personal knowledge
 \gla {{ " ".join(objlist) }}//
 \glb {{ " ".join(glosslist) }}//
 {% endif %}
-\glft {{ sanitize_latex(res["ftr"]) }} \parentext{%raw%}{{%endraw%}{{res["postamble"]}}{%raw%}}{%endraw%}//
+\glft {{ sanitize_latex(res["ftr"]) }} {{res["postamble"]}}//
 \endgl
 {% if format=="subexample" %}{%else%}
 \xe{%endif%}
