@@ -14,7 +14,6 @@
     {% set class_="subexample" %}
 {% else %}
     {% set class_="example" %}
-    <ol class="example">
 {% endif %}
 {% set data=dict(
     obj=ctx.cldf.analyzedWord,
@@ -31,6 +30,7 @@
     show_primary=with_primaryText
     ) %}
 ```{=html}
+<ol class="{{class_}}">
 {{ util.render_example(class_, build_example(data))}}
 {% if class_=="example" %}
 </ol>
