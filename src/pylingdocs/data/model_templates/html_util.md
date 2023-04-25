@@ -2,7 +2,7 @@
 {% macro render_example(class_, res) -%}
 <li class={{class_}} id ="{{ res['id'] }}">
   <div class="interlinear-wrapper">
-    <div class="preamble"> {{ res["preamble"] }} </div>
+    <div class="preamble"> {{ res["title"] }} {{ res["posttitle"] }} </div>
     {%if res["srf"]%}
         <div class="text">{{ res["srf"] }}</div>
     {%else%}
@@ -17,7 +17,7 @@
         </div>
       {% endfor %}
     {% endif %}
-    <div class="ftr">{{ res["ftr"] }} {%if res["postamble"] %} ({{res["postamble"]}}) {%endif%}</div>
+    <div class="ftr">{{ res["ftr"] }} {{res["postamble"]}} </div>
     {% set audio = None %}
     {% if audio %}
         <audio controls src="{{ audio['url'] }}" type="{{ audio['type'] }}"></audio>

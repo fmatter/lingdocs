@@ -670,22 +670,27 @@ def _build_example(
     source_position=EX_SRC_POS,
     show_primary=True,
     quotes=("‘", "’"),
+    parentheses=("(", ")"),
     translation_sep=" / "
 ):
     ex_dic = {"obj": obj, "gls": gls, "id": ex_id}
     preamble = []
     postamble = []
 
+    print("pre",source_position)
     show_primary = _resolve_jinja(show_primary, EX_SHOW_PRIMARY, "show_primary")
-    source_position = _resolve_jinja(source_position, EX_SRC_POS, "source_position")
+    source_position = source_position or EX_SRC_POS
     show_language = _resolve_jinja(show_language, EX_SHOW_LG, "show_language")
+    print("post,",source_position)
 
     if title:
-        preamble += title
+        title = title
     elif lng and show_language:
-        preamble.append(lng)
+        title = lng
+    else:
+        title = ""
     if comment:
-        postamble.append("("+comment+")")
+        postamble.append(comment)
     if source_position == "in_preamble":
         preamble.append(src)
     elif source_position == "after_translation":
@@ -702,8 +707,13 @@ def _build_example(
     if additional_translations:
         trans_string.extend([quotes[0] + add + quotes[1] for add in additional_translations])
     ex_dic["ftr"] = translation_sep.join(trans_string)
-    ex_dic["preamble"] = "; ".join(preamble)
+    ex_dic["title"] = title
+    ex_dic["posttitle"] = " ".join(preamble)
+    if preamble:
+        ex_dic["posttitle"] = parentheses[0] + ex_dic["posttitle"] + parentheses[1]
     ex_dic["postamble"] = " ".join(postamble)
+    if postamble:
+        ex_dic["postamble"] = parentheses[0] + ex_dic["postamble"] + parentheses[1]
     return ex_dic
 
 
