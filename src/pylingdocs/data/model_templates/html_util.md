@@ -1,3 +1,4 @@
+{% import 'util.md' as util %}
 {% macro render_example(class_, res) -%}
 <li class={{class_}} id ="{{ res['id'] }}">
   <div class="interlinear-wrapper">
@@ -25,15 +26,23 @@
 </li>
 {%- endmacro %}
 
+{% macro txt_src(data) -%}
+{% if data["Record_Number"] %}
+{{data["Text_ID"]}}: {{data["Record_Number"]}}{% else %}
+{{data["Text_ID"]}}{% endif %}
+{%- endmacro %}
+
 {% macro get_src_string (ctx, source=None) -%}
-    {% if ctx.references %}
-        {% set ref = ctx.references[0] %}
-        {% set bibkey, pages = split_ref(ref.__str__()) %}
-    {% endif %}
-    {% if source %}
-{{source}}
-    {% elif ref%}
-<a href='#source-{{ref.source.id}}'>{{ref.source.refkey(year_brackets=None)}}</a>
-    {% else %}
+{% if source %}
+{{source}}{% elif ctx.references %}
+{% set ref = ctx.references[0] %}
+{% set bibkey, pages = split_ref(ref.__str__()) %}
+{% if pages %}
+    {% set page_string = ": "+pages%}
+{%else%}
+    {% set page_string = ""%}
+{% endif %}
+<a href='#source-{{ref.source.id}}'>{{ref.source.refkey(year_brackets=None)}}</a>{{page_string}}{% elif "Text_ID" in ctx.data %}
+{{txt_src(ctx.data)}}{% else %}
 personal knowledge{% endif %}
 {%- endmacro %}
