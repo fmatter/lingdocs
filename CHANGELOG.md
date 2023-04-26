@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `entity_refs.yaml` allows to add section references to entries in the database
 * `full` argument for citations
 * `bare` argument for exrefs
+* one-stop solution for example layouting
 
 ### Fixed
 * LaTeX examples
