@@ -80,9 +80,9 @@ Apart from database references, discussed in
 
 ## Native CLDF components
 
--   Tiriyó pakoro se wae ‘I want a house’ ([Meira
-    1999](#source-triomeira1999): 417)
--   Hixkaryána
+-   forms: Tiriyó pakoro se wae ‘I want a house’
+-   languages: Hixkaryána
+-   cognate sets:
 
 louse-1
 
@@ -94,9 +94,9 @@ louse-1
 
 ## Non-native components
 
-Tiriyó *-e* ‘SUP’ is a variant of *-(s)e*. Neither occur on , because it
-is a noun. They are related to *-se* and *-(h)e*. This is thus a cognate
-set shared by Apalaí, Tiriyó, and Wayana.
+Tiriyó *-e* ‘SUP’ is a variant of Tiriyó *-(s)e*. Neither occur on ,
+because it is a noun. They are related to *-se* and *-(h)e*. This is
+thus a cognate set shared by Apalaí, Tiriyó, and Wayana.
 
 -   If has too long a translation, try .
 
@@ -122,11 +122,35 @@ set shared by Apalaí, Tiriyó, and Wayana.
     INAN.PROX-LOC  INAN.PROX-LOC  1\>3-put-HOD  1POSS-machete-PERT  
     ‘“Here, here I put my machete.”’
 
-> (ekiri-11) Ikpeng
+> (tri-1) Tiriyó (Meira 1999: 420)
 > <pre>
-> an-k-aŋ         man  i-mu-n  
-> 3-say-REM.CONT  AFF  3>3-son-PERT  
-> ‘His son said:’</pre>
+> pai    i-wae    t-ee-se        wïraapa  
+> tapir  3-super  NPST-COP-NPST  bow  
+> ‘The bow was stronger than the tapir.’</pre>
+
+> (tri-1) Tiriyó (Meira 1999: 420)
+> <pre>
+> pai    i-wae    t-ee-se        wïraapa  
+> tapir  3-super  NPST-COP-NPST  bow  
+> ‘The bow was stronger than the tapir.’</pre>
+
+> (tri-1) Tiriyó (Meira 1999: 420)
+> <pre>
+> pai    i-wae    t-ee-se        wïraapa  
+> tapir  3-super  NPST-COP-NPST  bow  
+> ‘The bow was stronger than the tapir.’</pre>
+
+> (tri-1) Tiriyó (Meira 1999: 420)
+> <pre>
+> pai    i-wae    t-ee-se        wïraapa  
+> tapir  3-super  NPST-COP-NPST  bow  
+> ‘The bow was stronger than the tapir.’</pre>
+
+> (tri-1) Tiriyó (Meira 1999: 420)
+> <pre>
+> pai    i-wae    t-ee-se        wïraapa  
+> tapir  3-super  NPST-COP-NPST  bow  
+> ‘The bow was stronger than the tapir.’</pre>
 
 # Citing literature <a id>=‘sec:sources’\><a/>
 
@@ -156,4 +180,4 @@ set shared by Apalaí, Tiriyó, and Wayana.
     Tiriyó. (Doctoral dissertation).
 
 [^1]: And here is a (foot)note. You can use markdown in here: see
-    <a href='#sec:data'>click</a> for details about *-se* ‘SUP’.
+    <a href='#sec:data'>click</a> for details about Apalaí *-se* ‘SUP’.

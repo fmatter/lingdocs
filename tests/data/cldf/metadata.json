@@ -502,6 +502,13 @@
                         "name": "Comment"
                     },
                     {
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#source",
+                        "required": false,
+                        "separator": ";",
+                        "name": "Source"
+                    },
+                    {
                         "dc:description": "The larger discourse context in which this record was uttered.",
                         "datatype": "string",
                         "required": false,

@@ -43,7 +43,7 @@ Apart from database references, discussed in [crossref](chapters.csv?_anchor=sec
 
 |           | bilabial   | alveolar   | palatal   | velar   | glottal   |
 |:----------|:-----------|:-----------|:----------|:--------|:----------|
-| occlusive | /p /       | /t /       | /t͡ʃ/     | /k/     |           |
+| occlusive | /p /       | /t /       | /t͡ʃ/      | /k/     |           |
 | nasal     | /m /       | /n /       | /j/       |         |           |
 | fricative |            | /s /       |           |         | /j /      |
 | liquid    |            | /r /       |           |         |           |
@@ -56,16 +56,17 @@ Apart from database references, discussed in [crossref](chapters.csv?_anchor=sec
 sec-data,Other linguistic data,"
 ## Native CLDF components
 
-* [Form tri-house](FormTable?with_language&with_source#cldf:tri-house)
-* [Language hix](LanguageTable?#cldf:hix)
+* forms: [Form tri-house](FormTable?#cldf:tri-house)
+* languages: [Language hix](LanguageTable?#cldf:hix)
+* cognate sets:
 
 [Cognate set louse-1](CognatesetTable?#cldf:louse-1)
 
 ## Non-native components
 
-[Morph tri-se-3](morphs.csv?with_language&with_source#cldf:tri-se-3) is a variant of [Morpheme tri-se](morphemes.csv?no_translation#cldf:tri-se).
-Neither occur on [Wordform tri-fire](wordforms.csv?with_source#cldf:tri-fire), because it is a noun.
-They are related to [Morpheme apa-se,way-se](morphemes.csv?with_language&no_translation&with_source&ids=apa-se,way-se#cldf:__all__).
+[Morph tri-se-3](morphs.csv?#cldf:tri-se-3) is a variant of [Morpheme tri-se](morphemes.csv?no_translation#cldf:tri-se).
+Neither occur on [Wordform tri-fire](wordforms.csv?#cldf:tri-fire), because it is a noun.
+They are related to [Morpheme apa-se,way-se](morphemes.csv?no_translation&ids=apa-se,way-se#cldf:__all__).
 This is thus a cognate set shared by [Language apa,way,tri](LanguageTable?ids=apa,way,tri#cldf:__all__).
 
 * If [Wordform tri-kure](wordforms.csv?#cldf:tri-kure) has too long a translation, try [Wordform tri-kure](wordforms.csv?translation=good#cldf:tri-kure).
@@ -77,7 +78,15 @@ interlinear-examples,Interlinear examples,"
 
 [Example ekiri-9,ekiri-10](ExampleTable?ids=ekiri-9,ekiri-10&example_counter=2#cldf:__all__)
 
-[Example ekiri-11](ExampleTable?example_counter=3#cldf:ekiri-11)
+[Example tri-1](ExampleTable?example_counter=3#cldf:tri-1)
+
+[Example tri-1](ExampleTable?with_language=false&example_counter=4#cldf:tri-1)
+
+[Example tri-1](ExampleTable?with_primaryText=false&example_counter=5#cldf:tri-1)
+
+[Example tri-1](ExampleTable?src_pos=in_preamble&comment=metaphorically&example_counter=6#cldf:tri-1)
+
+[Example tri-1](ExampleTable?source=Sérgio Meira, p.c.&example_counter=7#cldf:tri-1)
 ",5
 sec-sources,Citing literature,"
 * see [alvarez1998split](sources.bib?with_internal_ref_link&ref#cldf:alvarez1998split) or [alvarez1998split](sources.bib?with_internal_ref_link&ref#cldf:alvarez1998split): 133-134

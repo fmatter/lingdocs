@@ -8,6 +8,7 @@ import pandas as pd
 import yaml
 from cldfviz.text import render
 from jinja2 import DictLoader
+from jinja2.runtime import Undefined
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import MANEX_DIR, LFTS_SHOW_LG,LFTS_SHOW_FTR,LFTS_SHOW_SOURCE
 from pylingdocs.config import TABLE_DIR
@@ -111,7 +112,6 @@ for output_format, env_dict in templates.items():
     envs[output_format] = DictLoader(env_dict)
 
 bool_dic = {"True": True, "False": False}
-abbrev_dic = {"nt": "no_translation"}
 
 
 def preprocess_cldfviz(md):
@@ -128,8 +128,10 @@ def preprocess_cldfviz(md):
                     if "=" in arg:
                         k, v = arg.split("=")
                         kwargs[k] = bool_dic.get(v, v)
+                    elif arg == "nt":
+                        kwargs["with_translation"] = False
                     else:
-                        args.append(abbrev_dic.get(arg, arg))
+                        args.append(arg)
             if "," in url:
                 kwargs.update({"ids": url})
                 yield labels[key](
@@ -154,6 +156,14 @@ def pad_ex(*lines, sep=" "):
         out[k] = sep.join(out[k])
     return tuple(out.values())
 
+def resolve_lfts(with_language, with_source, with_translation):
+    if isinstance(with_language, Undefined):
+        with_language = LFTS_SHOW_LG
+    if isinstance(with_source, Undefined):
+        with_source = LFTS_SHOW_SOURCE
+    if isinstance(with_translation, Undefined):
+        with_translation = LFTS_SHOW_FTR
+    return with_language, with_source, with_translation
 
 def render_markdown(
     md_str,
@@ -185,7 +195,7 @@ def render_markdown(
                 "src": src,
                 "flexible_pad_ex": pad_ex,
                 "get_audio": lambda x: audio_dict.get(x, None),
-                "lfts": {"show_lg": LFTS_SHOW_LG, "show_src": LFTS_SHOW_SOURCE, "show_ftr": LFTS_SHOW_FTR}
+                "resolve_lfts": resolve_lfts
             }
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val

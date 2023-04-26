@@ -8,7 +8,7 @@
     "dc:bibliographicCitation": {
         "author": "Matter, Florian",
         "year": "2023",
-        "urldate": "2023-03-07",
+        "urldate": "2023-04-25",
         "title": "Pylingdocs: A Demo (version 0.0.1.draft)"
     },
     "dc:conformsTo": "http://cldf.clld.org/v1.0/terms.rdf#Generic",
@@ -517,6 +517,13 @@
                         "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#comment",
                         "required": false,
                         "name": "Comment"
+                    },
+                    {
+                        "datatype": "string",
+                        "propertyUrl": "http://cldf.clld.org/v1.0/terms.rdf#source",
+                        "required": false,
+                        "separator": ";",
+                        "name": "Source"
                     },
                     {
                         "dc:description": "The larger discourse context in which this record was uttered.",

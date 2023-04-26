@@ -5,11 +5,11 @@
 {% set my_list = my_list.append(util.lfts(
     "\obj{"+f.cldf.form+"}",
     entity=f,
+    translation=translation,
+    source=source,
     with_language=with_language,
     with_source=with_source,
-    translation=translation,
-    no_translation=no_translation,
-    source=source,
+    with_translation=with_translation,
     citation_mode="biblatex",
     mode="orm"
 )) %}

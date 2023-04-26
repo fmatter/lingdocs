@@ -5,10 +5,10 @@
 {% set my_list = my_list.append(util.lfts(
     f.cldf.form,
     entity=f,
+    translation=translation,
     with_language=with_language,
     with_source=with_source,
-    translation=translation,
-    no_translation=no_translation,
+    with_translation=with_translation,
     source=source,
     mode="orm"
 )) %}
