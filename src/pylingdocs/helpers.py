@@ -158,7 +158,7 @@ def src(cite_input, mode="cldfviz", parens=False, full=False):
         if parens:
             return "\\parencites" + "".join(citations)
         return "\\textcites" + "".join(citations)
-    if parens:
+    if parens and citations:
         return "(" + ", ".join(citations) + ")"
     return ", ".join(citations)
 
