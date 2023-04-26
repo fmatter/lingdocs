@@ -9,17 +9,23 @@ import yaml
 from cldfviz.text import render
 from jinja2 import DictLoader
 from jinja2.runtime import Undefined
+from writio import load
 from pylingdocs.config import DATA_DIR
-from pylingdocs.config import MANEX_DIR, LFTS_SHOW_LG, LFTS_SHOW_FTR, LFTS_SHOW_SOURCE
+from pylingdocs.config import LFTS_SHOW_FTR
+from pylingdocs.config import LFTS_SHOW_LG
+from pylingdocs.config import LFTS_SHOW_SOURCE
+from pylingdocs.config import MANEX_DIR
 from pylingdocs.config import TABLE_DIR
+from pylingdocs.helpers import build_example
+from pylingdocs.helpers import build_examples
 from pylingdocs.helpers import comma_and_list
-from pylingdocs.helpers import get_md_pattern, build_example, build_examples
+from pylingdocs.helpers import get_md_pattern
 from pylingdocs.helpers import load_table_metadata
 from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
 from pylingdocs.helpers import src
 from pylingdocs.models import models
-from writio import load
+
 
 log = logging.getLogger(__name__)
 
@@ -311,11 +317,6 @@ def load_manual_examples(md, source_dir="."):
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
-
-
-def get_figure(figid, source_dir):
-    res = load_figure_metadata(source_dir)[figid]
-    return res["filename"], res["caption"]
 
 
 def preprocess(md_str, source_dir="."):

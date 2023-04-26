@@ -15,12 +15,15 @@ from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.formats import builders
-from pylingdocs.helpers import _get_relative_file, read_file, write_file
+from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_cldf_dataset
 from pylingdocs.helpers import check_abbrevs
-from pylingdocs.helpers import get_structure, load_figure_metadata
+from pylingdocs.helpers import get_structure
 from pylingdocs.helpers import load_content
+from pylingdocs.helpers import load_figure_metadata
+from pylingdocs.helpers import read_file
 from pylingdocs.helpers import refresh_clld_db
+from pylingdocs.helpers import write_file
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
 from pylingdocs.postprocessing import postprocess

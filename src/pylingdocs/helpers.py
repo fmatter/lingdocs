@@ -4,12 +4,14 @@ import json
 import logging
 import re
 import sys
+import tempfile
 from pathlib import Path
 import pandas as pd
 import panflute
 import pybtex
 import yaml
 from cookiecutter.main import cookiecutter
+from jinja2.runtime import Undefined
 from pycldf import Dataset
 from pycldf import Source
 from slugify import slugify
@@ -22,7 +24,9 @@ from pylingdocs.config import CONF_PATH
 from pylingdocs.config import CONTENT_FILE_PREFIX
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import DATA_DIR
-from pylingdocs.config import METADATA_FILE, EX_SHOW_LG, EX_SHOW_PRIMARY, EX_SRC_POS
+from pylingdocs.config import EX_SHOW_LG
+from pylingdocs.config import EX_SHOW_PRIMARY
+from pylingdocs.config import EX_SRC_POS
 from pylingdocs.config import FIGURE_DIR
 from pylingdocs.config import FIGURE_MD
 from pylingdocs.config import METADATA_FILE
@@ -32,8 +36,7 @@ from pylingdocs.config import TABLE_MD
 from pylingdocs.metadata import ORCID_STR
 from pylingdocs.metadata import _load_bib
 from pylingdocs.metadata import _load_metadata
-from jinja2.runtime import Undefined
-import tempfile
+
 
 log = logging.getLogger(__name__)
 
@@ -291,10 +294,6 @@ def sanitize_latex(unsafe_str):
     ):
         unsafe_str = unsafe_str.replace(o, r)
     return unsafe_str
-
-
-def get_prefixed_filename(structure, file_id):
-    return structure
 
 
 def split_ref(s):
@@ -621,7 +620,9 @@ def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
                 if is_gloss_abbr_candidate(part, parts, j):
                     # take care of numbered genders
                     if part[0] == "G" and re.match(r"\d", part[1:]):
-                        output += decoration(part.lower())#decoration(part[0].lower()) + part[1:] # if the number should not be part of the abbreviation
+                        output += decoration(
+                            part.lower()
+                        )  # decoration(part[0].lower()) + part[1:] # if the number should not be part of the abbreviation
                     else:
                         for gloss in resolve_glossing_combination(part):
                             output += decoration(gloss.lower())
@@ -661,12 +662,11 @@ bool_dic = {"true": True, "True": True, 1: True}
 def _resolve_jinja(var, default, name):
     if isinstance(var, Undefined) or var is None:
         return default
-    elif not isinstance(var, bool):
+    if not isinstance(var, bool):
         if var in bool_dic:
             return bool_dic[var]
-        else:
-            log.warning(f"Invalid value for [{name}]: {var} ({type(var)}).")
-            return default
+        log.warning(f"Invalid value for [{name}]: {var} ({type(var)}).")
+    return default
 
 
 def _build_example(
@@ -696,9 +696,7 @@ def _build_example(
     source_position = source_position or EX_SRC_POS
     show_language = _resolve_jinja(show_language, EX_SHOW_LG, "show_language")
 
-    if title:
-        title = title
-    elif lng and show_language:
+    if not title and lng and show_language:
         title = lng
     else:
         title = ""

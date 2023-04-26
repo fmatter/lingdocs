@@ -17,7 +17,6 @@ from pylingdocs.helpers import get_sections
 from pylingdocs.helpers import html_example_wrap
 from pylingdocs.helpers import html_gloss
 from pylingdocs.helpers import latexify_table
-from pylingdocs.helpers import read_config_file
 from pylingdocs.helpers import src
 from pylingdocs.preprocessing import MD_LINK_PATTERN
 

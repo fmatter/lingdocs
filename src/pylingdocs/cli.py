@@ -11,14 +11,12 @@ from pylingdocs.config import CLDF_MD
 from pylingdocs.config import CONTENT_FOLDER
 from pylingdocs.config import CREATE_README
 from pylingdocs.config import METADATA_FILE
-from pylingdocs import config
 from pylingdocs.config import OUTPUT_DIR
 from pylingdocs.config import PREVIEW
-import os
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_cldf_dataset
-from pylingdocs.helpers import load_content, read_config_file
+from pylingdocs.helpers import load_content
 from pylingdocs.helpers import new as create_new
 from pylingdocs.helpers import write_readme
 from pylingdocs.metadata import _load_metadata
