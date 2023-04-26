@@ -1,3 +1,6 @@
 ---
-onetable:
-  caption: A caption
+consonants:
+  caption: Consonant phonemes of Yawarana # you can't use [lg](id) notation here
+  preprocess:  # this is a placeholder
+  pre_cell: /
+  post_cell: /

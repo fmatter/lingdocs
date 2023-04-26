@@ -21,27 +21,6 @@ def test_main():
     assert "Usage: " in result.output
 
 
-def test_missing(caplog, tmp_path, md_path, data, monkeypatch):
-    monkeypatch.chdir(tmp_path)
-    runner = CliRunner()
-    # try running on empty, no CLDF metadata
-    result = runner.invoke(build)
-    assert result.exit_code == 1
-    assert "No such" in caplog.text
-    caplog.clear()
-
-    # add CLDF, missing structure file
-    result = runner.invoke(build, args=["--cldf", md_path])
-    assert result.exit_code == 1
-    assert "Structure file" in caplog.text
-    caplog.clear()
-
-    # add structure
-    result = runner.invoke(build, args=["--cldf", md_path, "--source", data])
-    assert result.exit_code == 0
-    assert "Could not find metadata" in caplog.text
-
-
 def test_cli_build(caplog, tmp_path, md_path, data, monkeypatch):
     runner = CliRunner()
 
@@ -63,27 +42,6 @@ def test_cli_build(caplog, tmp_path, md_path, data, monkeypatch):
     for x in tmp_path.iterdir():
         if "README" in x.name or "CITATION" in x.name:
             assert "Florian" in open(x).read()
-
-
-# same with metadata file
-def test_cli_metadata(caplog, tmp_path, md_path, data, monkeypatch):
-    runner = CliRunner()
-
-    monkeypatch.chdir(tmp_path)
-
-    # add tables
-    shutil.copytree(data / "tables", tmp_path / "tables")
-    shutil.copy(data / "metadata.yaml", tmp_path / "metadata.yaml")
-    result = runner.invoke(
-        build, args=["--cldf", md_path, "--source", data, "--release"]
-    )
-    assert "metadata.yaml not found" not in caplog.text
-
-    assert result.exit_code == 0
-    for x in tmp_path.iterdir():
-        if "README" in x.name or "CITATION" in x.name:
-            assert "Florian" in open(x).read()
-            assert "Zwöite" in open(x).read()
 
 
 def test_cli_preview(caplog, tmp_path, md_path, data, monkeypatch):

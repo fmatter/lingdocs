@@ -109,12 +109,12 @@ def check_abbrevs(dataset, source_dir, content):
                     ]
                 }
             )
-
-    for x in map(str.lower, set(gloss_cands)):
+    gloss_cands = list(dict.fromkeys(gloss_cands))
+    for x in map(str.lower, gloss_cands):
         if x not in abbrev_dict:
             abbrev_dict[x] = leipzig.get(x, "unknown abbreviation")
     unaccounted = [
-        x for x in set(gloss_cands) if abbrev_dict[x.lower()] == "unknown abbreviation"
+        x for x in gloss_cands if abbrev_dict[x.lower()] == "unknown abbreviation"
     ]
     if len(unaccounted) > 0:
         log.warning(
@@ -621,7 +621,7 @@ def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
                 if is_gloss_abbr_candidate(part, parts, j):
                     # take care of numbered genders
                     if part[0] == "G" and re.match(r"\d", part[1:]):
-                        output += decoration(part[0].lower()) + part[1:]
+                        output += decoration(part.lower())#decoration(part[0].lower()) + part[1:] # if the number should not be part of the abbreviation
                     else:
                         for gloss in resolve_glossing_combination(part):
                             output += decoration(gloss.lower())

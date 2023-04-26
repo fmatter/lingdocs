@@ -52,11 +52,11 @@ Consonant phonemes of Yawarana: [consonants]
   -----------------------------------------------------------------------
               bilabial     alveolar     palatal     velar     glottal
   ----------- ------------ ------------ ----------- --------- -----------
-  occlusive   /p /         /t /         /t͡ʃ/        /k/       
+  occlusive   /p /         /t /         /ch/        /k/       
 
-  nasal       /m /         /n /         /j/                   
+  nasal       /m /         /n /                               
 
-  fricative                /s /                               /j /
+  fricative                /s /                               /j/
 
   liquid                   /r /                               
 
@@ -72,7 +72,7 @@ Other linguistic data [sec:data]
 
 Native CLDF components
 
--   forms: Tiriyó pakoro se wae ‘I want a house’
+-   forms: Tiriyó pakoro se wae ‘I want a house’ (Meira 1999: 417)
 -   languages: Hixkaryána
 -   cognate sets:
 
@@ -86,9 +86,10 @@ louse-1
 
 Non-native components
 
-Tiriyó -e ‘SUP’ is a variant of Tiriyó -(s)e. Neither occur on , because
-it is a noun. They are related to -se and -(h)e. This is thus a cognate
-set shared by Apalaí, Tiriyó, and Wayana.
+Tiriyó -e ‘SUP’ (Meira 1999: 327) is a variant of Tiriyó -(s)e (Meira
+1999: 327). Neither occur on , because it is a noun. They are related to
+-se and -(h)e. This is thus a cognate set shared by Apalaí, Tiriyó, and
+Wayana.
 
 -   If has too long a translation, try .
 
@@ -159,7 +160,11 @@ References
 -    Álvarez, José. 1997. Split Ergativity and Complementary
     Distribution of NP’s and Pronominal Affixes in Pemón (Cariban).
     Opción 13. 69–94.
+-    Koehn, Edward and Koehn, Sally. 1986. Apalai. In Derbyshire,
+    Desmond C. and Pullum, Geoffrey K. (eds.), Handbook of Amazonian
+    Languages, 33–127. Berlin/New York: Mouton de Gruyter.
 -    Meira, Sérgio. 1999. A Grammar of Tiriyó. (Doctoral dissertation).
 
 [1] And here is a (foot)note. You can use markdown in here: see
-[ref/sec:data] for details about Apalaí -se ‘SUP’.
+[ref/sec:data] for details about Apalaí -se ‘SUP’ (Koehn and Koehn 1986:
+77).

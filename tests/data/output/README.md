@@ -65,9 +65,9 @@ Apart from database references, discussed in
 
 |           | bilabial | alveolar | palatal | velar | glottal |
 |:----------|:---------|:---------|:--------|:------|:--------|
-| occlusive | /p /     | /t /     | /t͡ʃ/    | /k/   |         |
-| nasal     | /m /     | /n /     | /j/     |       |         |
-| fricative |          | /s /     |         |       | /j /    |
+| occlusive | /p /     | /t /     | /ch/    | /k/   |         |
+| nasal     | /m /     | /n /     |         |       |         |
+| fricative |          | /s /     |         |       | /j/     |
 | liquid    |          | /r /     |         |       |         |
 | glide     | /w /     |          | /y/     |       |         |
 
@@ -80,7 +80,8 @@ Apart from database references, discussed in
 
 ## Native CLDF components
 
--   forms: Tiriyó pakoro se wae ‘I want a house’
+-   forms: Tiriyó pakoro se wae ‘I want a house’ ([Meira
+    1999](#source-triomeira1999): 417)
 -   languages: Hixkaryána
 -   cognate sets:
 
@@ -94,9 +95,12 @@ louse-1
 
 ## Non-native components
 
-Tiriyó *-e* ‘SUP’ is a variant of Tiriyó *-(s)e*. Neither occur on ,
-because it is a noun. They are related to *-se* and *-(h)e*. This is
-thus a cognate set shared by Apalaí, Tiriyó, and Wayana.
+Tiriyó *-e* ‘SUP’ ([Meira 1999](#source-triomeira1999): 327) is a
+variant of Tiriyó *-(s)e* ([Meira 1999](#source-triomeira1999): 327).
+Neither occur on , because it is a noun. They are related to Apalaí
+*-se* ([Koehn and Koehn 1986](#source-koehn1986apalai): 77) and Wayana
+*-(h)e* ([Tavares 2005](#source-wayanatavares2005): 236). This is thus a
+cognate set shared by Apalaí, Tiriyó, and Wayana.
 
 -   If has too long a translation, try .
 
@@ -176,8 +180,15 @@ thus a cognate set shared by Apalaí, Tiriyó, and Wayana.
 -   <a id="source-alvarez1998split"> </a>Álvarez, José. 1997. Split
     Ergativity and Complementary Distribution of NP’s and Pronominal
     Affixes in Pemón (Cariban). Opción 13. 69–94.
+-   <a id="source-koehn1986apalai"> </a>Koehn, Edward and Koehn,
+    Sally. 1986. Apalai. In Derbyshire, Desmond C. and Pullum,
+    Geoffrey K. (eds.), Handbook of Amazonian Languages, 33–127.
+    Berlin/New York: Mouton de Gruyter.
 -   <a id="source-triomeira1999"> </a>Meira, Sérgio. 1999. A Grammar of
     Tiriyó. (Doctoral dissertation).
+-   <a id="source-wayanatavares2005"> </a>Tavares, Petronila da
+    Silva. 2005. A grammar of Wayana. UMI. (Doctoral dissertation).
 
 [^1]: And here is a (foot)note. You can use markdown in here: see
-    <a href='#sec:data'>click</a> for details about Apalaí *-se* ‘SUP’.
+    <a href='#sec:data'>click</a> for details about Apalaí *-se* ‘SUP’
+    ([Koehn and Koehn 1986](#source-koehn1986apalai): 77).

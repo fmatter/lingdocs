@@ -16,7 +16,7 @@ def test_update(caplog, md_path, tmp_path, data, monkeypatch):
     )
 
     assert "Updating document " in caplog.text
-    assert "F inalien" in caplog.text
+    assert "E sources" in caplog.text
 
     update_structure(
         content_dir=tmp_path / "content",
@@ -25,4 +25,4 @@ def test_update(caplog, md_path, tmp_path, data, monkeypatch):
         prefix_mode="numerical",
     )
 
-    assert "6000 inalien" in caplog.text
+    assert "5000 sources" in caplog.text

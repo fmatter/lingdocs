@@ -7,7 +7,8 @@ log = logging.getLogger(__name__)
 
 def test_mp(dataset):
     assert (
-        render_markdown("[mp](apa-neg)", dataset, output_format="plain") == "Apalaí pɨra ‘NEG’ ([Koehn and Koehn 1986](#source-koehn1986apalai): 77)"
+        render_markdown("[mp](apa-neg)", dataset, output_format="plain")
+        == "Apalaí pɨra ‘NEG’ ([Koehn and Koehn 1986](#source-koehn1986apalai): 77)"
     )
     assert (
         render_markdown("[mp](apa-neg)", dataset, output_format="github")
@@ -22,7 +23,9 @@ def test_mp(dataset):
         == "Apalaí <i>pɨra</i> ‘NEG’ ([Koehn and Koehn 1986](#source-koehn1986apalai): 77)"
     )
 
-    input_str = "[m](tri-se-1,tri-se-2,tri-se-3?with_language=False&with_source=False&nt)"
+    input_str = (
+        "[m](tri-se-1,tri-se-2,tri-se-3?with_language=False&with_source=False&nt)"
+    )
     formats = {
         "plain": "-se, -je, and -e",
         "github": "_-se_, _-je_, and _-e_",

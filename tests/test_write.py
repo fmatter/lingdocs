@@ -7,12 +7,12 @@ def test_write(data, dataset, caplog, monkeypatch, tmp_path):
     new_content = "a test"
 
     write_content_file(
-        "verbs",
+        "intro",
         new_content,
         prefix_mode=None,
         source_dir=tmp_path / "content",
         structure_file=tmp_path / "content" / "structure.yaml",
     )
 
-    with open(tmp_path / "content" / "verbs.md", "r") as f:
+    with open(tmp_path / "content" / "intro.md", "r") as f:
         assert f.read() == new_content
