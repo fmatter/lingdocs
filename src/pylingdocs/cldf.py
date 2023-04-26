@@ -173,11 +173,9 @@ def create_cldf(
                     "Number": i + 1,
                 }
             )
-
+    ds.write()
     ds.copy(dest=output_dir / "cldf")
-    orig_id = ds.metadata_dict.get("rdf:ID", None)
     ds = pycldf.Dataset.from_metadata(output_dir / "cldf" / ds.filename)
-    ds.add_provenance(wasDerivedFrom=orig_id)
 
     bib_data = _load_bib(metadata_file)
     for key, entry in bib_data.entries.items():

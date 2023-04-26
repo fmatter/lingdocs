@@ -33,7 +33,7 @@ from pylingdocs.metadata import ORCID_STR
 from pylingdocs.metadata import _load_bib
 from pylingdocs.metadata import _load_metadata
 from jinja2.runtime import Undefined
-
+import tempfile
 
 log = logging.getLogger(__name__)
 
@@ -298,6 +298,11 @@ def split_ref(s):
 def _load_cldf_dataset(cldf_path=CLDF_MD):
     try:
         ds = Dataset.from_metadata(cldf_path)
+        temp_path = Path(tempfile.gettempdir()) / "cldf"
+        ds.copy(dest=temp_path)
+        orig_id = ds.metadata_dict.get("rdf:ID", None)
+        ds = Dataset.from_metadata(temp_path / ds.filename)
+        ds.add_provenance(wasDerivedFrom=orig_id)
         if Path(ADD_BIB).is_file():
             bib = pybtex.database.parse_file(ADD_BIB, bib_format="bibtex")
             sources = [Source.from_entry(k, e) for k, e in bib.entries.items()]
