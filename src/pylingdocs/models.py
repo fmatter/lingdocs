@@ -157,7 +157,7 @@ class Wordform(Morpheme):
     entity=ctx,
     with_language=with_language or False,
     with_source=with_source or False,
-    source_str=source_str,
+    source=source,
     no_translation=no_translation,
     translation=translation)}}""",
         "latex": """{% import 'pylingdocs_util.md' as util %}
@@ -166,7 +166,7 @@ class Wordform(Morpheme):
     entity=ctx,
     with_language=with_language or False,
     with_source=with_source or False,
-    source_str=source_str,
+    source=source,
     no_translation=no_translation,
     translation=translation,
     citation_mode="biblatex")}}""",

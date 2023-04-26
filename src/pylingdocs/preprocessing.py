@@ -9,7 +9,7 @@ import yaml
 from cldfviz.text import render
 from jinja2 import DictLoader
 from pylingdocs.config import DATA_DIR
-from pylingdocs.config import MANEX_DIR
+from pylingdocs.config import MANEX_DIR, LFTS_SHOW_LG,LFTS_SHOW_FTR,LFTS_SHOW_SOURCE
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import get_md_pattern, build_example, build_examples
@@ -185,6 +185,7 @@ def render_markdown(
                 "src": src,
                 "flexible_pad_ex": pad_ex,
                 "get_audio": lambda x: audio_dict.get(x, None),
+                "lfts": {"show_lg": LFTS_SHOW_LG, "show_src": LFTS_SHOW_SOURCE, "show_ftr": LFTS_SHOW_FTR}
             }
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val

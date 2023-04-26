@@ -44,11 +44,11 @@ single_translation=False,
 quot_left="‘",
 quot_right="’",
 citation_mode="cldfviz",
-source_str=None
+source=None
 ) -%}
 {%if with_language %}{% if mode=="orm" %}{{entity.language.name}} {% else %}[](LanguageTable#cldf:{{entity["Language_ID"]}}) {%endif%}
 {%endif%}
 {{form_str}}{%if translation %} {{quot_left}}{{decorate_gloss_string(translation)}}{{quot_right}}{% elif not no_translation %}{% if mode=="orm" %} {{quot_left}}{{decorate_gloss_string(get_translation_orm(entity))}}{{quot_right}}{% else %} {{quot_left}}{{decorate_gloss_string(get_translation_dict(entity))}}{{quot_right}}{% endif %}{% endif %}
-{% if source_str or with_source %}{%if mode == "orm" %} {{src(entity.references[0].__str__(), mode=citation_mode, parens=True)}}{%else%} {{src(entity["Source"], mode=citation_mode, parens=True)}}{%endif%}
+{% if source or with_source %}{%if mode == "orm" %} {{src(entity.references[0].__str__(), mode=citation_mode, parens=True)}}{%else%} {{src(entity["Source"], mode=citation_mode, parens=True)}}{%endif%}
 {% endif %}
 {%- endmacro %}

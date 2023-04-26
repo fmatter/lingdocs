@@ -2,10 +2,10 @@
 {{util.lfts(
     "<i>" + ctx.cldf.form + "</i>",
     entity=ctx,
-    with_language=with_language,
-    with_source=with_source or False,
     translation=translation,
-    no_translation=no_translation,
-    source_str=source_str,
+    source=source,
+    with_language=with_language or lfts["show_lg"],
+    with_source=with_source or lfts["show_src"],
+    no_translation=no_translation or not lfts["show_ftr"],
     mode="orm"
 )}}

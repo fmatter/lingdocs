@@ -2,11 +2,11 @@
 {{util.lfts(
     "\obj{"+ctx.cldf.form+"}",
     entity=ctx,
-    with_language=with_language or False,
-    with_source=with_source or False,
-    source_str=source_str,
     translation=translation,
-    no_translation=no_translation,
+    source=source,
+    with_language=with_language or lfts["show_lg"],
+    with_source=with_source or lfts["show_src"],
+    no_translation=no_translation or not lfts["show_ftr"],
     mode="orm",
     citation_mode="biblatex"
 )}}

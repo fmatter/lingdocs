@@ -84,4 +84,8 @@ EX_SHOW_LG = get_config("examples", "show_language", as_boolean=True)
 EX_SHOW_PRIMARY = get_config("examples", "show_primary", as_boolean=True)
 EX_SRC_POS = get_config("examples", "source_position")
 
+LFTS_SHOW_LG = get_config("lfts", "show_language", as_boolean=True)
+LFTS_SHOW_FTR = get_config("lfts", "show_translation", as_boolean=True)
+LFTS_SHOW_SOURCE = get_config("lfts", "show_source", as_boolean=True)
+
 CONTENT_FILE_PREFIX = get_config("input", "content_file_prefix")
