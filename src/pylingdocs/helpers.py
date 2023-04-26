@@ -677,11 +677,9 @@ def _build_example(
     preamble = []
     postamble = []
 
-    print("pre",source_position)
     show_primary = _resolve_jinja(show_primary, EX_SHOW_PRIMARY, "show_primary")
     source_position = source_position or EX_SRC_POS
     show_language = _resolve_jinja(show_language, EX_SHOW_LG, "show_language")
-    print("post,",source_position)
 
     if title:
         title = title
