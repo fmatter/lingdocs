@@ -163,6 +163,17 @@ def src(cite_input, mode="cldfviz", parens=False, full=False):
     return ", ".join(citations)
 
 
+def load_figure_metadata(source_dir):
+    fig_md = _get_relative_file(source_dir / FIGURE_DIR, FIGURE_MD)
+    if fig_md.is_file():
+        with open(fig_md, encoding="utf-8") as f:
+            figures = yaml.load(f, Loader=yaml.SafeLoader)
+    else:
+        log.warning(f"Specified figures metadata file {FIGURE_MD} not found.")
+        figures = []
+    return figures
+
+
 def load_table_metadata(source_dir):
     table_md = _get_relative_file(source_dir / TABLE_DIR, TABLE_MD)
     if table_md.is_file():
@@ -393,7 +404,7 @@ def read_config_file(kind):
                 return open(path, "r", encoding="utf-8").read()
             raise ValueError(f"Unknown mode for reading config files: '{mode}'")
         log.warning(f"File {path} does not exist.")
-        return ""
+        return []
 
     if kind == "settings":
         return getfile(CONF_PATH, mode="plain")
@@ -658,7 +669,6 @@ def _resolve_jinja(var, default, name):
             return default
 
 
-
 def _build_example(
     obj,
     gls,
@@ -676,7 +686,7 @@ def _build_example(
     show_primary=True,
     quotes=("‘", "’"),
     parentheses=("(", ")"),
-    translation_sep=" / "
+    translation_sep=" / ",
 ):
     ex_dic = {"obj": obj, "gls": gls, "id": ex_id}
     preamble = []
@@ -708,7 +718,9 @@ def _build_example(
         ftr += f" ({ftr_explanation})"
     trans_string = [f"{quotes[0]}{ftr}{quotes[1]}"]
     if additional_translations:
-        trans_string.extend([quotes[0] + add + quotes[1] for add in additional_translations])
+        trans_string.extend(
+            [quotes[0] + add + quotes[1] for add in additional_translations]
+        )
     ex_dic["ftr"] = translation_sep.join(trans_string)
     ex_dic["title"] = title
     ex_dic["posttitle"] = " ".join(preamble)
@@ -725,6 +737,7 @@ def build_example(data):
     gls = data.pop("gls")
     ftr = data.pop("ftr")
     return _build_example(obj, gls, ftr, **data)
+
 
 def build_examples(datas):
     ex_dicts = []

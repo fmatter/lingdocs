@@ -1,14 +1,5 @@
-test:
-  title: A test section
-  abstract: Some text.
-verbs:
-  title: Verbs
-nouns:
-  title: Nouns
-  abstract: Some text about nouns.
-possession:
-  title: Nominal possession
-  abstract: Another abstract
-alien: {}
-inalien:
-  title: Inalienable possession
+intro: {}
+markdown: {}
+data: {}
+examples: {}
+sources: {}

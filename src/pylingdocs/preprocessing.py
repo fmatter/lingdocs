@@ -10,7 +10,7 @@ from cldfviz.text import render
 from jinja2 import DictLoader
 from jinja2.runtime import Undefined
 from pylingdocs.config import DATA_DIR
-from pylingdocs.config import MANEX_DIR, LFTS_SHOW_LG,LFTS_SHOW_FTR,LFTS_SHOW_SOURCE
+from pylingdocs.config import MANEX_DIR, LFTS_SHOW_LG, LFTS_SHOW_FTR, LFTS_SHOW_SOURCE
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.helpers import comma_and_list
 from pylingdocs.helpers import get_md_pattern, build_example, build_examples
@@ -156,6 +156,7 @@ def pad_ex(*lines, sep=" "):
         out[k] = sep.join(out[k])
     return tuple(out.values())
 
+
 def resolve_lfts(with_language, with_source, with_translation):
     if isinstance(with_language, Undefined):
         with_language = LFTS_SHOW_LG
@@ -164,6 +165,7 @@ def resolve_lfts(with_language, with_source, with_translation):
     if isinstance(with_translation, Undefined):
         with_translation = LFTS_SHOW_FTR
     return with_language, with_source, with_translation
+
 
 def render_markdown(
     md_str,
@@ -195,7 +197,7 @@ def render_markdown(
                 "src": src,
                 "flexible_pad_ex": pad_ex,
                 "get_audio": lambda x: audio_dict.get(x, None),
-                "resolve_lfts": resolve_lfts
+                "resolve_lfts": resolve_lfts,
             }
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val
@@ -309,6 +311,11 @@ def load_manual_examples(md, source_dir="."):
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
+
+
+def get_figure(figid, source_dir):
+    res = load_figure_metadata(source_dir)[figid]
+    return res["filename"], res["caption"]
 
 
 def preprocess(md_str, source_dir="."):

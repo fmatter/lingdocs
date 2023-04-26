@@ -53,13 +53,13 @@ def html_ref(url, *_args, **_kwargs):
 
 
 text_commands = ["todo"]
-figure_metadata = read_config_file("figures")
 
 
 class OutputFormat:
     name = "boilerplate"
     file_ext = "txt"
     single_output = True
+    figure_metadata = {}
 
     @classmethod
     def ref_cmd(cls, url, *_args, **_kwargs):
@@ -89,8 +89,8 @@ class OutputFormat:
 
     @classmethod
     def figure_cmd(cls, url, *_args, **_kwargs):
-        caption = figure_metadata[url].get("caption", "")
-        filename = figure_metadata[url].get("filename", "")
+        caption = cls.figure_metadata[url].get("caption", "")
+        filename = cls.figure_metadata[url].get("filename", "")
         return f"[{caption}: {filename}]"
 
     @classmethod
@@ -285,9 +285,9 @@ class HTML(OutputFormat):
 
     @classmethod
     def figure_cmd(cls, url, *_args, **_kwargs):
-        if url in figure_metadata:
-            caption = figure_metadata[url].get("caption", "")
-            filename = figure_metadata[url].get("filename", "")
+        if url in cls.figure_metadata:
+            caption = cls.figure_metadata[url].get("caption", "")
+            filename = cls.figure_metadata[url].get("filename", "")
             return f"""<figure>
 <img src="figures/{filename}" alt="{caption}" />
 <figcaption id="fig:{url}" aria-hidden="true">{caption}</figcaption>

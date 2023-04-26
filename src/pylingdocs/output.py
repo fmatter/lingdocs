@@ -18,7 +18,7 @@ from pylingdocs.formats import builders
 from pylingdocs.helpers import _get_relative_file, read_file, write_file
 from pylingdocs.helpers import _load_cldf_dataset
 from pylingdocs.helpers import check_abbrevs
-from pylingdocs.helpers import get_structure
+from pylingdocs.helpers import get_structure, load_figure_metadata
 from pylingdocs.helpers import load_content
 from pylingdocs.helpers import refresh_clld_db
 from pylingdocs.metadata import _load_metadata
@@ -208,11 +208,13 @@ def create_output(
     abbrev_dict = check_abbrevs(
         dataset, source_dir, "\n\n".join([x["content"] for x in contents.values()])
     )
+    figure_metadata = load_figure_metadata(source_dir)
     for output_format in formats:
         for m in models:
             m.reset_cnt()
         log.info(f"Rendering format [{output_format}]")
         builder = builders[output_format]
+        builder.figure_metadata = figure_metadata
         content = "\n\n".join([x["content"] for x in contents.values()])
         preprocessed = preprocess(content, source_dir)
         preprocessed = builder.preprocess_commands(preprocessed, **kwargs)

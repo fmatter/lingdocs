@@ -52,7 +52,6 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
             folder=data / CONTENT_FOLDER, file=STRUCTURE_FILE
         ),
     )
-
     create_output(
         contents=contents,
         source_dir=data,
