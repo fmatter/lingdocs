@@ -2,5 +2,5 @@
 consonants:
   caption: This is a table
   preprocess:  # this is a placeholder
-  pre_cell: [
-  post_cell: ]
+  pre_cell: "["
+  post_cell: "]"
