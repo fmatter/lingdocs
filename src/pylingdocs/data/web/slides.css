@@ -1,3 +1,11 @@
+.smallcaps {
+  font-variant: small-caps;
+}
+
+.gloss {
+  font-variant: small-caps;
+}
+
 h1 {
     color: red;
     margin: 0px;
