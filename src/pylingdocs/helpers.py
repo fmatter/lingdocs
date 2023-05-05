@@ -745,7 +745,7 @@ def build_examples(datas):
     for data in datas[1::]:
         if data.get("lng", None) != first_language:
             single_language = False
-    if single_language:
+    if single_language and datas[0]["show_language"]:
         full_preamble += first_language
     for data in datas:
         if single_language:
