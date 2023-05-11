@@ -42,12 +42,16 @@ log = logging.getLogger(__name__)
 
 
 def read_file(path, mode=None, encoding="utf-8"):
-    with open(path, "r", encoding=encoding) as f:
-        if mode == "yaml" or path.suffix == ".yaml":
-            return yaml.load(f, Loader=yaml.SafeLoader)
-        if mode == "json" or path.suffix == ".json":
-            return json.load(f)
-        return f.read()
+    path = Path(path)
+    if path.is_file():
+        with open(path, "r", encoding=encoding) as f:
+            if mode == "yaml" or path.suffix == ".yaml":
+                return yaml.load(f, Loader=yaml.SafeLoader)
+            if mode == "json" or path.suffix == ".json":
+                return json.load(f)
+            return f.read()
+    else:
+        return None
 
 
 def write_file(content, path, mode=None, encoding="utf-8"):

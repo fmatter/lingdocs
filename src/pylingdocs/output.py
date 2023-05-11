@@ -249,9 +249,10 @@ def create_output(
             )
         if builder.name == "latex":
             bibcontents = read_file(dataset.bibpath)
-            write_file(
-                bibcontents.replace(" &", " \\&"),
-                output_dir / builder.name / dataset.bibpath.name,
-            )
+            if bibcontents:
+                write_file(
+                    bibcontents.replace(" &", " \\&"),
+                    output_dir / builder.name / dataset.bibpath.name,
+                )
     if latex:
         compile_latex()
