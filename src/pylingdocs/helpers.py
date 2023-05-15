@@ -670,6 +670,8 @@ def _resolve_jinja(var, default, name):
         if var in bool_dic:
             return bool_dic[var]
         log.warning(f"Invalid value for [{name}]: {var} ({type(var)}).")
+    else:
+        return var
     return default
 
 

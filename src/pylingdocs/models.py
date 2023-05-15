@@ -132,7 +132,6 @@ class Morpheme(Entity):
 
     @classmethod
     def autocomplete_string(cls, entry):
-        print(entry)
         return (
             f"{cls.shortcut}:{entry['Name']} '{entry['Parameter_ID']}'",
             f"[{cls.shortcut}]({entry['ID']})",
