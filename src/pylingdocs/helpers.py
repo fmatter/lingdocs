@@ -704,7 +704,7 @@ def _build_example(
 
     if not title and lng and show_language:
         title = lng
-    else:
+    elif not title:
         title = ""
     if comment:
         postamble.append(comment)
