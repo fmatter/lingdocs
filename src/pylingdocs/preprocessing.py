@@ -217,7 +217,7 @@ def render_markdown(
                 doc=preprocessed,
                 cldf_dict=ds,
                 loader=envs[output_format],
-                func_dict={"comma_and_list": comma_and_list},
+                func_dict=func_dict,
             )
             if "#cldf" in preprocessed:
                 preprocessed = render(

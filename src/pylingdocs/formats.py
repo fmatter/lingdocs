@@ -43,6 +43,7 @@ def html_todo(url, **kwargs):
 def latex_todo(url, **kwargs):
     if kwargs.get("release", False):
         return ""
+    return ""
     return f"\\todo{{{url}}}"
 
 
@@ -463,6 +464,11 @@ class Latex(OutputFormat):
         return f"\\label{{{url}}}"
 
     @classmethod
+    def todo_cmd(cls, url, *_args, **_kwargs):
+        return latex_todo(url, **_kwargs)
+
+
+    @classmethod
     def ref_cmd(cls, url, *_args, **_kwargs):
         end = _kwargs.pop("end", None)
         if end:
@@ -503,7 +509,7 @@ class Latex(OutputFormat):
                 .replace("\\bottomrule", "")
                 .replace("\\begin{tabular}{", "\\begin{tabular}[t]{")  # top aligned
             )
-        return f"""\\begin{{table}}
+        return f"""\\begin{{table}}[h]
 \\caption{{{panflute.convert_text(
             caption, output_format="latex", input_format="markdown"
         )}}}
