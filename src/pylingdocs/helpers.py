@@ -743,6 +743,12 @@ def build_example(data):
     return _build_example(obj, gls, ftr, **data)
 
 
+def resolve_jinja(var, default):
+    if isinstance(var, Undefined):
+        return default
+    return var
+
+
 def build_examples(datas):
     ex_dicts = []
     single_language = True
@@ -751,7 +757,7 @@ def build_examples(datas):
     for data in datas[1::]:
         if data.get("lng", None) != first_language:
             single_language = False
-    if single_language and datas[0]["show_language"]:
+    if single_language and resolve_jinja(datas[0]["show_language"], EX_SHOW_LG):
         full_preamble += first_language
     for data in datas:
         if single_language:

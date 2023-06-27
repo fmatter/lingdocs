@@ -434,6 +434,17 @@ class CLLD(OutputFormat):
         )
 
     @classmethod
+    def figure_cmd(cls, url, *_args, **_kwargs):
+        if url in cls.figure_metadata:
+            caption = cls.figure_metadata[url].get("caption", "")
+            filename = cls.figure_metadata[url].get("filename", "")
+            return f"""<figure>
+<img src="/static/{filename}" alt="{caption}" />
+<figcaption id="fig:{url}" aria-hidden="true">{caption}</figcaption>
+</figure>"""
+        return f"![Alt text]({url})"
+
+    @classmethod
     def reference_list(cls):
         return ""
 
@@ -466,7 +477,6 @@ class Latex(OutputFormat):
     @classmethod
     def todo_cmd(cls, url, *_args, **_kwargs):
         return latex_todo(url, **_kwargs)
-
 
     @classmethod
     def ref_cmd(cls, url, *_args, **_kwargs):

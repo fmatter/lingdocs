@@ -13,6 +13,7 @@ from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.formats import CLLD
 from pylingdocs.helpers import check_abbrevs
 from pylingdocs.helpers import get_sections
+from pylingdocs.helpers import load_figure_metadata
 from pylingdocs.helpers import read_file
 from pylingdocs.metadata import _load_bib
 from pylingdocs.metadata import _load_metadata
@@ -106,6 +107,7 @@ def create_cldf(
     content = "\n\n".join([x["content"] for x in chapter_dic.values()])
     check_abbrevs(ds, source_dir, content)
     metadata_dict = _load_metadata(metadata_file)
+    CLLD.figure_metadata = load_figure_metadata(source_dir)
     preprocessed = preprocess(content, source_dir)
     preprocessed = CLLD.preprocess_commands(preprocessed, **kwargs)
     preprocessed = render_markdown(
@@ -150,6 +152,11 @@ def create_cldf(
                 content,
             ):
                 tag_dic[table_tag] = chtag
+            for fig_tag in re.findall(
+                '<figcaption id="(.*?)"',
+                content,
+            ):
+                tag_dic[fig_tag] = chtag
 
             chapter_dic[chtag] = content
 

@@ -1,5 +1,5 @@
-ID,Language_ID,Name,Description,Segments,Morpheme_ID,Parameter_ID,Comment,Source
-tri-se-1,tri,-se,SUP,,tri-se,SUP,,triomeira1999[327]
-tri-se-2,tri,-je,SUP,,tri-se,SUP,,triomeira1999[327]
-tri-se-3,tri,-e,SUP,,tri-se,SUP,,triomeira1999[327]
-apa-se-1,apa,-se,SUP,,apa-se,SUP,,koehn1986apalai[77]
+ID,Language_ID,Name,Description,Segments,Morpheme_ID,Parameter_ID,Comment,Source,Part_Of_Speech
+tri-se-1,tri,-se,SUP,,tri-se,SUP,,triomeira1999[327],
+tri-se-2,tri,-je,SUP,,tri-se,SUP,,triomeira1999[327],
+tri-se-3,tri,-e,SUP,,tri-se,SUP,,triomeira1999[327],
+apa-se-1,apa,-se,SUP,,apa-se,SUP,,koehn1986apalai[77],
