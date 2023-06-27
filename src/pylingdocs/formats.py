@@ -509,7 +509,7 @@ class Latex(OutputFormat):
                 .replace("\\bottomrule", "")
                 .replace("\\begin{tabular}{", "\\begin{tabular}[t]{")  # top aligned
             )
-        return f"""\\begin{{table}}[h]
+        return f"""\\begin{{table}}
 \\caption{{{panflute.convert_text(
             caption, output_format="latex", input_format="markdown"
         )}}}
