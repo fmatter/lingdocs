@@ -55,10 +55,10 @@ Reference_Column = {
 
 def get_contributors(metadata_dict):
     contributor_list = []
-    for contributor in metadata_dict["authors"]:
+    for order, contributor in enumerate(metadata_dict["authors"]):
         name = contributor["given-names"] + " " + contributor["family-names"]
         c_id = contributor.get("id", slugify(name))
-        c_dict = {"ID": c_id, "Name": name}
+        c_dict = {"ID": c_id, "Name": name, "Order": order}
         for k, v in contributor.items():
             c_dict[k.capitalize()] = v
         contributor_list.append(c_dict)
