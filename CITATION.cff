@@ -6,9 +6,9 @@ authors:
   - family-names: Matter
     given-names: Florian
     orcid: "https://orcid.org/0000-0002-2545-5154"
-date-released: 2022-11-27
-version: "0.0.11"
-url: "https://github.com/fmatter/pylingdocs/releases/tag/0.0.11"
+date-released: 2023-07-02
+version: "0.0.12"
+url: "https://github.com/fmatter/pylingdocs/releases/tag/0.0.12"
 keywords:
   - digital linguistics
   - CLDF
