@@ -1,43 +1,44 @@
-{% import 'util.md' as util %}
+{# 
+  Render an example object as IGT (if possible). 
+  `build_example`: obligatory
+  `with_primaryText`
+  `with_language`
+  `example_id`
+  `format`
+  `title`
+  `comment`
+  `source`
+#}
+{% import 'pld_util.md' as util %}
 {% if ids is defined %}
     {% set ids = ids.split(",") %}
-    {% set gathered_examples = {} %}
+    {% set gathered_examples = [] %}
         {% for example in ctx %}
             {% if example.id in ids %}
-                {% set _ = gathered_examples.update({example.id: example}) %}
+                {% set _ = gathered_examples.append(dict(
+    obj=example.cldf.analyzedWord,
+    gls=example.cldf.gloss,
+    ftr=example.cldf.translatedText,
+    txt=example.cldf.primaryText,
+    lng=example.related("languageReference").name,
+    src=util.get_src_string(example, source=source),
+    ex_id=example_id or example.cldf.id,
+    title=title,
+    comment=comment,
+    show_language=with_language,
+    source_position=src_pos,
+    show_primary=with_primaryText
+)) %}
             {% endif %}
         {% endfor %}
+{% endif %}
+
+{% set example_data, preamble = build_examples(gathered_examples) %}
+
 ```{=latex}
-\pex\label{% raw %}{{% endraw %}{{example_id}}{% raw %}}{% endraw %}
-{% for example_id, example in gathered_examples.items() %}
-    \a {%if with_language%}{{ example.related('languageReference').name }}\\{%endif%}
-    \label{% raw %}{{% endraw %}{{ example.id }}{% raw %}}{% endraw %}
-    {% if example.cldf.analyzedWord != [] %}
-        \begingl
-        \glpreamble {{ sanitize_latex(example.cldf.primaryText) }} //
-        {% set objlist = [] %}
-        {% for o in example.cldf.analyzedWord %}
-            {% set objlist = objlist.append(sanitize_latex(o)) %}
-        {% endfor %}
-        {% set glosslist = [] %}
-        {% for w in example.cldf.gloss %}
-            {% set glosslist = glosslist.append(sanitize_latex(     decorate_gloss_string(w))) %}
-        {% endfor %}
-        \gla {{ " ".join(objlist) }}//
-        \glb {{ " ".join(glosslist) }}//
-        {% if example.cldf.translatedText != None %}
-            \glft ‘{{ example.cldf.translatedText }}’// {% endif %} 
-        \endgl 
-    {% else %}
-        \textit{% raw %}{{% endraw %}{{sanitize_latex(example.cldf.primaryText).strip()}} }\\
-        {% if example.cldf.translatedText != None %}
-            ‘{{ sanitize_latex(example.cldf.translatedText) }}’ {% endif %}
-        {% endif %}
-{% endfor %}
+\ex{% if preamble %} {{ preamble }}{% endif %}
+{% for example in example_data %}
+    {{util.render_example("subexample", example)}}
+{%endfor %}
 \xe
 ```
-{%else%}
-no
-{%endif%}
-
-
