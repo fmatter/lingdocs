@@ -22,7 +22,7 @@
     txt=example.cldf.primaryText,
     lng=example.related("languageReference").name,
     src=util.get_src_string(example, source=source),
-    ex_id=example_id or example.cldf.id,
+    ex_id=example.cldf.id,
     title=title,
     comment=comment,
     show_language=with_language,
@@ -36,7 +36,7 @@
 {% set example_data, preamble = build_examples(gathered_examples) %}
 
 ```{=latex}
-\pex{% if preamble %} {{ preamble }}{% endif %}
+\pex{% if preamble %} {{ preamble }}{% endif %}{%if example_id %}\label{%raw%}{{%endraw%}{{ example_id }}{%raw%}}{%endraw%}{% endif %}
 {% for example in example_data %}
     {{util.render_example("subexample", example)}}
 {%endfor %}
