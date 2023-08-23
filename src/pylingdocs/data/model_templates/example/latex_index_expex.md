@@ -36,7 +36,7 @@
 {% set example_data, preamble = build_examples(gathered_examples) %}
 
 ```{=latex}
-\ex{% if preamble %} {{ preamble }}{% endif %}
+\pex{% if preamble %} {{ preamble }}{% endif %}
 {% for example in example_data %}
     {{util.render_example("subexample", example)}}
 {%endfor %}

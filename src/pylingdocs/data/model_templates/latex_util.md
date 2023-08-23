@@ -24,7 +24,9 @@ personal knowledge
 
 
 {% macro render_example(format, res) -%}
-{% if format=="subexample" %}\a{%else%}\ex{%endif%} {% if res["title"] or res["posttitle"] %} {{ res["title"] }} {{ res["posttitle"] }} \\{%endif%}
+{% if format=="subexample" %}
+
+\a{%else%}\ex{%endif%} {% if res["title"] or res["posttitle"] %} {{ res["title"] }} {{ res["posttitle"] }} \\{%endif%}
 \label{% raw %}{{% endraw %}{{ res["id"] }}{% raw %}}{% endraw %}
 {% if res["obj"] != [] %}
 

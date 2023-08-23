@@ -237,13 +237,19 @@ def combine_sources(source_list, sep="; "):
         for source in source_entry.split(sep):
             bibkey, pages = split_ref(source)
             if bibkey in bibdict:
-                if not pages or None in bibdict[bibkey]:
+                if (pages and not bibdict[bibkey]) or (not pages and bibdict[bibkey]):
                     raise ValueError(f"Citing {bibkey} with and without pages")
                 bibdict[bibkey].extend(pages.split(","))
             else:
-                bibdict[bibkey] = [pages]
+                if pages:
+                    bibdict[bibkey] = [pages]
+                else:
+                    bibdict[bibkey] = []
     out = []
     for bibkey, pages in bibdict.items():
+        if not pages:
+            out.append(bibkey)
+            continue
         out_string = bibkey
         if bibkey != "pc":
             page_string = combine_pages(pages)
