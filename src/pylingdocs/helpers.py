@@ -237,9 +237,13 @@ def combine_sources(source_list, sep="; "):
         for source in source_entry.split(sep):
             bibkey, pages = split_ref(source)
             if bibkey in bibdict:
-                if (pages and not bibdict[bibkey]) or (not pages and bibdict[bibkey]):
+                if pages:
+                    if not bibdict[bibkey]:
+                        raise ValueError(f"Citing {bibkey} with and without pages")
+                    else:
+                        bibdict[bibkey].extend(pages.split(","))
+                elif bibdict[bibkey]:
                     raise ValueError(f"Citing {bibkey} with and without pages")
-                bibdict[bibkey].extend(pages.split(","))
             else:
                 if pages:
                     bibdict[bibkey] = [pages]
