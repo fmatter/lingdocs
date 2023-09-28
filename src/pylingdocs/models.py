@@ -2,8 +2,10 @@ import logging
 from pathlib import Path
 import pycldf
 from clldutils import jsonlib
+from writio import load
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import LATEX_EX_TEMPL
+from pylingdocs.formats import builders
 
 
 try:
@@ -14,40 +16,74 @@ except ImportError:  # pragma: no cover
 log = logging.getLogger(__name__)
 
 
-def load_template(name, style):
-    with open(
-        DATA_DIR / "model_templates" / name / f"{style}.md", "r", encoding="utf-8"
-    ) as f:
-        return f.read()
+name_dict = {"list": "_index", "detail": "_detail", "inline": ""}
 
 
-class Entity:
+class Base:
     """The base class for entities. Only this to create entirely new concepts,
     with not enough similarity to existing models.
     Refer to this class for documentation of the methods."""
 
-    name = "ChangeMe"
+    name = "Base"
     """The model's name."""
-    cldf_table = "ChangeMeTable"
+    cldf_table = "change_me.csv"
     """The CLDF table corresponding to the model."""
     shortcut = "chgme"
     """The shortcut which will be used when writing: ``[<shortcut>](<id>)``."""
-    fallback = "plain"
-    """The fallback for the builder in case no builder-specific template is defined
-    for a given model."""
-    templates = {"plain": "{{ ctx.name }}"}
-    """A dictionary of long jinja templates (not shown here)
-
-       :meta hide-value:"""
-    list_templates = {"plain": "{% for x in ctx %} {{ x['Name'] }}{% endfor %}"}
+    # templates = {
+    #     "inline": {"plain": "{{ ctx.name }}"},
+    #     "list": {"plain": "{% for x in ctx %} {{ x['Name'] }}{% endfor %}"},
+    #     "detail": {"plain": "# {{ ctx.name }}"},
+    # }
     """A dictionary of long jinja templates (not shown here)
 
        :meta hide-value:"""
     cnt = 0
     """A counter, useful for numbered entities like examples"""
 
-    @classmethod
-    def _compile_cldfviz_args(cls, args, kwargs):
+    def __init__(self):
+        self.templates = {"inline": {}, "list": {}, "detail": {}}
+        self.load_templates()
+
+    # @classmethod
+    def load_template(self, view, builder):
+        model_base = Path(DATA_DIR / "model_templates" / self.name.lower())
+        parent_model = self.__class__.__bases__[0]
+        if parent_model != object:
+            parent_base = Path(DATA_DIR / "model_templates" / parent_model.name.lower())
+        else:
+            parent_base = Path(DATA_DIR / "notfound")
+
+        parent_builder = builder.__bases__[0]
+
+        def _filename(base, builder, view):
+            return base / f"{builder.label()}{name_dict[view]}.md"
+
+        tar = _filename(model_base, builder, view)  # e.g. morph/mkdocs_index.md
+        if not tar.is_file():
+            if parent_builder.name != "boilerplate":
+                tar = _filename(
+                    model_base, parent_builder, view
+                )  # e.g. morph/html_index.md
+        if not tar.is_file():
+            tar = _filename(parent_base, builder, view)  # e.g. morpheme/mkdocs_index.md
+        if not tar.is_file():
+            tar = _filename(
+                parent_base, parent_builder, view
+            )  # e.g. morpheme/html_index.md
+        if not tar.is_file():
+            # now search deeper, for base/mkdocs_index.md and base/html_index.md and finall base/plain_index.md
+            log.debug(f"looking for {self.name} {view} for {builder.name}")
+            return self.templates[view].get(parent_builder.name, "XXX")
+        # log.debug("using", tar, "for", self.name, view, builder.name)
+        return load(tar)
+
+    def load_templates(self):
+        for name, builder in builders.items():
+            for view in ["inline", "list", "detail"]:
+                self.templates[view][name] = self.load_template(view, builder)
+
+    def _compile_cldfviz_args(self, args, kwargs):
         arguments = "&".join(args)
         kwarguments = "&".join([f"{x}={y}" for x, y in kwargs.items()])
         arg_str = "&".join([arguments, kwarguments])
@@ -55,86 +91,64 @@ class Entity:
             arg_str = "?" + arg_str.strip("&")
         return arg_str
 
-    @classmethod
-    def query_string(cls, url, *args, multiple=False, visualizer="cldfviz", **kwargs):
+    def query_string(self, url, *args, multiple=False, visualizer="cldfviz", **kwargs):
         """This method returns what commands in running text will be replaced with."""
         if visualizer == "cldfviz":
             if not multiple:
-                arg_str = cls._compile_cldfviz_args(args, kwargs)
-                return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:{url})"
-            arg_str = cls._compile_cldfviz_args(args, kwargs)
-            return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:__all__)"
+                arg_str = self._compile_cldfviz_args(args, kwargs)
+                return f"[{self.name} {url}]({self.cldf_table}{arg_str}#cldf:{url})"
+            arg_str = self._compile_cldfviz_args(args, kwargs)
+            return f"[{self.name} {url}]({self.cldf_table}{arg_str}#cldf:__all__)"
         return f"[Unknown visualizer]({url})"
 
-    @classmethod
-    def representation(cls, output_format: str = "plain", multiple=False) -> str:
-        """Gives the representation of this model for a given output format.
+    def representation(self, output_format: str = "plain", view: str = "inline") -> str:
+        """Gives the representation of this model for a given output format and a given view.
 
         Args:
             output_format: the chosen format
         Returns:
             str: a formatted string with a jinja placeholder for data"""
-        if not multiple:
-            return cls.templates.get(
-                output_format, cls.templates.get(cls.fallback, None)
-            )
-        return cls.list_templates.get(
-            output_format, cls.list_templates.get(cls.fallback, None)
-        )
+        return self.templates[view][output_format]
 
-    @classmethod
-    def cldf_metadata(cls):
+    def cldf_metadata(self):
         """Loads the CLDF table specification for this model. If none is present
         in pylingdocs, it will search in pycldf"""
-        path = DATA_DIR / "cldf" / f"{cls.cldf_table}-metadata.json"
+        path = DATA_DIR / "cldf" / f"{self.cldf_table}-metadata.json"
         if not path.is_file():
             path = (
                 Path(pycldf.__file__).resolve().parent
                 / "components"
-                / f"{cls.cldf_table}-metadata.json"
+                / f"{self.cldf_table}-metadata.json"
             )
         return jsonlib.load(path)
 
-    @classmethod
-    def autocomplete_string(cls, entry):
+    def autocomplete_string(self, entry):
         for label in ["Name", "Form", "Title"]:
             if label in entry:
                 return (
-                    f"{cls.shortcut}:{entry[label]}",
-                    f"[{cls.shortcut}]({entry['ID']})",
+                    f"{self.shortcut}:{entry[label]}",
+                    f"[{self.shortcut}]({entry['ID']})",
                 )
         log.warning(f"Unable to generate preview string for {entry['ID']}")
         return entry["ID"]
 
-    @classmethod
-    def reset_cnt(cls):
+    def reset_cnt(self):
         pass
 
 
-class Morpheme(Entity):
+class Base_ORM(Base):
+    name = "Base_ORM"
+
+
+class Morpheme(Base):
     name = "Morpheme"
     cldf_table = "morphemes.csv"
     shortcut = "mp"
 
-    templates = {
-        "plain": load_template("morpheme", "plain"),
-        "github": load_template("morpheme", "github"),
-        "latex": load_template("morpheme", "latex"),
-        "html": load_template("morpheme", "html"),
-    }
-
-    list_templates = {
-        "plain": load_template("morpheme", "plain_index"),
-        "github": load_template("morpheme", "github_index"),
-        "latex": load_template("morpheme", "latex_index"),
-        "html": load_template("morpheme", "html_index"),
-    }
-
-    @classmethod
-    def autocomplete_string(cls, entry):
+    def autocomplete_string(self, entry):
         return (
-            f"{cls.shortcut}:{entry['Name']} '{entry['Parameter_ID']}'",
-            f"[{cls.shortcut}]({entry['ID']})",
+            f"{self.shortcut}:{entry['Name']} '{entry['Parameter_ID']}'",
+            f"[{self.shortcut}]({entry['ID']})",
         )
 
 
@@ -149,131 +163,72 @@ class Wordform(Morpheme):
     cldf_table = "wordforms.csv"
     shortcut = "wf"
 
-    templates = {
-        "html": """{% import 'pylingdocs_util.md' as util%}
-{{util.lfts(
-    "<i>" + ctx["Form"] + "</i>",
-    entity=ctx,
-    source=source,
-    with_language=with_language,
-    with_source=with_source,
-    with_translation=with_translation,
-    translation=translation)}}""",
-        "latex": """{% import 'pylingdocs_util.md' as util %}
-{{util.lfts(
-    "\\obj{"+ctx["Form"]+"}",
-    entity=ctx,
-    source=source,
-    with_language=with_language,
-    with_source=with_source,
-    with_translation=with_translation,
-    translation=translation,
-    citation_mode="biblatex")}}""",
-        "plain": "",
-    }
-
-    @classmethod
-    def autocomplete_string(cls, entry):
+    def autocomplete_string(self, entry):
         return (
-            f"{cls.shortcut}:{entry['Form']} '{entry['Parameter_ID']}'",
-            f"[{cls.shortcut}]({entry['ID']})",
+            f"{self.shortcut}:{entry['Form']} '{entry['Parameter_ID']}'",
+            f"[{self.shortcut}]({entry['ID']})",
         )
 
 
-class Example(Entity):
+class Example(Base):
     name = "Example"
     cldf_table = "ExampleTable"
     shortcut = "ex"
-    fallback = None
     cnt = 0
 
-    templates = {
-        "plain": load_template("example", "plain"),
-        "latex": load_template("example", f"latex_{LATEX_EX_TEMPL}"),
-        "html": load_template("example", "html"),
-    }
-
-    list_templates = {
-        "plain": load_template("example", "plain_index"),
-        "github": load_template("example", "plain_index"),
-        "html": load_template("example", "html_index"),
-        "latex": load_template("example", f"latex_index_{LATEX_EX_TEMPL}"),
-    }
-
-    @classmethod
-    def autocomplete_string(cls, entry):
+    def autocomplete_string(self, entry):
         return (
             f"ex:{entry['ID']} {' '.join(entry['Analyzed_Word'])}\n‘{entry['Translated_Text']}’",  # noqa: E501
             f"[ex]({entry['ID']})",
         )
 
-    @classmethod
-    def query_string(cls, url, *args, multiple=False, visualizer="cldfviz", **kwargs):
+    def query_string(self, url, *args, multiple=False, visualizer="cldfviz", **kwargs):
         if visualizer == "cldfviz":
-            cls.cnt += 1
-            kwargs.update({"example_counter": cls.cnt})
+            self.cnt += 1
+            kwargs.update({"example_counter": self.cnt})
             if not multiple:
-                arg_str = cls._compile_cldfviz_args(args, kwargs)
-                return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:{url})"
-            arg_str = cls._compile_cldfviz_args(args, kwargs)
-            return f"[{cls.name} {url}]({cls.cldf_table}{arg_str}#cldf:__all__)"
+                arg_str = self._compile_cldfviz_args(args, kwargs)
+                return f"[{self.name} {url}]({self.cldf_table}{arg_str}#cldf:{url})"
+            arg_str = self._compile_cldfviz_args(args, kwargs)
+            return f"[{self.name} {url}]({self.cldf_table}{arg_str}#cldf:__all__)"
         return f"[Unknown visualizer]({url})"
 
-    @classmethod
-    def reset_cnt(cls):
-        cls.cnt = 0
+    def reset_cnt(self):
+        self.cnt = 0
 
 
-class Language(Entity):
+class Language(Base_ORM):
     name = "Language"
-    fallback = None
     cldf_table = "LanguageTable"
     shortcut = "lg"
 
-    list_templates = {
-        "plain": load_template("base", "inline_list_orm"),
-        "github": load_template("base", "inline_list_orm"),
-        "html": load_template("base", "inline_list_orm"),
-        "latex": load_template("base", "inline_list_orm"),
-    }
 
-
-class Text(Entity):
+class Text(Base):
     name = "Text"
     cldf_table = "texts.csv"
     shortcut = "txt"
-    templates = {"plain": "“{{ ctx['Name'] }}”"}
 
 
-class Cognateset(Entity):
+class Cognateset(Base_ORM):
     name = "Cognate set"
     cldf_table = "CognatesetTable"
     shortcut = "cogset"
-    # templates = {"plain": "{{ ctx.name }}"}
-    templates = {
-        "plain": open(  # pylint: disable=consider-using-with
-            files("cldfviz") / "templates/text/CognatesetTable_detail.md",
-            "r",
-            encoding="utf-8",
-        ).read(),
-        "html": load_template("cognateset", "html_detail"),
-    }
 
 
-class Form(Entity):
+class Form(Base_ORM):
     name = "Form"
     cldf_table = "FormTable"
     shortcut = "f"
-    templates = {
-        "html": load_template("form", "html"),
-        "plain": load_template("form", "plain"),
-        "latex": load_template("form", "latex"),
-    }
-
-    list_templates = {
-        "plain": load_template("form", "plain_index"),
-        "html": load_template("form", "html_index"),
-    }
 
 
-models = [Morpheme, Morph, Wordform, Example, Language, Text, Cognateset, Form]
+models = [
+    Base(),
+    Morpheme(),
+    Morph(),
+    Wordform(),
+    Example(),
+    Language(),
+    Text(),
+    Cognateset(),
+    Form(),
+]

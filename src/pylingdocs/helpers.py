@@ -29,6 +29,9 @@ from pylingdocs.config import EX_SHOW_PRIMARY
 from pylingdocs.config import EX_SRC_POS
 from pylingdocs.config import FIGURE_DIR
 from pylingdocs.config import FIGURE_MD
+from pylingdocs.config import LFTS_SHOW_FTR
+from pylingdocs.config import LFTS_SHOW_LG
+from pylingdocs.config import LFTS_SHOW_SOURCE
 from pylingdocs.config import METADATA_FILE
 from pylingdocs.config import STRUCTURE_FILE
 from pylingdocs.config import TABLE_DIR
@@ -64,18 +67,24 @@ def write_file(content, path, mode=None, encoding="utf-8"):
             f.write(content)
 
 
+def parse_heading(string):
+    prefix = string.split(" ")[0]
+    level = prefix.count("#")
+    title = string.split(" ", 1)[1]
+    attr_list = re.search("({.*?})", title)
+    if attr_list:
+        attr_list = attr_list.group()
+        tag = re.findall("#(.*?)\s+}", attr_list)[0]
+        title = title.replace(attr_list, "")
+    else:
+        tag = slugify(title, allow_unicode=True)
+    return level, title.strip(" "), tag
+
+
 def get_sections(content):
     for line in content.split("\n"):
         if line.startswith("#"):
-            title = line.split(" ", 1)[1]
-            level = line.count("#")
-            tag = re.findall("{#(.*?)}", title)
-            if len(tag) == 0:
-                tag = slugify(title, allow_unicode=True)
-            else:
-                tag = tag[0]
-                title = title.replace(tag, "")
-            yield level, title, tag
+            yield parse_heading(line)
 
 
 def get_glosses(word, gloss_cands):
@@ -87,6 +96,101 @@ def get_glosses(word, gloss_cands):
                 for gloss in resolve_glossing_combination(part):
                     if gloss not in gloss_cands:
                         yield gloss
+
+
+def print_counter(counters):
+    out = []
+    for lvl, value in counters.items():
+        if value != 0:
+            out.append(str(value))
+        else:
+            return ".".join(out)
+    return ".".join(out)
+
+
+SECDEPTH = 5
+
+
+def extract_chapters(content, mode="pld"):
+    chapters = {}
+    if mode == "pld":
+        label_pattern = re.compile(r"(?P<title>.*?)\s+\[label\]\((?P<id>.*?)\)")
+    elif mode == "pandoc":
+        label_pattern = re.compile(r"(?P<title>.*?)\s+\{\s?\#(?P<id>.*?)\s?\}")
+    for line in content.split("\n"):
+        if line.startswith("# "):
+            prefix, title = line.split("# ", 1)
+            attr_list = label_pattern.search(title)
+            if attr_list:
+                attr_list = attr_list.groupdict()
+                tag = attr_list["id"]
+                title = attr_list["title"]
+            else:
+                tag = slugify(title, allow_unicode=True)
+            chapters[tag] = ""
+        chapters[tag] += "\n" + line
+    return chapters
+
+
+def process_labels(chapters, float_ch_prefixes=True, mode="pld"):
+    labels = {}
+    locations = {}
+    counters = {str(i): 0 for i in range(1, SECDEPTH)}
+    counters["table"] = 0
+    counters["figure"] = 0
+    chapter_pattern = r"(?m)^(# (.*?))"
+
+    # if mode == "html":
+    #     heading_pattern = re.compile(
+    #         r'<h(?P<lvl>.*?) id="(?P<id>.*?)">(?P<title>.*?)</h.*?>'
+    #     )
+    #     tpattern = re.compile(
+    #         r'<caption class="table" id="(?P<id>.*?)">\s?(?P<title>.*?)\s?</caption>'
+    #     )
+    #     fpattern = re.compile(
+    #         r'<caption class="table" id="(?P<id>.*?)">\s?(?P<title>.*?)\s?</caption>'
+    #     )
+    # elif mode == "pld":
+    heading_pattern = re.compile("#+ (?P<title>.*?) \[label\]\((?P<id>.*?)\)")
+    tpattern = re.compile(r"\[table\]\((?P<id>.*?)\)")
+    fpattern = re.compile(r"\[figure\]\((?P<id>.*?)\)")
+    for chno, (chid, chapter) in enumerate(chapters.items()):
+        # input(parse_heading(chapter.split("\n")[0]))
+        if float_ch_prefixes:
+            counters["table"] = 0
+            counters["figure"] = 0
+        for line in chapter.split("\n"):
+            if line.startswith("#"):
+                heading = heading_pattern.search(line)
+                if heading:
+                    heading = heading.groupdict()
+                else:
+                    heading = {"id": slugify(line), "title": line.split("# ")[1]}
+                heading["lvl"] = str(line.count("#"))
+                counters[heading["lvl"]] += 1
+                for cc in range(int(heading["lvl"]) + 1, SECDEPTH):
+                    counters[str(cc)] = 0
+                labels[heading["id"]] = print_counter(counters)
+                locations[heading["id"]] = chid
+        for tcaption in tpattern.finditer(chapter):
+            tcaption = tcaption.groupdict()
+            counters["table"] += 1
+            if float_ch_prefixes:
+                tstring = f"Table {counters['1']}.{counters['table']}"
+            else:
+                tstring = f"Table {counters['table']}"
+            labels[tcaption["id"]] = tstring
+            locations[tcaption["id"]] = chid
+        for fcaption in fpattern.finditer(chapter):
+            fcaption = fcaption.groupdict()
+            counters["figure"] += 1
+            if float_ch_prefixes:
+                fstring = f"Figure {counters['1']}.{counters['figure']}"
+            else:
+                fstring = f"Figure {counters['figure']}"
+            labels[fcaption["id"]] = fstring
+            locations[fcaption["id"]] = chid
+    return labels, locations
 
 
 def check_abbrevs(dataset, source_dir, content):
@@ -759,6 +863,19 @@ def resolve_jinja(var, default):
     return var
 
 
+def pad_ex(*lines, sep=" "):
+    out = {}
+    for glossbundle in zip(*lines):
+        longest = len(max(glossbundle, key=len))
+        for i, obj in enumerate(glossbundle):
+            diff = longest - len(obj)
+            out.setdefault(i, [])
+            out[i].append(obj + " " * diff)
+    for k in out.copy():
+        out[k] = sep.join(out[k])
+    return tuple(out.values())
+
+
 def build_examples(datas):
     ex_dicts = []
     single_language = True
@@ -774,3 +891,26 @@ def build_examples(datas):
             data["show_language"] = False
         ex_dicts.append(build_example(data))
     return ex_dicts, full_preamble
+
+
+def resolve_lfts(with_language, with_source, with_translation):
+    if isinstance(with_language, Undefined):
+        with_language = LFTS_SHOW_LG
+    if isinstance(with_source, Undefined):
+        with_source = LFTS_SHOW_SOURCE
+    if isinstance(with_translation, Undefined):
+        with_translation = LFTS_SHOW_FTR
+    return with_language, with_source, with_translation
+
+
+func_dict = {
+    "comma_and_list": comma_and_list,
+    "sanitize_latex": sanitize_latex,
+    "split_ref": split_ref,
+    "decorate_gloss_string": decorate_gloss_string,
+    "build_example": build_example,
+    "build_examples": build_examples,
+    "src": src,
+    "flexible_pad_ex": pad_ex,
+    "resolve_lfts": resolve_lfts,
+}

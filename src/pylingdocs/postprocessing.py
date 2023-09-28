@@ -62,4 +62,5 @@ def postprocess(md_str, builder, source_dir="."):
         insert_manex(md_str, builder, MANPEX_ITEM_PATTERN, kind="subexample")
     )
     md_str = "".join(insert_manex(md_str, builder, MANEX_PATTERN))
-    return "".join(insert_tables(md_str, builder, tables))
+    md_str = "".join(insert_tables(md_str, builder, tables))
+    return builder.postprocess(md_str)

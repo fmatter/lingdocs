@@ -18,15 +18,18 @@ from pylingdocs.formats import builders
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_cldf_dataset
 from pylingdocs.helpers import check_abbrevs
+from pylingdocs.helpers import extract_chapters
 from pylingdocs.helpers import get_structure
 from pylingdocs.helpers import load_content
 from pylingdocs.helpers import load_figure_metadata
+from pylingdocs.helpers import process_labels
 from pylingdocs.helpers import read_file
 from pylingdocs.helpers import refresh_clld_db
 from pylingdocs.helpers import write_file
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
 from pylingdocs.postprocessing import postprocess
+from pylingdocs.preprocessing import loaders
 from pylingdocs.preprocessing import preprocess
 from pylingdocs.preprocessing import render_markdown
 
@@ -219,6 +222,8 @@ def create_output(
         builder = builders[output_format]
         builder.figure_metadata = figure_metadata
         content = "\n\n".join([x["content"] for x in contents.values()])
+        chapters = extract_chapters(content)
+        ref_labels, ref_locations = process_labels(chapters)
         preprocessed = preprocess(content, source_dir)
         preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
         preprocessed = render_markdown(
@@ -246,7 +251,12 @@ def create_output(
                 content=preprocessed,
                 metadata=metadata,
                 abbrev_dict=abbrev_dict,
+                ref_labels=ref_labels,
+                ref_locations=ref_locations,
+                parts=chapters,
             )
+        if builder.name == "mkdocs":
+            builder.write_details(output_dir, dataset, loaders["mkdocs"])
         if builder.name == "latex":
             bibcontents = read_file(dataset.bibpath)
             if bibcontents:

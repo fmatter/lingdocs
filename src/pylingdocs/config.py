@@ -1,10 +1,12 @@
 import logging
+import re
 from configparser import ConfigParser
 from pathlib import Path
 
 
 log = logging.getLogger(__name__)
 
+MD_LINK_PATTERN = re.compile(r"\[(?P<label>[^]]*)]\((?P<url>[^)]+)\)")
 
 try:
     from importlib.resources import files  # pragma: no cover
@@ -69,7 +71,9 @@ CREATE_README = get_config("output", "readme", as_boolean=True)
 METADATA_FILE = Path("./metadata.yaml")
 
 OUTPUT_TEMPLATES = {}
-for builder in BUILDERS + PREVIEW + ["plain", "github", "html", "latex", "clld"]:
+for builder in (
+    BUILDERS + PREVIEW + ["plain", "github", "html", "latex", "clld", "mkdocs"]
+):
     OUTPUT_TEMPLATES[builder] = get_config(builder, "template")
 
 LATEX_EX_TEMPL = get_config("latex", "interlinear_tool")

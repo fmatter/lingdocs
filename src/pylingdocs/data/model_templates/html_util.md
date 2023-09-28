@@ -1,4 +1,3 @@
-{% import 'util.md' as util %}
 {% macro render_example(class_, res) -%}
 <li class={{class_}} id ="{{ res['id'] }}">
   <div class="interlinear-wrapper">

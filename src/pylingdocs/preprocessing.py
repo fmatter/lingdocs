@@ -15,10 +15,12 @@ from pylingdocs.config import LFTS_SHOW_FTR
 from pylingdocs.config import LFTS_SHOW_LG
 from pylingdocs.config import LFTS_SHOW_SOURCE
 from pylingdocs.config import MANEX_DIR
+from pylingdocs.config import MD_LINK_PATTERN
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.helpers import build_example
 from pylingdocs.helpers import build_examples
 from pylingdocs.helpers import comma_and_list
+from pylingdocs.helpers import func_dict
 from pylingdocs.helpers import get_md_pattern
 from pylingdocs.helpers import load_table_metadata
 from pylingdocs.helpers import sanitize_latex
@@ -29,93 +31,69 @@ from pylingdocs.models import models
 
 log = logging.getLogger(__name__)
 
-MD_LINK_PATTERN = re.compile(r"\[(?P<label>[^]]*)]\((?P<url>[^)]+)\)")
-
-
 model_dict = {x.name.lower(): x for x in models}
+
 if Path("custom_pld_models.py").is_file():
     sys.path.append(os.getcwd())
     from custom_pld_models import models as custom_models  # noqa
 
-    for model in custom_models:
-        model_dict[model.__name__.lower()] = model
+    for mm in custom_models:
+        model_dict[mm.name.lower()] = mm
+
 models = model_dict.values()
 
 log.info("Loading templates")
+views = ["inline", "list", "detail"]
 labels = {}
-templates = {}
-list_templates = {}
-envs = {}
+loaders = {}
+
 
 for model in models:
     labels[model.shortcut] = model.query_string
-    for output_format in model.templates:
-        if output_format not in templates:
-            templates[output_format] = {}
-    for output_format in model.list_templates:
-        if output_format not in list_templates:
-            list_templates[output_format] = {}
-
-with open(DATA_DIR / "util.j2", "r", encoding="utf-8") as f:
-    pylingdocs_util = f.read()
-
-for templ in templates.values():
-    templ["pylingdocs_util.md"] = pylingdocs_util
-    templ["ParameterTable_detail.md"] = "{{ctx.cldf.name}}"
-
-for output_format, env_dict in templates.items():
-    for model in models:
-        model_output = model.representation(output_format)
-        # if output_format == "github" and model.name == "Example":
-        #     log.debug(f"Format {output_format} for model {model}")
-        #     log.debug(model_output)
-        if model_output is not None:
-            env_dict[model.cldf_table + "_detail.md"] = model_output
-            # log.debug(f"Format {output_format} for model {model}")
-
-for output_format, env_dict in list_templates.items():
-    for model in models:
-        model_output = model.representation(output_format, multiple=True)
-        if model_output is not None:
-            env_dict[model.cldf_table + "_index.md"] = model_output
+    for view, templates in model.templates.items():
+        for output_format, template in templates.items():
+            loaders.setdefault(output_format, {})
+            if view == "inline":
+                loaders[output_format][model.cldf_table + f"_detail.md"] = template
+            elif view == "list":
+                loaders[output_format][model.cldf_table + f"_index.md"] = template
+            elif view == "detail":
+                loaders[output_format][model.cldf_table + f"_page.md"] = template
 
 if Path("pld/model_templates").is_dir():
     for model in Path("pld/model_templates").iterdir():
-        for output_format, template_collection in templates.items():
-            templ_path = model / output_format / "detail.md"
-            if not templ_path.is_file():
-                continue
-            if templ_path.is_file():
-                with open(templ_path, "r", encoding="utf-8") as f:
-                    templ_content = f.read()
-                log.info(
-                    f"Using custom template {templ_path} for model {model.name} for format {output_format}"
-                )
-                template_collection[
-                    f"{model_dict[model.name].cldf_table}_detail.md"
-                ] = templ_content
-        for output_format, template_collection in list_templates.items():
-            templ_path = model / output_format / "index.md"
-            if not templ_path.is_file():
-                continue
-            if templ_path.is_file():
-                with open(templ_path, "r", encoding="utf-8") as f:
-                    templ_content = f.read()
-                # log.debug(f"Using custom template {templ_path} for model {model.name} for format {output_format}")
-                template_collection[
-                    f"{model.name.capitalize()}Table_index.md"
-                ] = templ_content
+        for output_format, templates in loaders.items():
+            for target_file, template_handle in [
+                (
+                    f"{output_format}.md",
+                    f"{model_dict[model.name].cldf_table}_detail.md",
+                ),
+                (
+                    f"{output_format}_index.md",
+                    f"{model_dict[model.name].cldf_table}_index.md",
+                ),
+                (
+                    f"{output_format}_page.md",
+                    f"{model_dict[model.name].cldf_table}_page.md",
+                ),
+            ]:
+                if (model / target_file).is_file():
+                    log.info(
+                        f"Using custom template {target_file} for model {model.name} for format {output_format}"
+                    )
+                    templates[template_handle] = load(model / target_file)
 
+pylingdocs_util = load(DATA_DIR / "util.j2")
 
-for output_format in ["latex", "html", "github", "plain"]:
+for output_format, templates in loaders.items():
+    templates["pylingdocs_util.md"] = pylingdocs_util
+    templates["ParameterTable_detail.md"] = "{{ctx.cldf.name}}"
     util_path = Path(f"pld/model_templates/{output_format}_util.md")
     if not util_path.is_file():
         util_path = DATA_DIR / "model_templates" / f"{output_format}_util.md"
-    templates[output_format]["pld_util.md"] = load(util_path)
+    templates["pld_util.md"] = load(util_path)
+    loaders[output_format] = DictLoader(templates)
 
-for output_format, env_dict in templates.items():
-    env_dict.update(list_templates[output_format])
-    envs[output_format] = DictLoader(env_dict)
 
 bool_dic = {"True": True, "False": False}
 
@@ -150,29 +128,6 @@ def preprocess_cldfviz(md):
     yield md[current:]
 
 
-def pad_ex(*lines, sep=" "):
-    out = {}
-    for glossbundle in zip(*lines):
-        longest = len(max(glossbundle, key=len))
-        for i, obj in enumerate(glossbundle):
-            diff = longest - len(obj)
-            out.setdefault(i, [])
-            out[i].append(obj + " " * diff)
-    for k in out.copy():
-        out[k] = sep.join(out[k])
-    return tuple(out.values())
-
-
-def resolve_lfts(with_language, with_source, with_translation):
-    if isinstance(with_language, Undefined):
-        with_language = LFTS_SHOW_LG
-    if isinstance(with_source, Undefined):
-        with_source = LFTS_SHOW_SOURCE
-    if isinstance(with_translation, Undefined):
-        with_translation = LFTS_SHOW_FTR
-    return with_language, with_source, with_translation
-
-
 def render_markdown(
     md_str,
     ds,
@@ -193,44 +148,39 @@ def render_markdown(
                 }
             else:
                 audio_dict = {}
-            func_dict = {
-                "comma_and_list": comma_and_list,
-                "sanitize_latex": sanitize_latex,
-                "split_ref": split_ref,
-                "decorate_gloss_string": decorate_gloss_string,
-                "build_example": build_example,
-                "build_examples": build_examples,
-                "src": src,
-                "flexible_pad_ex": pad_ex,
-                "get_audio": lambda x: audio_dict.get(x, None),
-                "resolve_lfts": resolve_lfts,
-            }
+            func_dict["get_audio"] = lambda x: audio_dict.get(x, None)
+            func_dict["decorate_gloss_string"] = decorate_gloss_string
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val
+            # input("".join(preprocess_cldfviz(md_str)))
+            # input(ds)
+            # input(output_format)
+            # input(loaders[output_format])
+            # input(func_dict)
             preprocessed = render(
                 doc="".join(preprocess_cldfviz(md_str)),
                 cldf_dict=ds,
-                loader=envs[output_format],
+                loader=loaders[output_format],
                 func_dict=func_dict,
             )
             preprocessed = render(
                 doc=preprocessed,
                 cldf_dict=ds,
-                loader=envs[output_format],
+                loader=loaders[output_format],
                 func_dict=func_dict,
             )
             if "#cldf" in preprocessed:
                 preprocessed = render(
                     doc=preprocessed,
                     cldf_dict=ds,
-                    loader=envs[output_format],
+                    loader=loaders[output_format],
                     func_dict={"comma_and_list": comma_and_list},
                 )
             if "#cldf" in preprocessed:
                 preprocessed = render(
                     doc=preprocessed,
                     cldf_dict=ds,
-                    loader=envs[output_format],
+                    loader=loaders[output_format],
                     func_dict={"comma_and_list": comma_and_list},
                 )
         else:

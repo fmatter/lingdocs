@@ -3,22 +3,30 @@ import logging
 import re
 import shutil
 from pathlib import Path
+import jinja2
 import panflute
+from cldfviz.template import TEMPLATE_DIR
+from cldfviz.template import render_jinja_template
+from cldfviz.text import render
 from cookiecutter.main import cookiecutter
 from jinja2 import Environment
+from jinja2 import FileSystemLoader
 from jinja2 import PackageLoader
 from jinja2.exceptions import TemplateNotFound
+from writio import dump
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import FIGURE_DIR
+from pylingdocs.config import LATEX_EX_TEMPL
 from pylingdocs.config import LATEX_TOPLEVEL
+from pylingdocs.config import MD_LINK_PATTERN
 from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.helpers import decorate_gloss_string
+from pylingdocs.helpers import func_dict
 from pylingdocs.helpers import get_sections
 from pylingdocs.helpers import html_example_wrap
 from pylingdocs.helpers import html_gloss
 from pylingdocs.helpers import latexify_table
 from pylingdocs.helpers import src
-from pylingdocs.preprocessing import MD_LINK_PATTERN
 
 
 NUM_PRE = re.compile(r"[\d]+\ ")
@@ -60,6 +68,12 @@ class OutputFormat:
     file_ext = "txt"
     single_output = True
     figure_metadata = {}
+    figure_dir = "figures"
+
+    # @property
+    @classmethod
+    def label(self):
+        return self.name
 
     @classmethod
     def ref_cmd(cls, url, *_args, **_kwargs):
@@ -99,16 +113,26 @@ class OutputFormat:
 
     @classmethod
     def write_folder(
-        cls, output_dir, content=None, parts=None, metadata=None, abbrev_dict=None
+        cls,
+        output_dir,
+        content=None,
+        parts=None,
+        metadata=None,
+        abbrev_dict=None,
+        ref_labels=None,
+        ref_locations=None,
     ):  # pylint: disable=too-many-arguments
         # log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
         if not abbrev_dict:
             abbrev_dict = {}
+
         extra = {
             "name": cls.name,
-            "parts": {"list": parts},
+            "chapters": parts,
             "project_title": metadata.get("title", "A beautiful title"),
             "glossing_abbrevs": cls.register_glossing_abbrevs(abbrev_dict),
+            "ref_labels": str(ref_labels),
+            "ref_locations": str(ref_locations),
         }
         if "authors" in metadata:
             extra["author"] = cls.author_list(metadata["authors"])
@@ -130,6 +154,7 @@ class OutputFormat:
             template_path = str(
                 DATA_DIR / "format_templates" / cls.name / OUTPUT_TEMPLATES[cls.name]
             )
+
         cookiecutter(
             template_path,
             output_dir=output_dir,
@@ -138,13 +163,66 @@ class OutputFormat:
             no_input=True,
         )
         if FIGURE_DIR.is_dir():
-            target_dir = output_dir / cls.name / FIGURE_DIR.name
+            target_dir = output_dir / cls.name / cls.figure_dir
             if not target_dir.is_dir():
                 target_dir.mkdir()
             for file in FIGURE_DIR.iterdir():
                 target = target_dir / file.name
                 if not target.is_file():
                     shutil.copy(file, target)
+
+    @classmethod
+    def write_details(cls, output_dir, dataset, loader):
+        return None
+        env = Environment(
+            loader=loader, autoescape=False, trim_blocks=True, lstrip_blocks=True
+        )
+        models = []
+        orm = []
+        for cp in dataset.components.keys():
+            orm.append(cp)
+        for table in orm + dataset.tables:
+            if table in orm:
+                mode = "orm"
+                label = table.replace("Table", "").lower()
+            else:
+                mode = "dic"
+                label = f"{table.url}".replace(".csv", "")
+                table = str(table.url)
+            try:
+                template = env.get_template(f"{table}_page.md")
+            except jinja2.exceptions.TemplateNotFound:
+                log.warning(f"Not rendering data for table {table}")
+                continue
+            log.info(f"Writing details for {label}")
+            models.append(f"* [{label}]({label})")
+            func_dict["decorate_gloss_string"] = cls.decorate_gloss_string
+            template.globals.update(func_dict)
+            out_dir = output_dir / Path(f"mkdocs/docs/data/{label}")
+            out_dir.mkdir(exist_ok=True, parents=True)
+            gathered = []
+            from tqdm import tqdm
+
+            if mode == "orm":
+                reclist = dataset.objects(table)
+            else:
+                reclist = list(dataset.iter_rows(table))
+            for row in tqdm(reclist):
+                content = template.render(ctx=row)
+                content = render(
+                    doc=content,
+                    cldf_dict=dataset,
+                    loader=loader,
+                    func_dict=func_dict,
+                )
+                if isinstance(row, dict):
+                    rid = row["ID"]
+                else:
+                    rid = row.id
+                dump(content, out_dir / f"{rid}.md")
+                gathered.append(f"* [{rid}]({rid})")
+            dump(f"# {label}\n\n" + "\n".join(gathered), out_dir / "index.md")
+        dump("# Data\n\n" + "\n".join(models), output_dir / "mkdocs/docs/data/index.md")
 
     @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
@@ -218,6 +296,10 @@ class OutputFormat:
         return content
 
     @classmethod
+    def postprocess(cls, content):
+        return content
+
+    @classmethod
     def table(cls, df, caption, label):
         # del label  # unused
         tabular = df.to_markdown(index=False, tablefmt="grid")
@@ -256,7 +338,7 @@ class PlainText(OutputFormat):
         return res.replace("|WHITESPACE|", " ")
 
 
-class HTML(OutputFormat):
+class HTML(PlainText):
     name = "html"
     file_ext = "html"
 
@@ -273,7 +355,7 @@ class HTML(OutputFormat):
 
     @classmethod
     def label_cmd(cls, url, *_args, **_kwargs):
-        return "{#" + url + "}" + f"\n <a id='{url}'></a>"
+        return f"{{ #{url} }}"
 
     @classmethod
     def ref_cmd(cls, url, *_args, **_kwargs):
@@ -303,12 +385,12 @@ class HTML(OutputFormat):
 
     @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
-        return f"""<script>var abbrev_dict={abbrev_dict}; for (var key in abbrev_dict){{
+        return f"""var abbrev_dict={abbrev_dict}; for (var key in abbrev_dict){{
 var targets = document.getElementsByClassName('gloss-'+key)
 for (var i = 0; i < targets.length; i++) {{
     targets[i].innerHTML = abbrev_dict[key];
 }}
-}};</script>"""
+}};"""
 
     @classmethod
     def glossing_abbrevs_list(cls, arg_string):
@@ -349,7 +431,52 @@ for (var i = 0; i < targets.length; i++) {{
         return html_example_wrap(tag, content, kind=kind)
 
 
-class GitHub(OutputFormat):
+class MkDocs(HTML):
+    name = "mkdocs"
+    figure_dir = "docs/figures"
+
+    @classmethod
+    def preprocess(cls, content):
+        res = content.replace("```{=html}", "").replace("```", "")
+        return res.replace("WHITESPACE", " ").replace(r"\|", "")
+
+    @classmethod
+    def postprocess(cls, content):
+        return content.replace("(#source-", "(/references/#source-")
+
+    @classmethod
+    def table(cls, df, caption, label):
+        tabular = df.to_html(escape=False, index=False)
+        tabular = panflute.convert_text(
+            tabular,
+            output_format="html",
+            input_format="markdown",
+        )
+        tabular = re.sub('style="(.*)"', "", tabular)
+        if not caption:
+            return "<br>" + tabular
+        return tabular.replace(
+            "<thead",
+            f"<caption class='table' id ='tab:{label}'>{caption}</caption><thead",
+        )
+
+    @classmethod
+    def figure_cmd(cls, url, *_args, **_kwargs):
+        if url in cls.figure_metadata:
+            caption = cls.figure_metadata[url].get("caption", "")
+            filename = cls.figure_metadata[url].get("filename", "")
+            return f"""<figure>
+<img src="/figures/{filename}" alt="{caption}" />
+<figcaption id="fig:{url}" aria-hidden="true">{caption}</figcaption>
+</figure>"""
+        return f"![{caption}](/figures/{url}.jpg)"
+
+    @classmethod
+    def label_cmd(cls, url, *_args, **_kwargs):
+        return f"{{ #{url} }}"
+
+
+class GitHub(PlainText):
     name = "github"
     file_ext = "md"
 
@@ -395,7 +522,7 @@ class GitHub(OutputFormat):
         return res.replace("WHITESPACE", " ").replace(r"\|", "")
 
 
-class CLLD(OutputFormat):
+class CLLD(PlainText):
     name = "clld"
     file_ext = "md"
     single_output = False
@@ -455,9 +582,13 @@ class CLLD(OutputFormat):
         return html_example_wrap(tag, content, kind=kind)
 
 
-class Latex(OutputFormat):
+class Latex(PlainText):
     name = "latex"
     file_ext = "tex"
+
+    @classmethod
+    def label(self):
+        return f"{self.name}_{LATEX_EX_TEMPL}"
 
     @classmethod
     def exref_cmd(cls, url, *_args, **_kwargs):
@@ -610,7 +741,7 @@ class Latex(OutputFormat):
         yield content[current:]
 
 
-builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD]}
+builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs]}
 try:
     from custom_pld_builders import builders as custom_builders
 

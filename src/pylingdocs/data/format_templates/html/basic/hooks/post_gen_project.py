@@ -14,10 +14,12 @@ for filename in [
     "examples.css",
     "examples.js",
     "glossing.js",
-    "styling.css",
+    "glossing.css",
     "crossref.js",
     "alignment.css",
     "alignment.js",
+    "tables.css",
+    "styling.css",
 ]:
     source = Path(WEB_DIR / filename)
     target = Path(".")

@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `full` argument for citations
 * `bare` argument for exrefs
 * one-stop solution for example layouting
+* [mkdocs](https://www.mkdocs.org/) template
 
 ### Fixed
 * LaTeX examples

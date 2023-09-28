@@ -8,7 +8,14 @@ function getNumberLabel(counters, level) {
 }
 
 //used for storing both section labels and float counters
-var stored = {}
+if (typeof refLabels === 'undefined') {
+    var refLabels = {}
+}
+
+//for labels that are on another page
+if (typeof refLocations === 'undefined') {
+    var refLocations = {}
+}
 
 function numberSections(start=0){
     var toc = document.getElementById("toc") // get the div holding our eventual table of contents
@@ -90,7 +97,7 @@ function numberSections(start=0){
         }
 
 
-        stored[heading.id] = prefix + number // for crossref resolution
+        refLabels[heading.id] = prefix + number // for crossref resolution
 
         // reset the counters smaller than the current level
         reached = false;
@@ -110,7 +117,6 @@ function numberSections(start=0){
             tocDiv.children[0].textContent = "\xa0\xa0"
         }
     }
-
 }
 
 function capitalizeFirstLetter(string) {
@@ -132,7 +138,7 @@ function numberCaptions(){
                 if (!caption.textContent.startsWith(ref_counter + ": ")){
                     caption.textContent = ref_counter + ": " + caption.textContent
                 }
-                stored[caption.id] = ref_counter // store the value for resolveCrossrefs below
+                refLabels[caption.id] = ref_counter // store the value for resolveCrossrefs below
             }
         });
     });
@@ -142,7 +148,7 @@ function numberCaptions(){
         if (!caption.textContent.startsWith(ref_counter + ": ")){
             caption.textContent = ref_counter + ": " + caption.textContent
         }
-        stored[caption.id] = ref_counter // store the value for resolveCrossrefs below
+        refLabels[caption.id] = ref_counter // store the value for resolveCrossrefs below
     })
 }
 
@@ -150,10 +156,13 @@ function numberCaptions(){
 function resolveCrossrefs(){
     var refs = document.querySelectorAll("a.crossref");
     refs.forEach(function(ref, i) {
-        ref.textContent = stored[ref.name]
+        ref.textContent = refLabels[ref.name]
+        if (ref.name in refLocations){
+            ref.href = "/"+refLocations[ref.name] + "#" + ref.href.split("#").pop()
+        }
         if (ref.hasAttribute("end")) { // for ranges
             end = ref.getAttribute("end")
-            ref.textContent += "-" + stored[end]
+            ref.textContent += "-" + refLabels[end]
         }
     })
 }

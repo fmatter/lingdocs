@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="examples.css">
     <link rel="stylesheet" href="styling.css">
+    <link rel="stylesheet" href="tables.css">
     <link rel="stylesheet" href="alignment.css">
+    <link rel="stylesheet" href="glossing.css">
     <title>{{ cookiecutter.project_title }}</title>
 </head>
 <body>
@@ -26,9 +28,9 @@
         {% endif %}
 
         {{ cookiecutter.content }}
-
-        {{ cookiecutter.glossing_abbrevs }}
-
+        <script>
+            {{ cookiecutter.glossing_abbrevs }}
+        </script>
     </article>
 
     <script src="examples.js"></script> 
@@ -37,7 +39,7 @@
     <script src="alignment.js"></script>
     <script type="text/javascript" src="https://livejs.com/live.js"></script>
     <script>
-        number_examples()
+        numberExamples()
         numberSections()
         numberCaptions()
         resolveCrossrefs()
