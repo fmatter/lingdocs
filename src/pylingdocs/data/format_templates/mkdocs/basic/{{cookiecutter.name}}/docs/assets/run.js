@@ -1,0 +1,4 @@
+numberExamples()
+// numberSections()
+numberCaptions()
+resolveCrossrefs()

@@ -1,0 +1,63 @@
+site_name: "{{ cookiecutter.project_title }} ({{ cookiecutter.version }})"
+theme:
+  name: material
+  custom_dir: overrides
+  icon:
+    logo: octicons/book-24
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - toc.follow
+    - toc.integrate
+  palette:     
+    # Palette toggle for light mode
+    - scheme: default
+      primary: green
+      accent: orange
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: deep purple
+      accent: orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light markdown_extensions
+markdown_extensions:
+  - toc:
+      baselevel: 1
+  - attr_list
+  # - tables
+  # - md_in_html
+plugins:
+    - enumerate-headings:
+        toc_depth: 6
+        include:
+          - "*"
+        exclude:
+          - references.md
+          - data/index.md
+    - search
+    - git-revision-date-localized
+extra_css:
+  - assets/examples.css
+  - assets/alignment.css
+  - assets/glossing.css
+  - assets/tables.css
+extra_javascript:
+  - assets/alignment.js
+  - assets/examples.js
+  - assets/refs.js
+  - assets/crossref.js
+  - assets/glossing_abbrevs.js
+  - assets/glossing.js
+  - assets/run.js
+nav:
+  {% for chapter in cookiecutter.chapters %}
+  - '{{ chapter }}.md'
+  {% endfor %}
+  - 'references.md'
+  - 'data/index.md'
+repo_url: {{cookiecutter.repository}}
+repo_name: Source (GitHub)

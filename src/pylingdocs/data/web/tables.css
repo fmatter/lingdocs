@@ -1,0 +1,47 @@
+table {
+border-collapse: collapse;
+/*display: inline;*/
+/*margin:4px;*/
+border-spacing: 0px 0px;
+/*margin: 0 auto;*/
+border: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+td, th {
+ border:  none;
+  text-align: left;
+  padding: 0.5rem;
+  line-height: 1.5;
+}
+
+thead {
+    border-bottom: 1px solid;
+    border-top: 2px solid;
+}
+
+tbody {
+    border-bottom: 2px solid;
+}
+
+ol table {
+  border-collapse: collapse;*/
+  border-spacing: 0px 0px;
+display: inline;
+margin:4px;
+margin: 0 auto;
+}
+
+ol thead {
+    border-bottom: 0px;
+    border-top: 0px;
+}
+
+ol th {
+    font-weight: normal;
+}
+
+ol tbody {
+    border-bottom: 0px;
+}

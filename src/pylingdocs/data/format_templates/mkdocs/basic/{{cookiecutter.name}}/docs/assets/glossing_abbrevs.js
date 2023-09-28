@@ -1,0 +1,1 @@
+{{ cookiecutter.glossing_abbrevs }}
