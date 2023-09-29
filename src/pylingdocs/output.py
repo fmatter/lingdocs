@@ -225,12 +225,14 @@ def create_output(
         chapters = extract_chapters(content)
         ref_labels, ref_locations = process_labels(chapters)
         preprocessed = preprocess(content, source_dir)
+        builder.ref_labels=ref_labels
+        builder.ref_locations=ref_locations
         preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
         preprocessed = render_markdown(
             preprocessed,
             dataset,
+            builder,
             decorate_gloss_string=builder.decorate_gloss_string,
-            output_format=output_format,
             **kwargs,
         )
         preprocessed += "\n\n" + builder.reference_list()
@@ -238,6 +240,7 @@ def create_output(
         preprocessed = render_markdown(
             preprocessed,
             dataset,
+            builder,
             decorate_gloss_string=builder.decorate_gloss_string,
             output_format=output_format,
             **kwargs,

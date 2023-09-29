@@ -69,6 +69,8 @@ class OutputFormat:
     single_output = True
     figure_metadata = {}
     figure_dir = "figures"
+    ref_labels = None
+    ref_locations = None
 
     # @property
     @classmethod
@@ -79,7 +81,11 @@ class OutputFormat:
     def ref_cmd(cls, url, *_args, **_kwargs):
         end = _kwargs.pop("end", None)
         if end:
+            if cls.ref_labels:
+                return cls.ref_labels[url]+f"–{end}"
             return f"[ref/{url}–{end}]"
+        if cls.ref_labels:
+            return cls.ref_labels[url]
         return f"[ref/{url}]"
 
     @classmethod
@@ -105,7 +111,7 @@ class OutputFormat:
     def figure_cmd(cls, url, *_args, **_kwargs):
         caption = cls.figure_metadata[url].get("caption", "")
         filename = cls.figure_metadata[url].get("filename", "")
-        return f"[{caption}: {filename}]"
+        return f"({cls.ref_labels[f'fig:{url}']}: {filename})"
 
     @classmethod
     def decorate_gloss_string(cls, x):
@@ -305,7 +311,7 @@ class OutputFormat:
         tabular = df.to_markdown(index=False, tablefmt="grid")
         if not caption:
             return tabular
-        return caption + f": [{label}]\n\n" + tabular
+        return caption + f":\n\n" + tabular
 
     @classmethod
     def manex(cls, tag, content, kind):
@@ -337,6 +343,10 @@ class PlainText(OutputFormat):
         )
         return res.replace("|WHITESPACE|", " ")
 
+
+    @classmethod
+    def label_cmd(cls, url, *_args, **_kwargs):
+        return ""
 
 class HTML(PlainText):
     name = "html"

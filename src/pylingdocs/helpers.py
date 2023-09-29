@@ -139,18 +139,6 @@ def process_labels(chapters, float_ch_prefixes=True, mode="pld"):
     counters["table"] = 0
     counters["figure"] = 0
     chapter_pattern = r"(?m)^(# (.*?))"
-
-    # if mode == "html":
-    #     heading_pattern = re.compile(
-    #         r'<h(?P<lvl>.*?) id="(?P<id>.*?)">(?P<title>.*?)</h.*?>'
-    #     )
-    #     tpattern = re.compile(
-    #         r'<caption class="table" id="(?P<id>.*?)">\s?(?P<title>.*?)\s?</caption>'
-    #     )
-    #     fpattern = re.compile(
-    #         r'<caption class="table" id="(?P<id>.*?)">\s?(?P<title>.*?)\s?</caption>'
-    #     )
-    # elif mode == "pld":
     heading_pattern = re.compile("#+ (?P<title>.*?) \[label\]\((?P<id>.*?)\)")
     tpattern = re.compile(r"\[table\]\((?P<id>.*?)\)")
     fpattern = re.compile(r"\[figure\]\((?P<id>.*?)\)")
@@ -179,8 +167,8 @@ def process_labels(chapters, float_ch_prefixes=True, mode="pld"):
                 tstring = f"Table {counters['1']}.{counters['table']}"
             else:
                 tstring = f"Table {counters['table']}"
-            labels[tcaption["id"]] = tstring
-            locations[tcaption["id"]] = chid
+            labels["tab:"+tcaption["id"]] = tstring
+            locations["tab:"+tcaption["id"]] = chid
         for fcaption in fpattern.finditer(chapter):
             fcaption = fcaption.groupdict()
             counters["figure"] += 1
@@ -188,8 +176,8 @@ def process_labels(chapters, float_ch_prefixes=True, mode="pld"):
                 fstring = f"Figure {counters['1']}.{counters['figure']}"
             else:
                 fstring = f"Figure {counters['figure']}"
-            labels[fcaption["id"]] = fstring
-            locations[fcaption["id"]] = chid
+            labels["fig:"+fcaption["id"]] = fstring
+            locations["fig:"+fcaption["id"]] = chid
     return labels, locations
 
 

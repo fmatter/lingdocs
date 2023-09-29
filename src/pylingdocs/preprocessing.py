@@ -131,13 +131,13 @@ def preprocess_cldfviz(md):
 def render_markdown(
     md_str,
     ds,
+    builder,
     decorate_gloss_string=lambda x: x,
     data_format="cldf",
-    output_format="plain",
     **kwargs,
 ):
     if data_format == "cldf":
-        if output_format != "clld":
+        if builder.name != "clld":
             if "MediaTable" in ds.components:
                 audio_dict = {
                     x["ID"]: {
@@ -152,41 +152,38 @@ def render_markdown(
             func_dict["decorate_gloss_string"] = decorate_gloss_string
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val
-            # input("".join(preprocess_cldfviz(md_str)))
-            # input(ds)
-            # input(output_format)
-            # input(loaders[output_format])
-            # input(func_dict)
+            func_dict["ref_labels"] = builder.ref_labels
             preprocessed = render(
                 doc="".join(preprocess_cldfviz(md_str)),
                 cldf_dict=ds,
-                loader=loaders[output_format],
+                loader=loaders[builder.name],
                 func_dict=func_dict,
             )
             preprocessed = render(
                 doc=preprocessed,
                 cldf_dict=ds,
-                loader=loaders[output_format],
+                loader=loaders[builder.name],
                 func_dict=func_dict,
             )
             if "#cldf" in preprocessed:
                 preprocessed = render(
                     doc=preprocessed,
                     cldf_dict=ds,
-                    loader=loaders[output_format],
+                    loader=loaders[builder.name],
                     func_dict={"comma_and_list": comma_and_list},
                 )
             if "#cldf" in preprocessed:
                 preprocessed = render(
                     doc=preprocessed,
                     cldf_dict=ds,
-                    loader=loaders[output_format],
+                    loader=loaders[builder.name],
                     func_dict={"comma_and_list": comma_and_list},
                 )
         else:
             preprocessed = "".join(preprocess_cldfviz(md_str))
         return preprocessed
     log.error(f"Unknown data format {data_format}")
+    exit()
     return ""
 
 
