@@ -315,9 +315,8 @@ class OutputFormat:
 
     @classmethod
     def manex(cls, tag, content, kind):
-        del tag  # unused
         del kind  # unused
-        return content
+        return f"[ex-{tag}]\n\n{content}"
 
     @classmethod
     def reference_list(cls):
@@ -347,6 +346,53 @@ class PlainText(OutputFormat):
     @classmethod
     def label_cmd(cls, url, *_args, **_kwargs):
         return ""
+
+    @classmethod
+    def exref_cmd(cls, url, *_args, **_kwargs):
+        end = _kwargs.pop("end", None)
+        if end:
+            return f"[exref-{url}]({end})"
+        return f"[exref-{url}]"
+
+    @classmethod
+    def postprocess(cls, content):
+        output = []
+        examples = []
+        exref_pattern = r"\[exref-(?P<url>.*?)\](\((?P<end>.+)\))?"
+        ex_pattern = r"\[(sub)?ex-(?P<url>.*?)\]"
+        ex_cnt = 0
+        subex_cnt = 0
+        for line in content.split("\n"):
+            ex_res = re.search(ex_pattern, line)
+            if ex_res:
+                url = ex_res.group("url")
+                if "sub" in ex_res.group(0):
+                    subex_cnt += 1
+                    letter = chr(ord('`')+subex_cnt)
+                    line = re.sub(ex_pattern, f"({letter})", line)
+                    examples.append((url, f"{ex_cnt}{letter}"))
+                else:
+                    ex_cnt += 1
+                    line = re.sub(ex_pattern, f"({ex_cnt})", line)
+                    subex_cnt = 0
+                    examples.append((url, str(ex_cnt)))
+            for hit in re.finditer(exref_pattern, line):
+                hdic = hit.groupdict()
+                hdic["string"] = hit.group(0)
+                examples.append(hdic)
+            output.append(line)
+        content = "\n".join(output)
+        for i, example in enumerate(examples):
+            if isinstance(example, dict):
+                candidates = [tc for tc, x in enumerate(examples) if (isinstance(x, tuple) and x[0] == example["url"])]
+                if not candidates:
+                    log.warning(f"Could not resolve example reference {example['string']}")
+                else:
+                    best = min(candidates, key=lambda x: abs(x-i))
+                    log.debug(f"Best candidate for example {example['url']} at position {i}: {best}")
+                    content = content.replace(example["string"], f"({examples[best][1]})", 1)
+        return content
+
 
 class HTML(PlainText):
     name = "html"

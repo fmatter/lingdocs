@@ -15,11 +15,11 @@
     ftr=ctx.cldf.translatedText,
     show_language=with_languageLabel,
     show_primary=with_primaryText,
-    src="my source yes",
+    src="source",
     title=title)
 ) %}
 
-({{ label or ctx.id }}) {{ header }}  
+[ex-{{ label or ctx.id }}] {{ header }} ({{ ctx.id }})  
 {% if (ctx.cldf.analyzedWord == [] or show_primary) and ctx.cldf.primaryText != None %}{{ ctx.cldf.primaryText }}
 {% endif %}
 {% if ctx.cldf.analyzedWord != [] %}
