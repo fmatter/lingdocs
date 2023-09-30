@@ -82,7 +82,7 @@ class OutputFormat:
         end = _kwargs.pop("end", None)
         if end:
             if cls.ref_labels:
-                return cls.ref_labels[url]+f"–{end}"
+                return cls.ref_labels[url] + f"–{end}"
             return f"[ref/{url}–{end}]"
         if cls.ref_labels:
             return cls.ref_labels[url]
@@ -342,7 +342,6 @@ class PlainText(OutputFormat):
         )
         return res.replace("|WHITESPACE|", " ")
 
-
     @classmethod
     def label_cmd(cls, url, *_args, **_kwargs):
         return ""
@@ -368,7 +367,7 @@ class PlainText(OutputFormat):
                 url = ex_res.group("url")
                 if "sub" in ex_res.group(0):
                     subex_cnt += 1
-                    letter = chr(ord('`')+subex_cnt)
+                    letter = chr(ord("`") + subex_cnt)
                     line = re.sub(ex_pattern, f"({letter})", line)
                     examples.append((url, f"{ex_cnt}{letter}"))
                 else:
@@ -384,13 +383,23 @@ class PlainText(OutputFormat):
         content = "\n".join(output)
         for i, example in enumerate(examples):
             if isinstance(example, dict):
-                candidates = [tc for tc, x in enumerate(examples) if (isinstance(x, tuple) and x[0] == example["url"])]
+                candidates = [
+                    tc
+                    for tc, x in enumerate(examples)
+                    if (isinstance(x, tuple) and x[0] == example["url"])
+                ]
                 if not candidates:
-                    log.warning(f"Could not resolve example reference {example['string']}")
+                    log.warning(
+                        f"Could not resolve example reference {example['string']}"
+                    )
                 else:
-                    best = min(candidates, key=lambda x: abs(x-i))
-                    log.debug(f"Best candidate for example {example['url']} at position {i}: {best}")
-                    content = content.replace(example["string"], f"({examples[best][1]})", 1)
+                    best = min(candidates, key=lambda x: abs(x - i))
+                    log.debug(
+                        f"Best candidate for example {example['url']} at position {i}: {best}"
+                    )
+                    content = content.replace(
+                        example["string"], f"({examples[best][1]})", 1
+                    )
         return content
 
 

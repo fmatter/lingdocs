@@ -225,8 +225,8 @@ def create_output(
         chapters = extract_chapters(content)
         ref_labels, ref_locations = process_labels(chapters)
         preprocessed = preprocess(content, source_dir)
-        builder.ref_labels=ref_labels
-        builder.ref_locations=ref_locations
+        builder.ref_labels = ref_labels
+        builder.ref_locations = ref_locations
         preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
         preprocessed = render_markdown(
             preprocessed,

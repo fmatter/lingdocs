@@ -167,8 +167,8 @@ def process_labels(chapters, float_ch_prefixes=True, mode="pld"):
                 tstring = f"Table {counters['1']}.{counters['table']}"
             else:
                 tstring = f"Table {counters['table']}"
-            labels["tab:"+tcaption["id"]] = tstring
-            locations["tab:"+tcaption["id"]] = chid
+            labels["tab:" + tcaption["id"]] = tstring
+            locations["tab:" + tcaption["id"]] = chid
         for fcaption in fpattern.finditer(chapter):
             fcaption = fcaption.groupdict()
             counters["figure"] += 1
@@ -176,8 +176,8 @@ def process_labels(chapters, float_ch_prefixes=True, mode="pld"):
                 fstring = f"Figure {counters['1']}.{counters['figure']}"
             else:
                 fstring = f"Figure {counters['figure']}"
-            labels["fig:"+fcaption["id"]] = fstring
-            locations["fig:"+fcaption["id"]] = chid
+            labels["fig:" + fcaption["id"]] = fstring
+            locations["fig:" + fcaption["id"]] = chid
     return labels, locations
 
 
