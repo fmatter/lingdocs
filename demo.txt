@@ -1,0 +1,90 @@
+# Introduction [label](sec:intro)
+
+This document does double service as a test for `pylingdocs` and a showcase of its capabilities.
+It aims to demonstrate every feature and model currently available in `pylingdocs`.
+# Common markdown
+You can use all the familiar markdown components.
+Here is a link to the [pylingdocs github repo](https://github.com/fmatter/pylingdocs/).
+Here is some **bold** and _italic_ and **_bold italic_** text.
+
+1. here
+2. is
+3. a
+4. numbered
+3. list
+
+and of course here is
+
+* and one
+* with
+* bullet points[^3]
+
+A quote:
+
+> Locating an individual language on a given point of the ergativity-nominativity axis and the diachronic interpretation of this axis seem to be conceptually different concerns, even if we were to assume that there are principies favouring one direction over the other. [psrc](alvarez1998split[71])
+
+[^3]: And here is a (foot)note. You can use markdown in here: see [ref](sec:data) for details about [mp](apa-se).
+
+# Pylingdocs markdown [label](pld-md)
+
+Apart from database references, discussed in [ref](sec:sources), there are a number of `pylingdocs`-specific commands, all patterning like links:
+
+* cross-references: [ref](common-markdown) or [ref](sec:intro), see corresponding `label` commands
+* example references:
+    * single [exref](ekiri-13)
+    * subexample [exref](ekiri-10)
+    * range: [exref](ekiri-13?end=ekiri-11)
+    * or bare: [exref](ekiri-11?bare)
+* glosses: [gl](acc)
+* todos: [todo](we need to talk about this)
+* tables (with automatically generated table labels like [ref](tab:consonants)):
+
+[table](consonants)
+
+* figures (with automatically generated table labels like [ref](fig:cognates)):
+
+[figure](cognates)
+# Other linguistic data [label](sec:data)
+
+## Native CLDF components
+
+* forms: [f](tri-house)
+* languages: [lg](hix)
+* cognate sets:
+
+[cogset](louse-1)
+
+## Non-native components
+
+[m](tri-se-3) is a variant of [mp](tri-se?nt).
+Neither occur on [wf](tri-fire), because it is a noun.
+They are related to [mp](apa-se,way-se?nt).
+This is thus a cognate set shared by [lg](apa,way,tri).
+
+* If [wf](tri-kure) has too long a translation, try [wf](tri-kure?translation=good).
+
+* This dataset contains the [lg](ikp) text [txt](ikp-ekiri).
+# Interlinear examples
+
+[ex](ekiri-13)
+
+[ex](ekiri-9,ekiri-10)
+
+[ex](tri-1)
+
+[ex](tri-1?with_language=false)
+
+[ex](tri-1?with_primaryText=false)
+
+[ex](tri-1?src_pos=in_preamble&comment=metaphorically)
+
+[ex](tri-1?source=Sérgio Meira, p.c.)
+# Citing literature [label](sec:sources)
+
+* see [src](alvarez1998split) or [src](alvarez1998split[133-134])
+* with parentheses:
+    * "Locating an individual language on a given point of the ergativity-nominativity axis and the diachronic interpretation of this axis seem to be conceptually different concerns" [psrc](alvarez1998split)
+    * "Locating an individual language on a given point of the ergativity-nominativity axis and the diachronic interpretation of this axis seem to be conceptually different concerns" [psrc](alvarez1998split[71])
+* multiple citations:
+    * [src](alvarez1998split[133-134],triomeira1999[218])
+    * [psrc](alvarez1998split[133-134],triomeira1999[218])

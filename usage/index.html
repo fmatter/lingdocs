@@ -1,0 +1,609 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../installation/">
+      
+      
+        <link rel="next" href="../markdown_format/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.2.7">
+    
+    
+      
+        <title>Usage - pylingdocs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.046329b4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#usage" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="pylingdocs" class="md-header__button md-logo" aria-label="pylingdocs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 3.75A.75.75 0 0 1 .75 3h7.497c1.566 0 2.945.8 3.751 2.014A4.495 4.495 0 0 1 15.75 3h7.5a.75.75 0 0 1 .75.75v15.063a.752.752 0 0 1-.755.75l-7.682-.052a3 3 0 0 0-2.142.878l-.89.891a.75.75 0 0 1-1.061 0l-.902-.901a2.996 2.996 0 0 0-2.121-.879H.75a.75.75 0 0 1-.75-.75Zm12.75 15.232a4.503 4.503 0 0 1 2.823-.971l6.927.047V4.5h-6.75a3 3 0 0 0-3 3ZM11.247 7.497a3 3 0 0 0-3-2.997H1.5V18h6.947c1.018 0 2.006.346 2.803.98Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            pylingdocs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Usage
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="pylingdocs" class="md-nav__button md-logo" aria-label="pylingdocs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 3.75A.75.75 0 0 1 .75 3h7.497c1.566 0 2.945.8 3.751 2.014A4.495 4.495 0 0 1 15.75 3h7.5a.75.75 0 0 1 .75.75v15.063a.752.752 0 0 1-.755.75l-7.682-.052a3 3 0 0 0-2.142.878l-.89.891a.75.75 0 0 1-1.061 0l-.902-.901a2.996 2.996 0 0 0-2.121-.879H.75a.75.75 0 0 1-.75-.75Zm12.75 15.232a4.503 4.503 0 0 1 2.823-.971l6.927.047V4.5h-6.75a3 3 0 0 0-3 3ZM11.247 7.497a3 3 0 0 0-3-2.997H1.5V18h6.947c1.018 0 2.006.346 2.803.98Z"/></svg>
+
+    </a>
+    pylingdocs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Usage
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Usage
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    Quick start
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#projects" class="md-nav__link">
+    Projects
+  </a>
+  
+    <nav class="md-nav" aria-label="Projects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multiple-files" class="md-nav__link">
+    Multiple files
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing" class="md-nav__link">
+    Writing
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#preview" class="md-nav__link">
+    Preview
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    Commands
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../markdown_format/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Markdown format
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuring pylingdocs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_formats/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data formats
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../extending/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating own formats and models
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Configuring examples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../output_formats/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Output formats
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../topic_index/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating an index
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="usage">Usage</h1>
+<p><code>pylingdocs</code> is a command line application and is executed by using
+<code>pylingdocs &lt;COMMAND&gt; --&lt;argument&gt;</code> (if you\'re a wizard you can use
+<code>the python API &lt;modules&gt;</code>{.interpreted-text role="doc"}). If you have
+<strong>no</strong> previous exposure to command line interfaces, you may want to
+read a guide <a href="https://github.com/dictionaria/pydictionaria/blob/master/docs/intro-commandline.md">like
+this</a>
+or
+<a href="https://launchschool.com/books/command_line/read/introduction">this</a>[^1]
+-- though it appears you\'re handling linguistic databases already.
+There is also an <a href="https://github.com/fmatter/pylingdocs-gui/">rudimentary
+editor</a> with a graphical
+user interface.</p>
+<h2 id="quick-start">Quick start</h2>
+<p>1. <code>pylingdocs new</code> will let you enter some data to get started with a project</p>
+<p>:   -   if you\'re impatient, the only information truly needed is the
+        path to a valid CLDF metadata.json file</p>
+<ol>
+<li>The project will live in a new folder, and inside you will find the
+    [content]{.title-ref} folder. If you have installed Sublime Text,
+    you can use <code>subl</code> to open the <code>&lt;FILENAME&gt;.sublime-project</code> file.
+    Otherwise, use an editor of your choice to open one or all of the
+    <code>.md</code> files.</li>
+</ol>
+<p>3. Get writing. You can use normal <a href="https://www.markdownguide.org/cheat-sheet/">markdown</a>, as well as <a href="https://github.com/cldf/cldfviz/blob/main/docs/text.md">cldfviz</a> and <code>pylingdocs markdown &lt;markdown_format&gt;</code>{.interpreted-text role="doc"}.</p>
+<p>:   -   if you are using Sublime Text and the <code>pylingdocs</code> plugin, you
+        can use <code>pylingdocs sublime</code> in your project directory. This
+        will activate autocompletion and also enable you to use
+        <code>Tools &gt; pylingdocs &gt; insert entity</code> to add data points from
+        your dataset.</p>
+<p>4. To create output, run <code>pylingdocs build</code> in the project folder. By default, a <code>range of output formats &lt;data_formats&gt;</code>{.interpreted-text role="doc"} will be produced, in the folder <code>output</code></p>
+<p>:   -   you can add the option <code>--latex</code> to create a PDF from the
+        generated <code>.tex</code> file. Note: you need to have a working LaTeX
+        installation with <code>latexmk</code> for this.</p>
+<h2 id="projects">Projects</h2>
+<p>A project minimally consists of a folder containing markdown files, a
+YAML file describing how they should be combined, and a (link to a)
+database containing the linguistic data. You can create a new project by
+using <code>pylingdocs new</code> in the directory where you want your project
+folder to be created. For the moment, a database can only consist of
+<code>a CLDF dataset &lt;data_formats&gt;</code>{.interpreted-text role="doc"}.</p>
+<h3 id="multiple-files">Multiple files</h3>
+<p>You can distribute your content into multiple files, which is often more
+practical than a single file. The order of these files is described in a
+<a href="https://yaml.org/">YAML</a> file, defaulting to
+`contents/structure.yaml`:: title: My fantastic book intro: title:
+Introduction verbs: title: What is a verb, anyway? results: title: Turns
+out, a lot comparison: title: Comparative verbistics abstract: You can
+put abstracts here if you like! possession: title: Person marking
+abstract: This is a part of the comparison chapter, but it\'s in its own
+file. This would assume a file structure with 5 files, identified by
+<code>intro</code>, <code>verbs</code>, <code>results</code>, <code>comparison</code>, and <code>possession</code>. When using
+Sublime Text or some other editor that can open multiple text files but
+doesn\'t know how to sort them, you can set the <code>content_file_prefix</code>
+option to <code>alpha</code> or <code>numerical</code> and use <code>pylingdocs update-structure</code>
+to rename your files. This will create filenames like <code>&lt;[A-Z]&gt; &lt;ID&gt;.md</code>
+or <code>&lt;\d\d\d\d&gt; &lt;ID&gt;.md</code>.</p>
+<p>You can also use the structure file to <strong>create</strong> files, by running
+<code>update-structure</code>. Any <code>.md</code> files in the content folder that are not
+in the structure file will be moved to a <code>bench</code> folder, in case you
+want to include them again later (just put them in the structure file to
+do so).</p>
+<h2 id="writing">Writing</h2>
+<p>Writing is done in plaintext, so you can use any old editor you like,
+though I strongly recommend <a href="https://www.sublimetext.com/">Sublime Text</a>
+or <a href="https://github.com/fmatter/pylingdocs-gui/">pylingdocs-gui</a>. The
+basic format used is <a href="https://www.markdowntutorial.com/">markdown</a>, with
+some <code>magic sprinkled on top &lt;markdown_format&gt;</code>{.interpreted-text
+role="doc"}. There is an <a href="https://github.com/fmatter/pylingdocs-autocomplete-sublime">autocomplete
+plugin</a> for
+Sublime Text. If set up correctly, the plugin will show data preview
+snippets when typing directives like <code>mp:&lt;this_is_you_typing&gt;</code>, and will
+replace them with <code>[mp](id)</code>. There is also the functionality to insert
+entities from your dataset via the \"Tools\" menu. <code>pylingdocs-gui</code> does
+not have a database-editor connection yet.</p>
+<h3 id="preview">Preview</h3>
+<p>Since creating the database feeding a CLLD app or compiling LaTeX
+documents can take some time, there is a preview function
+(<code>pylingdocs preview</code>) which uses a lighter format (plaintext). This is
+supposed to take away the burning uncertainty about what the commands
+you\'re writing will correspond to in a document for humans. You can use
+<code>pylingdocs preview --html</code> to open a preview in your browser or
+<code>--latex</code> to create a pdf. You could also use the <code>github</code> format for
+previews and then use <a href="https://pypi.org/project/grip/">grip</a> for
+previewing.</p>
+<h2 id="commands">Commands</h2>
+<p>The central and only necessary command is <code>pylingdocs build</code>, which
+transforms the pylingdocs-flavored markdown into the specified output
+formats. Below, the other commands are listed; you can also see them by
+calling <code>pylingdocs --help</code>. For the default values of most arguments,
+check out <code>the default config file &lt;config&gt;</code>{.interpreted-text
+role="doc"}.</p>
+<p>[^1]: You don\'t need any of the server stuff, though. Just get
+    comfortable using the command line.</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "toc.follow", "toc.integrate"], "search": "../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.dff1b7c8.min.js"></script>
+      
+    
+  </body>
+</html>
