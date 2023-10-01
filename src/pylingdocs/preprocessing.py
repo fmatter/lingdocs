@@ -27,23 +27,23 @@ from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
 from pylingdocs.helpers import src
 from pylingdocs.models import models
-
+import sys
 
 log = logging.getLogger(__name__)
 
 model_dict = {x.name.lower(): x for x in models}
 
-if Path("custom_pld_models.py").is_file():
-    sys.path.append(os.getcwd())
-    from custom_pld_models import models as custom_models  # noqa
 
+if Path("pld/models.py").is_file():
+    sys.path.insert(1, 'pld')
+    from models import models as custom_models
     for mm in custom_models:
         model_dict[mm.name.lower()] = mm
 
 models = model_dict.values()
 
 log.info("Loading templates")
-views = ["inline", "list", "detail"]
+views = ["inline", "list", "detail", "index"]
 labels = {}
 loaders = {}
 
@@ -59,6 +59,8 @@ for model in models:
                 loaders[output_format][model.cldf_table + f"_index.md"] = template
             elif view == "detail":
                 loaders[output_format][model.cldf_table + f"_page.md"] = template
+            elif view == "index":
+                loaders[output_format][model.cldf_table + f"_indexpage.md"] = template
 
 if Path("pld/model_templates").is_dir():
     for model in Path("pld/model_templates").iterdir():
@@ -153,6 +155,14 @@ def render_markdown(
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val
             func_dict["ref_labels"] = builder.ref_labels
+            from pylingdocs.config import MKDOCS_RICH
+
+            if builder.name == "mkdocs" and MKDOCS_RICH:
+                from cldfrels import CLDFDataset
+
+                data = CLDFDataset(ds)
+                print(data)
+                func_dict["data"] = data.tables
             preprocessed = render(
                 doc="".join(preprocess_cldfviz(md_str)),
                 cldf_dict=ds,

@@ -12,15 +12,15 @@ theme:
   palette:     
     # Palette toggle for light mode
     - scheme: default
-      primary: green
+      primary: blue grey
       accent: orange
       toggle:
         icon: material/brightness-7 
         name: Switch to dark mode
     # Palette toggle for dark mode
     - scheme: slate
-      primary: deep purple
-      accent: orange
+      primary: deep orange
+      accent: cyan
       toggle:
         icon: material/brightness-4
         name: Switch to light markdown_extensions
@@ -39,7 +39,7 @@ plugins:
           - references.md
           - data/index.md
     - search
-    - git-revision-date-localized
+    # - git-revision-date-localized
 extra_css:
   - assets/examples.css
   - assets/alignment.css

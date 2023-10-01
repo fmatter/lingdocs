@@ -784,6 +784,7 @@ def _build_example(
     txt=None,
     lng=None,
     src=None,
+    obj2=None,
     ex_id="example",
     title=None,
     show_language=EX_SHOW_LG,
@@ -822,6 +823,8 @@ def _build_example(
         ex_dic["srf"] = None
     if ftr_explanation:
         ftr += f" ({ftr_explanation})"
+    if obj2 and set(obj2) != set(["&nbsp;"]):
+        ex_dic["obj2"] = obj2
     trans_string = [f"{quotes[0]}{ftr}{quotes[1]}"]
     if additional_translations:
         trans_string.extend(

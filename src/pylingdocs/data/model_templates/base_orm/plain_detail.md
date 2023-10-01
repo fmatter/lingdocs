@@ -1,3 +1,7 @@
-# {{ctx.name}}
+# {{ctx["Name"]}}
 
-{{ctx}}
+{% for k, v in ctx.items() %}
+    {% if v %}
+{{k}}: {{v}}
+    {% endif %}
+{% endfor %}

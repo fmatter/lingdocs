@@ -29,10 +29,8 @@
     source_position=src_pos,
     show_primary=with_primaryText
     ) %}
-```{=html}
 <ol class="{{class_}}">
 {{ util.render_example(class_, build_example(data))}}
 {% if class_=="example" %}
 </ol>
 {% endif %}
-```

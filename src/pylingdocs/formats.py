@@ -17,8 +17,10 @@ from writio import dump
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import FIGURE_DIR
 from pylingdocs.config import LATEX_EX_TEMPL
+import sys
 from pylingdocs.config import LATEX_TOPLEVEL
 from pylingdocs.config import MD_LINK_PATTERN
+from pylingdocs.config import MKDOCS_RICH
 from pylingdocs.config import OUTPUT_TEMPLATES
 from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import func_dict
@@ -72,7 +74,6 @@ class OutputFormat:
     ref_labels = None
     ref_locations = None
 
-    # @property
     @classmethod
     def label(self):
         return self.name
@@ -179,56 +180,68 @@ class OutputFormat:
 
     @classmethod
     def write_details(cls, output_dir, dataset, loader):
-        return None
-        env = Environment(
-            loader=loader, autoescape=False, trim_blocks=True, lstrip_blocks=True
-        )
-        models = []
-        orm = []
-        for cp in dataset.components.keys():
-            orm.append(cp)
-        for table in orm + dataset.tables:
-            if table in orm:
-                mode = "orm"
-                label = table.replace("Table", "").lower()
-            else:
-                mode = "dic"
-                label = f"{table.url}".replace(".csv", "")
-                table = str(table.url)
-            try:
-                template = env.get_template(f"{table}_page.md")
-            except jinja2.exceptions.TemplateNotFound:
-                log.warning(f"Not rendering data for table {table}")
-                continue
-            log.info(f"Writing details for {label}")
-            models.append(f"* [{label}]({label})")
-            func_dict["decorate_gloss_string"] = cls.decorate_gloss_string
-            template.globals.update(func_dict)
-            out_dir = output_dir / Path(f"mkdocs/docs/data/{label}")
-            out_dir.mkdir(exist_ok=True, parents=True)
-            gathered = []
-            from tqdm import tqdm
+        from cldfrels import CLDFDataset
+        from tqdm import tqdm
+        from pylingdocs.config import MKDOCS_RICH
 
-            if mode == "orm":
-                reclist = dataset.objects(table)
-            else:
-                reclist = list(dataset.iter_rows(table))
-            for row in tqdm(reclist):
-                content = template.render(ctx=row)
+        if MKDOCS_RICH:
+            # return "OK"
+            env = Environment(
+                loader=loader, autoescape=False, trim_blocks=True, lstrip_blocks=True
+            )
+            data = CLDFDataset(dataset)
+            model_index = []
+            for label, table in data.tables.items():
+                if label not in ["wordforms", "texts"]:
+                    pass
+                    # continue
+                try:
+                    template = env.get_template(f"{table.name}_page.md")
+                except jinja2.exceptions.TemplateNotFound:
+                    log.warning(f"Not rendering data for table {label}")
+                    continue
+                model_index.append(f"* [{label}]({label}.md)")
+                func_dict["data"] = data
+                template.globals.update(func_dict)
+                out_dir = output_dir / Path(f"mkdocs/docs/data/{label}")
+                out_dir.mkdir(exist_ok=True, parents=True)
+                gathered = []
+                i = 0
+                for rid, rec in tqdm(table.entries.items(), desc=label):
+                    i += 1
+                    if i > 50:
+                        pass
+                        # continue
+                    content = template.render(ctx=rec)
+                    content = render(
+                        doc=content,
+                        cldf_dict=dataset,
+                        loader=loader,
+                        func_dict=func_dict,
+                    )
+                    content = (
+                        (content[:50000] + "..") if len(content) > 50000 else content
+                    )
+                    dump(content, out_dir / f"{rid}.md")
+                content = (
+                    f"{{% import 'pld_util.md' as util %}}\n# {label}\n\n"
+                    + "\n".join(gathered)
+                )
                 content = render(
                     doc=content,
                     cldf_dict=dataset,
                     loader=loader,
                     func_dict=func_dict,
                 )
-                if isinstance(row, dict):
-                    rid = row["ID"]
-                else:
-                    rid = row.id
-                dump(content, out_dir / f"{rid}.md")
-                gathered.append(f"* [{rid}]({rid})")
-            dump(f"# {label}\n\n" + "\n".join(gathered), out_dir / "index.md")
-        dump("# Data\n\n" + "\n".join(models), output_dir / "mkdocs/docs/data/index.md")
+                try:
+                    template = env.get_template(f"{table.name}_indexpage.md")
+                    dump(template.render(table=table), out_dir / "index.md")
+                except jinja2.exceptions.TemplateNotFound:
+                    log.warning(f"Not rendering index for table {label}")
+        dump(
+            "# Data\n\n" + "\n".join(model_index),
+            output_dir / "mkdocs/docs/data/index.md",
+        )
 
     @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
@@ -540,6 +553,12 @@ class MkDocs(HTML):
     def label_cmd(cls, url, *_args, **_kwargs):
         return f"{{ #{url} }}"
 
+    @classmethod
+    def label(self):
+        if MKDOCS_RICH:
+            return self.name + "_rich"
+        return self.name
+
 
 class GitHub(PlainText):
     name = "github"
@@ -807,10 +826,10 @@ class Latex(PlainText):
 
 
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs]}
-try:
-    from custom_pld_builders import builders as custom_builders
 
+
+if Path("pld/builders.py").is_file():
+    sys.path.insert(1, 'pld')
+    from builders import builders as custom_builders
     for k, v in custom_builders.items():
         builders[k] = v
-except ImportError:
-    pass

@@ -84,6 +84,8 @@ if not LATEX_TOPLEVEL:
     else:
         LATEX_TOPLEVEL = "section"
 
+MKDOCS_RICH = get_config("mkdocs", "rich_data")
+
 EX_SHOW_LG = get_config("examples", "show_language", as_boolean=True)
 EX_SHOW_PRIMARY = get_config("examples", "show_primary", as_boolean=True)
 EX_SRC_POS = get_config("examples", "source_position")

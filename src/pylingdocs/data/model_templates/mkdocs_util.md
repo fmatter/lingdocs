@@ -11,6 +11,9 @@
       {% for obj in res["obj"] %}
         <div class="interlinear">
           <span class="obj">{{ obj }}</span>
+            {% if res.get("obj2", []) != [] %}
+              <span class="obj">{{ res["obj2"][loop.index-1] }}</span>
+            {% endif %}
           <span class="gls">{{ decorate_gloss_string(res["gls"][loop.index-1]) }}</span>
           {%if "pos" in res %}<span class="pos">{{ res["pos"][loop.index-1]}}</span>{% endif %}
         </div>
@@ -25,10 +28,26 @@
 </li>
 {%- endmacro %}
 
-{% macro txt_src(data) -%}
-{% if data["Record_Number"] %}
-{{data["Text_ID"]}}: {{data["Record_Number"]}}{% else %}
-{{data["Text_ID"]}}{% endif %}
+{% macro label(item) %}
+{{item.get("Name", item.get("Form", item.get("Primary_Text", item.get("ID", "unknown"))))}}
+{%- endmacro %}
+
+{% macro link(item, anchor=None) %}
+{% if anchor is not none %}
+{% set anchor_text = "#"+anchor %}
+{% endif %}
+{% if item is not none %}
+<a href='/data/{{item.table.label}}/{{item["ID"]}}.md{{anchor_text}}'>{{label(item)}}</a>{% endif %}
+{%- endmacro %}
+
+{% macro txt_src(ctx) -%}
+{% if ctx.data["Record_Number"] %}
+{{link(data["examples"][ctx.id].text, anchor=ctx.id)}}: {{ctx.data["Record_Number"]}}{% else %}
+{{link(data["examples"][ctx.id].text, anchor=ctx.id)}}{% endif %}
+{%- endmacro %}
+
+{% macro render_form(ctx) -%}
+{% for part in ctx.wordformparts %}{{link(part.morph)}}{% endfor %}
 {%- endmacro %}
 
 {% macro get_src_string (ctx, source=None) -%}
@@ -42,6 +61,7 @@
     {% set page_string = ""%}
 {% endif %}
 <a href='/references/#source-{{ref.source.id}}'>{{ref.source.refkey(year_brackets=None)}}</a>{{page_string}}{% elif "Text_ID" in ctx.data %}
-{{txt_src(ctx.data)}}{% else %}
+{{txt_src(ctx)}}{% else %}
 {% endif %}
 {%- endmacro %}
+
