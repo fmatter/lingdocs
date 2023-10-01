@@ -20,7 +20,7 @@
     
     
       
-        <title>Creating own formats and models - pylingdocs</title>
+        <title>Customizing - pylingdocs</title>
       
     
     
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#creating-own-formats-and-models" class="md-skip">
+        <a href="#customizing" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Creating own formats and models
+              Customizing
             
           </span>
         </div>
@@ -298,15 +298,86 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Customizing
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Creating own formats and models
+    Customizing
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#writing-templates" class="md-nav__link">
+    Writing templates
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing templates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#models" class="md-nav__link">
+    Models
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formats" class="md-nav__link">
+    Formats
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-formats" class="md-nav__link">
+    Creating formats
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-models" class="md-nav__link">
+    Creating models
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -384,9 +455,73 @@
                   
 
 
-<h1 id="creating-own-formats-and-models">Creating own formats and models</h1>
-<p>It is possible to provide custom templates for both models and output formats, and to create new models and formats.
-In order</p>
+<h1 id="customizing">Customizing</h1>
+<p>It is possible to provide custom templates for both models and output formats.
+It is also possible to create entirely new models and formats.
+All custom content lives in a folder called <code>pld</code> in the project folder.</p>
+<h2 id="writing-templates">Writing templates</h2>
+<p>Templates are written in <a href="https://jinja.palletsprojects.com">jinja</a>.</p>
+<h3 id="models">Models</h3>
+<p>Model templates live in a directory <code>pld/model_templates/&lt;model_name&gt;</code>, where <code>model_name</code> is a lowercase singular version of the table (<code>morpheme</code>, <code>example</code>, <code>cognateset</code>...).
+Each model has four views for which templates can be defined: inline, (inline) list, detail, index.
+Filenames have the scheme <code>&lt;format&gt;_&lt;view&gt;.md</code>, where <code>format</code> is are names like <code>html</code> or <code>latex</code>, e.g.:</p>
+<ul>
+<li><code>pld/model_templates/morph/html_list.md</code>: the inline list view for the morph model in HTML output</li>
+<li><code>pld/model_templates/text/plain_inline.md</code>: the inline view for the text model in plaintext output</li>
+</ul>
+<p>To get an idea of what model templates look like, check out the <a href="https://github.com/fmatter/pylingdocs/tree/main/src/pylingdocs/data/model_templates">built-in templates</a>.
+There is a degree of inheritance in templates, so if e.g. <code>morph/github_detail</code> is not implemented, <code>morph/plain_detail</code>, <code>morpheme/plain_detail</code> and <code>morpheme/plain_detail</code> will also be tried -- the <code>morph</code> model inherits from <code>morpheme</code>, and the <code>github</code> output format inherits from <code>plain</code>.</p>
+<h3 id="formats">Formats</h3>
+<p>Format templates live in a directory <code>pld/format_templates/&lt;format_name&gt;/&lt;template_name&gt;</code> (e.g. <code>html/slides</code>).
+They are <a href="https://cookiecutter.readthedocs.io">cookiecutter</a> templates, so they minimally contain the files <code>cookiecutter.json</code> and a directory <code>{{cookiecutter.name}}</code>.
+The contents of that folder will be in <code>output/&lt;format&gt;</code> when a project is compiled.
+Built-in templates will be replaced entirely (not on a file-by-file basis), so it is suggested to copy the directory of one of the <a href="https://github.com/fmatter/pylingdocs/tree/main/src/pylingdocs/data/format_templates">built-in format templates</a> and modify its contents.</p>
+<h2 id="creating-formats">Creating formats</h2>
+<p>If you need to change more than just the format templates, you can create your own format in <code>pld/formats.py</code>.
+Here is an example on how to create a modified HTML format, where todos are formatted differently, and figures are stored in a static folder.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="nf">custom_todo</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;span title=&#39;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&#39;&gt;TODO&lt;/span&gt;&quot;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">class</span> <span class="nc">CustomHTML</span><span class="p">(</span><span class="n">HTML</span><span class="p">):</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;my_html_format&quot;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">figure_dir</span> <span class="o">=</span> <span class="s2">&quot;static/figures&quot;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="nd">@classmethod</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="k">def</span> <span class="nf">todo_cmd</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="o">*</span><span class="n">_args</span><span class="p">,</span> <span class="o">**</span><span class="n">_kwargs</span><span class="p">):</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="k">return</span> <span class="n">custom_todo</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">_kwargs</span><span class="p">)</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="nd">@classmethod</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="k">def</span> <span class="nf">figure_cmd</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="o">*</span><span class="n">_args</span><span class="p">,</span> <span class="o">**</span><span class="n">_kwargs</span><span class="p">):</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="n">caption</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">figure_metadata</span><span class="p">[</span><span class="n">url</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;caption&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        <span class="n">filename</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">figure_metadata</span><span class="p">[</span><span class="n">url</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;figure&gt;</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="s2">&lt;img src=&quot;static/figures/</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot; alt=&quot;</span><span class="si">{</span><span class="n">caption</span><span class="si">}</span><span class="s2">&quot; /&gt;</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="s2">&lt;figcaption id=&quot;fig:</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot; aria-hidden=&quot;true&quot;&gt;</span><span class="si">{</span><span class="n">caption</span><span class="si">}</span><span class="s2">&lt;/figcaption&gt;</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="s2">&lt;/figure&gt;&quot;&quot;&quot;</span>
+</span></code></pre></div>
+<h2 id="creating-models">Creating models</h2>
+<p>The file <code>pld/models.py</code> should be structured as follows:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">pylingdocs.models</span> <span class="kn">import</span> <span class="n">Base</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">class</span> <span class="nc">Phoneme</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Phoneme&quot;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">cldf_table</span> <span class="o">=</span> <span class="s2">&quot;phonemes.csv&quot;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">shortcut</span> <span class="o">=</span> <span class="s2">&quot;pnm&quot;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="k">class</span> <span class="nc">POS</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;POS&quot;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">cldf_table</span> <span class="o">=</span> <span class="s2">&quot;partsofspeech.csv&quot;</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">shortcut</span> <span class="o">=</span> <span class="s2">&quot;pos&quot;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="k">class</span> <span class="nc">Lexeme</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Lexeme&quot;</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="n">cldf_table</span> <span class="o">=</span> <span class="s2">&quot;lexemes.csv&quot;</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="n">shortcut</span> <span class="o">=</span> <span class="s2">&quot;lex&quot;</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">Phoneme</span><span class="p">(),</span> <span class="n">POS</span><span class="p">(),</span> <span class="n">Lexeme</span><span class="p">()]</span>
+</span></code></pre></div>
+<p>These are very minimal models, check out the <a href="https://github.com/fmatter/pylingdocs/blob/main/src/pylingdocs/models.py">built-in models</a> for more examples.</p>
 
 
 
