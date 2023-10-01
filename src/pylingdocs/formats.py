@@ -152,15 +152,13 @@ class OutputFormat:
             extra.update({"content": content})
 
         extra.update(**metadata)
-        local_template_path = (
-            Path("pld") / "output_templates" / cls.name / OUTPUT_TEMPLATES[cls.name]
-        )
+
+        template_path = Path("format_templates") / cls.name / OUTPUT_TEMPLATES[cls.name]
+        local_template_path = Path("pld") / template_path
         if local_template_path.is_dir():
             template_path = str(local_template_path)
         else:
-            template_path = str(
-                DATA_DIR / "format_templates" / cls.name / OUTPUT_TEMPLATES[cls.name]
-            )
+            template_path = str(DATA_DIR / template_path)
 
         cookiecutter(
             template_path,
@@ -189,7 +187,9 @@ class OutputFormat:
             env = Environment(
                 loader=loader, autoescape=False, trim_blocks=True, lstrip_blocks=True
             )
-            data = CLDFDataset(dataset)
+            print("preinit")
+            data = CLDFDataset(dataset, orm=True)
+            print("postinit")
             model_index = []
             for label, table in data.tables.items():
                 if label not in ["wordforms", "texts"]:
@@ -211,7 +211,7 @@ class OutputFormat:
                     i += 1
                     if i > 50:
                         pass
-                        # continue
+                        continue
                     content = template.render(ctx=rec)
                     content = render(
                         doc=content,
@@ -828,8 +828,8 @@ class Latex(PlainText):
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs]}
 
 
-if Path("pld/builders.py").is_file():
+if Path("pld/formats.py").is_file():
     sys.path.insert(1, 'pld')
-    from builders import builders as custom_builders
-    for k, v in custom_builders.items():
-        builders[k] = v
+    from formats import formats
+    for fmt in formats:
+        builders[fmt.name] = fmt

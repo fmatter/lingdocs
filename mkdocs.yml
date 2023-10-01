@@ -6,6 +6,13 @@ markdown_extensions:
   - mkdocs-click
   - markdown_include.include:
       base_path: docs
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
 nav:
   - installation.md
   - usage.md

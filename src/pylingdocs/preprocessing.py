@@ -48,19 +48,14 @@ labels = {}
 loaders = {}
 
 
+name_dict = {"list": "_index", "detail": "_page", "inline": "_detail", "index": "_indexpage"}
+
 for model in models:
     labels[model.shortcut] = model.query_string
     for view, templates in model.templates.items():
         for output_format, template in templates.items():
             loaders.setdefault(output_format, {})
-            if view == "inline":
-                loaders[output_format][model.cldf_table + f"_detail.md"] = template
-            elif view == "list":
-                loaders[output_format][model.cldf_table + f"_index.md"] = template
-            elif view == "detail":
-                loaders[output_format][model.cldf_table + f"_page.md"] = template
-            elif view == "index":
-                loaders[output_format][model.cldf_table + f"_indexpage.md"] = template
+            loaders[output_format][model.cldf_table + name_dict[view] +".md"] = template
 
 if Path("pld/model_templates").is_dir():
     for model in Path("pld/model_templates").iterdir():

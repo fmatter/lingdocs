@@ -17,5 +17,9 @@
     "ref_labels": "",
     "ref_locations": "",
     "chapters": "",
-    "repository": ""
+    "repository": "",
+    "_copy_without_render": [
+        "overrides/*.html",
+        "overrides/*/*.html"
+    ]
 }

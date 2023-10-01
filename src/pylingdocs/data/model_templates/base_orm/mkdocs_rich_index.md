@@ -1,4 +1,4 @@
-# {{ table.label }}
+{% import 'pld_util.md' as util %}
 {% for key, item in table.entries.items(): %}
-* {{item}}
+* {{util.link(item)}}
 {% endfor %}

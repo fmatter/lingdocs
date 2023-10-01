@@ -5,6 +5,6 @@ it can be overridden by creating a file `pylingdocs.cfg` in the
 directory where you are executing `pylingdocs`.
 
 
-``` {. literal=""}
+```ini
 {!../src/pylingdocs/data/config.cfg!}
 ```
