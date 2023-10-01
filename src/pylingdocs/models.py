@@ -54,7 +54,7 @@ class Base:
         parent_builder = builder.__bases__[0]
 
         def _filename(base, builder, view):
-            return base / f"{builder.label()}{view}.md"
+            return base / f"{builder.label()}_{view}.md"
 
         tar = _filename(model_base, builder, view)  # e.g. morph/mkdocs_index.md
         if not tar.is_file():
@@ -82,6 +82,7 @@ class Base:
                 # now search deeper, for base/mkdocs_index.md and base/html_index.md and finall base/plain_index.md
                 x = parent_model.load_template(parent_model, view, builder)
             return x
+        # log.debug(f"Using {tar} for {self.name}/{view}/{builder.label()}")
         return load(tar)
 
     def load_templates(self):
