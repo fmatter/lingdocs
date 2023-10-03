@@ -214,7 +214,7 @@ class OutputFormat:
                     i += 1
                     if i > 50:
                         pass
-                        # continue
+                        continue
                     content = template.render(ctx=rec)
                     content = render(
                         doc=content,

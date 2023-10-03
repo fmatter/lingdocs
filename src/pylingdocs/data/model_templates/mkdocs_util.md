@@ -32,17 +32,21 @@
 {{item.get("Name", item.get("Form", item.get("Primary_ext", item.get("ID", "unknown"))))}}
 {%- endmacro %}
 
-{% macro link(item, anchor=None) %}
+{% macro link(item, anchor=None, html=False) %}
 {% if anchor is not none %}
 {% set anchor_text = "#"+anchor %}
 {% endif %}
 {% if item is not none %}
-<a href='data/{{item.table.label}}/{{item["ID"]}}/{{anchor_text}}'>{{label(item)}}</a>{% endif %}
+{% if html %}
+<a href="site:data/{{item.table.label}}/{{item['ID']}}/{{anchor_text}}">{{label(item)}}</a>
+{% else %}
+[{{label(item)}}](site:data/{{item.table.label}}/{{item["ID"]}}/{{anchor_text}}){% endif %}
+{% endif %}
 {%- endmacro %}
 
 {% macro txt_src(ctx) -%}
 {% if ctx.data["Record_Number"] %}
-{{link(data["examples"][ctx.id].text, anchor=ctx.id)}}: {{ctx.data["Record_Number"]}}{% else %}
+{{link(data["examples"][ctx.id].text, anchor=ctx.id, html=True)}}: {{ctx.data["Record_Number"]}}{% else %}
 {{link(data["examples"][ctx.id].text, anchor=ctx.id)}}{% endif %}
 {%- endmacro %}
 

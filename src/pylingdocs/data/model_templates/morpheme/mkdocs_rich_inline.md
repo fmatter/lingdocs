@@ -1,6 +1,8 @@
 {% import 'pylingdocs_util.md' as util%}
+{% import 'pld_util.md' as butil%}
+{% set rich = data["morphemes"][ctx.id] %}
 {{util.lfts(
-    "*[" + ctx.get("Name", ctx.get("Form", "?")) + "](data/morphemes/" + ctx["ID"] + ")*",
+    butil.link(rich),
     entity=ctx,
     translation=translation,
     source=source,

@@ -1,4 +1,5 @@
 site_name: "{{ cookiecutter.project_title }} ({{ cookiecutter.version }})"
+site_url: https://caribank.github.io/yawarana-sketch/
 theme:
   name: material
   custom_dir: overrides
@@ -41,6 +42,7 @@ plugins:
           - data/index.md
     - search
     # - git-revision-date-localized
+    - site-urls
 extra_css:
   - assets/examples.css
   - assets/alignment.css
