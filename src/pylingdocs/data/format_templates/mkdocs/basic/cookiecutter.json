@@ -21,5 +21,6 @@
     "_copy_without_render": [
         "overrides/*.html",
         "overrides/*/*.html"
-    ]
+    ],
+    "landingpage": ""
 }

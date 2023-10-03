@@ -2,11 +2,10 @@
 import logging
 import re
 import shutil
+import sys
 from pathlib import Path
 import jinja2
 import panflute
-from cldfviz.template import TEMPLATE_DIR
-from cldfviz.template import render_jinja_template
 from cldfviz.text import render
 from cookiecutter.main import cookiecutter
 from jinja2 import Environment
@@ -14,10 +13,10 @@ from jinja2 import FileSystemLoader
 from jinja2 import PackageLoader
 from jinja2.exceptions import TemplateNotFound
 from writio import dump
+from writio import load
 from pylingdocs.config import DATA_DIR
 from pylingdocs.config import FIGURE_DIR
 from pylingdocs.config import LATEX_EX_TEMPL
-import sys
 from pylingdocs.config import LATEX_TOPLEVEL
 from pylingdocs.config import MD_LINK_PATTERN
 from pylingdocs.config import MKDOCS_RICH
@@ -151,6 +150,10 @@ class OutputFormat:
             content = cls.preprocess(content)
             extra.update({"content": content})
 
+        landingpage_path = Path("pld") / f"{cls.name}_index.md"
+        if landingpage_path.is_file():
+            extra["landingpage"] = load(landingpage_path)
+
         extra.update(**metadata)
 
         template_path = Path("format_templates") / cls.name / OUTPUT_TEMPLATES[cls.name]
@@ -200,7 +203,7 @@ class OutputFormat:
                 except jinja2.exceptions.TemplateNotFound:
                     log.warning(f"Not rendering data for table {label}")
                     continue
-                model_index.append(f"* [{label}]({label}.md)")
+                model_index.append(f"* [{label}]({label})")
                 func_dict["data"] = data
                 template.globals.update(func_dict)
                 out_dir = output_dir / Path(f"mkdocs/docs/data/{label}")
@@ -211,7 +214,7 @@ class OutputFormat:
                     i += 1
                     if i > 50:
                         pass
-                        continue
+                        # continue
                     content = template.render(ctx=rec)
                     content = render(
                         doc=content,
@@ -238,10 +241,11 @@ class OutputFormat:
                     dump(template.render(table=table), out_dir / "index.md")
                 except jinja2.exceptions.TemplateNotFound:
                     log.warning(f"Not rendering index for table {label}")
-        dump(
-            "# Data\n\n" + "\n".join(model_index),
-            output_dir / "mkdocs/docs/data/index.md",
-        )
+        if model_index:
+            dump(
+                "# Data\n\n" + "\n".join(model_index),
+                output_dir / "mkdocs/docs/data/index.md",
+            )
 
     @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
@@ -829,7 +833,8 @@ builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs]}
 
 
 if Path("pld/formats.py").is_file():
-    sys.path.insert(1, 'pld')
+    sys.path.insert(1, "pld")
     from formats import formats
+
     for fmt in formats:
         builders[fmt.name] = fmt

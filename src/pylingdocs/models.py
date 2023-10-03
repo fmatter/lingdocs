@@ -16,7 +16,6 @@ log = logging.getLogger(__name__)
 log.level = logging.DEBUG
 
 
-
 class Base:
     """The base class for entities. Only this to create entirely new concepts,
     with not enough similarity to existing models.

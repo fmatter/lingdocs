@@ -7,6 +7,7 @@ theme:
   features:
     - navigation.instant
     - navigation.tracking
+    - navigation.top
     - toc.follow
     - toc.integrate
   palette:     

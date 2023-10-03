@@ -1,6 +1,6 @@
 {% import 'pylingdocs_util.md' as util%}
 {{util.lfts(
-    "*[" + ctx.get("Name", ctx.get("Form", "?")) + "](/data/morphemes/" + ctx["ID"] + ")*",
+    "*[" + ctx.get("Name", ctx.get("Form", "?")) + "](data/morphemes/" + ctx["ID"] + ")*",
     entity=ctx,
     translation=translation,
     source=source,

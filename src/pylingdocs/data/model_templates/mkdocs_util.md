@@ -37,7 +37,7 @@
 {% set anchor_text = "#"+anchor %}
 {% endif %}
 {% if item is not none %}
-<a href='/data/{{item.table.label}}/{{item["ID"]}}.md{{anchor_text}}'>{{label(item)}}</a>{% endif %}
+<a href='data/{{item.table.label}}/{{item["ID"]}}/{{anchor_text}}'>{{label(item)}}</a>{% endif %}
 {%- endmacro %}
 
 {% macro txt_src(ctx) -%}

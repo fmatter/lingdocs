@@ -6,6 +6,7 @@ from io import StringIO
 from pathlib import Path
 import pandas as pd
 import yaml
+from cldfrels import CLDFDataset
 from cldfviz.text import render
 from jinja2 import DictLoader
 from jinja2.runtime import Undefined
@@ -16,6 +17,7 @@ from pylingdocs.config import LFTS_SHOW_LG
 from pylingdocs.config import LFTS_SHOW_SOURCE
 from pylingdocs.config import MANEX_DIR
 from pylingdocs.config import MD_LINK_PATTERN
+from pylingdocs.config import MKDOCS_RICH
 from pylingdocs.config import TABLE_DIR
 from pylingdocs.helpers import build_example
 from pylingdocs.helpers import build_examples
@@ -27,7 +29,7 @@ from pylingdocs.helpers import sanitize_latex
 from pylingdocs.helpers import split_ref
 from pylingdocs.helpers import src
 from pylingdocs.models import models
-import sys
+
 
 log = logging.getLogger(__name__)
 
@@ -35,8 +37,9 @@ model_dict = {x.name.lower(): x for x in models}
 
 
 if Path("pld/models.py").is_file():
-    sys.path.insert(1, 'pld')
+    sys.path.insert(1, "pld")
     from models import models as custom_models
+
     for mm in custom_models:
         model_dict[mm.name.lower()] = mm
 
@@ -48,14 +51,21 @@ labels = {}
 loaders = {}
 
 
-name_dict = {"list": "_index", "detail": "_page", "inline": "_detail", "index": "_indexpage"}
+name_dict = {
+    "list": "_index",
+    "detail": "_page",
+    "inline": "_detail",
+    "index": "_indexpage",
+}
 
 for model in models:
     labels[model.shortcut] = model.query_string
     for view, templates in model.templates.items():
         for output_format, template in templates.items():
             loaders.setdefault(output_format, {})
-            loaders[output_format][model.cldf_table + name_dict[view] +".md"] = template
+            loaders[output_format][
+                model.cldf_table + name_dict[view] + ".md"
+            ] = template
 
 if Path("pld/model_templates").is_dir():
     for model in Path("pld/model_templates").iterdir():
@@ -150,13 +160,8 @@ def render_markdown(
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val
             func_dict["ref_labels"] = builder.ref_labels
-            from pylingdocs.config import MKDOCS_RICH
-
             if builder.name == "mkdocs" and MKDOCS_RICH:
-                from cldfrels import CLDFDataset
-
                 data = CLDFDataset(ds)
-                print(data)
                 func_dict["data"] = data.tables
             preprocessed = render(
                 doc="".join(preprocess_cldfviz(md_str)),

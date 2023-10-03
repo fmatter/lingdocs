@@ -31,4 +31,5 @@ for filename in [
 chapters = extract_chapters(load("docs/index.md"), mode="pandoc")
 for i, (k, v) in enumerate(chapters.items()):
     dump(v, f"docs/{k}.md")
-dump("{{ cookiecutter.abstract }}", "docs/index.md")
+index = """{{cookiecutter.get("landingpage", "")}}""" or "{{cookiecutter.abstract}}"
+dump(index, "docs/index.md")
