@@ -35,14 +35,15 @@ from pylingdocs.config import (
     LFTS_SHOW_LG,
     LFTS_SHOW_SOURCE,
     METADATA_FILE,
+    PLD_DIR,
     STRUCTURE_FILE,
     TABLE_DIR,
     TABLE_MD,
-    PLD_DIR,
 )
 from pylingdocs.metadata import ORCID_STR, _load_bib, _load_metadata
 
 log = logging.getLogger(__name__)
+
 
 def read_file(path, mode=None, encoding="utf-8"):
     path = Path(path)

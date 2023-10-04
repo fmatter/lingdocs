@@ -10,64 +10,58 @@ import yaml
 from cldf_rel import CLDFDataset
 from cldfviz.text import render
 from jinja2 import DictLoader
-from jinja2.runtime import Undefined
 from writio import load
-from pylingdocs.templates import load_templates
+
 from pylingdocs.config import (
-    DATA_DIR,
-    LFTS_SHOW_FTR,
-    LFTS_SHOW_LG,
     BUILDERS,
-    LFTS_SHOW_SOURCE,
+    DATA_DIR,
     MANEX_DIR,
     MD_LINK_PATTERN,
     MKDOCS_RICH,
     TABLE_DIR,
 )
 from pylingdocs.helpers import (
-    build_example,
-    build_examples,
     comma_and_list,
     func_dict,
     get_md_pattern,
     load_table_metadata,
-    sanitize_latex,
-    split_ref,
-    src,
 )
 from pylingdocs.models import models
+from pylingdocs.templates import load_templates
 
 log = logging.getLogger(__name__)
+
+labels = {}
+for model in models:
+    labels[model.shortcut] = model.query_string
 
 model_dict = {x.name.lower(): x for x in models}
 
 if Path("pld/models.py").is_file():
     sys.path.insert(1, "pld")
     from models import models as custom_models
+
     for mm in custom_models:
         log.info(f"Using custom model {mm.name.lower()}")
         model_dict[mm.name.lower()] = mm
 
 models = model_dict.values()
 
-log.info("Loading templates")
-
-print("LOL")
-input(BUILDERS)
+log.debug("Loading templates")
 loaders = {}
-templates = load_templates()
-print(templates)
-input("OKKKKK")
+templates = load_templates(BUILDERS, models)
 pylingdocs_util = load(DATA_DIR / "util.j2")
 
-for output_format, templates in loaders.items():
-    templates["pylingdocs_util.md"] = pylingdocs_util
-    templates["ParameterTable_detail.md"] = "{{ctx.cldf.name}}"
+for output_format, f_templates in templates.items():
+    f_templates["pylingdocs_util.md"] = pylingdocs_util
+    f_templates[
+        "ParameterTable_detail.md"
+    ] = "{{ctx.cldf.name}}"  # todo is this needed?
     util_path = Path(f"pld/model_templates/{output_format}_util.md")
     if not util_path.is_file():
         util_path = DATA_DIR / "model_templates" / f"{output_format}_util.md"
-    templates["pld_util.md"] = load(util_path)
-    loaders[output_format] = DictLoader(templates)
+    f_templates["pld_util.md"] = load(util_path)
+    loaders[output_format] = DictLoader(f_templates)
 
 
 bool_dic = {"True": True, "False": False}

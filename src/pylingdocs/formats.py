@@ -176,7 +176,7 @@ class OutputFormat:
                     shutil.copy(file, target)
 
     def write_details(cls, output_dir, dataset, loader):
-        if MKDOCS_RICH:
+        if MKDOCS_RICH == "IKKK":
             # return "OK"
             env = Environment(
                 loader=loader, autoescape=False, trim_blocks=True, lstrip_blocks=True
@@ -232,11 +232,11 @@ class OutputFormat:
                     dump(template.render(table=table), out_dir / "index.md")
                 except jinja2.exceptions.TemplateNotFound:
                     log.warning(f"Not rendering index for table {label}")
-        if model_index:
-            dump(
-                "# Data\n\n" + "\n".join(model_index),
-                output_dir / "mkdocs/docs/data/index.md",
-            )
+            if model_index:
+                dump(
+                    "# Data\n\n" + "\n".join(model_index),
+                    output_dir / "mkdocs/docs/data/index.md",
+                )
 
     def register_glossing_abbrevs(cls, abbrev_dict):
         del abbrev_dict

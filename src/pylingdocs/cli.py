@@ -27,18 +27,7 @@ from pylingdocs.output import create_output, run_preview
 from pylingdocs.output import update_structure as do_update_structure
 from pylingdocs.preprocessing import preprocess_cldfviz
 
-import logging
-
-import colorlog
-
-handler = colorlog.StreamHandler(None)
-handler.setFormatter(
-    colorlog.ColoredFormatter("%(log_color)s%(levelname)-7s%(reset)s %(message)s")
-)
 log = logging.getLogger(__name__)
-log.setLevel(logging.INFO)
-log.propagate = True
-log.addHandler(handler)
 
 
 @click.group()

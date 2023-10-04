@@ -3,18 +3,10 @@ from pathlib import Path
 
 import pycldf
 from clldutils import jsonlib
-from writio import load
 
 from pylingdocs.config import DATA_DIR
-from pylingdocs.formats import builders
-
-try:
-    from importlib.resources import files  # pragma: no cover
-except ImportError:  # pragma: no cover
-    from importlib_resources import files  # pragma: no cover
 
 log = logging.getLogger(__name__)
-log.level = logging.DEBUG
 
 
 class Base:
@@ -38,58 +30,6 @@ class Base:
        :meta hide-value:"""
     cnt = 0
     """A counter, useful for numbered entities like examples"""
-
-    def __init__(self):
-        self.templates = {"inline": {}, "list": {}, "detail": {}, "index": {}}
-        self.load_templates()
-
-    def load_template(self, view, builder):
-        return ""
-        model_base = Path(DATA_DIR / "model_templates" / self.name.lower())
-        parent_model = self.__class__.__bases__[0]
-        if parent_model != object:
-            parent_base = Path(DATA_DIR / "model_templates" / parent_model.name.lower())
-        else:
-            parent_base = Path(DATA_DIR / "model_templates" / "base")
-
-        parent_builder = builder.__class__.__bases__[0]
-
-        def _filename(base, builder, view):
-            return base / f"{builder.label()}_{view}.md"
-
-        tar = _filename(model_base, builder, view)  # e.g. morph/mkdocs_index.md
-        if not tar.is_file():
-            # log.debug(f"No {tar} (basic)")
-            if parent_builder.name != "boilerplate":
-                tar = _filename(
-                    model_base, parent_builder, view
-                )  # e.g. morph/html_index.md
-        if not tar.is_file():
-            # log.debug(f"No {tar} (builder inherited)")
-            tar = _filename(parent_base, builder, view)  # e.g. morpheme/mkdocs_index.md
-        if not tar.is_file():
-            # log.debug(f"No {tar} (model inherited)")
-            tar = _filename(
-                parent_base, parent_builder, view
-            )  # e.g. morpheme/html_index.md
-        if not tar.is_file():
-            # log.debug(f"No {tar} (both inherited)")
-            if parent_model == object:
-                # log.debug(
-                #     f"Cannot find template for {self.name}/{view}/{builder.label()}: parent is {parent_model}"
-                # )
-                x = ""
-            else:
-                # now search deeper, for base/mkdocs_index.md and base/html_index.md and finall base/plain_index.md
-                x = parent_model.load_template(parent_model, view, builder)
-            return x
-        # log.debug(f"Using {tar} for {self.name}/{view}/{builder.label()}")
-        return load(tar)
-
-    def load_templates(self):
-        for name, builder in builders.items():
-            for view in ["inline", "list", "detail", "index"]:
-                self.templates[view][name] = self.load_template(view, builder)
 
     def _compile_cldfviz_args(self, args, kwargs):
         arguments = "&".join(args)
@@ -230,7 +170,6 @@ class Form(Base_ORM):
 
 
 models = [
-    # Base(),
     Morpheme(),
     Morph(),
     Wordform(),

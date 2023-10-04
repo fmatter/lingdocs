@@ -1,6 +1,12 @@
-from pylingdocs.config import PLD_DIR, DATA_DIR
-from pylingdocs.formats import builders
+import logging
+
 from writio import load
+
+from pylingdocs.config import DATA_DIR, PLD_DIR
+from pylingdocs.formats import builders
+
+log = logging.getLogger(__name__)
+
 
 def _fn(base, m, f, v, r):
     m = str(m).lower()
@@ -24,6 +30,7 @@ def _parent_model(model, base=False):
     if res.name in ["Base", "Base_ORM"] and not base:
         return None
     return res()
+
 
 # order:
 # pld model   builder
@@ -83,13 +90,11 @@ def _candidates(base, cbase, m, b):
     if final_baws:
         for x in _candidates(base, cbase, final_baws, b):
             yield x
-    print(m, b)
-    input("WHAT ARE YOU STILL LOOKING AT")
 
 
 def find_template(model, builder, view, rich=False):
     """Finds a template for a given model, a given output format, a given view; data-rich or not"""
-    # print(f"Searching template: {model.name}/{builder.label}/{view}")
+    # log.debug(f"Searching template: {model.name}/{builder.label}_{view}")
     custom_base = PLD_DIR / "model_templates"
     base = DATA_DIR / "model_templates"
 
@@ -103,9 +108,11 @@ def find_template(model, builder, view, rich=False):
         path = _fn(base, m.name, f.label, view, rich)
         if path.is_file():
             return path
-    print(model.name, builder.name, view, m, f, b)
-    input("very bad")
+    log.warning(
+        f"No template found for {model.name}/{builder.label}_{view} (last try {m.name}/{b.label})"
+    )
     return None
+
 
 name_dict = {
     "list": "index",
@@ -114,19 +121,22 @@ name_dict = {
     "index": "indexpage",
 }
 
+
 def load_templates(target_builders, models):
     templates = {}
-    for f in target_builders:
+    for fn in target_builders:
+        f = builders[fn]
         templates[f.label] = {}
         for m in models:
             for view in ["inline", "list", "index", "detail"]:
-                label = f"{m.name}/{f.label}/{view}"
                 res = find_template(m, f, view)
-                templates[f.label][f"{m.cldf_table}_{name_dict[view]}.md"] = load(res)
-                if not res:
-                    print(f"{label}: 404")
-                    exit()
+                if res:
+                    templates[f.label][f"{m.cldf_table}_{name_dict[view]}.md"] = load(
+                        res
+                    )
     return templates
+
+
 # for k, v in TEMPLATES.items():
 #     print(k)
 #     for table, template in v.items():

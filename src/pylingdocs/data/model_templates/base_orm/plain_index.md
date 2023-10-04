@@ -1,4 +1,4 @@
 # {{ table.label }}
-{% for key, item in table.entries.items(): %}
+{% for key, item in table.records.items(): %}
 * {{item}}
 {% endfor %}

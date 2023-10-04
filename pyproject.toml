@@ -19,6 +19,9 @@ cookiecutter = "^2.4.0"
 writio = "^0.0.1"
 cldf-rel = "^0.0.2"
 hupper = "^1.12"
+mkdocs-site-urls = "^0.2.0"
+mkdocs-material = "^9.4.3"
+mkdocs-enumerate-headings-plugin = "^0.6.1"
 
 [tool.poetry.group.dev.dependencies]
 isort = "^5.12.0"

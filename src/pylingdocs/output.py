@@ -47,7 +47,7 @@ def update_structure(
     structure_file=STRUCTURE_FILE,
     prefix_mode=CONTENT_FILE_PREFIX,
 ):
-    log.info("Updating document structure")
+    log.debug("Updating document structure")
 
     content_files = {}
     for file in content_dir.iterdir():
@@ -219,7 +219,6 @@ def create_output(
     for output_format in formats:
         for m in models:
             m.reset_cnt()
-        log.info(f"Rendering format [{output_format}]")
         builder = builders[output_format]
         builder.figure_metadata = figure_metadata
         content = "\n\n".join([x["content"] for x in contents.values()])
@@ -268,5 +267,8 @@ def create_output(
                     bibcontents.replace(" &", " \\&"),
                     output_dir / builder.name / dataset.bibpath.name,
                 )
+        log.info(
+            f"Wrote format {output_format} to {(output_dir / builder.name).resolve()}"
+        )
     if latex:
         compile_latex()

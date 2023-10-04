@@ -5,21 +5,19 @@ from pathlib import Path
 
 log = logging.getLogger(__name__)
 
-MD_LINK_PATTERN = re.compile(r"\[(?P<label>[^]]*)]\((?P<url>[^)]+)\)")
-
 try:
     from importlib.resources import files  # pragma: no cover
 except ImportError:  # pragma: no cover
     from importlib_resources import files  # pragma: no cover
 
 DATA_DIR = files("pylingdocs") / "data"
+MD_LINK_PATTERN = re.compile(r"\[(?P<label>[^]]*)]\((?P<url>[^)]+)\)")
+CONF_PATH = "pylingdocs.cfg"
 
-log.info("Loading configuration")
+log.debug("Loading configuration")
 
 config = ConfigParser()
 default_config = ConfigParser()
-CONF_PATH = "pylingdocs.cfg"
-
 default_config.read(DATA_DIR / "config.cfg")
 
 conf_path = Path(CONF_PATH)
