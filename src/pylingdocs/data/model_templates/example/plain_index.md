@@ -1,6 +1,5 @@
-{% import 'util.md' as util %}
-{% for example in ctx %}  
-[[ex-{{ example_id }}]ex-{{example.id}}] {{ example.related('languageReference').name }} ({{ example.id }})  
+{% for example in table.records.values() %}  
+[ex-{{example["ID"]}}] {{ example.related('languageReference').name }}
 {% if (example.cldf.analyzedWord == [] or with_primaryText) and example.cldf.primaryText != None %}{{ example.cldf.primaryText }}
 {% endif %}
 {% if example.cldf.analyzedWord != [] %}
@@ -9,10 +8,7 @@
 {{ gloss.replace(" ", "|WHITESPACE|") }}  
 {% endif %}
 {% if example.cldf.translatedText != None %}
-‘{{ example.cldf.translatedText }}’
+‘{{ example.cldf.translatedText }}’{% endif %}
 
 {% endfor %}
-{%else%}
-{%endif%}
-
 

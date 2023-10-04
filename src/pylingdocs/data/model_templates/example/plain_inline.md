@@ -8,7 +8,6 @@
   `title`
   `source`
 #}
-{% import 'util.md' as util %}
 {% set data = build_example(
     dict(obj=ctx.cldf.analyzedWord,
     gls=ctx.cldf.gloss,

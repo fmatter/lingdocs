@@ -17,7 +17,8 @@ from pylingdocs.config import (
     DATA_DIR,
     MANEX_DIR,
     MD_LINK_PATTERN,
-    MKDOCS_RICH,
+    WRITE_DATA,
+    RICH,
     TABLE_DIR,
 )
 from pylingdocs.helpers import (
@@ -61,6 +62,8 @@ for output_format, f_templates in templates.items():
     if not util_path.is_file():
         util_path = DATA_DIR / "model_templates" / f"{output_format}_util.md"
     f_templates["pld_util.md"] = load(util_path)
+    print("E WE GO", output_format)
+    input(f_templates["morphs.csv_page.md"])
     loaders[output_format] = DictLoader(f_templates)
 
 
@@ -122,7 +125,7 @@ def render_markdown(
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val
             func_dict["ref_labels"] = builder.ref_labels
-            if builder.name == "mkdocs" and MKDOCS_RICH:
+            if builder.name == "mkdocs" and WRITE_DATA:
                 data = CLDFDataset(ds)
                 func_dict["data"] = data.tables
             preprocessed = render(

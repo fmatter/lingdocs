@@ -21,7 +21,8 @@ from pylingdocs.config import (
     LATEX_EX_TEMPL,
     LATEX_TOPLEVEL,
     MD_LINK_PATTERN,
-    MKDOCS_RICH,
+    WRITE_DATA,
+    RICH,
     OUTPUT_TEMPLATES,
 )
 from pylingdocs.helpers import (
@@ -76,6 +77,7 @@ class OutputFormat:
     figure_dir = "figures"
     ref_labels = None
     ref_locations = None
+    data_dir = "data"
 
     @property
     def label(cls):
@@ -176,19 +178,20 @@ class OutputFormat:
                     shutil.copy(file, target)
 
     def write_details(cls, output_dir, dataset, loader):
-        if MKDOCS_RICH == "IKKK":
-            # return "OK"
+        if WRITE_DATA:
+            log.info(f"Writing data for {cls.name}")
+            # input(templates["plain"]["morphs.csv_page.md"])
+
             env = Environment(
                 loader=loader, autoescape=False, trim_blocks=True, lstrip_blocks=True
             )
-            print("preinit")
-            data = CLDFDataset(dataset, orm=True)
-            print("postinit")
+            if isinstance(WRITE_DATA, str):
+                data = CLDFDataset(WRITE_DATA, orm=True)
+            else:
+                data = CLDFDataset(dataset, orm=True)
+
             model_index = []
             for label, table in data.tables.items():
-                if label not in ["wordforms", "texts"]:
-                    pass
-                    # continue
                 try:
                     template = env.get_template(f"{table.name}_page.md")
                 except jinja2.exceptions.TemplateNotFound:
@@ -197,16 +200,17 @@ class OutputFormat:
                 model_index.append(f"* [{label}]({label})")
                 func_dict["data"] = data
                 template.globals.update(func_dict)
-                out_dir = output_dir / Path(f"mkdocs/docs/data/{label}")
+                out_dir = output_dir / cls.name / cls.data_dir / label
                 out_dir.mkdir(exist_ok=True, parents=True)
                 gathered = []
                 i = 0
                 for rid, rec in tqdm(table.records.items(), desc=label):
                     i += 1
                     if i > 50:
-                        pass
                         continue
+                    print(template, rec)
                     content = template.render(ctx=rec)
+                    print(content)
                     content = render(
                         doc=content,
                         cldf_dict=dataset,
@@ -216,26 +220,31 @@ class OutputFormat:
                     content = (
                         (content[:50000] + "..") if len(content) > 50000 else content
                     )
-                    dump(content, out_dir / f"{rid}.md")
-                content = (
-                    f"{{% import 'pld_util.md' as util %}}\n# {label}\n\n"
-                    + "\n".join(gathered)
-                )
-                content = render(
-                    doc=content,
-                    cldf_dict=dataset,
-                    loader=loader,
-                    func_dict=func_dict,
-                )
+                    if content:
+                        input(content)
+                        dump(content, out_dir / f"{rid}.{cls.file_ext}")
+                from pylingdocs.preprocessing import render_markdown
+
                 try:
                     template = env.get_template(f"{table.name}_indexpage.md")
-                    dump(template.render(table=table), out_dir / "index.md")
+                    template.globals.update(func_dict)
+                    content = template.render(table=table)
+                    content = render_markdown(
+                        content,
+                        dataset,
+                        cls,
+                        decorate_gloss_string=cls.decorate_gloss_string,
+                    )
+                    dump(
+                        cls.postprocess(cls.preprocess(content)),
+                        out_dir / f"index.{cls.file_ext}",
+                    )
                 except jinja2.exceptions.TemplateNotFound:
                     log.warning(f"Not rendering index for table {label}")
             if model_index:
                 dump(
                     "# Data\n\n" + "\n".join(model_index),
-                    output_dir / "mkdocs/docs/data/index.md",
+                    output_dir / cls.name / cls.data_dir / f"index.{cls.file_ext}",
                 )
 
     def register_glossing_abbrevs(cls, abbrev_dict):
@@ -480,10 +489,10 @@ for (var i = 0; i < targets.length; i++) {{
 class MkDocs(HTML):
     name = "mkdocs"
     figure_dir = "docs/figures"
+    data_dir = "docs/data"
 
     def preprocess(cls, content):
-        res = content.replace("```{=html}", "").replace("```", "")
-        return res.replace("WHITESPACE", " ").replace(r"\|", "")
+        return content.replace("```{=html}", "").replace("```", "")
 
     def postprocess(cls, content):
         return content.replace("(#source-", "(/references/#source-")

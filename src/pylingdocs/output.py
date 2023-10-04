@@ -258,8 +258,7 @@ def create_output(
                 ref_locations=ref_locations,
                 parts=chapters,
             )
-        if builder.name == "mkdocs":
-            builder.write_details(output_dir, dataset, loaders["mkdocs"])
+        builder.write_details(output_dir, dataset, loaders["mkdocs"])
         if builder.name == "latex":
             bibcontents = read_file(dataset.bibpath)
             if bibcontents:

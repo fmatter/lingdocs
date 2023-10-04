@@ -80,7 +80,14 @@ if not LATEX_TOPLEVEL:
     else:
         LATEX_TOPLEVEL = "section"
 
-MKDOCS_RICH = get_config("mkdocs", "rich_data")
+WRITE_DATA = get_config("output", "data")
+if WRITE_DATA == "False":
+    WRITE_DATA = False
+elif "json" not in WRITE_DATA:
+    WRITE_DATA = True
+RICH = get_config("output", "rich", as_boolean=True)
+if RICH and not WRITE_DATA:
+    WRITE_DATA = True
 
 EX_SHOW_LG = get_config("examples", "show_language", as_boolean=True)
 EX_SHOW_PRIMARY = get_config("examples", "show_primary", as_boolean=True)

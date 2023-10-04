@@ -28,8 +28,8 @@
 </li>
 {%- endmacro %}
 
-{% macro label(item) %}
-{{item.get("Name", item.get("Form", item.get("Primary_ext", item.get("ID", "unknown"))))}}
+{% macro label(item, preferred="Name") %}
+{{item.get(preferred, item.get("Form", item.get("Primary_Text", item.get("ID", "unknown"))))}}
 {%- endmacro %}
 
 {% macro link(item, anchor=None, html=False) %}

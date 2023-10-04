@@ -134,6 +134,7 @@ def load_templates(target_builders, models):
                     templates[f.label][f"{m.cldf_table}_{name_dict[view]}.md"] = load(
                         res
                     )
+    input(templates["plain"]["morphs.csv_page.md"])
     return templates
 
 

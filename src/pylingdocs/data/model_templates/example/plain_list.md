@@ -1,4 +1,3 @@
-{% import 'util.md' as util %}
 {% if ids is defined %}
 {%set ids = ids.split(",")%}
 [ex-{{ example_id }}]{% for example in ctx %}  
