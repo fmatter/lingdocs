@@ -1,4 +1,4 @@
-{% import 'pld_util.md' as util %}
+{% import 'util.md' as util %}
 
 # {{table.name}}
 {% for key, item in table.entries.items(): %}

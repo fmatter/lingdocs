@@ -116,25 +116,29 @@ def find_template(model, builder, view, rich=False):
 
 name_dict = {
     "list": "index",
-    "detail": "page",
+    "detail": "detail",
     "inline": "detail",
-    "index": "indexpage",
+    "index": "index",
 }
 
 
 def load_templates(target_builders, models):
-    templates = {}
+    templates = {fn: {"text": {}, "data": {}} for fn in target_builders}
     for fn in target_builders:
         f = builders[fn]
-        templates[f.label] = {}
         for m in models:
-            for view in ["inline", "list", "index", "detail"]:
+            for view in ["inline", "list"]:
                 res = find_template(m, f, view)
                 if res:
-                    templates[f.label][f"{m.cldf_table}_{name_dict[view]}.md"] = load(
-                        res
-                    )
-    input(templates["plain"]["morphs.csv_page.md"])
+                    templates[f.label]["text"][
+                        f"{m.cldf_table}_{name_dict[view]}.md"
+                    ] = load(res)
+            for view in ["index", "detail"]:
+                res = find_template(m, f, view)
+                if res:
+                    templates[f.label]["data"][
+                        f"{m.cldf_table}_{name_dict[view]}.md"
+                    ] = load(res)
     return templates
 
 

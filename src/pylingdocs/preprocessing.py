@@ -50,21 +50,25 @@ models = model_dict.values()
 
 log.debug("Loading templates")
 loaders = {}
+
 templates = load_templates(BUILDERS, models)
 pylingdocs_util = load(DATA_DIR / "util.j2")
 
 for output_format, f_templates in templates.items():
-    f_templates["pylingdocs_util.md"] = pylingdocs_util
-    f_templates[
-        "ParameterTable_detail.md"
-    ] = "{{ctx.cldf.name}}"  # todo is this needed?
     util_path = Path(f"pld/model_templates/{output_format}_util.md")
     if not util_path.is_file():
         util_path = DATA_DIR / "model_templates" / f"{output_format}_util.md"
-    f_templates["pld_util.md"] = load(util_path)
-    print("E WE GO", output_format)
-    input(f_templates["morphs.csv_page.md"])
-    loaders[output_format] = DictLoader(f_templates)
+    for loader in ["text", "data"]:
+        f_templates[loader]["pylingdocs_util.md"] = pylingdocs_util
+        f_templates[loader][
+            "ParameterTable_detail.md"
+        ] = "{{ctx.cldf.name}}"  # todo is this needed?
+        f_templates[loader]["util.md"] = load(util_path)
+    # input(f_templates["morphs.csv_page.md"])
+    loaders[output_format] = {
+        "text": DictLoader(f_templates["text"]),
+        "data": DictLoader(f_templates["data"]),
+    }
 
 
 bool_dic = {"True": True, "False": False}
@@ -131,27 +135,27 @@ def render_markdown(
             preprocessed = render(
                 doc="".join(preprocess_cldfviz(md_str)),
                 cldf_dict=ds,
-                loader=loaders[builder.name],
+                loader=loaders[builder.name]["text"],
                 func_dict=func_dict,
             )
             preprocessed = render(
                 doc=preprocessed,
                 cldf_dict=ds,
-                loader=loaders[builder.name],
+                loader=loaders[builder.name]["text"],
                 func_dict=func_dict,
-            )
+            )  # todo this can be made prettier
             if "#cldf" in preprocessed:
                 preprocessed = render(
                     doc=preprocessed,
                     cldf_dict=ds,
-                    loader=loaders[builder.name],
+                    loader=loaders[builder.name]["text"],
                     func_dict={"comma_and_list": comma_and_list},
                 )
             if "#cldf" in preprocessed:
                 preprocessed = render(
                     doc=preprocessed,
                     cldf_dict=ds,
-                    loader=loaders[builder.name],
+                    loader=loaders[builder.name]["text"],
                     func_dict={"comma_and_list": comma_and_list},
                 )
         else:

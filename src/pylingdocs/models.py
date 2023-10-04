@@ -28,8 +28,6 @@ class Base:
     """A dictionary of long jinja templates (not shown here)
 
        :meta hide-value:"""
-    cnt = 0
-    """A counter, useful for numbered entities like examples"""
 
     def _compile_cldfviz_args(self, args, kwargs):
         arguments = "&".join(args)
@@ -80,9 +78,6 @@ class Base:
         log.warning(f"Unable to generate preview string for {entry['ID']}")
         return entry["ID"]
 
-    def reset_cnt(self):
-        pass
-
 
 class Base_ORM(Base):
     name = "Base_ORM"
@@ -122,7 +117,6 @@ class Example(Base):
     name = "Example"
     cldf_table = "ExampleTable"
     shortcut = "ex"
-    cnt = 0
 
     def autocomplete_string(self, entry):
         return (
@@ -132,17 +126,12 @@ class Example(Base):
 
     def query_string(self, url, *args, multiple=False, visualizer="cldfviz", **kwargs):
         if visualizer == "cldfviz":
-            self.cnt += 1
-            kwargs.update({"example_counter": self.cnt})
             if not multiple:
                 arg_str = self._compile_cldfviz_args(args, kwargs)
                 return f"[{self.name} {url}]({self.cldf_table}{arg_str}#cldf:{url})"
             arg_str = self._compile_cldfviz_args(args, kwargs)
             return f"[{self.name} {url}]({self.cldf_table}{arg_str}#cldf:__all__)"
         return f"[Unknown visualizer]({url})"
-
-    def reset_cnt(self):
-        self.cnt = 0
 
 
 class Language(Base_ORM):

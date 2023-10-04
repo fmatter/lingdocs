@@ -6,6 +6,8 @@ import subprocess
 import threading
 from http.server import SimpleHTTPRequestHandler, test
 from pathlib import Path, PosixPath
+from cldf_rel import get_table_name
+from writio import dump
 
 import hupper
 
@@ -15,9 +17,13 @@ from pylingdocs.config import (
     CONTENT_FOLDER,
     OUTPUT_DIR,
     STRUCTURE_FILE,
+    WRITE_DATA,
+    RICH,
 )
+from tqdm import tqdm
 from pylingdocs.formats import builders
 from pylingdocs.helpers import (
+    func_dict,
     _get_relative_file,
     _load_cldf_dataset,
     check_abbrevs,
@@ -31,9 +37,14 @@ from pylingdocs.helpers import (
     write_file,
 )
 from pylingdocs.metadata import _load_metadata
-from pylingdocs.models import models
 from pylingdocs.postprocessing import postprocess
-from pylingdocs.preprocessing import loaders, preprocess, render_markdown
+from pylingdocs.preprocessing import (
+    loaders,
+    preprocess,
+    render_markdown,
+    preprocess_cldfviz,
+)
+from cldfviz.text import render
 
 NUM_PRE = re.compile(r"[\d]+\ ")
 ABC_PRE = re.compile(r"[A-Z]+\ ")
@@ -182,6 +193,77 @@ def check_ids(contents, dataset, source_dir):
         log.info("No missing IDs found.")
 
 
+def write_details(builder, output_dir, dataset, loader):
+    output_dir = output_dir / builder.name / builder.data_dir
+    output_dir.mkdir(exist_ok=True, parents=True)
+    log.info(f"Writing data for {builder.name} to {output_dir.resolve()}, this may take a while. Set data = False in the [output] section of your config file to turn off.")
+    for table in dataset.tables:
+        name = get_table_name(table)
+        label = str(table.url).replace(".csv", "")
+        table_dir = output_dir / label
+
+        func_dict["decorate_gloss_string"] = builder.decorate_gloss_string
+        func_dict["ref_labels"] = builder.ref_labels
+        func_dict["table"] = name
+
+
+        if f"{name}_index.md" not in loader.list_templates():
+            log.warning(f"Not writing index for {name}")
+        else:
+            table_dir.mkdir(exist_ok=True, parents=True)
+            index = f"[]({name}#cldf:__all__)"
+            index = render(
+                doc="".join(preprocess_cldfviz(index)),
+                cldf_dict=dataset,
+                loader=loaders[builder.name]["data"],
+                func_dict=func_dict,
+            )  # todo prettify
+            if "#cldf" in index:
+                index = render(
+                    doc=index,
+                    cldf_dict=dataset,
+                    loader=loaders[builder.name]["data"],
+                    func_dict=func_dict,
+                )
+            index = builder.preprocess(index)
+            if index.strip() != "":
+                dump(index, table_dir / f"index.{builder.file_ext}")
+
+        if f"{name}_detail.md" not in loader.list_templates():
+            log.warning(f"Not writing details for {name}")
+        else:
+            table_dir.mkdir(exist_ok=True, parents=True)
+            if name.endswith("Table"):
+                items = {
+                    rec.id: f"[]({name}#cldf:{rec.id})" for rec in dataset.objects(name)
+                }
+            else:
+                items = {
+                    rec["ID"]: f"[]({name}#cldf:{rec['ID']})"
+                    for rec in dataset.iter_rows(name)
+                }
+            for rid, detail in tqdm(items.items(), desc=name):
+                filepath = table_dir / f"{rid}.{builder.file_ext}"
+                if filepath.is_file():
+                    continue
+                detail = render(
+                    doc="".join(preprocess_cldfviz(detail)),
+                    cldf_dict=dataset,
+                    loader=loaders[builder.name]["data"],
+                    func_dict=func_dict,
+                )  # rodo prettify
+                if "#cldf" in detail:
+                    detail = render(
+                        doc=detail,
+                        cldf_dict=dataset,
+                        loader=loaders[builder.name]["data"],
+                        func_dict=func_dict,
+                    )
+                detail = builder.preprocess(detail)
+                if detail.strip() != "":
+                    dump(detail, filepath)
+
+
 def create_output(
     contents,
     source_dir,
@@ -217,8 +299,6 @@ def create_output(
     )
     figure_metadata = load_figure_metadata(source_dir)
     for output_format in formats:
-        for m in models:
-            m.reset_cnt()
         builder = builders[output_format]
         builder.figure_metadata = figure_metadata
         content = "\n\n".join([x["content"] for x in contents.values()])
@@ -258,7 +338,8 @@ def create_output(
                 ref_locations=ref_locations,
                 parts=chapters,
             )
-        builder.write_details(output_dir, dataset, loaders["mkdocs"])
+        if WRITE_DATA:
+            write_details(builder, output_dir, dataset, loaders[output_format]["data"])
         if builder.name == "latex":
             bibcontents = read_file(dataset.bibpath)
             if bibcontents:

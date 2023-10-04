@@ -9,7 +9,7 @@
   `comment`
   `source`
 #}
-{% import 'pld_util.md' as util %}
+{% import 'util.md' as util %}
 {% if format=="subexample" %}
     {% set class_="subexample" %}
 {% else %}

@@ -1,5 +1,5 @@
 {% for k, v in ctx.items() %}
-    {% if v %}
-* {{k}}: {{v}}
-    {% endif %}
+{% if v is not none %}
+- {{k}}: {{v}}
+{% endif %}
 {% endfor %}

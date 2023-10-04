@@ -1,12 +1,5 @@
-{% import "pld_util.md" as util%}
-{{ table.label }}
-{% for key, ctx in table.records.items(): %}
+{% import "util.md" as util%}
 
-{% for k, v in ctx.items() %}
-{% if v %}
-* {{k}}: {{v}}
-{% endif %}
-
-{% endfor %}
-
+{% for rec in ctx %}
+{{util.link(rec)}}
 {% endfor %}

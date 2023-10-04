@@ -1,4 +1,4 @@
-{% import 'pld_util.md' as util %}
+{% import 'util.md' as util %}
 {% if ids is defined %}
     {% set gathered_examples = [] %}
     {% for id in ids.split(",") %}
