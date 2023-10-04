@@ -1,29 +1,41 @@
+[tool.poetry]
+name = "pylingdocs"
+version = "0.0.13.dev"
+authors = ["Florian Matter <flmt@mailbox.org>"]
+description = "Create data-rich linguistic documents."
+
+[tool.poetry.scripts]
+pylingdocs = 'pylingdocs.cli:main'
+
+[tool.poetry.dependencies]
+python = "^3.8"
+click = "^8.1.7"
+pandas = "2.0.3"
+pycldf = "^1.35.0"
+python-slugify = "^8.0.1"
+cldfviz = "^1.0.0"
+panflute = "^2.3.0"
+cookiecutter = "^2.4.0"
+writio = "^0.0.1"
+
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+packages = [
+    { include = "pylingdocs", from = "src" },
+]
 
 [tool.pylint.messages_control]
 disable=["logging-fstring-interpolation"]
 
-[tool.tox]
-legacy_tox_ini = """
 [tox]
-envlist = py37,py38,py39,py310,lint
-skip_missing_interpreters = true
-toxworkdir=/tmp/.pylingdocs_tox
+isolated_build = true
+toxworkdir = "/tmp/.pylingdocs_tox"
+commands = "pytest tests/ --import-mode importlib"
 
-[testenv]
-usedevelop = True
-commands = 
-    pytest --cov
-extras = dev
-
-[testenv:lint]
-commands =
-    python -m prospector src
-    python -m isort --check-only src
-    python -m flake8 src
-    python -m flake8 tests
-    python -m prospector tests
-extras = dev
-"""
+[other]
+pandas = [
+    { version = "2.0.3", python = "~3.8"},
+    { version = "^2.1.1", python = ">=3.9"}
+]
