@@ -2,35 +2,43 @@
 import logging
 import sys
 from pathlib import Path
+
 import click
 import yaml
-from pylingdocs.cldf import create_cldf
-from pylingdocs.cldf import generate_autocomplete
-from pylingdocs.config import BUILDERS
-from pylingdocs.config import CLDF_MD
-from pylingdocs.config import CONTENT_FOLDER
-from pylingdocs.config import CREATE_README
-from pylingdocs.config import METADATA_FILE
-from pylingdocs.config import OUTPUT_DIR
-from pylingdocs.config import PREVIEW
-from pylingdocs.config import STRUCTURE_FILE
-from pylingdocs.helpers import _get_relative_file
-from pylingdocs.helpers import _load_cldf_dataset
-from pylingdocs.helpers import load_content
+
+from pylingdocs.cldf import create_cldf, generate_autocomplete
+from pylingdocs.config import (
+    BUILDERS,
+    CLDF_MD,
+    CONTENT_FOLDER,
+    CREATE_README,
+    METADATA_FILE,
+    OUTPUT_DIR,
+    PREVIEW,
+    STRUCTURE_FILE,
+)
+from pylingdocs.helpers import _get_relative_file, _load_cldf_dataset, load_content
 from pylingdocs.helpers import new as create_new
 from pylingdocs.helpers import write_readme
 from pylingdocs.metadata import _load_metadata
-from pylingdocs.output import check_abbrevs
-from pylingdocs.output import check_ids
-from pylingdocs.output import clean_output
+from pylingdocs.output import check_abbrevs, check_ids, clean_output
 from pylingdocs.output import compile_latex as cmplatex
-from pylingdocs.output import create_output
-from pylingdocs.output import run_preview
+from pylingdocs.output import create_output, run_preview
 from pylingdocs.output import update_structure as do_update_structure
 from pylingdocs.preprocessing import preprocess_cldfviz
 
+import logging
 
+import colorlog
+
+handler = colorlog.StreamHandler(None)
+handler.setFormatter(
+    colorlog.ColoredFormatter("%(log_color)s%(levelname)-7s%(reset)s %(message)s")
+)
 log = logging.getLogger(__name__)
+log.setLevel(logging.INFO)
+log.propagate = True
+log.addHandler(handler)
 
 
 @click.group()

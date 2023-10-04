@@ -4,92 +4,60 @@ import re
 import sys
 from io import StringIO
 from pathlib import Path
+
 import pandas as pd
 import yaml
-from cldfrels import CLDFDataset
+from cldf_rel import CLDFDataset
 from cldfviz.text import render
 from jinja2 import DictLoader
 from jinja2.runtime import Undefined
 from writio import load
-from pylingdocs.config import DATA_DIR
-from pylingdocs.config import LFTS_SHOW_FTR
-from pylingdocs.config import LFTS_SHOW_LG
-from pylingdocs.config import LFTS_SHOW_SOURCE
-from pylingdocs.config import MANEX_DIR
-from pylingdocs.config import MD_LINK_PATTERN
-from pylingdocs.config import MKDOCS_RICH
-from pylingdocs.config import TABLE_DIR
-from pylingdocs.helpers import build_example
-from pylingdocs.helpers import build_examples
-from pylingdocs.helpers import comma_and_list
-from pylingdocs.helpers import func_dict
-from pylingdocs.helpers import get_md_pattern
-from pylingdocs.helpers import load_table_metadata
-from pylingdocs.helpers import sanitize_latex
-from pylingdocs.helpers import split_ref
-from pylingdocs.helpers import src
+from pylingdocs.templates import load_templates
+from pylingdocs.config import (
+    DATA_DIR,
+    LFTS_SHOW_FTR,
+    LFTS_SHOW_LG,
+    BUILDERS,
+    LFTS_SHOW_SOURCE,
+    MANEX_DIR,
+    MD_LINK_PATTERN,
+    MKDOCS_RICH,
+    TABLE_DIR,
+)
+from pylingdocs.helpers import (
+    build_example,
+    build_examples,
+    comma_and_list,
+    func_dict,
+    get_md_pattern,
+    load_table_metadata,
+    sanitize_latex,
+    split_ref,
+    src,
+)
 from pylingdocs.models import models
-
 
 log = logging.getLogger(__name__)
 
 model_dict = {x.name.lower(): x for x in models}
 
-
 if Path("pld/models.py").is_file():
     sys.path.insert(1, "pld")
     from models import models as custom_models
-
     for mm in custom_models:
+        log.info(f"Using custom model {mm.name.lower()}")
         model_dict[mm.name.lower()] = mm
 
 models = model_dict.values()
 
 log.info("Loading templates")
-views = ["inline", "list", "detail", "index"]
-labels = {}
+
+print("LOL")
+input(BUILDERS)
 loaders = {}
-
-
-name_dict = {
-    "list": "_index",
-    "detail": "_page",
-    "inline": "_detail",
-    "index": "_indexpage",
-}
-
-for model in models:
-    labels[model.shortcut] = model.query_string
-    for view, templates in model.templates.items():
-        for output_format, template in templates.items():
-            loaders.setdefault(output_format, {})
-            loaders[output_format][
-                model.cldf_table + name_dict[view] + ".md"
-            ] = template
-
-if Path("pld/model_templates").is_dir():
-    for model in Path("pld/model_templates").iterdir():
-        for output_format, templates in loaders.items():
-            for target_file, template_handle in [
-                (
-                    f"{output_format}.md",
-                    f"{model_dict[model.name].cldf_table}_detail.md",
-                ),
-                (
-                    f"{output_format}_index.md",
-                    f"{model_dict[model.name].cldf_table}_index.md",
-                ),
-                (
-                    f"{output_format}_page.md",
-                    f"{model_dict[model.name].cldf_table}_page.md",
-                ),
-            ]:
-                if (model / target_file).is_file():
-                    log.info(
-                        f"Using custom template {target_file} for model {model.name} for format {output_format}"
-                    )
-                    templates[template_handle] = load(model / target_file)
-
+templates = load_templates()
+print(templates)
+input("OKKKKK")
 pylingdocs_util = load(DATA_DIR / "util.j2")
 
 for output_format, templates in loaders.items():

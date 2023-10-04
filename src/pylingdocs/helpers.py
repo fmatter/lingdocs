@@ -6,43 +6,43 @@ import re
 import sys
 import tempfile
 from pathlib import Path
+
 import pandas as pd
 import panflute
 import pybtex
 import yaml
 from cookiecutter.main import cookiecutter
 from jinja2.runtime import Undefined
-from pycldf import Dataset
-from pycldf import Source
+from pycldf import Dataset, Source
 from slugify import slugify
-from pylingdocs import __version__
-from pylingdocs.config import ABBREV_FILE
-from pylingdocs.config import ADD_BIB
-from pylingdocs.config import CLDF_MD
-from pylingdocs.config import CLLD_URI
-from pylingdocs.config import CONF_PATH
-from pylingdocs.config import CONTENT_FILE_PREFIX
-from pylingdocs.config import CONTENT_FOLDER
-from pylingdocs.config import DATA_DIR
-from pylingdocs.config import EX_SHOW_LG
-from pylingdocs.config import EX_SHOW_PRIMARY
-from pylingdocs.config import EX_SRC_POS
-from pylingdocs.config import FIGURE_DIR
-from pylingdocs.config import FIGURE_MD
-from pylingdocs.config import LFTS_SHOW_FTR
-from pylingdocs.config import LFTS_SHOW_LG
-from pylingdocs.config import LFTS_SHOW_SOURCE
-from pylingdocs.config import METADATA_FILE
-from pylingdocs.config import STRUCTURE_FILE
-from pylingdocs.config import TABLE_DIR
-from pylingdocs.config import TABLE_MD
-from pylingdocs.metadata import ORCID_STR
-from pylingdocs.metadata import _load_bib
-from pylingdocs.metadata import _load_metadata
 
+from pylingdocs import __version__
+from pylingdocs.config import (
+    ABBREV_FILE,
+    ADD_BIB,
+    CLDF_MD,
+    CLLD_URI,
+    CONF_PATH,
+    CONTENT_FILE_PREFIX,
+    CONTENT_FOLDER,
+    DATA_DIR,
+    EX_SHOW_LG,
+    EX_SHOW_PRIMARY,
+    EX_SRC_POS,
+    FIGURE_DIR,
+    FIGURE_MD,
+    LFTS_SHOW_FTR,
+    LFTS_SHOW_LG,
+    LFTS_SHOW_SOURCE,
+    METADATA_FILE,
+    STRUCTURE_FILE,
+    TABLE_DIR,
+    TABLE_MD,
+    PLD_DIR,
+)
+from pylingdocs.metadata import ORCID_STR, _load_bib, _load_metadata
 
 log = logging.getLogger(__name__)
-
 
 def read_file(path, mode=None, encoding="utf-8"):
     path = Path(path)

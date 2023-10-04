@@ -3,7 +3,6 @@ import re
 from configparser import ConfigParser
 from pathlib import Path
 
-
 log = logging.getLogger(__name__)
 
 MD_LINK_PATTERN = re.compile(r"\[(?P<label>[^]]*)]\((?P<url>[^)]+)\)")
@@ -61,7 +60,7 @@ STRUCTURE_FILE = get_path("structure_file")
 BENCH = get_path("bench")
 ADD_BIB = get_path("add_bib")
 
-BUILDERS = get_config("output", "builders").split(" ")
+BUILDERS = get_config("output", "build").split(" ")
 PREVIEW = get_config("output", "preview").split(" ")
 CLLD_URI = get_config("clld", "db_uri")
 ABBREV_FILE = get_config("input", "abbreviation_file")
@@ -95,3 +94,6 @@ LFTS_SHOW_FTR = get_config("lfts", "show_translation", as_boolean=True)
 LFTS_SHOW_SOURCE = get_config("lfts", "show_source", as_boolean=True)
 
 CONTENT_FILE_PREFIX = get_config("input", "content_file_prefix")
+
+
+PLD_DIR = Path("./pld")

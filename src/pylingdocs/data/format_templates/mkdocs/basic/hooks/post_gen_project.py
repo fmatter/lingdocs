@@ -1,9 +1,9 @@
 from pathlib import Path
 from shutil import copy
-from writio import dump
-from writio import load
-from pylingdocs.helpers import extract_chapters
 
+from writio import dump, load
+
+from pylingdocs.helpers import extract_chapters
 
 try:
     from importlib.resources import files  # pragma: no cover

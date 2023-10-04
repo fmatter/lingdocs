@@ -4,35 +4,36 @@ import re
 import shutil
 import subprocess
 import threading
-from http.server import SimpleHTTPRequestHandler
-from http.server import test
-from pathlib import Path
-from pathlib import PosixPath
+from http.server import SimpleHTTPRequestHandler, test
+from pathlib import Path, PosixPath
+
 import hupper
-from pylingdocs.config import BENCH
-from pylingdocs.config import CONTENT_FILE_PREFIX
-from pylingdocs.config import CONTENT_FOLDER
-from pylingdocs.config import OUTPUT_DIR
-from pylingdocs.config import STRUCTURE_FILE
+
+from pylingdocs.config import (
+    BENCH,
+    CONTENT_FILE_PREFIX,
+    CONTENT_FOLDER,
+    OUTPUT_DIR,
+    STRUCTURE_FILE,
+)
 from pylingdocs.formats import builders
-from pylingdocs.helpers import _get_relative_file
-from pylingdocs.helpers import _load_cldf_dataset
-from pylingdocs.helpers import check_abbrevs
-from pylingdocs.helpers import extract_chapters
-from pylingdocs.helpers import get_structure
-from pylingdocs.helpers import load_content
-from pylingdocs.helpers import load_figure_metadata
-from pylingdocs.helpers import process_labels
-from pylingdocs.helpers import read_file
-from pylingdocs.helpers import refresh_clld_db
-from pylingdocs.helpers import write_file
+from pylingdocs.helpers import (
+    _get_relative_file,
+    _load_cldf_dataset,
+    check_abbrevs,
+    extract_chapters,
+    get_structure,
+    load_content,
+    load_figure_metadata,
+    process_labels,
+    read_file,
+    refresh_clld_db,
+    write_file,
+)
 from pylingdocs.metadata import _load_metadata
 from pylingdocs.models import models
 from pylingdocs.postprocessing import postprocess
-from pylingdocs.preprocessing import loaders
-from pylingdocs.preprocessing import preprocess
-from pylingdocs.preprocessing import render_markdown
-
+from pylingdocs.preprocessing import loaders, preprocess, render_markdown
 
 NUM_PRE = re.compile(r"[\d]+\ ")
 ABC_PRE = re.compile(r"[A-Z]+\ ")

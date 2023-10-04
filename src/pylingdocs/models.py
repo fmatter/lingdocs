@@ -1,11 +1,12 @@
 import logging
 from pathlib import Path
+
 import pycldf
 from clldutils import jsonlib
 from writio import load
+
 from pylingdocs.config import DATA_DIR
 from pylingdocs.formats import builders
-
 
 try:
     from importlib.resources import files  # pragma: no cover
@@ -43,6 +44,7 @@ class Base:
         self.load_templates()
 
     def load_template(self, view, builder):
+        return ""
         model_base = Path(DATA_DIR / "model_templates" / self.name.lower())
         parent_model = self.__class__.__bases__[0]
         if parent_model != object:
@@ -50,7 +52,7 @@ class Base:
         else:
             parent_base = Path(DATA_DIR / "model_templates" / "base")
 
-        parent_builder = builder.__bases__[0]
+        parent_builder = builder.__class__.__bases__[0]
 
         def _filename(base, builder, view):
             return base / f"{builder.label()}_{view}.md"

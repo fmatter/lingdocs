@@ -8,7 +8,7 @@ description = "Create data-rich linguistic documents."
 pylingdocs = 'pylingdocs.cli:main'
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.8.1"
 click = "^8.1.7"
 pandas = "2.0.3"
 pycldf = "^1.35.0"
@@ -17,6 +17,12 @@ cldfviz = "^1.0.0"
 panflute = "^2.3.0"
 cookiecutter = "^2.4.0"
 writio = "^0.0.1"
+cldf-rel = "^0.0.2"
+hupper = "^1.12"
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.12.0"
+black = "^23.9.1"
 
 [build-system]
 requires = ["poetry-core"]

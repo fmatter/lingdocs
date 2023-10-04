@@ -1,27 +1,27 @@
 import logging
 import re
 from pathlib import Path
+
 import pandas as pd
 import pycldf
 from clldutils import jsonlib
 from pycldf import Source
 from pycldf.dataset import SchemaError
 from slugify import slugify
+
 from pylingdocs import __version__
-from pylingdocs.config import DATA_DIR
-from pylingdocs.config import OUTPUT_TEMPLATES
+from pylingdocs.config import DATA_DIR, OUTPUT_TEMPLATES
 from pylingdocs.formats import CLLD
-from pylingdocs.helpers import check_abbrevs
-from pylingdocs.helpers import get_sections
-from pylingdocs.helpers import load_figure_metadata
-from pylingdocs.helpers import read_file
-from pylingdocs.metadata import _load_bib
-from pylingdocs.metadata import _load_metadata
+from pylingdocs.helpers import (
+    check_abbrevs,
+    get_sections,
+    load_figure_metadata,
+    read_file,
+)
+from pylingdocs.metadata import _load_bib, _load_metadata
 from pylingdocs.models import models
 from pylingdocs.postprocessing import postprocess
-from pylingdocs.preprocessing import preprocess
-from pylingdocs.preprocessing import render_markdown
-
+from pylingdocs.preprocessing import preprocess, render_markdown
 
 log = logging.getLogger(__name__)
 

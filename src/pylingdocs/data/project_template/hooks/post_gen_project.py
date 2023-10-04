@@ -1,9 +1,10 @@
 from configparser import ConfigParser
 from pathlib import Path
+
 import cookiecutter
+
 from pylingdocs.cldf import generate_autocomplete
 from pylingdocs.helpers import _load_cldf_dataset
-
 
 PROJECT_DIR = Path.cwd().resolve()
 

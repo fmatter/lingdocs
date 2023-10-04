@@ -4,31 +4,35 @@ import re
 import shutil
 import sys
 from pathlib import Path
+
 import jinja2
 import panflute
+from cldf_rel import CLDFDataset
 from cldfviz.text import render
 from cookiecutter.main import cookiecutter
-from jinja2 import Environment
-from jinja2 import FileSystemLoader
-from jinja2 import PackageLoader
+from jinja2 import Environment, FileSystemLoader, PackageLoader
 from jinja2.exceptions import TemplateNotFound
-from writio import dump
-from writio import load
-from pylingdocs.config import DATA_DIR
-from pylingdocs.config import FIGURE_DIR
-from pylingdocs.config import LATEX_EX_TEMPL
-from pylingdocs.config import LATEX_TOPLEVEL
-from pylingdocs.config import MD_LINK_PATTERN
-from pylingdocs.config import MKDOCS_RICH
-from pylingdocs.config import OUTPUT_TEMPLATES
-from pylingdocs.helpers import decorate_gloss_string
-from pylingdocs.helpers import func_dict
-from pylingdocs.helpers import get_sections
-from pylingdocs.helpers import html_example_wrap
-from pylingdocs.helpers import html_gloss
-from pylingdocs.helpers import latexify_table
-from pylingdocs.helpers import src
+from tqdm import tqdm
+from writio import dump, load
 
+from pylingdocs.config import (
+    DATA_DIR,
+    FIGURE_DIR,
+    LATEX_EX_TEMPL,
+    LATEX_TOPLEVEL,
+    MD_LINK_PATTERN,
+    MKDOCS_RICH,
+    OUTPUT_TEMPLATES,
+)
+from pylingdocs.helpers import (
+    decorate_gloss_string,
+    func_dict,
+    get_sections,
+    html_example_wrap,
+    html_gloss,
+    latexify_table,
+    src,
+)
 
 NUM_PRE = re.compile(r"[\d]+\ ")
 ABC_PRE = re.compile(r"[A-Z]+\ ")
@@ -73,11 +77,10 @@ class OutputFormat:
     ref_labels = None
     ref_locations = None
 
-    @classmethod
-    def label(self):
-        return self.name
+    @property
+    def label(cls):
+        return cls.name
 
-    @classmethod
     def ref_cmd(cls, url, *_args, **_kwargs):
         end = _kwargs.pop("end", None)
         if end:
@@ -88,36 +91,29 @@ class OutputFormat:
             return cls.ref_labels[url]
         return f"[ref/{url}]"
 
-    @classmethod
     def label_cmd(cls, url, *_args, **_kwargs):
         return f"[{url}]"
 
-    @classmethod
     def todo_cmd(cls, url, *_args, **_kwargs):
         return f"[todo: {url}]"
 
-    @classmethod
     def gloss_cmd(cls, url, *_args, **_kwargs):
         return url.upper()
 
-    @classmethod
     def exref_cmd(cls, url, *_args, **_kwargs):
         end = _kwargs.pop("end", None)
         if end:
             return f"[ex:{url}–{end}]"
         return f"[ex:{url}]"
 
-    @classmethod
     def figure_cmd(cls, url, *_args, **_kwargs):
         caption = cls.figure_metadata[url].get("caption", "")
         filename = cls.figure_metadata[url].get("filename", "")
         return f"({cls.ref_labels[f'fig:{url}']}: {filename})"
 
-    @classmethod
     def decorate_gloss_string(cls, x):
         return decorate_gloss_string(x, decoration=lambda x: x.upper())
 
-    @classmethod
     def write_folder(
         cls,
         output_dir,
@@ -179,12 +175,7 @@ class OutputFormat:
                 if not target.is_file():
                     shutil.copy(file, target)
 
-    @classmethod
     def write_details(cls, output_dir, dataset, loader):
-        from cldfrels import CLDFDataset
-        from tqdm import tqdm
-        from pylingdocs.config import MKDOCS_RICH
-
         if MKDOCS_RICH:
             # return "OK"
             env = Environment(
@@ -210,7 +201,7 @@ class OutputFormat:
                 out_dir.mkdir(exist_ok=True, parents=True)
                 gathered = []
                 i = 0
-                for rid, rec in tqdm(table.entries.items(), desc=label):
+                for rid, rec in tqdm(table.records.items(), desc=label):
                     i += 1
                     if i > 50:
                         pass
@@ -247,17 +238,14 @@ class OutputFormat:
                 output_dir / "mkdocs/docs/data/index.md",
             )
 
-    @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
         del abbrev_dict
         return ""
 
-    @classmethod
     def glossing_abbrevs_list(cls, arg_string):
         del arg_string
         return ""
 
-    @classmethod
     def write_part(cls, content, path):  # pragma: no cover (not used ATM)
         content = cls.preprocess(content)
         env = Environment(
@@ -271,7 +259,6 @@ class OutputFormat:
         with open(path, "w", encoding="utf-8") as f:
             f.write(template.render(content=content))
 
-    @classmethod
     def replace_commands(cls, content, **_kwargs):
         doc_elements = {
             "ref": cls.ref_cmd,  # crossreferences
@@ -309,20 +296,16 @@ class OutputFormat:
                 yield content[m.start() : m.end()]
         yield content[current:]
 
-    @classmethod
     def preprocess_commands(cls, content, **kwargs):
         processed = "".join(cls.replace_commands(content, **kwargs))
         return processed
 
-    @classmethod
     def preprocess(cls, content):
         return content
 
-    @classmethod
     def postprocess(cls, content):
         return content
 
-    @classmethod
     def table(cls, df, caption, label):
         # del label  # unused
         tabular = df.to_markdown(index=False, tablefmt="grid")
@@ -330,16 +313,13 @@ class OutputFormat:
             return tabular
         return caption + f":\n\n" + tabular
 
-    @classmethod
     def manex(cls, tag, content, kind):
         del kind  # unused
         return f"[ex-{tag}]\n\n{content}"
 
-    @classmethod
     def reference_list(cls):
         return "# References \n[References](Source?cited_only#cldf:__all__)"
 
-    @classmethod
     def author_list(cls, authors):
         if len(authors) == 0:
             return "Anonymous"
@@ -352,25 +332,21 @@ class OutputFormat:
 class PlainText(OutputFormat):
     name = "plain"
 
-    @classmethod
     def preprocess(cls, content):
         res = panflute.convert_text(
             content, output_format="plain", input_format="markdown"
         )
         return res.replace("|WHITESPACE|", " ")
 
-    @classmethod
     def label_cmd(cls, url, *_args, **_kwargs):
         return ""
 
-    @classmethod
     def exref_cmd(cls, url, *_args, **_kwargs):
         end = _kwargs.pop("end", None)
         if end:
             return f"[exref-{url}]({end})"
         return f"[exref-{url}]"
 
-    @classmethod
     def postprocess(cls, content):
         output = []
         examples = []
@@ -424,30 +400,24 @@ class HTML(PlainText):
     name = "html"
     file_ext = "html"
 
-    @classmethod
     def exref_cmd(cls, url, *_args, **_kwargs):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in _kwargs.items()]) + " ".join(
             _args
         )
         return f'<a class="exref" example_id="{url}" {kw_str}></a>'
 
-    @classmethod
     def gloss_cmd(cls, url, *_args, **_kwargs):
         return decorate_gloss_string(url.upper(), decoration=html_gloss)
 
-    @classmethod
     def label_cmd(cls, url, *_args, **_kwargs):
         return f"{{ #{url} }}"
 
-    @classmethod
     def ref_cmd(cls, url, *_args, **_kwargs):
         return html_ref(url, *_args, **_kwargs)
 
-    @classmethod
     def todo_cmd(cls, url, *_args, **_kwargs):
         return html_todo(url, **_kwargs)
 
-    @classmethod
     def figure_cmd(cls, url, *_args, **_kwargs):
         if url in cls.figure_metadata:
             caption = cls.figure_metadata[url].get("caption", "")
@@ -458,14 +428,12 @@ class HTML(PlainText):
 </figure>"""
         return f"![Alt text](figures/{url}.jpg)"
 
-    @classmethod
     def decorate_gloss_string(cls, x):
         return decorate_gloss_string(
             x,
             decoration=lambda x: f'<span class="gloss">{x}<span class="tooltiptext gloss-{x}" ></span></span>',
         )
 
-    @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
         return f"""var abbrev_dict={abbrev_dict}; for (var key in abbrev_dict){{
 var targets = document.getElementsByClassName('gloss-'+key)
@@ -474,11 +442,9 @@ for (var i = 0; i < targets.length; i++) {{
 }}
 }};"""
 
-    @classmethod
     def glossing_abbrevs_list(cls, arg_string):
         return """<dl id="glossing_abbrevs"></dl>"""
 
-    @classmethod
     def table(cls, df, caption, label):
         table = df.to_html(escape=False, index=False)
         if not caption:
@@ -488,7 +454,6 @@ for (var i = 0; i < targets.length; i++) {{
             f"<caption class='table' id ='tab:{label}'>{caption}</caption><thead",
         )
 
-    @classmethod
     def preprocess(cls, content):
         html_output = panflute.convert_text(
             content,
@@ -506,7 +471,6 @@ for (var i = 0; i < targets.length; i++) {{
             return html_output.replace("\n<h", "\n---\n<h")
         return html_output
 
-    @classmethod
     def manex(cls, tag, content, kind):
         if content.strip().startswith("PYLINGDOCS_RAW_TABLE_START"):
             content = " \n \n" + content
@@ -517,16 +481,13 @@ class MkDocs(HTML):
     name = "mkdocs"
     figure_dir = "docs/figures"
 
-    @classmethod
     def preprocess(cls, content):
         res = content.replace("```{=html}", "").replace("```", "")
         return res.replace("WHITESPACE", " ").replace(r"\|", "")
 
-    @classmethod
     def postprocess(cls, content):
         return content.replace("(#source-", "(/references/#source-")
 
-    @classmethod
     def table(cls, df, caption, label):
         tabular = df.to_html(escape=False, index=False)
         tabular = panflute.convert_text(
@@ -542,7 +503,6 @@ class MkDocs(HTML):
             f"<caption class='table' id ='tab:{label}'>{caption}</caption><thead",
         )
 
-    @classmethod
     def figure_cmd(cls, url, *_args, **_kwargs):
         if url in cls.figure_metadata:
             caption = cls.figure_metadata[url].get("caption", "")
@@ -553,43 +513,31 @@ class MkDocs(HTML):
 </figure>"""
         return f"![{caption}](/figures/{url}.jpg)"
 
-    @classmethod
     def label_cmd(cls, url, *_args, **_kwargs):
         return f"{{ #{url} }}"
-
-    @classmethod
-    def label(self):
-        if MKDOCS_RICH:
-            return self.name + "_rich"
-        return self.name
 
 
 class GitHub(PlainText):
     name = "github"
     file_ext = "md"
 
-    @classmethod
     def ref_cmd(cls, url, *_args, **_kwargs):
         if "tab:" in str(url):
             return "[Table]"
         return f"<a href='#{url}'>click</a>"
 
-    @classmethod
     def label_cmd(cls, url, *_args, **_kwargs):
         return f"<a id>='{url}'><a/>"
 
-    @classmethod
     def gloss_cmd(cls, url, *_args, **_kwargs):
         return url.upper()
 
-    @classmethod
     def exref_cmd(cls, url, *_args, **_kwargs):
         end = _kwargs.pop("end", None)
         if end:
             return f"[ex:{url}–{end}]"
         return f"[ex:{url}]"
 
-    @classmethod
     def table(cls, df, caption, label):
         del label  # unused
         tabular = df.to_markdown(index=False)
@@ -597,7 +545,6 @@ class GitHub(PlainText):
             return tabular
         return df.to_markdown(index=False)
 
-    @classmethod
     def preprocess(cls, content):
         toc = []
         for level, title, tag in get_sections(content):
@@ -615,28 +562,22 @@ class CLLD(PlainText):
     file_ext = "md"
     single_output = False
 
-    @classmethod
     def label_cmd(cls, url, *_args, **_kwargs):
         return f"{{#{url}}}"
 
-    @classmethod
     def gloss_cmd(cls, url, *_args, **_kwargs):
         return "<span class='smallcaps'>" + url + "</span>"
 
-    @classmethod
     def exref_cmd(cls, url, *_args, **_kwargs):
         kw_str = " ".join([f"""{x}="{y}" """ for x, y in _kwargs.items()])
         return f'<a class="exref" example_id="{url}"{kw_str}></a>'
 
-    @classmethod
     def ref_cmd(cls, url, *_args, **_kwargs):
         return html_ref(url, *_args, **_kwargs)
 
-    @classmethod
     def todo_cmd(cls, url, *_args, **_kwargs):
         return html_todo(url, **_kwargs)
 
-    @classmethod
     def table(cls, df, caption, label):
         if not caption:
             if len(df) == 0:
@@ -648,7 +589,6 @@ class CLLD(PlainText):
             + df.to_markdown(index=False)
         )
 
-    @classmethod
     def figure_cmd(cls, url, *_args, **_kwargs):
         if url in cls.figure_metadata:
             caption = cls.figure_metadata[url].get("caption", "")
@@ -659,11 +599,9 @@ class CLLD(PlainText):
 </figure>"""
         return f"![Alt text]({url})"
 
-    @classmethod
     def reference_list(cls):
         return ""
 
-    @classmethod
     def manex(cls, tag, content, kind):
         if content.strip().startswith("PYLINGDOCS_RAW_TABLE_START"):
             content = " \n \n" + content
@@ -674,11 +612,6 @@ class Latex(PlainText):
     name = "latex"
     file_ext = "tex"
 
-    @classmethod
-    def label(self):
-        return f"{self.name}_{LATEX_EX_TEMPL}"
-
-    @classmethod
     def exref_cmd(cls, url, *_args, **_kwargs):
         end = _kwargs.get("end", None)
         suffix = _kwargs.get("suffix", "")
@@ -689,30 +622,24 @@ class Latex(PlainText):
             return f"\\exref[{suffix}][{end}]{{{url}}}"
         return f"\\exref[{suffix}]{{{url}}}"
 
-    @classmethod
     def label_cmd(cls, url, *_args, **_kwargs):
         return f"\\label{{{url}}}"
 
-    @classmethod
     def todo_cmd(cls, url, *_args, **_kwargs):
         return latex_todo(url, **_kwargs)
 
-    @classmethod
     def ref_cmd(cls, url, *_args, **_kwargs):
         end = _kwargs.pop("end", None)
         if end:
             return f"\\crefrange{{{url}}}{{{end}}}"
         return f"\\cref{{{url}}}"
 
-    @classmethod
     def gloss_cmd(cls, url, *_args, **_kwargs):
         return decorate_gloss_string(url.upper())
 
-    @classmethod
     def decorate_gloss_string(cls, x):
         return decorate_gloss_string(x)
 
-    @classmethod
     def manex(cls, tag, content, kind):
         if kind == "multipart":
             return f"\\pex\\label{{{tag}}}{content}\\xe"
@@ -720,7 +647,6 @@ class Latex(PlainText):
             return f"\\a\\label{{{tag}}} {content}"
         return f"\\ex\\label{{{tag}}} {content} \\xe"
 
-    @classmethod
     def table(cls, df, caption, label):
         if len(df) == 0:
             df = df.append({x: x for x in df.columns}, ignore_index=True)
@@ -748,7 +674,6 @@ class Latex(PlainText):
 \\end{{table}}
 """
 
-    @classmethod
     def register_glossing_abbrevs(cls, abbrev_dict):
         return "\n".join(
             [
@@ -757,11 +682,9 @@ class Latex(PlainText):
             ]
         )
 
-    @classmethod
     def glossing_abbrevs_list(cls, arg_string):
         return "\\glossingAbbrevsList"
 
-    @classmethod
     def preprocess(cls, content):
         doc = panflute.convert_text(
             content,
@@ -775,11 +698,9 @@ class Latex(PlainText):
         doc = doc.replace("}\n\n\\begin{tabular}[t]", "}\\begin{tabular}[t]")
         return doc
 
-    @classmethod
     def reference_list(cls):
         return "\\printbibliography"
 
-    @classmethod
     def author_list(cls, authors):
         if len(authors) == 0:
             return "Anonymous"
@@ -790,7 +711,6 @@ class Latex(PlainText):
             return ";".join(out)  # may want to use this for all templates at some point
         return " and ".join(out)
 
-    @classmethod
     def replace_commands(cls, content, **kwargs):
         doc_elements = {
             "ref": cls.ref_cmd,  # crossreferences
@@ -829,7 +749,7 @@ class Latex(PlainText):
         yield content[current:]
 
 
-builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs]}
+builders = {x.name: x() for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs]}
 
 
 if Path("pld/formats.py").is_file():

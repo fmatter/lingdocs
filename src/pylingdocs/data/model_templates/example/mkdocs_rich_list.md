@@ -20,9 +20,9 @@
     {% set morphparts = [] %}
     {% for part in ctx.cldf.analyzedWord[c].split("=")%}
         {% set position = counters.index + counters.offset %}
-        {% if rich.refs["exampleparts"]|length > position and rich.refs["exampleparts"][position]["Index"]|int == c+counters.offset%}
-            {% set _ = wordparts.append(util.link(rich.refs["exampleparts"][position].wordform)) %}
-            {% set _ = morphparts.append(util.render_form(rich.refs["exampleparts"][position].wordform)) %}
+        {% if rich.multi_refs["exampleparts"]|length > position and rich.multi_refs["exampleparts"][position]["Index"]|int == c+counters.offset%}
+            {% set _ = wordparts.append(util.link(rich.multi_refs["exampleparts"][position].wordform)) %}
+            {% set _ = morphparts.append(util.render_form(rich.multi_refs["exampleparts"][position].wordform)) %}
         {% else %}
             {% set _ = wordparts.append(ctx.cldf.analyzedWord[c]) %}
             {% set _ = morphparts.append("&nbsp;") %}

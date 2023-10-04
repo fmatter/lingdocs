@@ -3,13 +3,12 @@ import json
 import logging
 from datetime import datetime
 from pathlib import Path
-import yaml
-from pybtex.database import BibliographyData
-from pybtex.database import Entry
-from slugify import slugify
-from pylingdocs.config import DATA_DIR
-from pylingdocs.config import METADATA_FILE
 
+import yaml
+from pybtex.database import BibliographyData, Entry
+from slugify import slugify
+
+from pylingdocs.config import DATA_DIR, METADATA_FILE
 
 ORCID_STR = "https://orcid.org/"
 log = logging.getLogger(__name__)
