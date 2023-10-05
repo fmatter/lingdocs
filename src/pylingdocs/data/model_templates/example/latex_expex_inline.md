@@ -9,7 +9,7 @@
   `comment`
   `source`
 #}
-{% import 'util.md' as util %}
+{% import 'fmt_util.md' as util %}
 {% set data = dict(
     obj=ctx.cldf.analyzedWord,
     gls=ctx.cldf.gloss,

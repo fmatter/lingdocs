@@ -1,5 +1,5 @@
-{% import 'pylingdocs_util.md' as pld_util%}
-{% import 'util.md' as util%}
+{% import 'pld_util.md' as pld_util%}
+{% import 'fmt_util.md' as util%}
 {{pld_util.lfts(
     "<i>" + util.get_label(ctx) + "</i>",
     entity=ctx,

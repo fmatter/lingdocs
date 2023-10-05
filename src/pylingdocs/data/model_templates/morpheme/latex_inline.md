@@ -1,4 +1,4 @@
-{% import 'pylingdocs_util.md' as util%}
+{% import 'pld_util.md' as util%}
 {{util.lfts(
     "\obj{"+ctx['Name']+"}",
     entity=ctx,

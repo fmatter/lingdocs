@@ -1,5 +1,5 @@
-{% import 'pylingdocs_util.md' as util%}
-{% import 'util.md' as butil%}
+{% import 'pld_util.md' as util%}
+{% import 'fmt_util.md' as butil%}
 {% set rich = data["morphemes"][ctx.id] %}
 {{util.lfts(
     butil.link(rich),

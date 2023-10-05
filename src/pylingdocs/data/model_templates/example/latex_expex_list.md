@@ -9,7 +9,7 @@
   `comment`
   `source`
 #}
-{% import 'util.md' as util %}
+{% import 'fmt_util.md' as util %}
 {% if ids is defined %}
     {% set ids = ids.split(",") %}
     {% set gathered_examples = [] %}

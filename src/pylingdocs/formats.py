@@ -137,7 +137,7 @@ class OutputFormat:
             "ref_labels": str(ref_labels),
             "ref_locations": str(ref_locations),
             "data": WRITE_DATA,
-            "site_url": metadata.get("site_url", None)
+            "site_url": metadata.get("site_url", None),
         }
         if "authors" in metadata:
             extra["author"] = cls.author_list(metadata["authors"])

@@ -1,4 +1,4 @@
-{% import "util.md" as util%}
+{% import "fmt_util.md" as util%}
 {{table}}
 
 {% for rec in ctx %}

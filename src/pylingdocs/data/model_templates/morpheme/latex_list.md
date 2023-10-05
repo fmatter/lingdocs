@@ -1,4 +1,4 @@
-{% import 'pylingdocs_util.md' as util %}
+{% import 'pld_util.md' as util %}
 {% if ids is defined %}
 {%set ids = ids.split(",")%}
 {% set morphemes = [] %}
