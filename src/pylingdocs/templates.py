@@ -2,7 +2,7 @@ import logging
 
 from writio import load
 
-from pylingdocs.config import DATA_DIR, PLD_DIR
+from pylingdocs.config import DATA_DIR, PLD_DIR, RICH
 from pylingdocs.formats import builders
 
 log = logging.getLogger(__name__)
@@ -12,7 +12,11 @@ def _fn(base, m, f, v, r):
     m = str(m).lower()
     f = str(f).lower()
     if r:
-        return base / m / f"{f}_{v}_rich.md"
+        rs = "_rich"
+    else:
+        rs = ""
+    if r:
+        return base / m / f"{f}_{v}{rs}.md"
     return base / m / f"{f}_{v}.md"
 
 
@@ -92,7 +96,7 @@ def _candidates(base, cbase, m, b):
             yield x
 
 
-def find_template(model, builder, view, rich=False):
+def find_template(model, builder, view, rich=RICH):
     """Finds a template for a given model, a given output format, a given view; data-rich or not"""
     # log.debug(f"Searching template: {model.name}/{builder.label}_{view}")
     custom_base = PLD_DIR / "model_templates"
@@ -105,7 +109,11 @@ def find_template(model, builder, view, rich=False):
     # input(cands)
 
     for b, m, f in _candidates(base, custom_base, model, builder):
-        path = _fn(base, m.name, f.label, view, rich)
+        path = _fn(base, m.name, f.label, view, r=rich)
+        if path.is_file():
+            return path
+    for b, m, f in _candidates(base, custom_base, model, builder):
+        path = _fn(base, m.name, f.label, view, r=not rich)
         if path.is_file():
             return path
     log.warning(
@@ -122,19 +130,19 @@ name_dict = {
 }
 
 
-def load_templates(target_builders, models):
+def load_templates(target_builders, models, rich=RICH):
     templates = {fn: {"text": {}, "data": {}} for fn in target_builders}
     for fn in target_builders:
         f = builders[fn]
         for m in models:
             for view in ["inline", "list"]:
-                res = find_template(m, f, view)
+                res = find_template(m, f, view, rich=rich)
                 if res:
                     templates[f.label]["text"][
                         f"{m.cldf_table}_{name_dict[view]}.md"
                     ] = load(res)
             for view in ["index", "detail"]:
-                res = find_template(m, f, view)
+                res = find_template(m, f, view, rich=rich)
                 if res:
                     templates[f.label]["data"][
                         f"{m.cldf_table}_{name_dict[view]}.md"

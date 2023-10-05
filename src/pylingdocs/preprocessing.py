@@ -9,7 +9,7 @@ import pandas as pd
 import yaml
 from cldf_rel import CLDFDataset
 from cldfviz.text import render
-from jinja2 import DictLoader
+from jinja2 import DictLoader, Environment
 from writio import load
 
 from pylingdocs.config import (
@@ -64,10 +64,10 @@ for output_format, f_templates in templates.items():
             "ParameterTable_detail.md"
         ] = "{{ctx.cldf.name}}"  # todo is this needed?
         f_templates[loader]["util.md"] = load(util_path)
-    # input(f_templates["morphs.csv_page.md"])
     loaders[output_format] = {
         "text": DictLoader(f_templates["text"]),
         "data": DictLoader(f_templates["data"]),
+        "example_in_detail": DictLoader({**f_templates["data"], **{"ExampleTable_detail.md": f_templates["text"]["ExampleTable_detail.md"]}}),
     }
 
 

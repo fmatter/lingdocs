@@ -28,30 +28,35 @@
 </li>
 {%- endmacro %}
 
-{% macro label(item, preferred="Name") %}
-{{item.get(preferred, item.get("Form", item.get("Primary_Text", item.get("ID", "unknown"))))}}
+{% macro get_label(item, preferred="Name") %}
+{{item.get(preferred, item.get("Form", item.get("Primary_Text", item.get("Title", item.get("ID", "unknown")))))}}
 {%- endmacro %}
 
-{% macro link(item, anchor=None, html=False) %}
+{% macro link(item, anchor=None, html=False, preferred="Name", label=None) %}
 {% if anchor is not none %}
 {% set anchor_text = "#"+anchor %}
 {% endif %}
+{% if label is none %}
+{% set label = get_label(item, preferred=preferred) %}
+{% endif %}
 {% if item is not none %}
 {% if html %}
-<a href="site:data/{{item.table.label}}/{{item['ID']}}/{{anchor_text}}">{{label(item)}}</a>
+<a href="site:data/{{item.table.label}}/{{item['ID']}}/{{anchor_text}}">{{label}}</a>
 {% else %}
-[{{label(item)}}](site:data/{{item.table.label}}/{{item["ID"]}}/{{anchor_text}}){% endif %}
+[{{label}}](site:data/{{item.table.label}}/{{item["ID"]}}/{{anchor_text}}){% endif %}
 {% endif %}
 {%- endmacro %}
 
 {% macro txt_src(ctx) -%}
-{% if ctx.data["Record_Number"] %}
-{{link(data["examples"][ctx.id].text, anchor=ctx.id, html=True)}}: {{ctx.data["Record_Number"]}}{% else %}
-{{link(data["examples"][ctx.id].text, anchor=ctx.id)}}{% endif %}
+{% if data is undefined %}
+{{ctx.data["Text_ID"]}}{% if ctx.data["Record_Number"] %}: {{ctx.data["Record_Number"]}}{%endif%}
+{% else %}
+{{link(data["examples"][ctx.id].text, anchor=ctx.id, html=True)}}{% if ctx.data["Record_Number"] %}: {{ctx.data["Record_Number"]}}{%endif%}
+{% endif %}
 {%- endmacro %}
 
 {% macro render_form(ctx) -%}
-{% for part in ctx.wordformparts %}{{link(part.morph)}}{% endfor %}
+{% for part in ctx.wordformparts %}{{link(part.morph, html=True)}}{% endfor %}
 {%- endmacro %}
 
 {% macro get_src_string (ctx, source=None) -%}
@@ -69,3 +74,36 @@
 {% endif %}
 {%- endmacro %}
 
+
+
+{% macro render_singles(rich) %}
+{% for key, val in rich.fields.items() %}
+    {% if (val is not none and val|string|length != 0)%}
+* {{key}}: {{val}} 
+    {% endif %}
+{% endfor %}
+{% for key, val in rich.single_refs.items() %}
+{% if val is not none %}
+* {{key}}: {{link(val)}}
+{% endif %}
+{% endfor %}
+{% endmacro %}
+
+{% macro render_multis(rich) %}
+{% for key, values in rich.multi_refs.items() %}
+{% if values|length > 0 %}
+    {% if key == "exampleparts" %}
+## Examples
+    {% else %}
+## {{key}}
+    {% endif %}
+{% endif %}
+{% for val in values %}
+    {% if key == "examples" %}
+[](ExampleTable?with_language=False#cldf:{{val["ID"]}})
+    {% else %}
+* {{link(val)}}
+    {% endif %}
+{% endfor %}
+{% endfor %}
+{% endmacro %}

@@ -8,8 +8,10 @@ from http.server import SimpleHTTPRequestHandler, test
 from pathlib import Path, PosixPath
 from cldf_rel import get_table_name
 from writio import dump
+from jinja2 import Environment, FileSystemLoader, DictLoader
 
 import hupper
+from cldf_rel import CLDFDataset
 
 from pylingdocs.config import (
     BENCH,
@@ -193,36 +195,45 @@ def check_ids(contents, dataset, source_dir):
         log.info("No missing IDs found.")
 
 
-def write_details(builder, output_dir, dataset, loader):
+def write_details(builder, output_dir, dataset):
+    loader = loaders[builder.name]["data"]
     output_dir = output_dir / builder.name / builder.data_dir
     output_dir.mkdir(exist_ok=True, parents=True)
-    log.info(f"Writing data for {builder.name} to {output_dir.resolve()}, this may take a while. Set data = False in the [output] section of your config file to turn off.")
-    for table in dataset.tables:
-        name = get_table_name(table)
-        label = str(table.url).replace(".csv", "")
+    func_dict["decorate_gloss_string"] = builder.decorate_gloss_string
+    func_dict["ref_labels"] = builder.ref_labels
+    if RICH:
+        data = CLDFDataset(dataset, orm=True)
+        func_dict["data"] = data
+        table_list = list((k, v, v.name) for k, v in data.tables.items())
+    else:
+        log.info(
+            f"Writing data for {builder.name} to {output_dir.resolve()}, this may take a while. Set data = False in the [output] section of your config file to turn off."
+        )
+        table_list = [
+            (str(table.url).replace(".csv", ""), table, get_table_name(table))
+            for table in dataset.tables
+        ]
+    model_index = []
+    for label, table, name in table_list:
+        func_dict["table"] = label
         table_dir = output_dir / label
-
-        func_dict["decorate_gloss_string"] = builder.decorate_gloss_string
-        func_dict["ref_labels"] = builder.ref_labels
-        func_dict["table"] = name
-
-
         if f"{name}_index.md" not in loader.list_templates():
             log.warning(f"Not writing index for {name}")
         else:
+            model_index.append(f"* [{label}]({label})")
             table_dir.mkdir(exist_ok=True, parents=True)
             index = f"[]({name}#cldf:__all__)"
             index = render(
                 doc="".join(preprocess_cldfviz(index)),
                 cldf_dict=dataset,
-                loader=loaders[builder.name]["data"],
+                loader=loader,
                 func_dict=func_dict,
             )  # todo prettify
             if "#cldf" in index:
                 index = render(
                     doc=index,
                     cldf_dict=dataset,
-                    loader=loaders[builder.name]["data"],
+                    loader=loader,
                     func_dict=func_dict,
                 )
             index = builder.preprocess(index)
@@ -233,6 +244,12 @@ def write_details(builder, output_dir, dataset, loader):
             log.warning(f"Not writing details for {name}")
         else:
             table_dir.mkdir(exist_ok=True, parents=True)
+            # when in detail mode and listing examples, load the in-text example view (instead of linking))
+            if label != "examples":
+                detail_loader = loaders[builder.name]["example_in_detail"]
+            else:
+                detail_loader = loader
+
             if name.endswith("Table"):
                 items = {
                     rec.id: f"[]({name}#cldf:{rec.id})" for rec in dataset.objects(name)
@@ -249,19 +266,24 @@ def write_details(builder, output_dir, dataset, loader):
                 detail = render(
                     doc="".join(preprocess_cldfviz(detail)),
                     cldf_dict=dataset,
-                    loader=loaders[builder.name]["data"],
+                    loader=detail_loader,
                     func_dict=func_dict,
                 )  # rodo prettify
                 if "#cldf" in detail:
                     detail = render(
                         doc=detail,
                         cldf_dict=dataset,
-                        loader=loaders[builder.name]["data"],
+                        loader=detail_loader,
                         func_dict=func_dict,
                     )
                 detail = builder.preprocess(detail)
                 if detail.strip() != "":
                     dump(detail, filepath)
+    if model_index:
+        dump(
+            "# Data\n\n" + "\n".join(model_index),
+            output_dir / f"index.{builder.file_ext}",
+        )
 
 
 def create_output(
@@ -339,7 +361,7 @@ def create_output(
                 parts=chapters,
             )
         if WRITE_DATA:
-            write_details(builder, output_dir, dataset, loaders[output_format]["data"])
+            write_details(builder, output_dir, dataset)
         if builder.name == "latex":
             bibcontents = read_file(dataset.bibpath)
             if bibcontents:

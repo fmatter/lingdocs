@@ -113,7 +113,7 @@ class Wordform(Morpheme):
         )
 
 
-class Example(Base):
+class Example(Base_ORM):
     name = "Example"
     cldf_table = "ExampleTable"
     shortcut = "ex"

@@ -1,5 +1,6 @@
 {% import "util.md" as util%}
+{{table}}
 
 {% for rec in ctx %}
-{{util.link(rec)}}
+- {{util.get_label(rec)}}
 {% endfor %}

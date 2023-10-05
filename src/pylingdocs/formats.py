@@ -7,7 +7,6 @@ from pathlib import Path
 
 import jinja2
 import panflute
-from cldf_rel import CLDFDataset
 from cldfviz.text import render
 from cookiecutter.main import cookiecutter
 from jinja2 import Environment, FileSystemLoader, PackageLoader
@@ -176,82 +175,6 @@ class OutputFormat:
                 target = target_dir / file.name
                 if not target.is_file():
                     shutil.copy(file, target)
-
-    def write_details(cls, output_dir, dataset, loader):
-        if WRITE_DATA:
-            log.info(f"Writing data for {cls.name}")
-            # input(templates["plain"]["morphs.csv_page.md"])
-
-            env = Environment(
-                loader=loader, autoescape=False, trim_blocks=True, lstrip_blocks=True
-            )
-
-            index = env.get_template(f"{table.name}_detail.md")
-            # if isinstance(WRITE_DATA, str):
-            #     data = CLDFDataset(WRITE_DATA, orm=True)
-            # else:
-            #     data = CLDFDataset(dataset, orm=True)
-
-            # model_index = []
-            # for label, table in data.tables.items():
-            #     input(label)
-            #     input(table)
-            #     index = f"[]({label}#cldf:__all__)"
-            #     input(index)
-            #     try:
-            #         template = env.get_template(f"{table.name}_detail.md")
-            #     except jinja2.exceptions.TemplateNotFound:
-            #         log.warning(f"Not rendering data for table {label}")
-            #         continue
-            #     model_index.append(f"* [{label}]({label})")
-            #     func_dict["data"] = data
-            #     template.globals.update(func_dict)
-            #     out_dir = output_dir / cls.name / cls.data_dir / label
-            #     out_dir.mkdir(exist_ok=True, parents=True)
-            #     gathered = []
-            #     i = 0
-            #     for rid, rec in tqdm(table.records.items(), desc=label):
-            #         i += 1
-            #         if i > 50:
-            #             continue
-            #         print(template, rec)
-            #         content = template.render(ctx=rec)
-            #         print(content)
-            #         content = render(
-            #             doc=content,
-            #             cldf_dict=dataset,
-            #             loader=loader,
-            #             func_dict=func_dict,
-            #         )
-            #         content = (
-            #             (content[:50000] + "..") if len(content) > 50000 else content
-            #         )
-            #         if content:
-            #             # input(content)
-            #             dump(content, out_dir / f"{rid}.{cls.file_ext}")
-            #     from pylingdocs.preprocessing import render_markdown
-
-            #     try:
-            #         template = env.get_template(f"{table.name}_index.md")
-            #         template.globals.update(func_dict)
-            #         content = template.render(table=table)
-            #         content = render_markdown(
-            #             content,
-            #             dataset,
-            #             cls,
-            #             decorate_gloss_string=cls.decorate_gloss_string,
-            #         )
-            #         dump(
-            #             cls.postprocess(cls.preprocess(content)),
-            #             out_dir / f"index.{cls.file_ext}",
-            #         )
-            #     except jinja2.exceptions.TemplateNotFound:
-            #         log.warning(f"Not rendering index for table {label}")
-            # if model_index:
-            #     dump(
-            #         "# Data\n\n" + "\n".join(model_index),
-            #         output_dir / cls.name / cls.data_dir / f"index.{cls.file_ext}",
-            #     )
 
     def register_glossing_abbrevs(cls, abbrev_dict):
         del abbrev_dict
@@ -496,6 +419,7 @@ class MkDocs(HTML):
     name = "mkdocs"
     figure_dir = "docs/figures"
     data_dir = "docs/data"
+    file_ext = "md"
 
     def preprocess(cls, content):
         return content.replace("```{=html}", "").replace("```", "")
