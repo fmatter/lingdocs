@@ -64,7 +64,7 @@ def _parent_model(model, base=False):
 
 
 def _candidates(base, cbase, m, b):
-    # print(f"\n\n\nYO: {m.name} and {b.name}")
+    # print(f"\n\ngetting cands for {m.name} and {b.name}")
     pb = _parent_builder(b)
     pm = _parent_model(m)
 
@@ -82,9 +82,11 @@ def _candidates(base, cbase, m, b):
     if pb:
         gpb = _parent_builder(pb)
         if gpb:
-            for model in [m, pm]:
-                if model:
-                    yield (cbase, model, gpb)
+            for x in _candidates(base, cbase, m, gpb):
+                yield x
+            # for model in [m, pm]:
+            #     if model:
+            #         yield (cbase, model, gpb)
     if pm:
         gpm = _parent_model(pm)
         if gpm:
@@ -98,7 +100,7 @@ def _candidates(base, cbase, m, b):
 
 def find_template(model, builder, view, rich=RICH):
     """Finds a template for a given model, a given output format, a given view; data-rich or not"""
-    # log.debug(f"Searching template: {model.name}/{builder.label}_{view}")
+    log.debug(f"Searching template: {model.name}/{builder.label}_{view}")
     custom_base = PLD_DIR / "model_templates"
     base = DATA_DIR / "model_templates"
 
@@ -109,10 +111,10 @@ def find_template(model, builder, view, rich=RICH):
     # input(cands)
 
     for b, m, f in _candidates(base, custom_base, model, builder):
-        path = _fn(base, m.name, f.label, view, r=rich)
+        path = _fn(b, m.name, f.label, view, r=rich)
         if path.is_file():
             return path
-    for b, m, f in _candidates(base, custom_base, model, builder):
+    for b, m, f in _candidates(b, custom_base, model, builder):
         path = _fn(base, m.name, f.label, view, r=not rich)
         if path.is_file():
             return path
