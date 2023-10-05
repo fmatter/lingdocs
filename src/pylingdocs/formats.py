@@ -53,6 +53,14 @@ def html_todo(url, **kwargs):
     return f"<span title='{url}'>❗️</span>"
 
 
+def mkdocs_todo(url, **kwargs):
+    if kwargs.get("release", False):
+        return ""
+    if "?" in str(url):
+        return f"<span title='{url}'>❔</span>"
+    return f"<span title='{url}'>❕</span>"
+
+
 def latex_todo(url, **kwargs):
     if kwargs.get("release", False):
         return ""
@@ -456,6 +464,9 @@ class MkDocs(HTML):
 
     def label_cmd(cls, url, *_args, **_kwargs):
         return f"{{ #{url} }}"
+
+    def todo_cmd(cls, url, *_args, **_kwargs):
+        return mkdocs_todo(url, **_kwargs)
 
 
 class GitHub(PlainText):
