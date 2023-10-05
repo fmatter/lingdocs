@@ -1,6 +1,7 @@
-{% import 'pylingdocs_util.md' as util%}
-{{util.lfts(
-    "<i>" + ctx.get("Name", ctx.get("Form", "?")) + "</i>",
+{% import 'pylingdocs_util.md' as pld_util%}
+{% import 'util.md' as util%}
+{{pld_util.lfts(
+    "<i>" + util.get_label(ctx) + "</i>",
     entity=ctx,
     translation=translation,
     source=source,
