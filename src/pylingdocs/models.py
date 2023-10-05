@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-
+import sys
 import pycldf
 from clldutils import jsonlib
 
@@ -168,3 +168,11 @@ models = [
     Cognateset(),
     Form(),
 ]
+
+if Path("pld/models.py").is_file():
+    sys.path.insert(1, "pld")
+    from models import models as custom_models
+
+    for mm in custom_models:
+        log.info(f"Using custom model {mm.name.lower()}")
+        models.append(mm())

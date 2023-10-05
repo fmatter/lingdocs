@@ -36,18 +36,6 @@ labels = {}
 for model in models:
     labels[model.shortcut] = model.query_string
 
-model_dict = {x.name.lower(): x for x in models}
-
-if Path("pld/models.py").is_file():
-    sys.path.insert(1, "pld")
-    from models import models as custom_models
-
-    for mm in custom_models:
-        log.info(f"Using custom model {mm.name.lower()}")
-        model_dict[mm.name.lower()] = mm
-
-models = model_dict.values()
-
 log.debug("Loading templates")
 loaders = {}
 
@@ -78,7 +66,6 @@ for output_format, f_templates in templates.items():
             }
         ),
     }
-
 
 bool_dic = {"True": True, "False": False}
 
