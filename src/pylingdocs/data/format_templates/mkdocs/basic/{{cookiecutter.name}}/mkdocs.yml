@@ -1,5 +1,5 @@
-site_name: "{{ cookiecutter.project_title }} ({{ cookiecutter.version }})"
-site_url: https://caribank.github.io/yawarana-sketch/
+site_name: "{{ cookiecutter.project_title }} ({{ cookiecutter.version }})"{% if cookiecutter.site_url %}
+site_url: {{cookiecutter.site_url}}{% endif %}
 theme:
   name: material
   custom_dir: overrides
@@ -56,11 +56,9 @@ extra_javascript:
   - assets/glossing_abbrevs.js
   - assets/glossing.js
   - assets/run.js
-nav:
-  {% for chapter in cookiecutter.chapters %}
-  - '{{ chapter }}.md'
-  {% endfor %}
-  - 'references.md'
-  - 'data/index.md'
+nav:{% for chapter in cookiecutter.chapters %}
+  - '{{ chapter }}.md'{% endfor %}
+  - 'references.md'{% if cookiecutter.data %}
+  - 'data/index.md'{% endif %}
 repo_url: {{cookiecutter.repository}}
 repo_name: Source (GitHub)

@@ -129,7 +129,7 @@ def render_markdown(
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val
             func_dict["ref_labels"] = builder.ref_labels
-            if builder.name == "mkdocs" and WRITE_DATA:
+            if RICH:
                 data = CLDFDataset(ds)
                 func_dict["data"] = data.tables
             preprocessed = render(
