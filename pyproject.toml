@@ -26,6 +26,9 @@ mkdocs-enumerate-headings-plugin = "^0.6.1"
 [tool.poetry.group.dev.dependencies]
 isort = "^5.12.0"
 black = "^23.9.1"
+mkdocs-click = "^0.8.1"
+mkdocstrings = "^0.23.0"
+markdown-include = "^0.8.1"
 
 [build-system]
 requires = ["poetry-core"]

@@ -23,6 +23,8 @@ nav:
   - examples.md
   - output_formats.md
   - topic_index.md
+extra_css:
+  - assets/nord.css
 theme:
   name: material
   icon:
@@ -32,5 +34,22 @@ theme:
     - navigation.tracking
     - toc.follow
     - toc.integrate
+  palette: 
+
+    # Palette toggle for light mode
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
 watch:
   - .
