@@ -22,18 +22,22 @@
 {% for c in range(0,ctx.cldf.analyzedWord|length) %}
     {% set wordparts = [] %}
     {% set morphparts = [] %}
-    {% for part in ctx.cldf.analyzedWord[c].split("=")%}
-        {% set position = counters.index + counters.offset %}
-        {% if rich.multi_refs["exampleparts"]|length > position and rich.multi_refs["exampleparts"][position]["Index"]|int == c+counters.offset%}
-            {% set _ = wordparts.append(util.link(rich.multi_refs["exampleparts"][position].wordform, html=True)) %}
-            {% set _ = morphparts.append(util.render_form(rich.multi_refs["exampleparts"][position].wordform)) %}
-        {% else %}
-            {% set _ = wordparts.append(ctx.cldf.analyzedWord[c]) %}
-            {% set _ = morphparts.append("&nbsp;") %}
-            {% set counters.index = counters.index-1 %}
-        {% endif %}
-        {% set counters.offset = counters.offset + 1 %}
-    {% endfor %}
+    {% if ctx.cldf.analyzedWord[c] is not none %}
+        {% for part in ctx.cldf.analyzedWord[c].split("=")%}
+            {% set position = counters.index + counters.offset %}
+            {% if rich.multi_refs["exampleparts"]|length > position and rich.multi_refs["exampleparts"][position]["Index"]|int == c+counters.offset%}
+                {% set _ = wordparts.append(util.link(rich.multi_refs["exampleparts"][position].wordform, html=True)) %}
+                {% set _ = morphparts.append(util.render_form(rich.multi_refs["exampleparts"][position].wordform)) %}
+            {% else %}
+                {% set _ = wordparts.append(ctx.cldf.analyzedWord[c]) %}
+                {% set _ = morphparts.append("&nbsp;") %}
+                {% set counters.index = counters.index-1 %}
+            {% endif %}
+            {% set counters.offset = counters.offset + 1 %}
+        {% endfor %}
+    {% else %}
+        {% set _ = wordparts.append("") %}    
+    {% endif %}
     {% set counters.offset = counters.offset - 1 %}
     {% set counters.index = counters.index+1 %}
     {% set _ = wordlist.append("=".join(wordparts)) %}

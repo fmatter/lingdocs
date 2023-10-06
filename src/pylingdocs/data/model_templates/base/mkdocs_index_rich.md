@@ -4,5 +4,5 @@
 # {{table.capitalize()}}
 {% for item in ctx %}
 {% set rich = data[table][item["ID"]] %}
-* util.link(rich)
+* {{util.link(rich)}}
 {% endfor %}
