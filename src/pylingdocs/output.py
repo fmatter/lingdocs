@@ -201,6 +201,7 @@ def write_details(builder, output_dir, dataset):
     output_dir.mkdir(exist_ok=True, parents=True)
     func_dict["decorate_gloss_string"] = builder.decorate_gloss_string
     func_dict["ref_labels"] = builder.ref_labels
+    input(func_dict.keys())
     if RICH:
         data = CLDFDataset(dataset, orm=True)
         func_dict["data"] = data
@@ -325,6 +326,7 @@ def create_output(
     )
     figure_metadata = load_figure_metadata(source_dir)
     for output_format in formats:
+        log.info(f"Building {output_format} output")
         builder = builders[output_format]
         builder.figure_metadata = figure_metadata
         content = "\n\n".join([x["content"] for x in contents.values()])

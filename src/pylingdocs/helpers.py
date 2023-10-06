@@ -884,7 +884,6 @@ def build_examples(datas):
         ex_dicts.append(build_example(data))
     return ex_dicts, full_preamble
 
-
 def resolve_lfts(with_language, with_source, with_translation):
     if isinstance(with_language, Undefined):
         with_language = LFTS_SHOW_LG
@@ -896,8 +895,50 @@ def resolve_lfts(with_language, with_source, with_translation):
 
 
 def debug(item, msg=""):
-    input(f"{item} {msg}")
+    input(f"jinja: {item} {msg}")
 
+
+def get_rich_label(item, preferred="Name"):
+    non_obj_labels = ["Name", "Title", "ID"]
+    for cand in [preferred, "Form", "Primary_Text", "Title", "ID"]:
+        if item.get(cand, None):
+            if cand not in non_obj_labels:
+                return f"*{item[cand]}*"
+            if cand == "Title":
+                return f"“{item[cand]}”"
+            return item[cand]
+
+
+def link(item, anchor=None, mode="html", preferred="Name", label=None):
+    anchor_text = ""
+    if anchor is not None:
+        anchor_text = "#"+anchor
+    if label is None:
+        label = get_rich_label(item, preferred=preferred)
+    if item is not None:
+        if mode=="html":
+            return f"""<a href="site:data/{item.table.label}/{item['ID']}/{anchor_text}">{label}</a>"""
+        raise ValueError(mode)
+
+def lfts_link(rich):
+    out = []
+    with_language, with_source, with_translation = resolve_lfts(None, False, True)
+    if with_language:
+        print(rich)
+        print(with_language)
+        print(LFTS_SHOW_LG)
+        input("we are having a language here!")
+        out.append(link(rich.language))
+    out.append(link(rich))
+    if with_translation:
+        trans = rich["Parameter_ID"]
+        if isinstance(trans, list):
+            out.append(f"‘{', '.join(trans)}‘")
+        else:
+            out.append(f"‘{trans}‘")
+    if with_source:
+        out.append(rich["Source"])
+    return " ".join(out)
 
 func_dict = {
     "comma_and_list": comma_and_list,
@@ -910,4 +951,6 @@ func_dict = {
     "flexible_pad_ex": pad_ex,
     "resolve_lfts": resolve_lfts,
     "debug": debug,
+    "get_rich_label": get_rich_label,
+    "lfts_link": lfts_link
 }

@@ -37,7 +37,7 @@
 {% set anchor_text = "#"+anchor %}
 {% endif %}
 {% if label is none %}
-{% set label = get_label(item, preferred=preferred) %}
+{% set label = get_rich_label(item, preferred=preferred) %}
 {% endif %}
 {% if item is not none %}
 {% if html %}
@@ -74,12 +74,10 @@
 {% endif %}
 {%- endmacro %}
 
-
-
 {% macro render_singles(rich) %}
 {% for key, val in rich.fields.items() %}
     {% if (key is not in rich.foreignkeys and val is not none and val|string|length != 0)%}
-* {{key}}: {{val}} 
+* {{key}}: {{val}}
     {% endif %}
 {% endfor %}
 {% for key, val in rich.single_refs.items() %}
@@ -94,6 +92,11 @@
     {% if values|length > 0 %}
         {% if key == "exampleparts" %}
 ## Examples
+        {% elif key == "wordformparts" and table=="wordforms" %}
+## Morphs
+        {% elif key == "wordformstems" %}
+        {% elif key == "wordformparts" and table=="morphs" %}
+## Wordforms
         {% else %}
 ## {{key.capitalize()}}
         {% endif %}
@@ -101,6 +104,11 @@
     {% for val in values %}
         {% if key == "examples" %}
 [](ExampleTable?with_language=False#cldf:{{val["ID"]}})
+        {% elif key == "wordformparts" and table=="wordforms" %}
+* {{link(val.morph)}}
+        {% elif key == "wordformstems" %}
+        {% elif key == "wordformparts" and table=="morphs" %}
+* {{lfts_link(val.wordform)}}
         {% else %}
 * {{link(val)}}
           {% endif %}
