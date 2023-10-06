@@ -895,6 +895,10 @@ def resolve_lfts(with_language, with_source, with_translation):
     return with_language, with_source, with_translation
 
 
+def debug(item, msg=""):
+    input(f"{item} {msg}")
+
+
 func_dict = {
     "comma_and_list": comma_and_list,
     "sanitize_latex": sanitize_latex,
@@ -905,4 +909,5 @@ func_dict = {
     "src": src,
     "flexible_pad_ex": pad_ex,
     "resolve_lfts": resolve_lfts,
+    "debug": debug,
 }

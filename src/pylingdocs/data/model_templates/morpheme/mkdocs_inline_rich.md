@@ -1,9 +1,9 @@
 {% import 'pld_util.md' as util%}
 {% import 'fmt_util.md' as butil%}
-{% set rich = data["morphemes"][ctx.id] %}
+{% set rich = data[table][ctx["ID"]] %}
 {{util.lfts(
     butil.link(rich),
-    entity=ctx,
+    entity=rich.fields,
     translation=translation,
     source=source,
     with_language=with_language,

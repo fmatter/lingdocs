@@ -32,9 +32,12 @@ from pylingdocs.templates import load_templates
 
 log = logging.getLogger(__name__)
 
-labels = {}
+tables = {}
 for model in models:
-    labels[model.shortcut] = model.query_string
+    tables[model.shortcut] = {
+        "query": model.query_string,
+        "label": model.name.lower() + "s",
+    }
 
 log.debug("Loading templates")
 loaders = {}
@@ -75,9 +78,9 @@ def preprocess_cldfviz(md):
     for m in MD_LINK_PATTERN.finditer(md):
         yield md[current : m.start()]
         current, key, url = get_md_pattern(m)
-        if key in labels:
+        if key in tables:
             args = []
-            kwargs = {}
+            kwargs = {"table": tables[key]["label"]}
             if "?" in url:
                 url, arguments = url.split("?")
                 for arg in arguments.split("&"):
@@ -90,11 +93,11 @@ def preprocess_cldfviz(md):
                         args.append(arg)
             if "," in url:
                 kwargs.update({"ids": url})
-                yield labels[key](
+                yield tables[key]["query"](
                     url, visualizer="cldfviz", multiple=True, *args, **kwargs
                 )
             else:
-                yield labels[key](url, visualizer="cldfviz", *args, **kwargs)
+                yield tables[key]["query"](url, visualizer="cldfviz", *args, **kwargs)
         else:
             yield md[m.start() : m.end()]
     yield md[current:]

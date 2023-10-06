@@ -78,32 +78,32 @@
 
 {% macro render_singles(rich) %}
 {% for key, val in rich.fields.items() %}
-    {% if (val is not none and val|string|length != 0)%}
+    {% if (key is not in rich.foreignkeys and val is not none and val|string|length != 0)%}
 * {{key}}: {{val}} 
     {% endif %}
 {% endfor %}
 {% for key, val in rich.single_refs.items() %}
-{% if val is not none %}
-* {{key}}: {{link(val)}}
+{% if val is not none%}
+* {{key.capitalize()}}: {{link(val)}}
 {% endif %}
 {% endfor %}
 {% endmacro %}
 
 {% macro render_multis(rich) %}
 {% for key, values in rich.multi_refs.items() %}
-{% if values|length > 0 %}
-    {% if key == "exampleparts" %}
+    {% if values|length > 0 %}
+        {% if key == "exampleparts" %}
 ## Examples
-    {% else %}
-## {{key}}
+        {% else %}
+## {{key.capitalize()}}
+        {% endif %}
     {% endif %}
-{% endif %}
-{% for val in values %}
-    {% if key == "examples" %}
+    {% for val in values %}
+        {% if key == "examples" %}
 [](ExampleTable?with_language=False#cldf:{{val["ID"]}})
-    {% else %}
+        {% else %}
 * {{link(val)}}
-    {% endif %}
-{% endfor %}
+          {% endif %}
+    {% endfor %}
 {% endfor %}
 {% endmacro %}

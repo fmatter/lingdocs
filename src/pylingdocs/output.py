@@ -259,7 +259,11 @@ def write_details(builder, output_dir, dataset):
                     rec["ID"]: f"[]({name}#cldf:{rec['ID']})"
                     for rec in dataset.iter_rows(name)
                 }
+            # i = 0
             for rid, detail in tqdm(items.items(), desc=name):
+                # i += 1
+                # if i > 100:
+                #     continue
                 filepath = table_dir / f"{rid}.{builder.file_ext}"
                 if filepath.is_file():
                     continue

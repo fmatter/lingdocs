@@ -21,7 +21,7 @@
 {%- endmacro %}
 
 {% macro get_translation_orm(f, single_translation=False) -%}
-{% if f.parameter %}
+{% if f.parameters %}
     {% set translation = [] %}
     {%for p in f.parameters %}
         {% set translation = translation.append(p.name) %}
