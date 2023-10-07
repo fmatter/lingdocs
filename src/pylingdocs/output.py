@@ -331,27 +331,21 @@ def create_output(
     figure_metadata = load_figure_metadata(source_dir)
     for output_format in formats:
         log.info(f"Building {output_format} output")
-        with tqdm(total=9) as pbar:
+        with tqdm(total=11) as pbar:
             builder = builders[output_format]
             builder.figure_metadata = figure_metadata
-            print("Assembling content")
             content = "\n\n".join([x["content"] for x in contents.values()])
             pbar.update(1)
-            print("Extracting chapters")
             chapters = extract_chapters(content)
             pbar.update(1)
-            print("Crossref resolution")
             ref_labels, ref_locations = process_labels(chapters)
             pbar.update(1)
-            print("Preprocessing")
             preprocessed = preprocess(content, source_dir)
             pbar.update(1)
             builder.ref_labels = ref_labels
             builder.ref_locations = ref_locations
-            print("Preprocessing commands")
             preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
             pbar.update(1)
-            print("render_markdown")
             preprocessed = render_markdown(
                 preprocessed,
                 dataset,
@@ -360,11 +354,9 @@ def create_output(
                 **kwargs,
             )
             pbar.update(1)
-            print("References")
             preprocessed += "\n\n" + builder.reference_list()
             # second run to insert reference list
             pbar.update(1)
-            print("Second render")
             preprocessed = render_markdown(
                 preprocessed,
                 dataset,
@@ -374,7 +366,6 @@ def create_output(
                 **kwargs,
             )
             pbar.update(1)
-            print("Postprocess")
             preprocessed = postprocess(preprocessed, builder, source_dir)
             pbar.update(1)
             if builder.name == "latex":

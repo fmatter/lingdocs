@@ -13,7 +13,7 @@ except ImportError:  # pragma: no cover
 DATA_DIR = files("pylingdocs") / "data"
 MD_LINK_PATTERN = re.compile(r"\[(?P<label>[^]]*)]\((?P<url>[^)]+)\)")
 CONF_PATH = "pylingdocs.cfg"
-LOG_LEVEL = logging.DEBUG
+LOG_LEVEL = logging.INFO
 
 config = ConfigParser()
 default_config = ConfigParser()
