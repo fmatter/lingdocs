@@ -331,7 +331,7 @@ def create_output(
     figure_metadata = load_figure_metadata(source_dir)
     for output_format in formats:
         log.info(f"Building {output_format} output")
-        with tqdm(total=11) as pbar:
+        with tqdm(total=10) as pbar:
             builder = builders[output_format]
             builder.figure_metadata = figure_metadata
             content = "\n\n".join([x["content"] for x in contents.values()])
