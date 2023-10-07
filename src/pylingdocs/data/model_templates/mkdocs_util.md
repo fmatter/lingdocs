@@ -128,6 +128,8 @@
     * {{lfts_link(val.wordform)}}
         {% elif key == "derivations" %}
     * {% if val.source is not none %}{{lfts_link(val.source)}}{%elif val.root is not none%}{{lfts_link(val.root)}}{%endif%} → {{lfts_link(val.target)}}
+        {% elif key in ["wordformparts", "stems", "morphs", "lexemes", "morphemes", "forms", "wordforms"] %}
+    * {{lfts_link(val)}}
         {% else %}
     * {{link(val)}}
           {% endif %}

@@ -7,10 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+* [mkdocs](https://www.mkdocs.org/) template
+
 ### Fixed
 * multipart LaTeX examples
 
 ### Changed
+* more straightforward customization
+* improved template loading
+* mkdocs for documentation
 
 * `builders` settings is now named `build`
 
@@ -26,7 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `full` argument for citations
 * `bare` argument for exrefs
 * one-stop solution for example layouting
-* [mkdocs](https://www.mkdocs.org/) template
 
 ### Fixed
 * LaTeX examples
@@ -42,7 +47,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * if undefined, `LATEX_TOPLEVEL` is determined based on the LaTeX template
 * using [cldf-ldd](https://github.com/fmatter/cldf-ldd/)
 * better HTML output
-* more straightforward customization
 
 ## [0.0.11] - 2022-11-27
 

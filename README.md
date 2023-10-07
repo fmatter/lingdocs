@@ -1,4 +1,4 @@
-# pylingdocs
+# [pylingdocs](https://fl.mt/pylingdocs)
 
 Create data-rich linguistic documents with CLDF, with a variety of output formats.
 

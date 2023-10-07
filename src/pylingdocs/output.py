@@ -266,7 +266,7 @@ def write_details(builder, output_dir, dataset):
             i = 0
             for rid, detail in tqdm(items.items(), desc=name):
                 i += 1
-                if i > 10:                continue
+                if i > 5:                continue
                 filepath = table_dir / f"{rid}.{builder.file_ext}"
                 if filepath.is_file():
                     pass
