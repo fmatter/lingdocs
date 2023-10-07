@@ -6,7 +6,7 @@ import re
 import sys
 import tempfile
 from pathlib import Path
-
+import re
 import pandas as pd
 import panflute
 import pybtex
@@ -884,6 +884,7 @@ def build_examples(datas):
         ex_dicts.append(build_example(data))
     return ex_dicts, full_preamble
 
+
 def resolve_lfts(with_language, with_source, with_translation):
     if isinstance(with_language, Undefined):
         with_language = LFTS_SHOW_LG
@@ -895,7 +896,7 @@ def resolve_lfts(with_language, with_source, with_translation):
 
 
 def debug(item, msg=""):
-    input(f"jinja: {item} {msg}")
+    log.debug(f"jinja: {item} {msg}")
 
 
 def get_rich_label(item, preferred="Name"):
@@ -903,7 +904,7 @@ def get_rich_label(item, preferred="Name"):
     for cand in [preferred, "Form", "Primary_Text", "Title", "ID"]:
         if item.get(cand, None):
             if cand not in non_obj_labels:
-                return f"*{item[cand]}*"
+                return f"<i>{item[cand]}</i>"
             if cand == "Title":
                 return f"“{item[cand]}”"
             return item[cand]
@@ -912,33 +913,45 @@ def get_rich_label(item, preferred="Name"):
 def link(item, anchor=None, mode="html", preferred="Name", label=None):
     anchor_text = ""
     if anchor is not None:
-        anchor_text = "#"+anchor
+        anchor_text = "#" + anchor
     if label is None:
         label = get_rich_label(item, preferred=preferred)
     if item is not None:
-        if mode=="html":
+        if mode == "html":
             return f"""<a href="site:data/{item.table.label}/{item['ID']}/{anchor_text}">{label}</a>"""
         raise ValueError(mode)
 
-def lfts_link(rich):
+
+def lfts_link(
+    rich,
+    with_language=LFTS_SHOW_LG,
+    with_source=LFTS_SHOW_SOURCE,
+    with_translation=LFTS_SHOW_FTR,
+    source=None,
+    translation=None,
+):
     out = []
-    with_language, with_source, with_translation = resolve_lfts(None, False, True)
     if with_language:
-        print(rich)
-        print(with_language)
-        print(LFTS_SHOW_LG)
-        input("we are having a language here!")
         out.append(link(rich.language))
-    out.append(link(rich))
+    out.append(link(rich, label="*" + get_rich_label(rich) + "*"))
     if with_translation:
-        trans = rich["Parameter_ID"]
+        trans = translation or rich["Parameter_ID"]
         if isinstance(trans, list):
             out.append(f"‘{', '.join(trans)}‘")
         else:
             out.append(f"‘{trans}‘")
-    if with_source:
-        out.append(rich["Source"])
+    if with_source and (source or rich.get("Source")):
+        out.append(source or rich["Source"][0])
     return " ".join(out)
+
+
+def table_label(string):
+    if string.endswith(".csv"):
+        return string.replace(".csv", "")
+    if string.endswith("Table"):
+        return string.replace("Table", "s").lower()
+    raise ValueError(f"Cannot parse component name {string}")
+
 
 func_dict = {
     "comma_and_list": comma_and_list,
@@ -952,5 +965,6 @@ func_dict = {
     "resolve_lfts": resolve_lfts,
     "debug": debug,
     "get_rich_label": get_rich_label,
-    "lfts_link": lfts_link
+    "lfts_link": lfts_link,
+    "table_label": table_label,
 }

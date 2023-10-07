@@ -1,2 +1,1 @@
-hello.
-
+[](ExampleTable#cldf:{{ctx.id}})

@@ -2,5 +2,5 @@
 {% import "fmt_util.md" as util%}
 
 {% for rec in ctx %}
-* {{util.link(data[table][rec.id])}}
+* {{util.link(data[table_label(component)][rec.id])}}
 {% endfor %}

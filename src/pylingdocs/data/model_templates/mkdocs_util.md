@@ -92,10 +92,10 @@
     {% if values|length > 0 %}
         {% if key == "exampleparts" %}
 ## Examples
-        {% elif key == "wordformparts" and table=="wordforms" %}
+        {% elif key == "wordformparts" and table_label(component)=="wordforms" %}
 ## Morphs
         {% elif key == "wordformstems" %}
-        {% elif key == "wordformparts" and table=="morphs" %}
+        {% elif key == "wordformparts" and table_label(component)=="morphs" %}
 ## Wordforms
         {% else %}
 ## {{key.capitalize()}}
@@ -104,10 +104,10 @@
     {% for val in values %}
         {% if key == "examples" %}
 [](ExampleTable?with_language=False#cldf:{{val["ID"]}})
-        {% elif key == "wordformparts" and table=="wordforms" %}
+        {% elif key == "wordformparts" and table_label(component)=="wordforms" %}
 * {{link(val.morph)}}
         {% elif key == "wordformstems" %}
-        {% elif key == "wordformparts" and table=="morphs" %}
+        {% elif key == "wordformparts" and table_label(component)=="morphs" %}
 * {{lfts_link(val.wordform)}}
         {% else %}
 * {{link(val)}}

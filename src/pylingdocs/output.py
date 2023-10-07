@@ -197,11 +197,11 @@ def check_ids(contents, dataset, source_dir):
 
 def write_details(builder, output_dir, dataset):
     loader = loaders[builder.name]["data"]
+    text_loader = loaders[builder.name]["text"]
     output_dir = output_dir / builder.name / builder.data_dir
     output_dir.mkdir(exist_ok=True, parents=True)
     func_dict["decorate_gloss_string"] = builder.decorate_gloss_string
     func_dict["ref_labels"] = builder.ref_labels
-    input(func_dict.keys())
     if RICH:
         data = CLDFDataset(dataset, orm=True)
         func_dict["data"] = data
@@ -216,7 +216,6 @@ def write_details(builder, output_dir, dataset):
         ]
     model_index = []
     for label, table, name in table_list:
-        func_dict["table"] = label
         table_dir = output_dir / label
         if f"{name}_index.md" not in loader.list_templates():
             log.warning(f"Not writing index for {name}")
@@ -234,7 +233,7 @@ def write_details(builder, output_dir, dataset):
                 index = render(
                     doc=index,
                     cldf_dict=dataset,
-                    loader=loader,
+                    loader=text_loader,
                     func_dict=func_dict,
                 )
             index = builder.preprocess(index)
@@ -260,11 +259,11 @@ def write_details(builder, output_dir, dataset):
                     rec["ID"]: f"[]({name}#cldf:{rec['ID']})"
                     for rec in dataset.iter_rows(name)
                 }
-            i = 0
+            # i = 0
             for rid, detail in tqdm(items.items(), desc=name):
-                i += 1
-                if i > 100:
-                    continue
+                # i += 1
+                # if i > 100:
+                # continue
                 filepath = table_dir / f"{rid}.{builder.file_ext}"
                 if filepath.is_file():
                     continue
@@ -278,7 +277,7 @@ def write_details(builder, output_dir, dataset):
                     detail = render(
                         doc=detail,
                         cldf_dict=dataset,
-                        loader=detail_loader,
+                        loader=text_loader,
                         func_dict=func_dict,
                     )
                 detail = builder.preprocess(detail)
@@ -327,45 +326,56 @@ def create_output(
     figure_metadata = load_figure_metadata(source_dir)
     for output_format in formats:
         log.info(f"Building {output_format} output")
-        builder = builders[output_format]
-        builder.figure_metadata = figure_metadata
-        content = "\n\n".join([x["content"] for x in contents.values()])
-        chapters = extract_chapters(content)
-        ref_labels, ref_locations = process_labels(chapters)
-        preprocessed = preprocess(content, source_dir)
-        builder.ref_labels = ref_labels
-        builder.ref_locations = ref_locations
-        preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
-        preprocessed = render_markdown(
-            preprocessed,
-            dataset,
-            builder,
-            decorate_gloss_string=builder.decorate_gloss_string,
-            **kwargs,
-        )
-        preprocessed += "\n\n" + builder.reference_list()
-        # second run to insert reference list
-        preprocessed = render_markdown(
-            preprocessed,
-            dataset,
-            builder,
-            decorate_gloss_string=builder.decorate_gloss_string,
-            output_format=output_format,
-            **kwargs,
-        )
-        preprocessed = postprocess(preprocessed, builder, source_dir)
-        if builder.name == "latex":
-            metadata["bibfile"] = dataset.bibpath.name
-        if builder.single_output:
-            builder.write_folder(
-                output_dir,
-                content=preprocessed,
-                metadata=metadata,
-                abbrev_dict=abbrev_dict,
-                ref_labels=ref_labels,
-                ref_locations=ref_locations,
-                parts=chapters,
+        with tqdm(total=9) as pbar:
+            builder = builders[output_format]
+            builder.figure_metadata = figure_metadata
+            content = "\n\n".join([x["content"] for x in contents.values()])
+            pbar.update(1)
+            chapters = extract_chapters(content)
+            pbar.update(1)
+            ref_labels, ref_locations = process_labels(chapters)
+            pbar.update(1)
+            preprocessed = preprocess(content, source_dir)
+            pbar.update(1)
+            builder.ref_labels = ref_labels
+            builder.ref_locations = ref_locations
+            preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
+            pbar.update(1)
+            preprocessed = render_markdown(
+                preprocessed,
+                dataset,
+                builder,
+                decorate_gloss_string=builder.decorate_gloss_string,
+                **kwargs,
             )
+            pbar.update(1)
+            preprocessed += "\n\n" + builder.reference_list()
+            # second run to insert reference list
+            pbar.update(1)
+            preprocessed = render_markdown(
+                preprocessed,
+                dataset,
+                builder,
+                decorate_gloss_string=builder.decorate_gloss_string,
+                output_format=output_format,
+                **kwargs,
+            )
+            pbar.update(1)
+            preprocessed = postprocess(preprocessed, builder, source_dir)
+            pbar.update(1)
+            if builder.name == "latex":
+                metadata["bibfile"] = dataset.bibpath.name
+            if builder.single_output:
+                builder.write_folder(
+                    output_dir,
+                    content=preprocessed,
+                    metadata=metadata,
+                    abbrev_dict=abbrev_dict,
+                    ref_labels=ref_labels,
+                    ref_locations=ref_locations,
+                    parts=chapters,
+                )
+            pbar.update(1)
         if WRITE_DATA:
             write_details(builder, output_dir, dataset)
         if builder.name == "latex":
