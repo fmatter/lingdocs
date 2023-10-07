@@ -869,6 +869,8 @@ def pad_ex(*lines, sep=" "):
 
 
 def build_examples(datas):
+    if len(datas) == 0:
+        return [], ""
     ex_dicts = []
     single_language = True
     first_language = datas[0].get("lng", None)
@@ -941,7 +943,7 @@ def lfts_link(
         else:
             out.append(f"‘{trans}‘")
     if with_source and (source or rich.get("Source")):
-        out.append(source or rich["Source"][0])
+        out.append(src(source or rich["Source"][0], parens=True))
     return " ".join(out)
 
 

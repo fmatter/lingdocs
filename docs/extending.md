@@ -1,4 +1,4 @@
-# Customizing
+# Extending
 
 It is possible to provide custom templates for both models and output formats.
 It is also possible to create entirely new models and formats.

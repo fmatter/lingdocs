@@ -4,5 +4,5 @@
 # {{table_label(component).capitalize()}}
 {% for item in ctx %}
 {% set rich = data[table_label(component)][item["ID"]] %}
-* {{pld_util.lfts(util.link(rich), entity=rich.fields, with_translation=True)}}
+* {{lfts_link(rich, with_translation=True)}}
 {% endfor %}

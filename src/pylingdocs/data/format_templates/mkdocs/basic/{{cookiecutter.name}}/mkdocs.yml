@@ -6,8 +6,10 @@ theme:
   icon:
     logo: octicons/book-24
   features:
-    - navigation.instant
+    - navigation.path
     - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.top
     - toc.follow
     - toc.integrate
@@ -30,16 +32,21 @@ markdown_extensions:
   - toc:
       baselevel: 1
   - attr_list
+  - pymdownx.tabbed:
+      alternate_style: true
   # - tables
   # - md_in_html
 plugins:
+    - awesome-pages
     - enumerate-headings:
         toc_depth: 6
         include:
           - "*"
         exclude:
+          - index.md
           - references.md
           - data/index.md
+          - data/*
     - search
     # - git-revision-date-localized
     - site-urls
@@ -56,9 +63,5 @@ extra_javascript:
   - assets/glossing_abbrevs.js
   - assets/glossing.js
   - assets/run.js
-nav:{% for chapter in cookiecutter.chapters %}
-  - '{{ chapter }}.md'{% endfor %}
-  - 'references.md'{% if cookiecutter.data %}
-  - 'data/index.md'{% endif %}
 repo_url: {{cookiecutter.repository}}
 repo_name: Source (GitHub)

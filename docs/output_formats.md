@@ -2,9 +2,10 @@
 
 As of now, the following four formats are implemented:
 
--   LaTeX
--   Github-flavored markdown
--   HTML
--   plaintext
-
+## mkdocs
+## LaTeX
+## cldf
+##    HTML
+##  plaintext
+##    Github-flavored markdown
 TODO: DESCRIBE

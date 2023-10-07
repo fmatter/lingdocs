@@ -69,14 +69,23 @@
 {%else%}
     {% set page_string = ""%}
 {% endif %}
-<a href='/references/#source-{{ref.source.id}}'>{{ref.source.refkey(year_brackets=None)}}</a>{{page_string}}{% elif "Text_ID" in ctx.data %}
+<a href='site:references/#source-{{ref.source.id}}'>{{ref.source.refkey(year_brackets=None)}}</a>{{page_string}}{% elif "Text_ID" in ctx.data %}
 {{txt_src(ctx)}}{% else %}
 {% endif %}
 {%- endmacro %}
 
 {% macro render_singles(rich) %}
 {% for key, val in rich.fields.items() %}
-    {% if (key is not in rich.foreignkeys and val is not none and val|string|length != 0)%}
+    {% if (key is not in rich.foreignkeys and val is not none)%}
+    {% if key == "Segments" %}
+        {% set val = " ".join(val) %}
+    {% endif %}
+    {% if key == "Source" and val|length != 0%}
+        {% set val = src(val[0]) %}
+    {% endif %}
+    {% if key == "Morpho_Segments" %}
+        {% set val = "-".join(val) %}
+    {% endif %}
 * {{key}}: {{val}}
     {% endif %}
 {% endfor %}
@@ -91,26 +100,36 @@
 {% for key, values in rich.multi_refs.items() %}
     {% if values|length > 0 %}
         {% if key == "exampleparts" %}
-## Examples
+=== "Examples"
         {% elif key == "wordformparts" and table_label(component)=="wordforms" %}
-## Morphs
+=== "Morphs"
+        {% elif key == "stemparts" and table_label(component)=="morphs" %}
+=== "Stems"
+        {% elif key == "stemparts" and table_label(component)=="stems" %}
+=== "Morphs"
         {% elif key == "wordformstems" %}
         {% elif key == "wordformparts" and table_label(component)=="morphs" %}
-## Wordforms
+=== "Wordforms"
         {% else %}
-## {{key.capitalize()}}
+=== "{{key.capitalize()}}"
         {% endif %}
     {% endif %}
     {% for val in values %}
-        {% if key == "examples" %}
-[](ExampleTable?with_language=False#cldf:{{val["ID"]}})
+        {% if key == "exampleparts" %}
+    * {{link(val.example)}} ‘{{val.example["Translated_Text"]}}’
         {% elif key == "wordformparts" and table_label(component)=="wordforms" %}
-* {{link(val.morph)}}
+    * {{lfts_link(val.morph)}}
         {% elif key == "wordformstems" %}
+        {% elif key == "stemparts" and table_label(component)=="stems" %}
+    * {{lfts_link(val.morph)}}
+        {% elif key == "stemparts" and table_label(component)=="morphs" %}
+    * {{lfts_link(val.stem)}}
         {% elif key == "wordformparts" and table_label(component)=="morphs" %}
-* {{lfts_link(val.wordform)}}
+    * {{lfts_link(val.wordform)}}
+        {% elif key == "derivations" %}
+    * {% if val.source is not none %}{{lfts_link(val.source)}}{%elif val.root is not none%}{{lfts_link(val.root)}}{%endif%} → {{lfts_link(val.target)}}
         {% else %}
-* {{link(val)}}
+    * {{link(val)}}
           {% endif %}
     {% endfor %}
 {% endfor %}

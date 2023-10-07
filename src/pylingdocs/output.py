@@ -215,12 +215,16 @@ def write_details(builder, output_dir, dataset):
             for table in dataset.tables
         ]
     model_index = []
+    data_nav = ["nav:"]
     for label, table, name in table_list:
+        # if label not in ["derivationalprocesses"]:
+        #     continue
         table_dir = output_dir / label
-        if f"{name}_index.md" not in loader.list_templates():
+        if f"{name}_index.{builder.file_ext}" not in loader.list_templates():
             log.warning(f"Not writing index for {name}")
         else:
             model_index.append(f"* [{label}]({label})")
+            data_nav.append(f"  - {label.capitalize()}: data/{label}")
             table_dir.mkdir(exist_ok=True, parents=True)
             index = f"[]({name}#cldf:__all__)"
             index = render(
@@ -259,13 +263,13 @@ def write_details(builder, output_dir, dataset):
                     rec["ID"]: f"[]({name}#cldf:{rec['ID']})"
                     for rec in dataset.iter_rows(name)
                 }
-            # i = 0
+            i = 0
             for rid, detail in tqdm(items.items(), desc=name):
-                # i += 1
-                # if i > 100:
-                # continue
+                i += 1
+                if i > 10:                continue
                 filepath = table_dir / f"{rid}.{builder.file_ext}"
                 if filepath.is_file():
+                    pass
                     continue
                 detail = render(
                     doc="".join(preprocess_cldfviz(detail)),
@@ -288,6 +292,7 @@ def write_details(builder, output_dir, dataset):
             "# Data\n\n" + "\n".join(model_index),
             output_dir / f"index.{builder.file_ext}",
         )
+        dump("\n".join(data_nav), output_dir / ".pages")
 
 
 def create_output(
@@ -329,18 +334,24 @@ def create_output(
         with tqdm(total=9) as pbar:
             builder = builders[output_format]
             builder.figure_metadata = figure_metadata
+            print("Assembling content")
             content = "\n\n".join([x["content"] for x in contents.values()])
             pbar.update(1)
+            print("Extracting chapters")
             chapters = extract_chapters(content)
             pbar.update(1)
+            print("Crossref resolution")
             ref_labels, ref_locations = process_labels(chapters)
             pbar.update(1)
+            print("Preprocessing")
             preprocessed = preprocess(content, source_dir)
             pbar.update(1)
             builder.ref_labels = ref_labels
             builder.ref_locations = ref_locations
+            print("Preprocessing commands")
             preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
             pbar.update(1)
+            print("render_markdown")
             preprocessed = render_markdown(
                 preprocessed,
                 dataset,
@@ -349,9 +360,11 @@ def create_output(
                 **kwargs,
             )
             pbar.update(1)
+            print("References")
             preprocessed += "\n\n" + builder.reference_list()
             # second run to insert reference list
             pbar.update(1)
+            print("Second render")
             preprocessed = render_markdown(
                 preprocessed,
                 dataset,
@@ -361,6 +374,7 @@ def create_output(
                 **kwargs,
             )
             pbar.update(1)
+            print("Postprocess")
             preprocessed = postprocess(preprocessed, builder, source_dir)
             pbar.update(1)
             if builder.name == "latex":

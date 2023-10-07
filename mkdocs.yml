@@ -14,13 +14,11 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.superfences
 nav:
+  - "Home": index.md
   - installation.md
   - usage.md
-  - markdown_format.md
   - config.md
-  - data_formats.md
   - extending.md
-  - examples.md
   - output_formats.md
   - topic_index.md
 extra_css:

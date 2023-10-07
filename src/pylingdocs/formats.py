@@ -432,10 +432,10 @@ class MkDocs(HTML):
     file_ext = "md"
 
     def preprocess(cls, content):
-        return content.replace("```{=html}", "").replace("```", "")
+        return content.replace("```{=html}", "").replace("```", "").replace("(#source-", "(site:references/#source-")
 
     def postprocess(cls, content):
-        return content.replace("(#source-", "(/references/#source-")
+        return content
 
     def table(cls, df, caption, label):
         tabular = df.to_html(escape=False, index=False)

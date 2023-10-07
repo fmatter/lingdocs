@@ -1,0 +1,7 @@
+nav:
+  - Home: index.md
+  - Description:{% for chapter in cookiecutter.chapters %}
+    - '{{ chapter }}.md'{% endfor %}
+    - 'references.md'{% if cookiecutter.data %}
+  - Data: data{% endif %}
+collapse_single_pages: true
