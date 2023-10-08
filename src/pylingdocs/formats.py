@@ -116,7 +116,8 @@ class OutputFormat:
         return f"[ex:{url}]"
 
     def figure_cmd(cls, url, *_args, **_kwargs):
-        caption = cls.figure_metadata[url].get("caption", "")
+        if not cls.ref_labels:
+            return "[No figure references found]"
         filename = cls.figure_metadata[url].get("filename", "")
         return f"({cls.ref_labels[f'fig:{url}']}: {filename})"
 

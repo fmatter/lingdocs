@@ -185,9 +185,11 @@ def check_ids(contents, dataset, source_dir):
     for filename, x in contents.items():
         preprocessed = preprocess(x["content"], source_dir)
         preprocessed = builder.preprocess_commands(preprocessed)
+        figure_metadata = load_figure_metadata(source_dir)
+        builder.figure_metadata = figure_metadata
         for i, line in enumerate(preprocessed.split("\n")):
             try:
-                render_markdown(line, dataset, output_format="plain")
+                render_markdown(line, dataset, builder=builder)
             except KeyError as e:
                 log.error(f"Missing ID in file {filename}, L{i+1}:\n{str(e)} in {line}")
                 found = True
