@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="examples.css">
     <link rel="stylesheet" href="styling.css">
+    <link rel="stylesheet" href="tables.css">
     <link rel="stylesheet" href="alignment.css">
+    <link rel="stylesheet" href="glossing.css">
     <title>Pylingdocs: A Demo</title>
 </head>
 <body>
@@ -26,7 +28,6 @@
         
 
         <h2 id="sec:intro">Introduction</h2>
-<p><a id='sec:intro'></a></p>
 <p>This document does double service as a test for
 <code>pylingdocs</code> and a showcase of its capabilities. It aims to
 demonstrate every feature and model currently available in
@@ -59,7 +60,6 @@ assume that there are principies favouring one direction over the other.
 (<a href="#source-alvarez1998split">Álvarez 1997</a>: 71)</p>
 </blockquote>
 <h2 id="pld-md">Pylingdocs markdown</h2>
-<p><a id='pld-md'></a></p>
 <p>Apart from database references, discussed in
 <a href='#sec:sources' class='crossref' name='sec:sources' >ref</a>,
 there are a number of <code>pylingdocs</code>-specific commands, all
@@ -208,67 +208,14 @@ Cognate identification strategy
 </figcaption>
 </figure>
 <h2 id="sec:data">Other linguistic data</h2>
-<p><a id='sec:data'></a></p>
 <h3 id="native-cldf-components">Native CLDF components</h3>
 <ul>
-<li><p>forms: Tiriyó <i>pakoro se wae</i> ‘I want a house’ (<a
-href="#source-triomeira1999">Meira 1999</a>: 417)</p></li>
-<li><p>languages: Hixkaryána</p></li>
-<li><p>cognate sets:</p>
-<table>
-<thead>
-<tr>
-<td>
-<p>Form</p>
-</td>
-<td>
-<p>Language</p>
-</td>
-<td>
-<p>Alignment</p>
-</td>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<p><em>jamï</em></p>
-</td>
-<td>
-<p>Tiriyó</p>
-</td>
-<td>
-<p><span class="alignment"> - j a m o </span></p>
-</td>
-<td>
-</tr>
-<tr>
-<td>
-<p><em>azamo</em></p>
-</td>
-<td>
-<p>Apalaí</p>
-</td>
-<td>
-<p><span class="alignment"> a z a m o </span></p>
-</td>
-<td>
-</tr>
-<tr>
-<td>
-<p><em>əjamo</em></p>
-</td>
-<td>
-<p>Wayana</p>
-</td>
-<td>
-<p><span class="alignment"> ə j a m o </span></p>
-</td>
-<td>
-</tr>
-</tbody>
-</table></li>
+<li>forms: Tiriyó <i>pakoro se wae</i> ‘I want a house’ (<a
+href="#source-triomeira1999">Meira 1999</a>: 417)</li>
+<li>languages: Hixkaryána</li>
+<li>cognate sets:</li>
 </ul>
+<p>None</p>
 <h3 id="non-native-components">Non-native components</h3>
 <p>Tiriyó <i>-e</i> ‘<span class="gloss">sup<span
 class="tooltiptext gloss-sup"></span></span>’ (<a
@@ -286,7 +233,7 @@ Wayana.</p>
 href="#source-triomeira1999">Meira 1999</a>: 345) has too long a
 translation, try Tiriyó <i>kure</i> ‘good’ (<a
 href="#source-triomeira1999">Meira 1999</a>: 345).</p></li>
-<li><p>This dataset contains the Ikpeng text “The old man”.</p></li>
+<li><p>This dataset contains the Ikpeng text The old man.</p></li>
 </ul>
 <h2 id="interlinear-examples">Interlinear examples</h2>
 <ol class="example">
@@ -497,7 +444,6 @@ href="#source-triomeira1999">Meira 1999</a>: 345).</p></li>
 </li>
 </ol>
 <h2 id="sec:sources">Citing literature</h2>
-<p><a id='sec:sources'></a></p>
 <ul>
 <li>see <a href="#source-alvarez1998split">Álvarez 1997</a> or <a
 href="#source-alvarez1998split">Álvarez 1997</a>: 133-134</li>
@@ -547,14 +493,14 @@ href="#source-koehn1986apalai">Koehn and Koehn 1986</a>: 77).<a
 href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
-
-        <script>var abbrev_dict={'cor': 'coreferential', 'hod': 'hodiernal past', 'cont': 'continuous', 'part': 'particle', 'ideo': 'ideophone', 'iter': 'iterative', 'rem': 'remove past', 'uncert': 'uncertainty', 'inan': 'inanimate', 'aff': 'affirmative', 'npst': 'non-past', 'pert': 'pertensive', 'ill': 'illative', 'sup': 'supine', 'obl': 'oblique', '3': 'third person', '1': 'first person', 'poss': 'possessive', 'dist': 'distal', '2': 'second person', 'loc': 'locative', 'nmlz': 'nominalizer/nominalization', 'prox': 'proximal/proximate', 'voc': 'vocative', 'rel': 'relative', 'aux': 'auxiliary', 'pl': 'plural', 'ins': 'instrumental', 'cop': 'copula', 'acc': 'accusative'}; for (var key in abbrev_dict){
+        <script>
+            var abbrev_dict={'cor': 'coreferential', 'hod': 'hodiernal past', 'cont': 'continuous', 'part': 'particle', 'ideo': 'ideophone', 'iter': 'iterative', 'rem': 'remove past', 'uncert': 'uncertainty', 'inan': 'inanimate', 'aff': 'affirmative', 'npst': 'non-past', 'pert': 'pertensive', 'ill': 'illative', 'sup': 'supine', 'obl': 'oblique', '3': 'third person', '1': 'first person', 'poss': 'possessive', 'dist': 'distal', '2': 'second person', 'loc': 'locative', 'nmlz': 'nominalizer/nominalization', 'prox': 'proximal/proximate', 'voc': 'vocative', 'rel': 'relative', 'aux': 'auxiliary', 'pl': 'plural', 'ins': 'instrumental', 'cop': 'copula', 'acc': 'accusative'}; for (var key in abbrev_dict){
 var targets = document.getElementsByClassName('gloss-'+key)
 for (var i = 0; i < targets.length; i++) {
     targets[i].innerHTML = abbrev_dict[key];
 }
-};</script>
-
+};
+        </script>
     </article>
 
     <script src="examples.js"></script> 
@@ -563,7 +509,7 @@ for (var i = 0; i < targets.length; i++) {
     <script src="alignment.js"></script>
     <script type="text/javascript" src="https://livejs.com/live.js"></script>
     <script>
-        number_examples()
+        numberExamples()
         numberSections()
         numberCaptions()
         resolveCrossrefs()

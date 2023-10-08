@@ -6,6 +6,7 @@ from pylingdocs.config import STRUCTURE_FILE
 # import pytest
 from pylingdocs.helpers import _get_relative_file
 from pylingdocs.helpers import _load_structure
+from pylingdocs.formats import builders
 from pylingdocs.helpers import load_content
 from writio import load
 from pylingdocs.output import create_output
@@ -33,11 +34,24 @@ def test_citing(dataset):
         "[src](abbott1976estrutura[2,3,5],abbott2015dictionary[89-91; 101])"
     )
     preprocessed = PlainText().preprocess_commands(preprocessed)
-    preprocessed = render_markdown(preprocessed, dataset, output_format="html")
+    preprocessed = render_markdown(preprocessed, dataset, builder=builders["html"])
     assert (
         preprocessed
         == "[Abbott 1976](#source-abbott1976estrutura): 2,3,5, [Abbott et al. 2015](#source-abbott2015dictionary): 89-91; 101"
     )
+
+def _unidiff_output(expected, actual):
+    """
+    Helper function. Returns a string containing the unified diff of two multiline strings.
+    """
+
+    import difflib
+    expected=expected.splitlines(1)
+    actual=actual.splitlines(1)
+
+    diff=difflib.unified_diff(expected, actual)
+
+    return ''.join(diff)
 
 
 def test_build(data, dataset, caplog, monkeypatch, tmp_path):
@@ -55,7 +69,6 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
     )
     formats = {
         "plain": "document.txt",
-        "mkdocs": "mkdocs.yml",
         "latex": "main.tex",
         "html": "index.html",
     }

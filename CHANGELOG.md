@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * more straightforward customization
 * improved template loading
 * mkdocs for documentation
-
+* new [expex-acro](https://ctan.org/pkg/expex-acro) version
 * `builders` settings is now named `build`
 
 ## [0.0.12] - 2023-07-02
