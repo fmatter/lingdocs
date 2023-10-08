@@ -30,6 +30,7 @@ black = "^23.9.1"
 mkdocs-click = "^0.8.1"
 mkdocstrings = "^0.23.0"
 markdown-include = "^0.8.1"
+pytest = "^7.4.2"
 
 [build-system]
 requires = ["poetry-core"]
