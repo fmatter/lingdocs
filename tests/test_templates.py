@@ -1,4 +1,4 @@
-from pylingdocs.helpers import find_template
+from pylingdocs.templates import find_template
 from pylingdocs.models import models
 from pylingdocs.formats import builders
 

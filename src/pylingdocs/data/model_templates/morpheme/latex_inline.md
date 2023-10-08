@@ -1,6 +1,7 @@
-{% import 'pld_util.md' as util%}
-{{util.lfts(
-    "\obj{"+ctx['Name']+"}",
+{% import 'pld_util.md' as pld_util%}
+{% import 'fmt_util.md' as util%}
+{{pld_util.lfts(
+    "\obj{"+util.get_label(ctx)+"}",
     entity=ctx,
     translation=translation,
     source=source,

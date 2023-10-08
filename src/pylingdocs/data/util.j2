@@ -21,7 +21,7 @@
 {%- endmacro %}
 
 {% macro get_translation_orm(f, single_translation=False) -%}
-{% if f.parameters %}
+{% if f.cldf.parameterReference is not string %} 
     {% set translation = [] %}
     {%for p in f.parameters %}
         {% set translation = translation.append(p.name) %}

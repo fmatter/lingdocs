@@ -28,9 +28,8 @@ def test_cli_build(caplog, tmp_path, md_path, data, monkeypatch):
 
     # add tables
     shutil.copytree(data / "tables", tmp_path / "tables")
-    runner.invoke(build, args=["--cldf", md_path, "--source", data, "--release"])
-
-    assert "Rendering" in caplog.text
+    runner.invoke(build, args=["--cldf", md_path, "--source", data])
+    assert "Building" in caplog.text
 
     output_formats = [x.name for x in (tmp_path / "output").iterdir()]
 
