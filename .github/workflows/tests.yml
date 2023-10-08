@@ -31,4 +31,4 @@ jobs:
         uses: nikeee/setup-pandoc@v1
       - name: Test with pytest
         run: |
-          poetry use pytest tests
+          poetry run pytest tests
