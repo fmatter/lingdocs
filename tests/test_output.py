@@ -32,7 +32,7 @@ def test_citing(dataset):
     preprocessed = preprocess(
         "[src](abbott1976estrutura[2,3,5],abbott2015dictionary[89-91; 101])"
     )
-    preprocessed = PlainText.preprocess_commands(preprocessed)
+    preprocessed = PlainText().preprocess_commands(preprocessed)
     preprocessed = render_markdown(preprocessed, dataset, output_format="html")
     assert (
         preprocessed
@@ -55,7 +55,7 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
     )
     formats = {
         "plain": "document.txt",
-        "github": "README.md",
+        "mkdocs": "mkdocs.yml",
         "latex": "main.tex",
         "html": "index.html",
     }

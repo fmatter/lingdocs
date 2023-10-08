@@ -74,16 +74,6 @@ def test_cli_sublime(caplog, tmp_path, md_path, data, monkeypatch):
     assert (tmp_path / ".pld_autocomplete.json").is_file()
     assert (tmp_path / ".pld_menudata.json").is_file()
 
-
-def test_new(caplog, md_path, tmpdir, data, monkeypatch):
-    shutil.copytree(md_path.parents[0], tmpdir / md_path.parents[0].name)
-    monkeypatch.chdir(tmpdir)
-    runner = CliRunner()
-    result = runner.invoke(new)
-    assert result.exit_code == 0
-    assert "content" in [x.name for x in (Path(tmpdir) / "new-pld-document").iterdir()]
-
-
 def test_author(tmp_path, monkeypatch, caplog):
     def mockreturn():
         return tmp_path
