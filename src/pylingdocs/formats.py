@@ -433,7 +433,11 @@ class MkDocs(HTML):
     file_ext = "md"
 
     def preprocess(cls, content):
-        return content.replace("```{=html}", "").replace("```", "").replace("(#source-", "(site:references/#source-")
+        return (
+            content.replace("```{=html}", "")
+            .replace("```", "")
+            .replace("(#source-", "(site:references/#source-")
+        )
 
     def postprocess(cls, content):
         return content
