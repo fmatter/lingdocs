@@ -1,20 +1,30 @@
-\documentclass{article}
+\documentclass{memoir}
+\setsecnumdepth{subsubsection}
+\usepackage{tikz}
 \usepackage{geometry}
-\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage[some]{background}
 
-\pagestyle{fancy}
-\fancyhf{}
-\lhead{\today}
-% \lhead{}
-\rhead{\footnotesize \itshape Made with \href{https://github.com/fmatter/pylingdocs/}{pylingdocs}}
-\cfoot{\thepage}
+\definecolor{titlepagecolor}{RGB}{208, 84, 0}
+
+\backgroundsetup{
+scale=1,
+angle=0,
+opacity=1,
+contents={\begin{tikzpicture}[remember picture,overlay]
+ \path [fill=titlepagecolor] (-0.5\paperwidth,5) rectangle (0.5\paperwidth,10);
+\end{tikzpicture}}
+}
+
+\font\hugefont="Brill" at 38pt
 
 \input{preamble.tex}
 \addbibresource{sources.bib}
+\lingset{everygla=\itshape, belowglpreambleskip=0ex, aboveglftskip=0ex}
 
 \title{Pylingdocs: A Demo}
 \author{Florian Matter}
-\date{\today\\version 0.0.1.draft}
+
 \newGlossingAbbrev{cor}{coreferential}
 \newGlossingAbbrev{hod}{hodiernal past}
 \newGlossingAbbrev{cont}{continuous}
@@ -46,21 +56,19 @@
 \newGlossingAbbrev{cop}{copula}
 \newGlossingAbbrev{acc}{accusative}
 
-
-
 \begin{document}
-\maketitle
+
+\input{titlepage.tex}
 
 \tableofcontents
 
-
-\section{\texorpdfstring{Introduction \label{sec:intro}}{Introduction }}
+\chapter{\texorpdfstring{Introduction \label{sec:intro}}{Introduction }}
 
 This document does double service as a test for \texttt{pylingdocs} and
 a showcase of its capabilities. It aims to demonstrate every feature and
 model currently available in \texttt{pylingdocs}.
 
-\section{\texorpdfstring{Common
+\chapter{\texorpdfstring{Common
 markdown\label{common-markdown}}{Common markdown}}
 
 You can use all the familiar markdown components. Here is a link to the
@@ -107,7 +115,7 @@ assume that there are principies favouring one direction over the other.
 \parencites[71]{alvarez1998split}
 \end{quote}
 
-\section{\texorpdfstring{Pylingdocs markdown
+\chapter{\texorpdfstring{Pylingdocs markdown
 \label{pld-md}}{Pylingdocs markdown }}
 
 Apart from database references, discussed in \cref{sec:sources}, there
@@ -173,10 +181,10 @@ glide & /w / &  & /y/ &  &  \\
 \caption{Cognate identification strategy\label{fig:cognates}}
 \end{figure}
 
-\section{\texorpdfstring{Other linguistic data
+\chapter{\texorpdfstring{Other linguistic data
 \label{sec:data}}{Other linguistic data }}
 
-\subsection{\texorpdfstring{Native CLDF
+\section{\texorpdfstring{Native CLDF
 components\label{native-cldf-components}}{Native CLDF components}}
 
 \begin{itemize}
@@ -192,7 +200,7 @@ components\label{native-cldf-components}}{Native CLDF components}}
 
 None
 
-\subsection{\texorpdfstring{Non-native
+\section{\texorpdfstring{Non-native
 components\label{non-native-components}}{Non-native components}}
 
 Tiriyó \obj{-e} `\gl{sup}' \parencites[327]{triomeira1999} is a variant
@@ -212,7 +220,7 @@ by Apalaí, Tiriyó, and Wayana.
   This dataset contains the Ikpeng text The old man.
 \end{itemize}
 
-\section{\texorpdfstring{Interlinear
+\chapter{\texorpdfstring{Interlinear
 examples\label{interlinear-examples}}{Interlinear examples}}
 
 \ex  Ikpeng  \\\label{ekiri-13}
@@ -286,7 +294,7 @@ examples\label{interlinear-examples}}{Interlinear examples}}
 \endgl
 \xe
 
-\section{\texorpdfstring{Citing literature
+\chapter{\texorpdfstring{Citing literature
 \label{sec:sources}}{Citing literature }}
 
 \begin{itemize}
