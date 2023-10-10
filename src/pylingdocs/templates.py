@@ -5,12 +5,17 @@ from writio import load
 from pylingdocs.config import DATA_DIR, PLD_DIR, RICH
 from pylingdocs.formats import builders
 
+from pylingdocs.config import (
+    LATEX_EX_TEMPL,
+)
 log = logging.getLogger(__name__)
 
 
 def _fn(base, m, f, v, r):
     m = str(m).lower()
     f = str(f).lower()
+    if m == "example" and f == "latex":
+        f = f"{f}_{LATEX_EX_TEMPL}"
     if r:
         rs = "_rich"
     else:
@@ -84,9 +89,6 @@ def _candidates(base, cbase, m, b):
         if gpb:
             for x in _candidates(base, cbase, m, gpb):
                 yield x
-            # for model in [m, pm]:
-            #     if model:
-            #         yield (cbase, model, gpb)
     if pm:
         gpm = _parent_model(pm)
         if gpm:
@@ -114,12 +116,12 @@ def find_template(model, builder, view, rich=RICH):
         path = _fn(b, m.name, f.label, view, r=rich)
         if path.is_file():
             return path
-    for b, m, f in _candidates(b, custom_base, model, builder):
+    for b, m, f in _candidates(base, custom_base, model, builder):
         path = _fn(base, m.name, f.label, view, r=not rich)
         if path.is_file():
             return path
     log.warning(
-        f"No template found for {model.name}/{builder.label}_{view} (last try {m.name}/{b.label})"
+        f"No template found for {model.name}/{builder.label}_{view} (last try {path})"
     )
     return None
 
