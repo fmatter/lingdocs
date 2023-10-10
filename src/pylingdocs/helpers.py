@@ -424,6 +424,7 @@ def _load_cldf_dataset(cldf_path=CLDF_MD):
             bib = pybtex.database.parse_file(ADD_BIB, bib_format="bibtex")
             sources = [Source.from_entry(k, e) for k, e in bib.entries.items()]
             ds.add_sources(*sources)
+            ds.write()
         return ds
     except FileNotFoundError as e:
         log.error(e)
