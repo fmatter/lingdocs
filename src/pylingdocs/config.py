@@ -66,16 +66,12 @@ CREATE_README = get_config("output", "readme", as_boolean=True)
 
 METADATA_FILE = Path("./metadata.yaml")
 
-OUTPUT_TEMPLATES = {}
-for builder in (
-    BUILDERS + PREVIEW + ["plain", "github", "html", "latex", "clld", "mkdocs"]
-):
-    OUTPUT_TEMPLATES[builder] = get_config(builder, "template")
+LAYOUT = get_config("output", "layout")
 
 LATEX_EX_TEMPL = get_config("latex", "interlinear_tool")
 LATEX_TOPLEVEL = get_config("latex", "toplevel")
 if not LATEX_TOPLEVEL:
-    if OUTPUT_TEMPLATES["latex"] in ["book"]:
+    if LAYOUT == "book":
         LATEX_TOPLEVEL = "chapter"
     else:
         LATEX_TOPLEVEL = "section"
@@ -98,6 +94,5 @@ LFTS_SHOW_FTR = get_config("lfts", "show_translation", as_boolean=True)
 LFTS_SHOW_SOURCE = get_config("lfts", "show_source", as_boolean=True)
 
 CONTENT_FILE_PREFIX = get_config("input", "content_file_prefix")
-
 
 PLD_DIR = Path("./pld")

@@ -10,7 +10,7 @@ from pycldf.dataset import SchemaError
 from slugify import slugify
 
 from pylingdocs import __version__
-from pylingdocs.config import DATA_DIR, OUTPUT_TEMPLATES
+from pylingdocs.config import DATA_DIR, LAYOUT
 from pylingdocs.formats import CLLD
 from pylingdocs.helpers import (
     check_abbrevs,
@@ -123,7 +123,7 @@ def create_cldf(
     )  # rudely assume that all images live in the static dir
     delim = "\n# "
     parts = tent.split(delim)[1::]
-    if len(parts) == 0 or OUTPUT_TEMPLATES["clld"] in ["slides", "article"]:
+    if len(parts) == 0 or LAYOUT in ["slides", "article"]:
         # these use # as section markers, so we add a level for the html output
         tent = tent.replace("\n#", "\n##")
         tent = f"# {metadata_dict['title']}\n\n" + tent

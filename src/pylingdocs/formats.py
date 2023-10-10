@@ -21,9 +21,10 @@ from pylingdocs.config import (
     LATEX_EX_TEMPL,
     LATEX_TOPLEVEL,
     MD_LINK_PATTERN,
+    PLD_DIR,
     WRITE_DATA,
     RICH,
-    OUTPUT_TEMPLATES,
+    LAYOUT,
 )
 from pylingdocs.helpers import (
     decorate_gloss_string,
@@ -86,6 +87,7 @@ class OutputFormat:
     ref_labels = None
     ref_locations = None
     data_dir = "data"
+    fallback_layout = "basic"
 
     @property
     def label(cls):
@@ -124,6 +126,18 @@ class OutputFormat:
 
     def decorate_gloss_string(cls, x):
         return decorate_gloss_string(x, decoration=lambda x: x.upper())
+
+    def get_layout_path(cls):
+        base = DATA_DIR / "format_templates"
+        cbase = PLD_DIR / "formats" / "layouts"
+        for b in [cbase, base]:
+            tpl_path = b / cls.name / LAYOUT
+            if not tpl_path.is_dir():
+                tpl_path = b / cls.name / cls.fallback_layout
+            if tpl_path.is_dir():
+                return str(tpl_path)
+        log.error(f"Could not find cookiecutter folder for {cls.name}")
+        sys.exit()
 
     def write_folder(
         cls,
@@ -165,13 +179,7 @@ class OutputFormat:
 
         extra.update(**metadata)
 
-        template_path = Path("format_templates") / cls.name / OUTPUT_TEMPLATES[cls.name]
-        local_template_path = Path("pld") / template_path
-        if local_template_path.is_dir():
-            template_path = str(local_template_path)
-        else:
-            template_path = str(DATA_DIR / template_path)
-
+        template_path = cls.get_layout_path()
         cookiecutter(
             template_path,
             output_dir=output_dir,
@@ -421,7 +429,7 @@ for (var i = 0; i < targets.length; i++) {{
         for label in unresolved_labels:
             log.warning(label)
             html_output = html_output.replace(f"{{#{label}}}", "")
-        if OUTPUT_TEMPLATES["html"] == "slides":
+        if LAYOUT == "slides":
             return html_output.replace("\n<h", "\n---\n<h")
         return html_output
 
@@ -698,7 +706,7 @@ class Latex(PlainText):
         out = []
         for author in authors:
             out.append(f'{author["given-names"]} {author["family-names"]}')
-        if OUTPUT_TEMPLATES["latex"] == "book":
+        if LAYOUT == "book":
             return ";".join(out)  # may want to use this for all templates at some point
         return " and ".join(out)
 
