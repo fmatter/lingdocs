@@ -608,6 +608,18 @@ class Latex(PlainText):
             return f"\\crefrange{{{url}}}{{{end}}}"
         return f"\\cref{{{url}}}"
 
+    def figure_cmd(cls, url, *_args, **_kwargs):
+        if not cls.ref_labels:
+            return f"(n/a: {url})"
+        caption = cls.figure_metadata[url].get("caption", "")
+        filename = cls.figure_metadata[url].get("filename", "")
+        return f"""\\begin{{figure}}
+\\centering
+\\includegraphics{{{cls.figure_dir}/{filename}}}
+\\caption{{{caption}\\label{{fig:{url}}}}}
+\\end{{figure}}
+"""
+
     def gloss_cmd(cls, url, *_args, **_kwargs):
         return decorate_gloss_string(url.upper())
 
