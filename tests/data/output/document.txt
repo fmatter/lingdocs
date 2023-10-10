@@ -63,7 +63,7 @@ Table 3.1: Consonant phonemes of Yawarana:
 
 -   figures (with automatically generated table labels like Figure 3.1):
 
-(Figure 3.1: cognates.jpg)
+(Figure 3.1: figures/cognates.jpg)
 
 Other linguistic data
 
