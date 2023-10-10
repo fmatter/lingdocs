@@ -1,0 +1,503 @@
+%%
+%% This is file `expex-acro.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% expex-acro.dtx  (with options: `package')
+%%
+%% This is a generated file.
+%%
+%% Copyright (C) 2022 by Florian Matter
+%%
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either
+%% version 1.3 of this license or (at your option) any later
+%% version. The latest version of this license is in:
+%%
+%% http://www.latex-project.org/lppl.txt
+%%
+%% and version 1.3 or later is part of all distributions of
+%% LaTeX version 2005/12/01 or later.
+%%
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{expex-acro}
+    [2023/08/23 v0.0.3 ]
+
+
+
+
+\RequirePackage{expex}
+\RequirePackage{etoolbox}
+\RequirePackage{xspace}
+\RequirePackage{l3keys2e}
+\RequirePackage{acro}
+\RequirePackage{enumitem}
+
+\NewAcroTemplate[list]{glossinglist}{%
+ \acroheading
+ \acropreamble
+ \begin{description}[font=\normalfont]
+   \acronymsmapF{%
+     \item[\acrowrite{short}\acroifT{alt}{/\acrowrite{alt}}]
+     \acrowrite{list}%
+     \acroifanyT{foreign,extra}{ (}%
+     \acroifT{foreign}{\acrowrite{foreign}\acroifT{extra}{, }}%
+     \acroifT{extra}{\acrowrite{extra}}%
+     \acroifanyT{foreign,extra}{)}%
+     \acropagefill
+     \acropages
+     {\acrotranslate{page}\nobreakspace}
+     {\acrotranslate{pages}\nobreakspace}%
+   }
+   {\item\AcroRerun}
+ \end{description}
+}
+
+\ExplSyntaxOn
+\keys_define:nn { expex-acro }{
+  abbrevs .tl_set:N = \l_abbrevs_tl,
+  abbrevs .initial:n = none,
+  refmode .tl_set:N = \l_refmode_tl,
+  refmode .initial:n = expex,
+}
+\ProcessKeysOptions{expex-acro}
+\str_if_eq:VnT \l_abbrevs_tl {leipzig} {
+\DeclareAcronym{1}{short=1,long=first~person,short-format=\scshape}
+\DeclareAcronym{2}{short=2,long=second~person,short-format=\scshape}
+\DeclareAcronym{3}{short=3,long=third~person,short-format=\scshape}
+\DeclareAcronym{a}{short=a,long=agent-like~argument~of~canonical~transitive~verb,short-format=\scshape}
+\DeclareAcronym{abl}{short=abl,long=ablative,short-format=\scshape}
+\DeclareAcronym{abs}{short=abs,long=absolutive,short-format=\scshape}
+\DeclareAcronym{acc}{short=acc,long=accusative,short-format=\scshape}
+\DeclareAcronym{adj}{short=adj,long=adjective,short-format=\scshape}
+\DeclareAcronym{adv}{short=adv,long=adverb(ial),short-format=\scshape}
+\DeclareAcronym{agr}{short=agr,long=agreement,short-format=\scshape}
+\DeclareAcronym{all}{short=all,long=allative,short-format=\scshape}
+\DeclareAcronym{antip}{short=antip,long=antipassive,short-format=\scshape}
+\DeclareAcronym{appl}{short=appl,long=applicative,short-format=\scshape}
+\DeclareAcronym{art}{short=art,long=article,short-format=\scshape}
+\DeclareAcronym{aux}{short=aux,long=auxiliary,short-format=\scshape}
+\DeclareAcronym{ben}{short=ben,long=benefactive,short-format=\scshape}
+\DeclareAcronym{caus}{short=caus,long=causative,short-format=\scshape}
+\DeclareAcronym{clf}{short=clf,long=classifier,short-format=\scshape}
+\DeclareAcronym{com}{short=com,long=comitative,short-format=\scshape}
+\DeclareAcronym{comp}{short=comp,long=complementizer,short-format=\scshape}
+\DeclareAcronym{compl}{short=compl,long=completive,short-format=\scshape}
+\DeclareAcronym{cond}{short=cond,long=conditional,short-format=\scshape}
+\DeclareAcronym{cop}{short=cop,long=copula,short-format=\scshape}
+\DeclareAcronym{cvb}{short=cvb,long=converb,short-format=\scshape}
+\DeclareAcronym{dat}{short=dat,long=dative,short-format=\scshape}
+\DeclareAcronym{decl}{short=decl,long=declarative,short-format=\scshape}
+\DeclareAcronym{def}{short=def,long=definite,short-format=\scshape}
+\DeclareAcronym{dem}{short=dem,long=demonstrative,short-format=\scshape}
+\DeclareAcronym{det}{short=det,long=determiner,short-format=\scshape}
+\DeclareAcronym{dist}{short=dist,long=distal,short-format=\scshape}
+\DeclareAcronym{distr}{short=distr,long=distributive,short-format=\scshape}
+\DeclareAcronym{du}{short=du,long=dual,short-format=\scshape}
+\DeclareAcronym{dur}{short=dur,long=durative,short-format=\scshape}
+\DeclareAcronym{erg}{short=erg,long=ergative,short-format=\scshape}
+\DeclareAcronym{excl}{short=excl,long=exclusive,short-format=\scshape}
+\DeclareAcronym{f}{short=f,long=feminine,short-format=\scshape}
+\DeclareAcronym{foc}{short=foc,long=focus,short-format=\scshape}
+\DeclareAcronym{fut}{short=fut,long=future,short-format=\scshape}
+\DeclareAcronym{gen}{short=gen,long=genitive,short-format=\scshape}
+\DeclareAcronym{imp}{short=imp,long=imperative,short-format=\scshape}
+\DeclareAcronym{incl}{short=incl,long=inclusive,short-format=\scshape}
+\DeclareAcronym{ind}{short=ind,long=indicative,short-format=\scshape}
+\DeclareAcronym{indf}{short=indf,long=indefinite,short-format=\scshape}
+\DeclareAcronym{inf}{short=inf,long=infinitive,short-format=\scshape}
+\DeclareAcronym{ins}{short=ins,long=instrumental,short-format=\scshape}
+\DeclareAcronym{intr}{short=intr,long=intransitive,short-format=\scshape}
+\DeclareAcronym{ipfv}{short=ipfv,long=imperfective,short-format=\scshape}
+\DeclareAcronym{irr}{short=irr,long=irrealis,short-format=\scshape}
+\DeclareAcronym{loc}{short=loc,long=locative,short-format=\scshape}
+\DeclareAcronym{m}{short=m,long=masculine,short-format=\scshape}
+\DeclareAcronym{n}{short=n,long=neuter,short-format=\scshape}
+\DeclareAcronym{neg}{short=neg,long=negation,short-format=\scshape}
+\DeclareAcronym{nmlz}{short=nmlz,long=nominalizer/nominalization,short-format=\scshape}
+\DeclareAcronym{nom}{short=nom,long=nominative,short-format=\scshape}
+\DeclareAcronym{obj}{short=obj,long=object,short-format=\scshape}
+\DeclareAcronym{obl}{short=obl,long=oblique,short-format=\scshape}
+\DeclareAcronym{p}{short=p,long=patient-like~argument~of~canonical~transitive~verb,short-format=\scshape}
+\DeclareAcronym{pass}{short=pass,long=passive,short-format=\scshape}
+\DeclareAcronym{pfv}{short=pfv,long=perfective,short-format=\scshape}
+\DeclareAcronym{pl}{short=pl,long=plural,short-format=\scshape}
+\DeclareAcronym{poss}{short=poss,long=possessive,short-format=\scshape}
+\DeclareAcronym{pred}{short=pred,long=predicative,short-format=\scshape}
+\DeclareAcronym{prf}{short=prf,long=perfect,short-format=\scshape}
+\DeclareAcronym{prs}{short=prs,long=present,short-format=\scshape}
+\DeclareAcronym{prog}{short=prog,long=progressive,short-format=\scshape}
+\DeclareAcronym{proh}{short=proh,long=prohibitive,short-format=\scshape}
+\DeclareAcronym{prox}{short=prox,long=proximal/proximate,short-format=\scshape}
+\DeclareAcronym{pst}{short=pst,long=past,short-format=\scshape}
+\DeclareAcronym{ptcp}{short=ptcp,long=participle,short-format=\scshape}
+\DeclareAcronym{purp}{short=purp,long=purposive,short-format=\scshape}
+\DeclareAcronym{q}{short=q,long=question~particle/marker,short-format=\scshape}
+\DeclareAcronym{quot}{short=quot,long=quotative,short-format=\scshape}
+\DeclareAcronym{recp}{short=recp,long=reciprocal,short-format=\scshape}
+\DeclareAcronym{refl}{short=refl,long=reflexive,short-format=\scshape}
+\DeclareAcronym{rel}{short=rel,long=relative,short-format=\scshape}
+\DeclareAcronym{res}{short=res,long=resultative,short-format=\scshape}
+\DeclareAcronym{s}{short=s,long=single~argument~of~canonical~intransitive~verb,short-format=\scshape}
+\DeclareAcronym{sbj}{short=sbj,long=subject,short-format=\scshape}
+\DeclareAcronym{sbjv}{short=sbjv,long=subjunctive,short-format=\scshape}
+\DeclareAcronym{sg}{short=sg,long=singular,short-format=\scshape}
+\DeclareAcronym{top}{short=top,long=topic,short-format=\scshape}
+\DeclareAcronym{tr}{short=tr,long=transitive,short-format=\scshape}
+\DeclareAcronym{voc}{short=voc,long=vocative,short-format=\scshape}
+}
+\str_if_eq:VnT \l_abbrevs_tl {all} {
+\DeclareAcronym{1}{short=1,long=first~person,short-format=\scshape}
+\DeclareAcronym{2}{short=2,long=second~person,short-format=\scshape}
+\DeclareAcronym{3}{short=3,long=third~person,short-format=\scshape}
+\DeclareAcronym{a}{short=a,long=agent-like~argument~of~canonical~transitive~verb,short-format=\scshape}
+\DeclareAcronym{abl}{short=abl,long=ablative,short-format=\scshape}
+\DeclareAcronym{abs}{short=abs,long=absolutive,short-format=\scshape}
+\DeclareAcronym{acc}{short=acc,long=accusative,short-format=\scshape}
+\DeclareAcronym{adj}{short=adj,long=adjective,short-format=\scshape}
+\DeclareAcronym{adv}{short=adv,long=adverb(ial),short-format=\scshape}
+\DeclareAcronym{agr}{short=agr,long=agreement,short-format=\scshape}
+\DeclareAcronym{all}{short=all,long=allative,short-format=\scshape}
+\DeclareAcronym{antip}{short=antip,long=antipassive,short-format=\scshape}
+\DeclareAcronym{appl}{short=appl,long=applicative,short-format=\scshape}
+\DeclareAcronym{art}{short=art,long=article,short-format=\scshape}
+\DeclareAcronym{aux}{short=aux,long=auxiliary,short-format=\scshape}
+\DeclareAcronym{ben}{short=ben,long=benefactive,short-format=\scshape}
+\DeclareAcronym{caus}{short=caus,long=causative,short-format=\scshape}
+\DeclareAcronym{clf}{short=clf,long=classifier,short-format=\scshape}
+\DeclareAcronym{com}{short=com,long=comitative,short-format=\scshape}
+\DeclareAcronym{comp}{short=comp,long=complementizer,short-format=\scshape}
+\DeclareAcronym{compl}{short=compl,long=completive,short-format=\scshape}
+\DeclareAcronym{cond}{short=cond,long=conditional,short-format=\scshape}
+\DeclareAcronym{cop}{short=cop,long=copula,short-format=\scshape}
+\DeclareAcronym{cvb}{short=cvb,long=converb,short-format=\scshape}
+\DeclareAcronym{dat}{short=dat,long=dative,short-format=\scshape}
+\DeclareAcronym{decl}{short=decl,long=declarative,short-format=\scshape}
+\DeclareAcronym{def}{short=def,long=definite,short-format=\scshape}
+\DeclareAcronym{dem}{short=dem,long=demonstrative,short-format=\scshape}
+\DeclareAcronym{det}{short=det,long=determiner,short-format=\scshape}
+\DeclareAcronym{dist}{short=dist,long=distal,short-format=\scshape}
+\DeclareAcronym{distr}{short=distr,long=distributive,short-format=\scshape}
+\DeclareAcronym{du}{short=du,long=dual,short-format=\scshape}
+\DeclareAcronym{dur}{short=dur,long=durative,short-format=\scshape}
+\DeclareAcronym{erg}{short=erg,long=ergative,short-format=\scshape}
+\DeclareAcronym{excl}{short=excl,long=exclusive,short-format=\scshape}
+\DeclareAcronym{f}{short=f,long=feminine,short-format=\scshape}
+\DeclareAcronym{foc}{short=foc,long=focus,short-format=\scshape}
+\DeclareAcronym{fut}{short=fut,long=future,short-format=\scshape}
+\DeclareAcronym{gen}{short=gen,long=genitive,short-format=\scshape}
+\DeclareAcronym{imp}{short=imp,long=imperative,short-format=\scshape}
+\DeclareAcronym{incl}{short=incl,long=inclusive,short-format=\scshape}
+\DeclareAcronym{ind}{short=ind,long=indicative,short-format=\scshape}
+\DeclareAcronym{indf}{short=indf,long=indefinite,short-format=\scshape}
+\DeclareAcronym{inf}{short=inf,long=infinitive,short-format=\scshape}
+\DeclareAcronym{ins}{short=ins,long=instrumental,short-format=\scshape}
+\DeclareAcronym{intr}{short=intr,long=intransitive,short-format=\scshape}
+\DeclareAcronym{ipfv}{short=ipfv,long=imperfective,short-format=\scshape}
+\DeclareAcronym{irr}{short=irr,long=irrealis,short-format=\scshape}
+\DeclareAcronym{loc}{short=loc,long=locative,short-format=\scshape}
+\DeclareAcronym{m}{short=m,long=masculine,short-format=\scshape}
+\DeclareAcronym{n}{short=n,long=neuter,short-format=\scshape}
+\DeclareAcronym{neg}{short=neg,long=negation,short-format=\scshape}
+\DeclareAcronym{nmlz}{short=nmlz,long=nominalizer/nominalization,short-format=\scshape}
+\DeclareAcronym{nom}{short=nom,long=nominative,short-format=\scshape}
+\DeclareAcronym{obj}{short=obj,long=object,short-format=\scshape}
+\DeclareAcronym{obl}{short=obl,long=oblique,short-format=\scshape}
+\DeclareAcronym{p}{short=p,long=patient-like~argument~of~canonical~transitive~verb,short-format=\scshape}
+\DeclareAcronym{pass}{short=pass,long=passive,short-format=\scshape}
+\DeclareAcronym{pfv}{short=pfv,long=perfective,short-format=\scshape}
+\DeclareAcronym{pl}{short=pl,long=plural,short-format=\scshape}
+\DeclareAcronym{poss}{short=poss,long=possessive,short-format=\scshape}
+\DeclareAcronym{pred}{short=pred,long=predicative,short-format=\scshape}
+\DeclareAcronym{prf}{short=prf,long=perfect,short-format=\scshape}
+\DeclareAcronym{prs}{short=prs,long=present,short-format=\scshape}
+\DeclareAcronym{prog}{short=prog,long=progressive,short-format=\scshape}
+\DeclareAcronym{proh}{short=proh,long=prohibitive,short-format=\scshape}
+\DeclareAcronym{prox}{short=prox,long=proximal/proximate,short-format=\scshape}
+\DeclareAcronym{pst}{short=pst,long=past,short-format=\scshape}
+\DeclareAcronym{ptcp}{short=ptcp,long=participle,short-format=\scshape}
+\DeclareAcronym{purp}{short=purp,long=purposive,short-format=\scshape}
+\DeclareAcronym{q}{short=q,long=question~particle/marker,short-format=\scshape}
+\DeclareAcronym{quot}{short=quot,long=quotative,short-format=\scshape}
+\DeclareAcronym{recp}{short=recp,long=reciprocal,short-format=\scshape}
+\DeclareAcronym{refl}{short=refl,long=reflexive,short-format=\scshape}
+\DeclareAcronym{rel}{short=rel,long=relative,short-format=\scshape}
+\DeclareAcronym{res}{short=res,long=resultative,short-format=\scshape}
+\DeclareAcronym{s}{short=s,long=single~argument~of~canonical~intransitive~verb,short-format=\scshape}
+\DeclareAcronym{sbj}{short=sbj,long=subject,short-format=\scshape}
+\DeclareAcronym{sbjv}{short=sbjv,long=subjunctive,short-format=\scshape}
+\DeclareAcronym{sg}{short=sg,long=singular,short-format=\scshape}
+\DeclareAcronym{top}{short=top,long=topic,short-format=\scshape}
+\DeclareAcronym{tr}{short=tr,long=transitive,short-format=\scshape}
+\DeclareAcronym{voc}{short=voc,long=vocative,short-format=\scshape}
+\DeclareAcronym{1+2}{short=1+2,long=first~and~second~person,short-format=\scshape}
+\DeclareAcronym{1+3}{short=1+3,long=first~and~third~person,short-format=\scshape}
+\DeclareAcronym{abort}{short=abort,long=abortive,short-format=\scshape}
+\DeclareAcronym{act}{short=act,long=Actor,short-format=\scshape}
+\DeclareAcronym{ade}{short=ade,long=adessive,short-format=\scshape}
+\DeclareAcronym{adjz}{short=adjz,long=adjectivizer,short-format=\scshape}
+\DeclareAcronym{adm}{short=adm,long=admonitive,short-format=\scshape}
+\DeclareAcronym{adp}{short=adp,long=adposition,short-format=\scshape}
+\DeclareAcronym{advz}{short=advz,long=adverbalizer,short-format=\scshape}
+\DeclareAcronym{aff}{short=aff,long=affirmative,short-format=\scshape}
+\DeclareAcronym{agt}{short=agt,long=agent,short-format=\scshape}
+\DeclareAcronym{ana}{short=ana,long=anaphoric,short-format=\scshape}
+\DeclareAcronym{and}{short=and,long=andative,short-format=\scshape}
+\DeclareAcronym{anim}{short=anim,long=animate,short-format=\scshape}
+\DeclareAcronym{antiappl}{short=antiappl,long=antiapplicative,short-format=\scshape}
+\DeclareAcronym{antic}{short=antic,long=anticausative,short-format=\scshape}
+\DeclareAcronym{asp}{short=asp,long=aspect,short-format=\scshape}
+\DeclareAcronym{ass}{short=ass,long=associative,short-format=\scshape}
+\DeclareAcronym{atten}{short=atten,long=attenuative,short-format=\scshape}
+\DeclareAcronym{attr}{short=attr,long=attributive,short-format=\scshape}
+\DeclareAcronym{attrz}{short=attrz,long=attributivizer,short-format=\scshape}
+\DeclareAcronym{aug}{short=aug,long=augmentative,short-format=\scshape}
+\DeclareAcronym{av}{short=av,long=actor~voice,short-format=\scshape}
+\DeclareAcronym{cap}{short=cap,long=(cap-)ability,short-format=\scshape}
+\DeclareAcronym{cert}{short=cert,long=certainty,short-format=\scshape}
+\DeclareAcronym{cess}{short=cess,long=cessative,short-format=\scshape}
+\DeclareAcronym{circ}{short=circ,long=circumstantial,short-format=\scshape}
+\DeclareAcronym{cisl}{short=cisl,long=cislocative,short-format=\scshape}
+\DeclareAcronym{cit}{short=cit,long=citation~form,short-format=\scshape}
+\DeclareAcronym{cntr}{short=cntr,long=contrastive,short-format=\scshape}
+\DeclareAcronym{col}{short=col,long=collective,short-format=\scshape}
+\DeclareAcronym{compr}{short=compr,long=comparative,short-format=\scshape}
+\DeclareAcronym{conc}{short=conc,long=concessive,short-format=\scshape}
+\DeclareAcronym{cont}{short=cont,long=continuative,short-format=\scshape}
+\DeclareAcronym{cor}{short=cor,long=coreference,short-format=\scshape}
+\DeclareAcronym{cpl}{short=cpl,long=completive,short-format=\scshape}
+\DeclareAcronym{dei}{short=dei,long=deixis/deictic,short-format=\scshape}
+\DeclareAcronym{denmlz}{short=denmlz,long=denominalizer,short-format=\scshape}
+\DeclareAcronym{dep}{short=dep,long=dependent,short-format=\scshape}
+\DeclareAcronym{des}{short=des,long=desiderative,short-format=\scshape}
+\DeclareAcronym{detrz}{short=detrz,long=detransitivizer,short-format=\scshape}
+\DeclareAcronym{dim}{short=dim,long=diminutive,short-format=\scshape}
+\DeclareAcronym{dir}{short=dir,long=direct,short-format=\scshape}
+\DeclareAcronym{ditr}{short=ditr,long=ditransitive,short-format=\scshape}
+\DeclareAcronym{dm}{short=dm,long=discourse~marker,short-format=\scshape}
+\DeclareAcronym{do}{short=do,long=direct~object,short-format=\scshape}
+\DeclareAcronym{ds}{short=ds,long=different~subject,short-format=\scshape}
+\DeclareAcronym{dub}{short=dub,long=dubitative,short-format=\scshape}
+\DeclareAcronym{ela}{short=ela,long=elative,short-format=\scshape}
+\DeclareAcronym{emp}{short=emp,long=emphatic,short-format=\scshape}
+\DeclareAcronym{ep}{short=ep,long=epenthetic,short-format=\scshape}
+\DeclareAcronym{epis}{short=epis,long=epistemic~mood,short-format=\scshape}
+\DeclareAcronym{ess}{short=ess,long=essive,short-format=\scshape}
+\DeclareAcronym{evid}{short=evid,long=evidentiality,short-format=\scshape}
+\DeclareAcronym{exist}{short=exist,long=existential,short-format=\scshape}
+\DeclareAcronym{exp}{short=exp,long=experiental~or~direct~evidentiality,short-format=\scshape}
+\DeclareAcronym{eyewit}{short=eyewit,long=eyewitness,short-format=\scshape}
+\DeclareAcronym{fam}{short=fam,long=familiar~register,short-format=\scshape}
+\DeclareAcronym{fin}{short=fin,long=finite,short-format=\scshape}
+\DeclareAcronym{form}{short=form,long=formal~register,short-format=\scshape}
+\DeclareAcronym{freq}{short=freq,long=frequentative,short-format=\scshape}
+\DeclareAcronym{frust}{short=frust,long=frustrative,short-format=\scshape}
+\DeclareAcronym{g}{short=g,long=gender,short-format=\scshape}
+\DeclareAcronym{ger}{short=ger,long=gerund,short-format=\scshape}
+\DeclareAcronym{gno}{short=gno,long=gnomic,short-format=\scshape}
+\DeclareAcronym{goal}{short=goal,long=goal,short-format=\scshape}
+\DeclareAcronym{hab}{short=hab,long=habitual,short-format=\scshape}
+\DeclareAcronym{hest}{short=hest,long=hesternal~past,short-format=\scshape}
+\DeclareAcronym{hist}{short=hist,long=historical~past,short-format=\scshape}
+\DeclareAcronym{hod}{short=hod,long=hodiernal~past,short-format=\scshape}
+\DeclareAcronym{hon}{short=hon,long=honorative,short-format=\scshape}
+\DeclareAcronym{hort}{short=hort,long=hortative,short-format=\scshape}
+\DeclareAcronym{hsy}{short=hsy,long=hearsay/indirect~evidentiality,short-format=\scshape}
+\DeclareAcronym{hum}{short=hum,long=human,short-format=\scshape}
+\DeclareAcronym{hyp}{short=hyp,long=hypothetical,short-format=\scshape}
+\DeclareAcronym{ideo}{short=ideo,long=ideophone,short-format=\scshape}
+\DeclareAcronym{ignor}{short=ignor,long=ignorative,short-format=\scshape}
+\DeclareAcronym{ill}{short=ill,long=illative,short-format=\scshape}
+\DeclareAcronym{imm}{short=imm,long=immediate~past,short-format=\scshape}
+\DeclareAcronym{imperf}{short=imperf,long=imperfect,short-format=\scshape}
+\DeclareAcronym{imprs}{short=imprs,long=impersonal,short-format=\scshape}
+\DeclareAcronym{inal}{short=inal,long=inalienable,short-format=\scshape}
+\DeclareAcronym{inan}{short=inan,long=inanimate,short-format=\scshape}
+\DeclareAcronym{inch}{short=inch,long=inchoative,short-format=\scshape}
+\DeclareAcronym{incpl}{short=incpl,long=incompletive,short-format=\scshape}
+\DeclareAcronym{ine}{short=ine,long=inessive,short-format=\scshape}
+\DeclareAcronym{infr}{short=infr,long=inferred/conjectured~evidentiality,short-format=\scshape}
+\DeclareAcronym{int}{short=int,long=intermediate~past,short-format=\scshape}
+\DeclareAcronym{inten}{short=inten,long=intentional,short-format=\scshape}
+\DeclareAcronym{interj}{short=interj,long=interjection,short-format=\scshape}
+\DeclareAcronym{ints}{short=ints,long=intensifier,short-format=\scshape}
+\DeclareAcronym{inv}{short=inv,long=inverse,short-format=\scshape}
+\DeclareAcronym{invis}{short=invis,long=invisible,short-format=\scshape}
+\DeclareAcronym{io}{short=io,long=indirect~object,short-format=\scshape}
+\DeclareAcronym{iter}{short=iter,long=iterative,short-format=\scshape}
+\DeclareAcronym{jus}{short=jus,long=jussive,short-format=\scshape}
+\DeclareAcronym{lat}{short=lat,long=lative,short-format=\scshape}
+\DeclareAcronym{lk}{short=lk,long=linker,short-format=\scshape}
+\DeclareAcronym{med}{short=med,long=medial,short-format=\scshape}
+\DeclareAcronym{mid}{short=mid,long=middle,short-format=\scshape}
+\DeclareAcronym{min}{short=min,long=minimal,short-format=\scshape}
+\DeclareAcronym{mir}{short=mir,long=(ad)mirative,short-format=\scshape}
+\DeclareAcronym{mod}{short=mod,long=modal,short-format=\scshape}
+\DeclareAcronym{motimp}{short=motimp,long=motional~imperative,short-format=\scshape}
+\DeclareAcronym{mvt}{short=mvt,long=movement,short-format=\scshape}
+\DeclareAcronym{narr}{short=narr,long=narrative,short-format=\scshape}
+\DeclareAcronym{ncor}{short=ncor,long=non-coreference,short-format=\scshape}
+\DeclareAcronym{nfut}{short=nfut,long=non-future,short-format=\scshape}
+\DeclareAcronym{nhum}{short=nhum,long=non-human,short-format=\scshape}
+\DeclareAcronym{nonf}{short=nonf,long=nonfinite,short-format=\scshape}
+\DeclareAcronym{nposs}{short=nposs,long=unpossessed,short-format=\scshape}
+\DeclareAcronym{npst}{short=npst,long=non-past,short-format=\scshape}
+\DeclareAcronym{nrec}{short=nrec,long=non-recent~past,short-format=\scshape}
+\DeclareAcronym{nsg}{short=nsg,long=non-singular,short-format=\scshape}
+\DeclareAcronym{nspec}{short=nspec,long=non-specific,short-format=\scshape}
+\DeclareAcronym{obv}{short=obv,long=obviative,short-format=\scshape}
+\DeclareAcronym{opt}{short=opt,long=optative,short-format=\scshape}
+\DeclareAcronym{part}{short=part,long=particle,short-format=\scshape}
+\DeclareAcronym{pat}{short=pat,long=patient,short-format=\scshape}
+\DeclareAcronym{pauc}{short=pauc,long=paucal,short-format=\scshape}
+\DeclareAcronym{pej}{short=pej,long=pejorativre,short-format=\scshape}
+\DeclareAcronym{per}{short=per,long=perlative,short-format=\scshape}
+\DeclareAcronym{perm}{short=perm,long=permissive,short-format=\scshape}
+\DeclareAcronym{pert}{short=pert,long=pertensive,short-format=\scshape}
+\DeclareAcronym{plup}{short=plup,long=pluperfect,short-format=\scshape}
+\DeclareAcronym{pnct}{short=pnct,long=punctual,short-format=\scshape}
+\DeclareAcronym{po}{short=po,long=primary~object,short-format=\scshape}
+\DeclareAcronym{pol}{short=pol,long=polite,short-format=\scshape}
+\DeclareAcronym{posimp}{short=posimp,long=positional~imperative,short-format=\scshape}
+\DeclareAcronym{poste}{short=poste,long=postessive,short-format=\scshape}
+\DeclareAcronym{postp}{short=postp,long=postposition,short-format=\scshape}
+\DeclareAcronym{pot}{short=pot,long=potential,short-format=\scshape}
+\DeclareAcronym{prep}{short=prep,long=preposition,short-format=\scshape}
+\DeclareAcronym{priv}{short=priv,long=privative,short-format=\scshape}
+\DeclareAcronym{pro}{short=pro,long=pronoun,short-format=\scshape}
+\DeclareAcronym{prob}{short=prob,long=probability,short-format=\scshape}
+\DeclareAcronym{pros}{short=pros,long=prosecutive,short-format=\scshape}
+\DeclareAcronym{ptv}{short=ptv,long=partitive,short-format=\scshape}
+\DeclareAcronym{r}{short=R,long=recipient-like~argument~in~ditransitive~clause,short-format=\scshape}
+\DeclareAcronym{real}{short=real,long=realis,short-format=\scshape}
+\DeclareAcronym{reas}{short=reas,long=reason,short-format=\scshape}
+\DeclareAcronym{rec}{short=rec,long=recent~past,short-format=\scshape}
+\DeclareAcronym{ref}{short=ref,long=referential,short-format=\scshape}
+\DeclareAcronym{reit}{short=reit,long=reiterative,short-format=\scshape}
+\DeclareAcronym{rem}{short=rem,long=remote~past,short-format=\scshape}
+\DeclareAcronym{rep}{short=rep,long=repetitive,short-format=\scshape}
+\DeclareAcronym{resum}{short=resum,long=resumptive,short-format=\scshape}
+\DeclareAcronym{rev}{short=rev,long=reversative,short-format=\scshape}
+\DeclareAcronym{sa}{short=S\textsubscript{A},long=S~marked~like~A,short-format=\scshape}
+\DeclareAcronym{sp}{short=S\textsubscript{P},long=S~marked~like~P,short-format=\scshape}
+\DeclareAcronym{sap}{short=sap,long=speech~act~participant,short-format=\scshape}
+\DeclareAcronym{sem}{short=sem,long=semelfactive,short-format=\scshape}
+\DeclareAcronym{seq}{short=seq,long=sequential,short-format=\scshape}
+\DeclareAcronym{sim}{short=sim,long=similative,short-format=\scshape}
+\DeclareAcronym{so}{short=so,long=secondary~object,short-format=\scshape}
+\DeclareAcronym{spec}{short=spec,long=specifier,short-format=\scshape}
+\DeclareAcronym{src}{short=src,long=source,short-format=\scshape}
+\DeclareAcronym{ss}{short=ss,long=same~subject,short-format=\scshape}
+\DeclareAcronym{stat}{short=stat,long=stative,short-format=\scshape}
+\DeclareAcronym{subr}{short=subr,long=subordinator,short-format=\scshape}
+\DeclareAcronym{sup}{short=sup,long=supine,short-format=\scshape}
+\DeclareAcronym{supl}{short=supl,long=superlative,short-format=\scshape}
+\DeclareAcronym{t}{short=T,long=theme-like~argument~in~ditransitive~clause,short-format=\scshape}
+\DeclareAcronym{tel}{short=tel,long=telic,short-format=\scshape}
+\DeclareAcronym{temp}{short=temp,long=temporal,short-format=\scshape}
+\DeclareAcronym{term}{short=term,long=terminative,short-format=\scshape}
+\DeclareAcronym{tns}{short=tns,long=tense,short-format=\scshape}
+\DeclareAcronym{transl}{short=transl,long=translative,short-format=\scshape}
+\DeclareAcronym{trl}{short=trl,long=trial,short-format=\scshape}
+\DeclareAcronym{trz}{short=trz,long=transitivizer,short-format=\scshape}
+\DeclareAcronym{uncert}{short=uncert,long=uncertainty,short-format=\scshape}
+\DeclareAcronym{und}{short=und,long=Undergoer,short-format=\scshape}
+\DeclareAcronym{uv}{short=uv,long=undergoer~voice,short-format=\scshape}
+\DeclareAcronym{v}{short=v,long=verb(al),short-format=\scshape}
+\DeclareAcronym{vbz}{short=vbz,long=verbalizer,short-format=\scshape}
+\DeclareAcronym{ven}{short=ven,long=venitive,short-format=\scshape}
+\DeclareAcronym{vet}{short=vet,long=vetative,short-format=\scshape}
+\DeclareAcronym{vis}{short=vis,long=visible,short-format=\scshape}
+}
+\ExplSyntaxOff
+
+\gathertags
+\lingset{everygla=}
+
+\ExplSyntaxOn
+\str_if_eq:VnTF \l_refmode_tl {expex} {
+    \ProvideDocumentCommand{\exref}{ o m }{
+        \IfValueTF{#1} {
+            (\getfullref{#1}--\getref{#2})
+        }{
+            (\getfullref{#2})
+        }
+    }
+} {
+    \ProvideDocumentCommand{\exref}{ o o m }{
+        \IfValueTF{#1} {
+            \IfValueTF{#2} {
+                (\ref{#3}-\ref{#2}#1)
+            }{
+                (\ref{#3}#1)
+            }
+        }{
+            \IfValueTF{#2} {
+                (\ref{#3}-\ref{#2})
+            }{
+                (\ref{#3})
+            }
+
+        }
+
+    }
+}
+
+
+\ProvideDocumentCommand{\exrefnil}{ o m }{
+\IfValueTF{#1} {
+    (\getref{#1}--\getref{#2})
+}{
+    (\getref{#2})
+}
+}
+
+\providecommand{\mexref}[2][, ]{%
+(%
+  \def\nextitem{\def\nextitem{#1}}% Separator
+  \renewcommand*{\do}[1]{\nextitem\getfullref{##1}}% How to process each item
+  \docsvlist{#2}% Process list
+)%
+}
+
+\providecommand{\gl}[1]{\acs{#1}}
+
+\providecommand{\newGlossingAbbrev}[2]{
+    \DeclareAcronym{#1}{
+        short=#1,
+        long=#2,
+        short-format=\scshape,
+        }
+    }
+
+\newcommand{\glossingAbbrevsList}{
+    \printacronyms[
+        template=glossinglist,
+        name=Glossing abbreviations,
+        heading=none
+        ]
+    }
+
+\providecommand{\obj}[1]{\textit{#1}}
+
+\providecommand{\qu}[1]{‘#1’}
+
+\newcommand{\rc}[1]{*\textit{#1}}
+
+\providecommand{\ort}[1]{$\langle$#1$\rangle$}
+
+\providecommand{\pnt}[1]{[#1]}
+
+\providecommand{\pnm}[1]{/#1/}
+
+\providecommand{\dbqu}[1]{“#1”}
+
+\providecommand{\ungr}[1]{*\textit{#1}}
+
+\providecommand{\bad}[1]{?\textit{#1}}
+
+\providecommand{\lxm}[1]{\textsc{#1}}
+\endinput
+%%
+%% End of file `expex-acro.sty'.
