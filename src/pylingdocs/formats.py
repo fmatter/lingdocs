@@ -496,7 +496,7 @@ class GitHub(PlainText):
         return f"<a href='#{url}'>click</a>"
 
     def label_cmd(cls, url, *_args, **_kwargs):
-        return f"<a id>='{url}'><a/>"
+        return ""
 
     def gloss_cmd(cls, url, *_args, **_kwargs):
         return url.upper()
