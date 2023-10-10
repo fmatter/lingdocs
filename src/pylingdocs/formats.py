@@ -119,7 +119,7 @@ class OutputFormat:
         if not cls.ref_labels:
             return "[No figure references found]"
         filename = cls.figure_metadata[url].get("filename", "")
-        return f"({cls.ref_labels[f'fig:{url}']}: {filename})"
+        return f"({cls.ref_labels[f'fig:{url}']}: {cls.figure_dir}/{filename})"
 
     def decorate_gloss_string(cls, x):
         return decorate_gloss_string(x, decoration=lambda x: x.upper())

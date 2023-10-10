@@ -4,6 +4,7 @@ function numberExamples() {
     var exrefs = document.querySelectorAll("a.exref");
     for (var exc = 0; exc < examples.length; exc++) {
         ex = examples[exc]
+        console.log(ex.id)
         ex.setAttribute("value", exc + 1)
         var subexamplesol = ex.querySelector("ol.subexample");
         if (subexamplesol) {

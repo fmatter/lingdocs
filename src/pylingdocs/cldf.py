@@ -107,16 +107,17 @@ def create_cldf(
     content = "\n\n".join([x["content"] for x in chapter_dic.values()])
     check_abbrevs(ds, source_dir, content)
     metadata_dict = _load_metadata(metadata_file)
-    CLLD.figure_metadata = load_figure_metadata(source_dir)
+    clld = CLLD()
+    clld.figure_metadata = load_figure_metadata(source_dir)
     preprocessed = preprocess(content, source_dir)
-    preprocessed = CLLD.preprocess_commands(preprocessed, **kwargs)
+    preprocessed = clld.preprocess_commands(preprocessed, **kwargs)
     preprocessed = render_markdown(
         preprocessed,
         ds,
         decorate_gloss_string=CLLD.decorate_gloss_string,
-        output_format="clld",
+        builder=clld,
     )
-    preprocessed = "\n" + postprocess(preprocessed, CLLD, source_dir)
+    preprocessed = "\n" + postprocess(preprocessed, clld, source_dir)
     tent = preprocessed.replace(
         "![](", "![](/static/images/"
     )  # rudely assume that all images live in the static dir
