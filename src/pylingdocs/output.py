@@ -333,22 +333,17 @@ def create_output(
     )
     figure_metadata = load_figure_metadata(source_dir)
     for output_format in formats:
-        log.info(f"Building {output_format} output")
-        with tqdm(total=10) as pbar:
+        with tqdm(total=6, desc=f"Building {output_format} output") as pbar:
             builder = builders[output_format]
             builder.figure_metadata = figure_metadata
             content = "\n\n".join([x["content"] for x in contents.values()])
             pbar.update(1)
             chapters = extract_chapters(content)
-            pbar.update(1)
             ref_labels, ref_locations = process_labels(chapters)
-            pbar.update(1)
             preprocessed = preprocess(content, source_dir)
-            pbar.update(1)
             builder.ref_labels = ref_labels
             builder.ref_locations = ref_locations
             preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
-            pbar.update(1)
             preprocessed = render_markdown(
                 preprocessed,
                 dataset,
