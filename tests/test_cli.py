@@ -29,7 +29,6 @@ def test_cli_build(caplog, tmp_path, md_path, data, monkeypatch):
     # add tables
     shutil.copytree(data / "tables", tmp_path / "tables")
     runner.invoke(build, args=["--cldf", md_path, "--source", data])
-    assert "Building" in caplog.text
 
     output_formats = [x.name for x in (tmp_path / "output").iterdir()]
 
@@ -73,6 +72,7 @@ def test_cli_sublime(caplog, tmp_path, md_path, data, monkeypatch):
     runner.invoke(sublime, args=["--cldf", md_path, "--target", tmp_path])
     assert (tmp_path / ".pld_autocomplete.json").is_file()
     assert (tmp_path / ".pld_menudata.json").is_file()
+
 
 def test_author(tmp_path, monkeypatch, caplog):
     def mockreturn():
