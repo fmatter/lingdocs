@@ -470,6 +470,14 @@ class MkDocs(HTML):
     def label_cmd(cls, url, *_args, **_kwargs):
         return f"{{ #{url} }}"
 
+    def ref_cmd(cls, url, *_args, **_kwargs):
+        if url in cls.ref_labels and url in cls.ref_locations:
+            kw_str = " ".join([f"""{x}="{y}" """ for x, y in _kwargs.items()])
+            return f"[{cls.ref_labels[url]}](site:/{cls.ref_locations[url]}#{url})"
+            return f"<a href='site:/{cls.ref_locations[url]}#{url}' class='crossref' name='{url}' {kw_str}>{cls.ref_labels[url]}</a>"
+        log.warning(f"Could not find reference {url}")
+        return f"(n/a: {url})"
+
     def todo_cmd(cls, url, *_args, **_kwargs):
         return mkdocs_todo(url, **_kwargs)
 
