@@ -12,12 +12,21 @@
 \cite{{page_string}}{%raw%}{{%endraw%}{{bibkey}}{%raw%}}{%endraw%}
 {%- endmacro %}
 
+{% macro txt_src(ctx) -%}
+{% if data is undefined %}
+{{ctx.data["Text_ID"]}}{% if ctx.data["Sentence_Number"] %}: {{ctx.data["Sentence_Number"]}}{%endif%}{% if ctx.data["Phrase_Number"] %} ({{ctx.data["Phrase_Number"]}}){%endif%}
+{% else %}
+{{link(data["examples"][ctx.id].text, anchor=ctx.id, html=True)}}{% if ctx.data["Record_Number"] %}: {{ctx.data["Record_Number"]}}{%endif%}
+{% endif %}
+{%- endmacro %}
+
 {% macro get_src_string (ctx, source=None) -%}
 {% if source %}
 {{source}}
 {% elif ctx.references %}
 {{references(ctx.references)}}
-{% else %}
+{% elif "Text_ID" in ctx.data %}
+{{txt_src(ctx)}}{% else %}
 personal knowledge
 {% endif %}
 {%- endmacro %}

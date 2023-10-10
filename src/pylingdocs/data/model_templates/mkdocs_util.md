@@ -71,6 +71,7 @@
 {% endif %}
 <a href='site:references/#source-{{ref.source.id}}'>{{ref.source.refkey(year_brackets=None)}}</a>{{page_string}}{% elif "Text_ID" in ctx.data %}
 {{txt_src(ctx)}}{% else %}
+personal knowledge
 {% endif %}
 {%- endmacro %}
 
