@@ -96,9 +96,9 @@ class OutputFormat:
             if cls.ref_labels:
                 return cls.ref_labels[url] + f"–{end}"
             return f"[ref/{url}–{end}]"
-        if cls.ref_labels:
+        if cls.ref_labels and url in cls.ref_labels:
             return cls.ref_labels[url]
-        return f"[ref/{url}]"
+        return f"[N/A: {url}]"
 
     def label_cmd(cls, url, *_args, **_kwargs):
         return f"[{url}]"
