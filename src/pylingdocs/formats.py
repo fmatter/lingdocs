@@ -13,6 +13,7 @@ from jinja2 import Environment, FileSystemLoader, PackageLoader
 from jinja2.exceptions import TemplateNotFound
 from tqdm import tqdm
 from writio import dump, load
+from slugify import slugify
 
 from pylingdocs.config import (
     DATA_DIR,
@@ -478,7 +479,6 @@ class MkDocs(HTML):
         if url in cls.ref_labels and url in cls.ref_locations:
             kw_str = " ".join([f"""{x}="{y}" """ for x, y in _kwargs.items()])
             return f"[{cls.ref_labels[url]}](site:/{cls.ref_locations[url]}#{url})"
-            return f"<a href='site:/{cls.ref_locations[url]}#{url}' class='crossref' name='{url}' {kw_str}>{cls.ref_labels[url]}</a>"
         log.warning(f"Could not find reference {url}")
         return f"(n/a: {url})"
 
@@ -491,9 +491,14 @@ class GitHub(PlainText):
     file_ext = "md"
 
     def ref_cmd(cls, url, *_args, **_kwargs):
-        if "tab:" in str(url):
-            return "[Table]"
-        return f"<a href='#{url}'>click</a>"
+        end = _kwargs.pop("end", None)
+        if end:
+            if cls.ref_labels:
+                return f"<a href='#{url}'>{cls.ref_labels[url]}–{end}</a>"
+            return f"[n/a:{url}–{end}]"
+        if cls.ref_labels and url in cls.ref_labels:
+            return f"[{cls.ref_labels[url]}](#{url})"
+        return f"[n/a: {url}]"
 
     def label_cmd(cls, url, *_args, **_kwargs):
         return ""
@@ -655,8 +660,13 @@ class Latex(PlainText):
         return "\\glossingAbbrevsList"
 
     def preprocess(cls, content):
+        out = []
+        for line in content.split("\n"):
+            if line.startswith("#") and "\\label" not in line:
+                line = line + f"\\label{{{slugify(line)}}}"
+            out.append(line)
         doc = panflute.convert_text(
-            content,
+            "\n".join(out),
             output_format="latex",
             input_format="markdown-auto_identifiers",
             extra_args=[f"--top-level-division={LATEX_TOPLEVEL}"],
