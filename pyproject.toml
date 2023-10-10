@@ -49,6 +49,9 @@ isolated_build = true
 toxworkdir = "/tmp/.pylingdocs_tox"
 commands = "pytest tests/ --import-mode importlib"
 
+[tool.pytest.ini_options]
+testpaths = "tests"
+
 [other]
 pandas = [
     { version = "2.0.3", python = "~3.8"},

@@ -256,7 +256,11 @@ class OutputFormat:
         return content
 
     def table(cls, df, caption, label):
-        # del label  # unused
+        label = f"tab:{label}"
+        if label in cls.ref_labels:
+            caption = f"{cls.ref_labels[label]}: {caption}"
+        else:
+            log.warning(f"Unknown table {label}")
         tabular = df.to_markdown(index=False, tablefmt="grid")
         if not caption:
             return tabular
