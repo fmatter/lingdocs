@@ -243,7 +243,7 @@ def _src(string, mode="cldfviz", full=False):
 
 
 def src(cite_input, mode="cldfviz", parens=False, full=False):
-    if cite_input == "":
+    if cite_input == "" or cite_input == []:
         log.warning("Empty citation")
         return ""
     if isinstance(cite_input, list):
