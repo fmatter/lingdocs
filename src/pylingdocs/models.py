@@ -1,6 +1,7 @@
 import logging
-from pathlib import Path
 import sys
+from pathlib import Path
+
 import pycldf
 from clldutils import jsonlib
 
@@ -20,14 +21,6 @@ class Base:
     """The CLDF table corresponding to the model."""
     shortcut = "chgme"
     """The shortcut which will be used when writing: ``[<shortcut>](<id>)``."""
-    # templates = {
-    #     "inline": {"plain": "{{ ctx.name }}"},
-    #     "list": {"plain": "{% for x in ctx %} {{ x['Name'] }}{% endfor %}"},
-    #     "detail": {"plain": "# {{ ctx.name }}"},
-    # }
-    """A dictionary of long jinja templates (not shown here)
-
-       :meta hide-value:"""
 
     def _compile_cldfviz_args(self, args, kwargs):
         arguments = "&".join(args)

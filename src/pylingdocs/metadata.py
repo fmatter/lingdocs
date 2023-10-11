@@ -1,29 +1,8 @@
 """Various helpers"""
-import json
 import logging
-from datetime import datetime
-from pathlib import Path
-from writio import load
-import yaml
-from pybtex.database import BibliographyData, Entry
-from slugify import slugify
-
-from pylingdocs.config import DATA_DIR
 
 ORCID_STR = "https://orcid.org/"
 log = logging.getLogger(__name__)
-
-# def _read_metadata_file(metadata_file=METADATA_FILE, source_dir="."):
-#     metadata_file = source_dir / Path(metadata_file)
-#     if metadata_file.is_file():
-#         with open(metadata_file, encoding="utf-8") as f:
-#             return yaml.load(f, Loader=yaml.SafeLoader)
-#     else:
-#         log.warning(
-#             f"Metadata file {metadata_file.resolve()} not found, please create one."
-#         )
-#         return {}
-
 
 bibtex_repl = {"location": "address"}
 bibtex_rev = {y: x for x, y in bibtex_repl.items()}
@@ -90,15 +69,3 @@ def _fill_repo(md):
 #         {bibkey: Entry(entry_type, list(bibtex_fields.items()))}
 #     )
 #     return bib_data
-
-
-# def _load_metadata(metadata_file=METADATA_FILE):
-#     md = _read_metadata_file(metadata_file)
-#     _fill_repo(md)
-#     if "authors" in md:
-#         for author in md["authors"]:
-#             if "orcid" in author and "http" not in author["orcid"]:
-#                 author["orcid"] = ORCID_STR + author["orcid"]
-#     if "license" in md:
-#         md["license"] = _license_url(md["license"])
-#     return md

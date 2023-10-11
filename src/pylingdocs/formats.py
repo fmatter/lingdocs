@@ -3,18 +3,18 @@ import logging
 import re
 import shutil
 import sys
-from pathlib import Path
+import threading
 from http.server import SimpleHTTPRequestHandler, test
+from pathlib import Path
 
 import panflute
 from cookiecutter.main import cookiecutter
 from jinja2 import Environment, PackageLoader
 from jinja2.exceptions import TemplateNotFound
-from writio import load
 from slugify import slugify
-import threading
+from writio import load
 
-from pylingdocs.config import DATA_DIR, PLD_DIR, MD_LINK_PATTERN, config
+from pylingdocs.config import DATA_DIR, MD_LINK_PATTERN, PLD_DIR, config
 from pylingdocs.helpers import (
     decorate_gloss_string,
     get_sections,
@@ -55,7 +55,6 @@ def mkdocs_todo(url, **kwargs):
 def latex_todo(url, **kwargs):
     if kwargs.get("release", False):
         return ""
-    return ""
     return f"\\todo{{{url}}}"
 
 
@@ -73,8 +72,8 @@ class OutputFormat:
     single_output = True
     figure_metadata = {}
     figure_dir = "figures"
-    ref_labels = None
-    ref_locations = None
+    ref_labels = {}
+    ref_locations = {}
     data_dir = "data"
     fallback_layout = "basic"
 
@@ -264,7 +263,7 @@ class OutputFormat:
         tabular = df.to_markdown(index=False, tablefmt="grid")
         if not caption:
             return tabular
-        return caption + f":\n\n" + tabular
+        return f"{caption}:\n\n{tabular}"
 
     def manex(cls, tag, content, kind):
         del kind  # unused
@@ -285,7 +284,6 @@ class OutputFormat:
         log.warning(
             f"Not rendering live preview for format {cls.name} {config['paths']['output'].resolve()}"
         )
-        pass
 
 
 class PlainText(OutputFormat):
@@ -491,7 +489,7 @@ class MkDocs(HTML):
 
     def ref_cmd(cls, url, *_args, **_kwargs):
         if url in cls.ref_labels and url in cls.ref_locations:
-            kw_str = " ".join([f"""{x}="{y}" """ for x, y in _kwargs.items()])
+            # kw_str = " ".join([f"""{x}="{y}" """ for x, y in _kwargs.items()]) # todo: is this needed for refs?
             return f"[{cls.ref_labels[url]}](site:/{cls.ref_locations[url]}#{url})"
         log.warning(f"Could not find reference {url}")
         return f"(n/a: {url})"

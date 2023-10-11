@@ -1,8 +1,9 @@
-from writio import load
-from pathlib import Path
-from importlib_resources import files  # pragma: no cover
-import re
 import logging
+import re
+from pathlib import Path
+
+from importlib_resources import files  # pragma: no cover
+from writio import load
 
 log = logging.getLogger(__name__)
 

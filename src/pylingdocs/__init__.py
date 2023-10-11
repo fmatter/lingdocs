@@ -2,7 +2,9 @@
 
 
 import logging
+
 import colorlog
+
 from pylingdocs.config import LOG_LEVEL
 
 handler = colorlog.StreamHandler(None)

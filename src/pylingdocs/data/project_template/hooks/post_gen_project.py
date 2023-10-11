@@ -2,6 +2,7 @@ from configparser import ConfigParser
 from pathlib import Path
 
 import cookiecutter
+from writio import dump
 
 from pylingdocs.cldf import generate_autocomplete
 from pylingdocs.helpers import _load_cldf_dataset
@@ -16,10 +17,10 @@ def remove_file(filename):
 def create_file(file):
     filename = file + ".md"
     filepath = PROJECT_DIR / "content" / filename
-    with open(filepath, "w") as f:
-        f.write(
-            f"# {file.capitalize()} [label]({file})\n\nInsert your content here (find this file at {filepath.resolve()})"
-        )
+    dump(
+        f"# {file.capitalize()} [label]({file})\n\nInsert your content here (find this file at {filepath.resolve()})",
+        filepath,
+    )
 
 
 if "No license" == "{{ cookiecutter.license }}":

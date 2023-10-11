@@ -6,7 +6,7 @@ import re
 import sys
 import tempfile
 from pathlib import Path
-import re
+
 import pandas as pd
 import panflute
 import pybtex
@@ -15,33 +15,14 @@ from cookiecutter.main import cookiecutter
 from jinja2.runtime import Undefined
 from pycldf import Dataset, Source
 from slugify import slugify
-from writio import load
+from writio import dump, load
 
-from pylingdocs import __version__
 from pylingdocs.config import (
-    # ABBREV_FILE,
-    # ADD_BIB,
-    # CLDF_MD,
-    # CLLD_URI,
-    # CONF_PATH,
-    # CONTENT_FILE_PREFIX,
-    # CONTENT_FOLDER,
+    CONTENT_FOLDER,
     DATA_DIR,
     FIGURE_DIR,
+    STRUCTURE_FILE,
     TABLE_DIR,
-    # EX_SHOW_LG,
-    # EX_SHOW_PRIMARY,
-    # EX_SRC_POS,
-    # FIGURE_DIR,
-    # FIGURE_MD,
-    # LFTS_SHOW_FTR,
-    # LFTS_SHOW_LG,
-    # LFTS_SHOW_SOURCE,
-    # METADATA_FILE,
-    # PLD_DIR,
-    # STRUCTURE_FILE,
-    # TABLE_DIR,
-    # TABLE_MD,
     config,
 )
 from pylingdocs.metadata import ORCID_STR
@@ -79,7 +60,7 @@ def parse_heading(string):
     attr_list = re.search("({.*?})", title)
     if attr_list:
         attr_list = attr_list.group()
-        tag = re.findall("#(.*?)\s+}", attr_list)[0]
+        tag = re.findall(r"#(.*?)\s+}", attr_list)[0]
         title = title.replace(attr_list, "")
     else:
         tag = slugify(title, allow_unicode=True)
@@ -105,7 +86,7 @@ def get_glosses(word, gloss_cands):
 
 def print_counter(counters):
     out = []
-    for lvl, value in counters.items():
+    for value in counters.values():
         if value != 0:
             out.append(str(value))
         else:
@@ -124,7 +105,7 @@ def extract_chapters(content, mode="pld"):
         label_pattern = re.compile(r"(?P<title>.*?)\s+\{\s?\#(?P<id>.*?)\s?\}")
     for line in content.split("\n"):
         if line.startswith("# "):
-            prefix, title = line.split("# ", 1)
+            title = line.split("# ", 1)[1]
             attr_list = label_pattern.search(title)
             if attr_list:
                 attr_list = attr_list.groupdict()
@@ -137,18 +118,16 @@ def extract_chapters(content, mode="pld"):
     return chapters
 
 
-def process_labels(chapters, float_ch_prefixes=True, mode="pld"):
+def process_labels(chapters, float_ch_prefixes=True):
     labels = {}
     locations = {}
     counters = {str(i): 0 for i in range(1, SECDEPTH)}
     counters["table"] = 0
     counters["figure"] = 0
-    chapter_pattern = r"(?m)^(# (.*?))"
-    heading_pattern = re.compile("#+ (?P<title>.*?) \[label\]\((?P<id>.*?)\)")
+    heading_pattern = re.compile(r"#+ (?P<title>.*?) \[label\]\((?P<id>.*?)\)")
     tpattern = re.compile(r"\[table\]\((?P<id>.*?)\)")
     fpattern = re.compile(r"\[figure\]\((?P<id>.*?)\)")
-    for chno, (chid, chapter) in enumerate(chapters.items()):
-        # input(parse_heading(chapter.split("\n")[0]))
+    for chid, chapter in chapters.items():
         if float_ch_prefixes:
             counters["table"] = 0
             counters["figure"] = 0
@@ -229,7 +208,7 @@ def check_abbrevs(dataset, source_dir, content):
     return abbrev_dict
 
 
-def _src(string, mode="cldfviz", full=False):
+def _src(string, mode="cldfviz"):
     bibkey, pages = split_ref(string)
     if mode == "cldfviz":
         if pages:
@@ -248,7 +227,7 @@ def _src(string, mode="cldfviz", full=False):
 
 
 def src(cite_input, mode="cldfviz", parens=False, full=False):
-    if cite_input == "" or cite_input == []:
+    if cite_input in ["", []]:
         log.warning("Empty citation")
         return ""
     if isinstance(cite_input, list):
@@ -256,7 +235,7 @@ def src(cite_input, mode="cldfviz", parens=False, full=False):
     else:
         citations = []
         for x in re.finditer(r"[A-Za-z0-9]+(\[[^\]]*])?", cite_input):
-            citations.append(_src(x.group(0), mode=mode, full=full))
+            citations.append(_src(x.group(0), mode=mode))
     if mode == "biblatex":
         if full:
             return "\\fullcite" + "".join(citations)
@@ -338,8 +317,7 @@ def combine_sources(source_list, sep="; "):
                 if pages:
                     if not bibdict[bibkey]:
                         raise ValueError(f"Citing {bibkey} with and without pages")
-                    else:
-                        bibdict[bibkey].extend(pages.split(","))
+                    bibdict[bibkey].extend(pages.split(","))
                 elif bibdict[bibkey]:
                     raise ValueError(f"Citing {bibkey} with and without pages")
             else:
@@ -499,47 +477,32 @@ def write_content_file(
 
 
 def read_config_file(kind):
-    def getfile(path, mode="yaml"):
-        if Path(path).is_file():
-            if mode == "yaml":
-                return yaml.load(
-                    open(path, "r", encoding="utf-8"), Loader=yaml.SafeLoader
-                )
-            if mode == "plain":
-                return open(path, "r", encoding="utf-8").read()
-            raise ValueError(f"Unknown mode for reading config files: '{mode}'")
-        log.warning(f"File {path} does not exist.")
-        return []
-
     if kind == "settings":
-        return getfile(CONF_PATH, mode="plain")
+        return load("config.yaml")
     if kind == "metadata":
-        return getfile(METADATA_FILE)
+        return load("metadata.yaml")
     if kind == "structure":
-        return getfile(CONTENT_FOLDER / STRUCTURE_FILE)
+        return load(CONTENT_FOLDER / STRUCTURE_FILE)
     if kind == "figures":
-        return getfile(FIGURE_DIR / FIGURE_MD)
+        return load(FIGURE_DIR / "metadata.yaml")
     if kind == "tables":
-        return getfile(TABLE_DIR / TABLE_MD)
+        return load(TABLE_DIR / "metadata.yaml")
     log.error(f"Invalid config file name: {kind}")
     raise ValueError
 
 
 def write_config_file(kind, content):
-    def writefile(file, content):
-        with open(file, "w", encoding="utf-8") as f:
-            f.write(content)
-
+    input(f"Writing kind {kind}")
     if kind == "settings":
-        writefile(CONF_PATH, content)
+        dump(content, "config.yaml")
     elif kind == "metadata":
-        writefile(METADATA_FILE, content)
+        dump(content, "metadata.yaml")
     elif kind == "structure":
-        writefile(CONTENT_FOLDER / STRUCTURE_FILE, content)
+        dump(content, CONTENT_FOLDER / STRUCTURE_FILE)
     elif kind == "figures":
-        writefile(FIGURE_DIR / FIGURE_MD, content)
+        dump(content, FIGURE_DIR / "metadata.yaml")
     elif kind == "tables":
-        writefile(TABLE_DIR / TABLE_MD, content)
+        dump(content, TABLE_DIR / "metadata.yaml")
     else:
         log.error(f"Invalid config file name: {kind}")
         raise ValueError
@@ -673,22 +636,11 @@ def is_gloss_abbr_candidate(part, parts, j):
     )
 
 
-# Splits a word up into morphemes and glossing_delimiters
 def split_word(word):
+    """Splits a word up into morphemes and glossing_delimiters"""
     parts = re.split(r"([" + "|".join(glossing_delimiters) + "])", word)
     parts = [x for x in parts if x != ""]
     return parts
-    # old code
-    # output = []
-    # char_list = list(word)
-    # for char in char_list:
-    #     if len(output) == 0 or (
-    #         char in glossing_delimiters or output[-1] in glossing_delimiters
-    #     ):
-    #         output.append(char)
-    #     else:
-    #         output[-1] += char
-    # return output
 
 
 def resolve_glossing_combination(input_string):
@@ -760,7 +712,7 @@ def refresh_clld_db(clld_folder):
     if spec:
         from clld_document_plugin.util import refresh_documents  # noqa: E402
 
-        refresh_documents(CLLD_URI, chapters)
+        refresh_documents(config["clld"]["db_uri"], chapters)
     else:
         log.error("clld-document-plugin not found")
 
@@ -918,6 +870,7 @@ def get_rich_label(item, preferred="Name"):
             if cand == "Title":
                 return f"“{item[cand]}”"
             return item[cand]
+    return "(n/a)"
 
 
 def link(item, anchor=None, mode="html", preferred="Name", label=None):
@@ -930,6 +883,7 @@ def link(item, anchor=None, mode="html", preferred="Name", label=None):
         if mode == "html":
             return f"""<a href="site:data/{item.table.label}/{item['ID']}/{anchor_text}">{label}</a>"""
         raise ValueError(mode)
+    return ""
 
 
 def lfts_link(

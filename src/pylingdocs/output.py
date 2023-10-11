@@ -3,47 +3,36 @@ import logging
 import re
 import shutil
 import subprocess
-import threading
-from http.server import SimpleHTTPRequestHandler, test
 from pathlib import Path, PosixPath
-from cldf_rel import get_table_name
-from writio import dump
-from writio import load
-from jinja2 import Environment, FileSystemLoader, DictLoader
 
 import hupper
-from cldf_rel import CLDFDataset
-
-from pylingdocs.config import (
-    BENCH,
-    CONTENT_FOLDER,
-    STRUCTURE_FILE,
-    config,
-)
+from cldf_rel import CLDFDataset, get_table_name
+from cldfviz.text import render
 from tqdm import tqdm
+from writio import dump, load
+
+from pylingdocs.config import BENCH, CONTENT_FOLDER, STRUCTURE_FILE, config
 from pylingdocs.formats import builders
 from pylingdocs.helpers import (
-    func_dict,
     _get_relative_file,
     _load_cldf_dataset,
     check_abbrevs,
     extract_chapters,
+    func_dict,
     get_structure,
     load_content,
     load_figure_metadata,
     process_labels,
     read_file,
-    refresh_clld_db,
     write_file,
 )
 from pylingdocs.postprocessing import postprocess
 from pylingdocs.preprocessing import (
     loaders,
     preprocess,
-    render_markdown,
     preprocess_cldfviz,
+    render_markdown,
 )
-from cldfviz.text import render
 
 NUM_PRE = re.compile(r"[\d]+\ ")
 ABC_PRE = re.compile(r"[A-Z]+\ ")
@@ -186,7 +175,7 @@ def write_details(builder, output_dir, dataset):
     output_dir.mkdir(exist_ok=True, parents=True)
     func_dict["decorate_gloss_string"] = builder.decorate_gloss_string
     func_dict["ref_labels"] = builder.ref_labels
-    if RICH:
+    if config["output"]["rich"]:
         data = CLDFDataset(dataset, orm=True)
         func_dict["data"] = data
         table_list = list((k, v, v.name) for k, v in data.tables.items())
@@ -247,14 +236,13 @@ def write_details(builder, output_dir, dataset):
                     rec["ID"]: f"[]({name}#cldf:{rec['ID']})"
                     for rec in dataset.iter_rows(name)
                 }
-            i = 0
+            # i = 0
             for rid, detail in tqdm(items.items(), desc=name):
-                i += 1
-                if i > 5:
-                    continue
+                # i += 1
+                # if i > 5:
+                #     continue
                 filepath = table_dir / f"{rid}.{builder.file_ext}"
                 if filepath.is_file():
-                    pass
                     continue
                 detail = render(
                     doc="".join(preprocess_cldfviz(detail)),

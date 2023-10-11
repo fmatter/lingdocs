@@ -1,6 +1,4 @@
 import logging
-import os
-import re
 import sys
 from io import StringIO
 from pathlib import Path
@@ -9,10 +7,10 @@ import pandas as pd
 import yaml
 from cldf_rel import CLDFDataset
 from cldfviz.text import render
-from jinja2 import DictLoader, Environment
+from jinja2 import DictLoader
 from writio import load
 
-from pylingdocs.config import config, DATA_DIR, MANEX_DIR, MD_LINK_PATTERN, TABLE_DIR
+from pylingdocs.config import DATA_DIR, MANEX_DIR, MD_LINK_PATTERN, TABLE_DIR, config
 from pylingdocs.helpers import (
     comma_and_list,
     func_dict,
@@ -153,8 +151,7 @@ def render_markdown(
             preprocessed = "".join(preprocess_cldfviz(md_str))
         return preprocessed
     log.error(f"Unknown data format {data_format}")
-    exit()
-    return ""
+    sys.exit()
 
 
 def load_tables(md, tables, source_dir="."):

@@ -5,18 +5,19 @@ from pathlib import Path
 
 import click
 import yaml
+from writio import load
 
-from pylingdocs.config import config, CONTENT_FOLDER, STRUCTURE_FILE
 from pylingdocs.cldf import create_cldf, generate_autocomplete
+from pylingdocs.config import CONTENT_FOLDER, STRUCTURE_FILE, config
 from pylingdocs.helpers import _get_relative_file, _load_cldf_dataset, load_content
 from pylingdocs.helpers import new as create_new
 from pylingdocs.helpers import write_readme
 from pylingdocs.output import check_abbrevs, check_ids, clean_output
 from pylingdocs.output import compile_latex as cmplatex
-from pylingdocs.output import create_output, preview as run_preview
+from pylingdocs.output import create_output
+from pylingdocs.output import preview as run_preview
 from pylingdocs.output import update_structure as do_update_structure
 from pylingdocs.preprocessing import preprocess_cldfviz
-from writio import load
 
 log = logging.getLogger(__name__)
 
@@ -70,9 +71,7 @@ class BuildCommand(OutputCommand):
 @click.option(
     "--release", is_flag=True, default=False, help="Prepare for a citeable release"
 )
-def build(
-    source, targets, cldf, output_dir, release
-):  # pylint: disable=too-many-arguments
+def build(source, targets, cldf, output_dir, release):
     """Create formatted output of pylingdocs project."""
     source = Path(source)
     config.load_from_dir(source)
@@ -107,9 +106,7 @@ def build(
     help="Output format for the preview.",
 )
 @click.option("--refresh", default=True, help="Re-render preview on file change.")
-def preview(  # pylint: disable=too-many-arguments
-    source, target, cldf, output_dir, refresh
-):
+def preview(source, target, cldf, output_dir, refresh):
     """Create a live preview using a lightweight, human-readable output format"""
     source = Path(source)
     config.load_from_dir(source)
@@ -122,7 +119,7 @@ def preview(  # pylint: disable=too-many-arguments
         source,
         output_dir,
         refresh=refresh,
-        output_format=config["output"]["preview"],
+        output_format=target,
         metadata=metadata,
     )
 
@@ -177,7 +174,7 @@ def cldf(source, cldf, output_dir, latex, add):
         ds,
         source,
         output_dir,
-        metadata_file=METADATA_FILE,
+        metadata_file="metadata.yaml",
         add_documents=add_docs,
     )
 
