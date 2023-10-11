@@ -6,26 +6,17 @@ from pathlib import Path
 import click
 import yaml
 
+from pylingdocs.config import config, CONTENT_FOLDER, STRUCTURE_FILE
 from pylingdocs.cldf import create_cldf, generate_autocomplete
-from pylingdocs.config import (
-    BUILDERS,
-    CLDF_MD,
-    CONTENT_FOLDER,
-    CREATE_README,
-    METADATA_FILE,
-    OUTPUT_DIR,
-    PREVIEW,
-    STRUCTURE_FILE,
-)
 from pylingdocs.helpers import _get_relative_file, _load_cldf_dataset, load_content
 from pylingdocs.helpers import new as create_new
 from pylingdocs.helpers import write_readme
-from pylingdocs.metadata import _load_metadata
 from pylingdocs.output import check_abbrevs, check_ids, clean_output
 from pylingdocs.output import compile_latex as cmplatex
-from pylingdocs.output import create_output, run_preview
+from pylingdocs.output import create_output, preview as run_preview
 from pylingdocs.output import update_structure as do_update_structure
 from pylingdocs.preprocessing import preprocess_cldfviz
+from writio import load
 
 log = logging.getLogger(__name__)
 
@@ -42,7 +33,7 @@ class OutputCommand(click.Command):
             [
                 click.core.Option(
                     ("--output-dir",),
-                    default=OUTPUT_DIR,
+                    default=config["paths"]["output"],
                     help="Folder where output is generated.",
                     type=click.Path(path_type=Path),
                 )
@@ -63,14 +54,7 @@ class BuildCommand(OutputCommand):
                 ),
                 click.core.Option(
                     ("--cldf",),
-                    default=CLDF_MD,
                     help="Path to metadata.json of CLDF dataset.",
-                ),
-                click.core.Option(
-                    ("--latex",),
-                    is_flag=True,
-                    default=False,
-                    help="Automatically compile the generated LaTeX",
                 ),
             ]
         )
@@ -78,16 +62,22 @@ class BuildCommand(OutputCommand):
 
 @main.command(cls=BuildCommand)
 @click.option(
-    "--targets", multiple=True, default=BUILDERS, help="List of target output formats."
+    "--targets",
+    multiple=True,
+    default=config["output"]["build"],
+    help="List of target output formats.",
 )
 @click.option(
     "--release", is_flag=True, default=False, help="Prepare for a citeable release"
 )
 def build(
-    source, targets, cldf, output_dir, latex, release
+    source, targets, cldf, output_dir, release
 ):  # pylint: disable=too-many-arguments
     """Create formatted output of pylingdocs project."""
     source = Path(source)
+    config.load_from_dir(source)
+    if not cldf:
+        cldf = config["paths"]["cldf"]
     ds = _load_cldf_dataset(cldf)
     contents = load_content(
         source_dir=source / CONTENT_FOLDER,
@@ -95,7 +85,7 @@ def build(
             folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
         ),
     )
-    metadata = _load_metadata(source / METADATA_FILE)
+    metadata = load(source / "metadata.yaml")
 
     create_output(
         contents,
@@ -104,55 +94,45 @@ def build(
         ds,
         output_dir,
         metadata=metadata,
-        latex=latex,
         release=release,
     )
-    if CREATE_README:
-        write_readme(source / METADATA_FILE, release=release)
+    if config["output"]["readme"]:
+        write_readme(source / "metadata.yaml", release=release)
 
 
 @main.command(cls=BuildCommand)
 @click.option(
-    "--targets", multiple=True, default=PREVIEW, help="List of target output formats."
-)
-@click.option(
-    "--html",
-    is_flag=True,
-    default=False,
-    help="Serve an auto-refreshing HTML preview at localhost:8000",
-)
-@click.option(
-    "--clld",
-    is_flag=True,
-    default=False,
-    help="Auto-refresh the documents in your CLLD database",
+    "--target",
+    default=config["output"]["preview"],
+    help="Output format for the preview.",
 )
 @click.option("--refresh", default=True, help="Re-render preview on file change.")
 def preview(  # pylint: disable=too-many-arguments
-    source, targets, cldf, output_dir, refresh, latex, html, clld
+    source, target, cldf, output_dir, refresh
 ):
     """Create a live preview using a lightweight, human-readable output format"""
     source = Path(source)
-    metadata = _load_metadata(source / METADATA_FILE)
-    # if html:
-    #     targets = [""]
+    config.load_from_dir(source)
+    config["paths"]["output"] = output_dir
+    if cldf is None:
+        cldf = config["paths"]["cldf"]
+    metadata = load(source / "metadata.yaml") or {}
     run_preview(
         cldf,
         source,
         output_dir,
         refresh=refresh,
-        formats=targets,
+        output_format=config["output"]["preview"],
         metadata=metadata,
-        latex=latex,
-        html=html,
-        clld=clld,
     )
 
 
 @main.command(cls=BuildCommand)
-def check(source, cldf, output_dir, latex):
+def check(source, cldf, output_dir):
+    config.load_from_dir(source)
     del output_dir
-    del latex
+    if cldf is None:
+        cldf = config["paths"]["cldf"]
     ds = _load_cldf_dataset(cldf)
     contents = load_content(
         source_dir=source / CONTENT_FOLDER,
@@ -248,7 +228,11 @@ def author_config():
 
 
 @main.command()
-@click.option("--cldf", default=CLDF_MD, help="Path to metadata.json of CLDF dataset.")
+@click.option(
+    "--cldf",
+    default=config["paths"]["cldf"],
+    help="Path to metadata.json of CLDF dataset.",
+)
 @click.option("--target", default=CONTENT_FOLDER, help="Content folder.")
 def sublime(cldf, target):
     ds = _load_cldf_dataset(cldf)

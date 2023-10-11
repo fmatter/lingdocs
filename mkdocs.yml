@@ -2,6 +2,9 @@ site_name: pylingdocs
 plugins:
   - search
   - mkdocstrings
+  - yaml-docstrings
+watch:
+  - src
 markdown_extensions:
   - mkdocs-click
   - markdown_include.include:
@@ -51,5 +54,3 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
-watch:
-  - .

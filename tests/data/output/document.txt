@@ -18,7 +18,7 @@ text.
 
 and of course here is
 
--   and one
+-   one
 -   with
 -   bullet points[1]
 
@@ -32,7 +32,7 @@ A quote:
 
 Pylingdocs markdown
 
-Apart from database references, discussed in 6, there are a number of
+Apart from database references, discussed in 7, there are a number of
 pylingdocs-specific commands, all patterning like links:
 
 -   cross-references: 2 or 1, see corresponding label commands
@@ -40,7 +40,7 @@ pylingdocs-specific commands, all patterning like links:
     -   single (1)
     -   subexample (2b)
     -   range: (1)
-    -   or bare: [exref-ekiri-11]
+    -   or bare: (3)
 -   glosses: ACC
 -   todos: [todo: we need to talk about this]
 -   tables (with automatically generated table labels like Table 3.1):
@@ -130,6 +130,19 @@ Interlinear examples
     pai    i-wae    t-ee-se        wïraapa
     tapir  3-super  NPST-COP-NPST  bow
     ‘The bow was stronger than the tapir.’
+
+Manual examples
+
+Sometimes you want a non-interlinear example, maybe with a form, or a
+simple list, or a table.
+
+(8) 
+
+eis
+
+(9) 
+
+zwöi
 
 Citing literature
 

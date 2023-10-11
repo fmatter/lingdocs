@@ -8,9 +8,9 @@ from clldutils import jsonlib
 from pycldf import Source
 from pycldf.dataset import SchemaError
 from slugify import slugify
-
+from writio import load
 from pylingdocs import __version__
-from pylingdocs.config import DATA_DIR, LAYOUT
+from pylingdocs.config import DATA_DIR
 from pylingdocs.formats import CLLD
 from pylingdocs.helpers import (
     check_abbrevs,
@@ -18,7 +18,6 @@ from pylingdocs.helpers import (
     load_figure_metadata,
     read_file,
 )
-from pylingdocs.metadata import _load_bib, _load_metadata
 from pylingdocs.models import models
 from pylingdocs.postprocessing import postprocess
 from pylingdocs.preprocessing import preprocess, render_markdown
@@ -106,7 +105,7 @@ def create_cldf(
 ):
     content = "\n\n".join([x["content"] for x in chapter_dic.values()])
     check_abbrevs(ds, source_dir, content)
-    metadata_dict = _load_metadata(metadata_file)
+    metadata_dict = load(metadata_file)
     clld = CLLD()
     clld.figure_metadata = load_figure_metadata(source_dir)
     preprocessed = preprocess(content, source_dir)
@@ -185,9 +184,9 @@ def create_cldf(
     ds.copy(dest=output_dir / "cldf")
     ds = pycldf.Dataset.from_metadata(output_dir / "cldf" / ds.filename)
 
-    bib_data = _load_bib(metadata_file)
-    for key, entry in bib_data.entries.items():
-        ds.properties["dc:bibliographicCitation"] = Source.from_entry(key, entry)
+    # bib_data = _load_bib(metadata_file)
+    # for key, entry in bib_data.entries.items():
+    #     ds.properties["dc:bibliographicCitation"] = Source.from_entry(key, entry) # todo: fix
 
     ds.properties[
         "dc:title"

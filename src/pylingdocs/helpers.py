@@ -15,32 +15,36 @@ from cookiecutter.main import cookiecutter
 from jinja2.runtime import Undefined
 from pycldf import Dataset, Source
 from slugify import slugify
+from writio import load
 
 from pylingdocs import __version__
 from pylingdocs.config import (
-    ABBREV_FILE,
-    ADD_BIB,
-    CLDF_MD,
-    CLLD_URI,
-    CONF_PATH,
-    CONTENT_FILE_PREFIX,
-    CONTENT_FOLDER,
+    # ABBREV_FILE,
+    # ADD_BIB,
+    # CLDF_MD,
+    # CLLD_URI,
+    # CONF_PATH,
+    # CONTENT_FILE_PREFIX,
+    # CONTENT_FOLDER,
     DATA_DIR,
-    EX_SHOW_LG,
-    EX_SHOW_PRIMARY,
-    EX_SRC_POS,
     FIGURE_DIR,
-    FIGURE_MD,
-    LFTS_SHOW_FTR,
-    LFTS_SHOW_LG,
-    LFTS_SHOW_SOURCE,
-    METADATA_FILE,
-    PLD_DIR,
-    STRUCTURE_FILE,
     TABLE_DIR,
-    TABLE_MD,
+    # EX_SHOW_LG,
+    # EX_SHOW_PRIMARY,
+    # EX_SRC_POS,
+    # FIGURE_DIR,
+    # FIGURE_MD,
+    # LFTS_SHOW_FTR,
+    # LFTS_SHOW_LG,
+    # LFTS_SHOW_SOURCE,
+    # METADATA_FILE,
+    # PLD_DIR,
+    # STRUCTURE_FILE,
+    # TABLE_DIR,
+    # TABLE_MD,
+    config,
 )
-from pylingdocs.metadata import ORCID_STR, _load_bib, _load_metadata
+from pylingdocs.metadata import ORCID_STR
 
 log = logging.getLogger(__name__)
 
@@ -195,8 +199,9 @@ def check_abbrevs(dataset, source_dir, content):
     for text_gloss in re.findall(r"\[gl\]\((.*?)\)", content):
         gloss_cands.append(text_gloss)
     abbrev_dict = {}
-    if (Path(source_dir) / ABBREV_FILE).is_file():  # add abbreviations added locally
-        for rec in pd.read_csv(Path(source_dir) / ABBREV_FILE).to_dict("records"):
+    abbrev_path = Path(source_dir) / "abbreviations.csv"
+    if abbrev_path.is_file():  # add abbreviations added locally
+        for rec in pd.read_csv(abbrev_dict).to_dict("records"):
             abbrev_dict[rec["ID"]] = rec["Description"]
     for table in dataset.tables:  # add abbreviations found in the CLDF dataset
         if str(table.url) == "abbreviations.csv":
@@ -264,23 +269,23 @@ def src(cite_input, mode="cldfviz", parens=False, full=False):
 
 
 def load_figure_metadata(source_dir):
-    fig_md = _get_relative_file(source_dir / FIGURE_DIR, FIGURE_MD)
+    fig_md = Path(source_dir) / FIGURE_DIR / "metadata.yaml"
     if fig_md.is_file():
         with open(fig_md, encoding="utf-8") as f:
             figures = yaml.load(f, Loader=yaml.SafeLoader)
     else:
-        log.warning(f"Specified figures metadata file {FIGURE_MD} not found.")
-        figures = []
+        log.warning(f"Inexistent figure metadata file: {fig_md}")
+        figures = {}
     return figures
 
 
 def load_table_metadata(source_dir):
-    table_md = _get_relative_file(source_dir / TABLE_DIR, TABLE_MD)
+    table_md = Path(source_dir) / TABLE_DIR / "metadata.yaml"
     if table_md.is_file():
         with open(table_md, encoding="utf-8") as f:
             tables = yaml.load(f, Loader=yaml.SafeLoader)
     else:
-        log.warning(f"Specified table metadatafile {TABLE_MD} not found.")
+        log.warning(f"Inexistent table metadata file: {table_md}")
         tables = {}
     return tables
 
@@ -412,7 +417,7 @@ def split_ref(s):
     return bibkey, pages
 
 
-def _load_cldf_dataset(cldf_path=CLDF_MD):
+def _load_cldf_dataset(cldf_path):
     try:
         ds = Dataset.from_metadata(cldf_path)
         temp_path = Path(tempfile.gettempdir()) / "cldf"
@@ -420,8 +425,10 @@ def _load_cldf_dataset(cldf_path=CLDF_MD):
         orig_id = ds.metadata_dict.get("rdf:ID", None)
         ds = Dataset.from_metadata(temp_path / ds.filename)
         ds.add_provenance(wasDerivedFrom=orig_id)
-        if Path(ADD_BIB).is_file():
-            bib = pybtex.database.parse_file(ADD_BIB, bib_format="bibtex")
+        if Path(config["paths"]["add_bib"]).is_file():
+            bib = pybtex.database.parse_file(
+                config["paths"]["add_bib"], bib_format="bibtex"
+            )
             sources = [Source.from_entry(k, e) for k, e in bib.entries.items()]
             ds.add_sources(*sources)
             ds.write()
@@ -434,18 +441,9 @@ def _load_cldf_dataset(cldf_path=CLDF_MD):
         sys.exit(1)
 
 
-def _load_structure(structure_file=STRUCTURE_FILE):
-    structure_file = Path(structure_file)
-    if not structure_file.is_file():
-        log.error(f"Structure file {structure_file.resolve()} not found, aborting.")
-        sys.exit(1)
-    else:
-        return yaml.load(open(structure_file, encoding="utf-8"), Loader=yaml.SafeLoader)
-
-
-def get_structure(prefix_mode=None, structure_file=STRUCTURE_FILE):
+def get_structure(structure_file, prefix_mode=None):
     counters = {1: 0, 2: 0, 3: 0, 4: 0}
-    files = _load_structure(structure_file)
+    files = load(structure_file)
     contents = {}
     prefix_choices = ["alpha", "numerical"]
     for file, values in files.items():
@@ -471,10 +469,10 @@ def get_structure(prefix_mode=None, structure_file=STRUCTURE_FILE):
     return contents
 
 
-def load_content(source_dir=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
+def load_content(source_dir=".", structure_file="."):
     contents = get_structure(
-        prefix_mode=CONTENT_FILE_PREFIX, structure_file=structure_file
-    )
+        prefix_mode="", structure_file=structure_file
+    )  # todo config
     for data in contents.values():
         with open(Path(source_dir) / data["filename"], "r", encoding="utf-8") as f:
             data["content"] = f.read()
@@ -484,10 +482,10 @@ def load_content(source_dir=CONTENT_FOLDER, structure_file=STRUCTURE_FILE):
 def write_content_file(
     file_id,
     content,
-    prefix_mode=CONTENT_FILE_PREFIX,
-    source_dir=CONTENT_FOLDER,
-    structure_file=STRUCTURE_FILE,
-):
+    prefix_mode="",
+    source_dir="",
+    structure_file="",
+):  # todo config
     contents = get_structure(prefix_mode=prefix_mode, structure_file=structure_file)
     if file_id not in contents:
         log.error(
@@ -585,51 +583,54 @@ def latexify_table(cell):
     return cell
 
 
-def write_readme(metadata_file=METADATA_FILE, release=False):
-    bib = _load_bib(metadata_file)
-    citation = bib.to_string("bibtex")
-    md = _load_metadata(metadata_file)
-    author_string = []
-    for author in md["authors"]:
-        paren_string = []
-        if "orcid" in author:
-            orcid = author["orcid"].replace(ORCID_STR, "")
-            paren_string.append(f"[{orcid}]({author['orcid']})")
-        if "affiliation" in author:
-            paren_string.append(f"{author['affiliation']}")
-        if len(paren_string) > 0:
-            paren_string = f"({', '.join(paren_string)})"
-        author_string.append(
-            f'{author["given-names"]} {author["family-names"]} {paren_string}'
-        )
-    if len(author_string) > 1:
-        author_string = "\n".join([f"  * {s}" for s in author_string])
-        author_string = f"authors:\n{author_string}"
-    else:
-        author_string = f"author: {author_string[0]}"
-    if not release:
-        readme_text = "## Do not cite from this branch!"
-        if "url" in md:
-            readme_text += (
-                f"\nUse [the most recent citeable version]({md['url']}) instead."
-            )
-    else:
-        readme_text = f"""# {md["title"]}
+def write_readme(metadata_file, release=False):
+    log.warning("readmes are not implemented")
+    # bib = ""# todo: _load_bib(metadata_file)
+    # citation = bib.to_string("bibtex")
+    # md = load(metadata_file)
+    # author_string = []
+    # for author in md["authors"]:
+    #     paren_string = []
+    #     if "orcid" in author:
+    #         orcid = author["orcid"].replace(ORCID_STR, "")
+    #         paren_string.append(f"[{orcid}]({author['orcid']})")
+    #     if "affiliation" in author:
+    #         paren_string.append(f"{author['affiliation']}")
+    #     if len(paren_string) > 0:
+    #         paren_string = f"({', '.join(paren_string)})"
+    #     author_string.append(
+    #         f'{author["given-names"]} {author["family-names"]} {paren_string}'
+    #     )
+    # if len(author_string) > 1:
+    #     author_string = "\n".join([f"  * {s}" for s in author_string])
+    #     author_string = f"authors:\n{author_string}"
+    # else:
+    #     author_string = f"author: {author_string[0]}"
+    # if not release:
+    #     readme_text = "## Do not cite from this branch!"
+    #     if "url" in md:
+    #         readme_text += (
+    #             f"\nUse [the most recent citeable version]({md['url']}) instead."
+    #         )
+    # else:
+    #     readme_text = f"""# {md["title"]}
 
-* {author_string}
 
-* version: `{md["version"]}`
-
-Created using [pylingdocs](https://github.com/fmatter/pylingdocs/) v{__version__}.
-The available output formats are in [output](./output); if you are viewing this readme
-in a browser, you probably want the [github formatted output](./output/github).
-
-To cite the latest version:
-
-```
-{citation}```"""
-    with open("README.md", "w", encoding="utf-8") as f:
-        f.write(readme_text)
+#
+# * {author_string}
+#
+# * version: `{md["version"]}`
+#
+# Created using [pylingdocs](https://github.com/fmatter/pylingdocs/) v{__version__}.
+# The available output formats are in [output](./output); if you are viewing this readme
+# in a browser, you probably want the [github formatted output](./output/github).
+#
+# To cite the latest version:
+#
+# ```
+# {citation}```"""
+# with open("README.md", "w", encoding="utf-8") as f:
+# f.write(readme_text)
 
 
 # These symbols could potentially be used to split up morphemes.
@@ -789,11 +790,11 @@ def _build_example(
     obj2=None,
     ex_id="example",
     title=None,
-    show_language=EX_SHOW_LG,
+    show_language=None,
     ftr_explanation=None,
     additional_translations=None,
     comment=None,
-    source_position=EX_SRC_POS,
+    source_position=None,
     show_primary=True,
     quotes=("‘", "’"),
     parentheses=("(", ")"),
@@ -803,9 +804,13 @@ def _build_example(
     preamble = []
     postamble = []
 
-    show_primary = _resolve_jinja(show_primary, EX_SHOW_PRIMARY, "show_primary")
-    source_position = source_position or EX_SRC_POS
-    show_language = _resolve_jinja(show_language, EX_SHOW_LG, "show_language")
+    show_primary = _resolve_jinja(
+        show_primary, config["examples"]["show_primary"], "show_primary"
+    )
+    source_position = source_position or config["examples"]["source_position"]
+    show_language = _resolve_jinja(
+        show_language, config["examples"]["show_primary"], "show_language"
+    )
 
     if not title and lng and show_language:
         title = lng
@@ -879,7 +884,9 @@ def build_examples(datas):
     for data in datas[1::]:
         if data.get("lng", None) != first_language:
             single_language = False
-    if single_language and resolve_jinja(datas[0]["show_language"], EX_SHOW_LG):
+    if single_language and resolve_jinja(
+        datas[0]["show_language"], config["lfts"]["show_language"]
+    ):
         full_preamble += first_language
     for data in datas:
         if single_language:
@@ -890,11 +897,11 @@ def build_examples(datas):
 
 def resolve_lfts(with_language, with_source, with_translation):
     if isinstance(with_language, Undefined):
-        with_language = LFTS_SHOW_LG
+        with_language = config["lfts"]["show_language"]
     if isinstance(with_source, Undefined):
-        with_source = LFTS_SHOW_SOURCE
+        with_source = config["lfts"]["show_source"]
     if isinstance(with_translation, Undefined):
-        with_translation = LFTS_SHOW_FTR
+        with_translation = config["lfts"]["show_translation"]
     return with_language, with_source, with_translation
 
 
@@ -927,9 +934,9 @@ def link(item, anchor=None, mode="html", preferred="Name", label=None):
 
 def lfts_link(
     rich,
-    with_language=LFTS_SHOW_LG,
-    with_source=LFTS_SHOW_SOURCE,
-    with_translation=LFTS_SHOW_FTR,
+    with_language=config["lfts"]["show_language"],
+    with_source=config["lfts"]["show_source"],
+    with_translation=config["lfts"]["show_translation"],
     source=None,
     translation=None,
 ):

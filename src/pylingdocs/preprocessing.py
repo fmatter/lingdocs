@@ -12,15 +12,7 @@ from cldfviz.text import render
 from jinja2 import DictLoader, Environment
 from writio import load
 
-from pylingdocs.config import (
-    BUILDERS,
-    DATA_DIR,
-    MANEX_DIR,
-    MD_LINK_PATTERN,
-    WRITE_DATA,
-    RICH,
-    TABLE_DIR,
-)
+from pylingdocs.config import config, DATA_DIR, MANEX_DIR, MD_LINK_PATTERN, TABLE_DIR
 from pylingdocs.helpers import (
     comma_and_list,
     func_dict,
@@ -42,7 +34,7 @@ for model in models:
 log.debug("Loading templates")
 loaders = {}
 
-templates = load_templates(BUILDERS, models)
+templates = load_templates(config["output"]["build"], models)
 pld_util = load(DATA_DIR / "util.j2")
 
 for output_format, f_templates in templates.items():
@@ -128,7 +120,7 @@ def render_markdown(
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val
             func_dict["ref_labels"] = builder.ref_labels
-            if RICH:
+            if config["output"]["rich"]:
                 data = CLDFDataset(ds)
                 func_dict["data"] = data.tables
             preprocessed = render(

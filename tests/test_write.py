@@ -3,16 +3,16 @@ import shutil
 
 
 def test_write(data, dataset, caplog, monkeypatch, tmp_path):
-    shutil.copytree(data / "content", tmp_path / "content")
+    shutil.copytree(data / "docs", tmp_path / "docs")
     new_content = "a test"
 
     write_content_file(
         "intro",
         new_content,
         prefix_mode=None,
-        source_dir=tmp_path / "content",
-        structure_file=tmp_path / "content" / "structure.yaml",
+        source_dir=tmp_path / "docs",
+        structure_file=tmp_path / "docs" / "structure.yaml",
     )
 
-    with open(tmp_path / "content" / "intro.md", "r") as f:
+    with open(tmp_path / "docs" / "intro.md", "r") as f:
         assert f.read() == new_content

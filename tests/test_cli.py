@@ -6,8 +6,6 @@ from pylingdocs.cli import author_config
 from pylingdocs.cli import build
 from pylingdocs.cli import check
 from pylingdocs.cli import main
-from pylingdocs.cli import new
-from pylingdocs.cli import preview
 from pylingdocs.cli import sublime
 
 
@@ -40,19 +38,6 @@ def test_cli_build(caplog, tmp_path, md_path, data, monkeypatch):
     for x in tmp_path.iterdir():
         if "CITATION" in x.name:
             assert "Florian" in open(x).read()
-
-
-def test_cli_preview(caplog, tmp_path, md_path, data, monkeypatch):
-    runner = CliRunner()
-
-    # add tables
-    shutil.copytree(data / "tables", tmp_path / "tables")
-    monkeypatch.chdir(tmp_path)
-    result = runner.invoke(
-        preview, args=["--cldf", md_path, "--source", data, "--refresh", False]
-    )
-    assert "Rendering preview" in caplog.text
-    assert result.exit_code == 0
 
 
 def test_cli_check(caplog, tmp_path, md_path, data, monkeypatch):

@@ -11,7 +11,7 @@ Here is some **bold** and _italic_ and **_bold italic_** text.
 
 and of course here is
 
-* and one
+* one
 * with
 * bullet points[^3]
 
@@ -29,8 +29,8 @@ Apart from database references, discussed in [ref](sec:sources), there are a num
 * example references:
     * single [exref](ekiri-13)
     * subexample [exref](ekiri-10)
-    * range: [exref](ekiri-13?end=ekiri-11)
-    * or bare: [exref](ekiri-11?bare)
+    * range: [exref](ekiri-13?end=machete)
+    * or bare: [exref](tri-1?bare)
 * glosses: [gl](acc)
 * todos: [todo](we need to talk about this)
 * tables (with automatically generated table labels like [ref](tab:consonants)):

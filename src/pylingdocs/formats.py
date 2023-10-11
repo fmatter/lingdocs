@@ -4,31 +4,19 @@ import re
 import shutil
 import sys
 from pathlib import Path
+from http.server import SimpleHTTPRequestHandler, test
 
-import jinja2
 import panflute
-from cldfviz.text import render
 from cookiecutter.main import cookiecutter
-from jinja2 import Environment, FileSystemLoader, PackageLoader
+from jinja2 import Environment, PackageLoader
 from jinja2.exceptions import TemplateNotFound
-from tqdm import tqdm
-from writio import dump, load
+from writio import load
 from slugify import slugify
+import threading
 
-from pylingdocs.config import (
-    DATA_DIR,
-    FIGURE_DIR,
-    LATEX_EX_TEMPL,
-    LATEX_TOPLEVEL,
-    MD_LINK_PATTERN,
-    PLD_DIR,
-    WRITE_DATA,
-    RICH,
-    LAYOUT,
-)
+from pylingdocs.config import DATA_DIR, PLD_DIR, MD_LINK_PATTERN, config
 from pylingdocs.helpers import (
     decorate_gloss_string,
-    func_dict,
     get_sections,
     html_example_wrap,
     html_gloss,
@@ -36,6 +24,7 @@ from pylingdocs.helpers import (
     src,
 )
 
+FIGURE_DIR = "figures"
 NUM_PRE = re.compile(r"[\d]+\ ")
 ABC_PRE = re.compile(r"[A-Z]+\ ")
 
@@ -121,7 +110,7 @@ class OutputFormat:
     def figure_cmd(cls, url, *_args, **_kwargs):
         if not cls.ref_labels:
             return "[No figure references found]"
-        filename = cls.figure_metadata[url].get("filename", "")
+        filename = cls.figure_metadata.get(url, {}).get("filename", "")
         return f"({cls.ref_labels[f'fig:{url}']}: {cls.figure_dir}/{filename})"
 
     def decorate_gloss_string(cls, x):
@@ -131,7 +120,7 @@ class OutputFormat:
         base = DATA_DIR / "format_templates"
         cbase = PLD_DIR / "formats" / "layouts"
         for b in [cbase, base]:
-            tpl_path = b / cls.name / LAYOUT
+            tpl_path = b / cls.name / config["output"]["layout"]
             if not tpl_path.is_dir():
                 tpl_path = b / cls.name / cls.fallback_layout
             if tpl_path.is_dir():
@@ -142,6 +131,7 @@ class OutputFormat:
     def write_folder(
         cls,
         output_dir,
+        source_dir,
         content=None,
         parts=None,
         metadata=None,
@@ -160,7 +150,7 @@ class OutputFormat:
             "glossing_abbrevs": cls.register_glossing_abbrevs(abbrev_dict),
             "ref_labels": str(ref_labels),
             "ref_locations": str(ref_locations),
-            "data": WRITE_DATA,
+            "data": config["output"]["data"],
             "site_url": metadata.get("site_url", None),
         }
         if "authors" in metadata:
@@ -187,11 +177,12 @@ class OutputFormat:
             overwrite_if_exists=True,
             no_input=True,
         )
-        if FIGURE_DIR.is_dir():
+        figure_dir = source_dir / FIGURE_DIR
+        if figure_dir.is_dir():
             target_dir = output_dir / cls.name / cls.figure_dir
             if not target_dir.is_dir():
                 target_dir.mkdir()
-            for file in FIGURE_DIR.iterdir():
+            for file in figure_dir.iterdir():
                 target = target_dir / file.name
                 if not target.is_file():
                     shutil.copy(file, target)
@@ -289,6 +280,12 @@ class OutputFormat:
         for author in authors:
             out.append(f'{author["given-names"]} {author["family-names"]}')
         return " and ".join(out)
+
+    def run_preview(cls):
+        log.warning(
+            f"Not rendering live preview for format {cls.name} {config['paths']['output'].resolve()}"
+        )
+        pass
 
 
 class PlainText(OutputFormat):
@@ -429,7 +426,7 @@ for (var i = 0; i < targets.length; i++) {{
         for label in unresolved_labels:
             log.warning(label)
             html_output = html_output.replace(f"{{#{label}}}", "")
-        if LAYOUT == "slides":
+        if config["output"]["layout"] == "slides":
             return html_output.replace("\n<h", "\n---\n<h")
         return html_output
 
@@ -437,6 +434,15 @@ for (var i = 0; i < targets.length; i++) {{
         if content.strip().startswith("PYLINGDOCS_RAW_TABLE_START"):
             content = " \n \n" + content
         return html_example_wrap(tag, content, kind=kind)
+
+    class Handler(SimpleHTTPRequestHandler):
+        def __init__(self, *args, **kwargs):
+            super().__init__(
+                *args, directory=str(Path(config["paths"]["output"]) / "html"), **kwargs
+            )
+
+    def run_preview(cls):
+        threading.Thread(target=test(cls.Handler)).start()
 
 
 class MkDocs(HTML):
@@ -478,7 +484,7 @@ class MkDocs(HTML):
 <img src="/figures/{filename}" alt="{caption}" />
 <figcaption id="fig:{url}" aria-hidden="true">{caption}</figcaption>
 </figure>"""
-        return f"![{caption}](/figures/{url}.jpg)"
+        return f"![{url}](/figures/{url}.jpg)"
 
     def label_cmd(cls, url, *_args, **_kwargs):
         return f"{{ #{url} }}"
@@ -619,8 +625,8 @@ class Latex(PlainText):
     def figure_cmd(cls, url, *_args, **_kwargs):
         if not cls.ref_labels:
             return f"(n/a: {url})"
-        caption = cls.figure_metadata[url].get("caption", "")
-        filename = cls.figure_metadata[url].get("filename", "")
+        caption = cls.figure_metadata.get(url, {}).get("caption", "")
+        filename = cls.figure_metadata.get(url, {}).get("filename", "")
         return f"""\\begin{{figure}}
 \\centering
 \\includegraphics{{{cls.figure_dir}/{filename}}}
@@ -685,11 +691,15 @@ class Latex(PlainText):
             if line.startswith("#") and "\\label" not in line:
                 line = line + f"\\label{{{slugify(line)}}}"
             out.append(line)
+        if config["output"]["layout"] == "book":
+            toplevel = "chapter"
+        else:
+            toplevel = "section"
         doc = panflute.convert_text(
             "\n".join(out),
             output_format="latex",
             input_format="markdown-auto_identifiers",
-            extra_args=[f"--top-level-division={LATEX_TOPLEVEL}"],
+            extra_args=[f"--top-level-division={toplevel}"],
         )
         doc = doc.replace("\\pex\n\n", "\\pex\n")
         doc = doc.replace("\n\n\\begin{tabular", "\n\\begin{tabular")
@@ -706,7 +716,7 @@ class Latex(PlainText):
         out = []
         for author in authors:
             out.append(f'{author["given-names"]} {author["family-names"]}')
-        if LAYOUT == "book":
+        if config["output"]["layout"] == "book":
             return ";".join(out)  # may want to use this for all templates at some point
         return " and ".join(out)
 
@@ -748,7 +758,7 @@ class Latex(PlainText):
         yield content[current:]
 
 
-builders = {x.name: x() for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs]}
+builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs]}
 
 
 if Path("pld/formats.py").is_file():

@@ -2,12 +2,9 @@ import logging
 
 from writio import load
 
-from pylingdocs.config import DATA_DIR, PLD_DIR, RICH
+from pylingdocs.config import DATA_DIR, PLD_DIR, config
 from pylingdocs.formats import builders
 
-from pylingdocs.config import (
-    LATEX_EX_TEMPL,
-)
 log = logging.getLogger(__name__)
 
 
@@ -15,7 +12,7 @@ def _fn(base, m, f, v, r):
     m = str(m).lower()
     f = str(f).lower()
     if m == "example" and f == "latex":
-        f = f"{f}_{LATEX_EX_TEMPL}"
+        f = f"{f}_{config['latex']['interlinear_tool']}"
     if r:
         rs = "_rich"
     else:
@@ -27,7 +24,7 @@ def _fn(base, m, f, v, r):
 
 def _parent_builder(builder):
     res = builder.__class__.__bases__[0]
-    if res.name == "boilerplate":
+    if res.name == "boilerplate" or res == object:
         return None
     return res()
 
@@ -100,7 +97,7 @@ def _candidates(base, cbase, m, b):
             yield x
 
 
-def find_template(model, builder, view, rich=RICH):
+def find_template(model, builder, view, rich=config["output"]["rich"]):
     """Finds a template for a given model, a given output format, a given view; data-rich or not"""
     log.debug(f"Searching template: {model.name}/{builder.label}_{view}")
     custom_base = PLD_DIR / "model_templates"
@@ -134,10 +131,10 @@ name_dict = {
 }
 
 
-def load_templates(target_builders, models, rich=RICH):
+def load_templates(target_builders, models, rich=config["output"]["rich"]):
     templates = {fn: {"text": {}, "data": {}} for fn in target_builders}
     for fn in target_builders:
-        f = builders[fn]
+        f = builders[fn]()
         for m in models:
             for view in ["inline", "list"]:
                 res = find_template(m, f, view, rich=rich)

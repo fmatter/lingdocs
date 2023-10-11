@@ -8,6 +8,7 @@ from http.server import SimpleHTTPRequestHandler, test
 from pathlib import Path, PosixPath
 from cldf_rel import get_table_name
 from writio import dump
+from writio import load
 from jinja2 import Environment, FileSystemLoader, DictLoader
 
 import hupper
@@ -15,12 +16,9 @@ from cldf_rel import CLDFDataset
 
 from pylingdocs.config import (
     BENCH,
-    CONTENT_FILE_PREFIX,
     CONTENT_FOLDER,
-    OUTPUT_DIR,
     STRUCTURE_FILE,
-    WRITE_DATA,
-    RICH,
+    config,
 )
 from tqdm import tqdm
 from pylingdocs.formats import builders
@@ -38,7 +36,6 @@ from pylingdocs.helpers import (
     refresh_clld_db,
     write_file,
 )
-from pylingdocs.metadata import _load_metadata
 from pylingdocs.postprocessing import postprocess
 from pylingdocs.preprocessing import (
     loaders,
@@ -58,7 +55,7 @@ def update_structure(
     content_dir=CONTENT_FOLDER,
     bench_dir=BENCH,
     structure_file=STRUCTURE_FILE,
-    prefix_mode=CONTENT_FILE_PREFIX,
+    prefix_mode=config["input"]["content_file_prefix"],
 ):
     log.debug("Updating document structure")
 
@@ -112,7 +109,7 @@ def update_structure(
         file.rename(new_path)
 
 
-def compile_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
+def compile_latex(output_dir=config["paths"]["output"]):  # pragma: no cover
     log.info("Compiling LaTeX document.")
     with subprocess.Popen(
         "latexmk --quiet --xelatex main.tex", shell=True, cwd=output_dir / "latex"
@@ -120,16 +117,7 @@ def compile_latex(output_dir=OUTPUT_DIR):  # pragma: no cover
         del proc  # help, prospector is forcing me
 
 
-class Handler(SimpleHTTPRequestHandler):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, directory=str(OUTPUT_DIR / "html"), **kwargs)
-
-
-def run_server():
-    test(Handler)
-
-
-def run_preview(cldf, source_dir, output_dir, refresh=True, **kwargs):
+def preview(cldf, source_dir, output_dir, output_format, refresh=True, **kwargs):
     log.info("Rendering preview")
     watchfiles = [str(x) for x in source_dir.iterdir()]
     watchfiles += [str(x) for x in (source_dir / CONTENT_FOLDER).iterdir()]
@@ -144,30 +132,24 @@ def run_preview(cldf, source_dir, output_dir, refresh=True, **kwargs):
     kwargs["dataset"] = ds
     kwargs["source_dir"] = source_dir
     kwargs["output_dir"] = output_dir
+    builder = builders[output_format]()
     if refresh:
         wkwargs = kwargs.copy()
+        wkwargs["output_format"] = output_format
         reloader = hupper.start_reloader(
-            "pylingdocs.output.run_preview", worker_kwargs=wkwargs
+            "pylingdocs.output.preview", worker_kwargs=wkwargs
         )
         reloader.watch_files(watchfiles)
-    html = kwargs.pop("html", False)
-    clld = kwargs.pop("clld", False)
-    latex = kwargs.pop("latex", False)
-    if clld and "clld" not in kwargs["formats"]:
-        kwargs["formats"] = list(kwargs["formats"]) + ["clld"]
-    if html and "html" not in kwargs["formats"]:
-        kwargs["formats"] = list(kwargs["formats"]) + ["html"]
-    if latex and "latex" not in kwargs["formats"]:
-        kwargs["formats"] = list(kwargs["formats"]) + ["latex"]
     kwargs["contents"] = contents
 
-    create_output(**kwargs)
-    if html:
-        threading.Thread(target=run_server).start()
-    if clld:
-        refresh_clld_db(OUTPUT_DIR / "clld")
-    if latex:
-        compile_latex()
+    create_output(formats=[output_format], **kwargs)
+    builder.run_preview()
+    # if html:
+    #     threading.Thread(target=run_server).start()
+    # if clld:
+    #     refresh_clld_db(OUTPUT_DIR / "clld")
+    # if latex:
+    #     compile_latex()
 
 
 def clean_output(output_dir):
@@ -180,7 +162,7 @@ def _write_file(part_id):
 
 
 def check_ids(contents, dataset, source_dir):
-    builder = builders["plain"]
+    builder = builders["plain"]()
     found = False
     for filename, x in contents.items():
         preprocessed = preprocess(x["content"], source_dir)
@@ -305,7 +287,6 @@ def create_output(
     dataset,
     output_dir,
     metadata=None,
-    latex=False,
     **kwargs,
 ):  # pylint: disable=too-many-arguments
     """Run different builders.
@@ -321,10 +302,9 @@ def create_output(
 
     """
     if isinstance(metadata, (str, PosixPath)):
-        metadata = _load_metadata(metadata)
-    if metadata is None:
-        metadata = {}
+        metadata = load(metadata) or None
     output_dir = Path(output_dir)
+    source_dir = Path(source_dir)
     if not output_dir.is_dir():
         log.info(f"Creating output folder {output_dir.resolve()}")
         output_dir.mkdir()
@@ -334,7 +314,7 @@ def create_output(
     figure_metadata = load_figure_metadata(source_dir)
     for output_format in formats:
         with tqdm(total=6, desc=f"Building {output_format} output") as pbar:
-            builder = builders[output_format]
+            builder = builders[output_format]()
             builder.figure_metadata = figure_metadata
             content = "\n\n".join([x["content"] for x in contents.values()])
             pbar.update(1)
@@ -371,6 +351,7 @@ def create_output(
             if builder.single_output:
                 builder.write_folder(
                     output_dir,
+                    source_dir=source_dir,
                     content=preprocessed,
                     metadata=metadata,
                     abbrev_dict=abbrev_dict,
@@ -379,7 +360,7 @@ def create_output(
                     parts=chapters,
                 )
             pbar.update(1)
-        if WRITE_DATA:
+        if config["output"]["data"]:
             write_details(builder, output_dir, dataset)
         if builder.name == "latex":
             bibcontents = read_file(dataset.bibpath)
@@ -391,5 +372,3 @@ def create_output(
         log.info(
             f"Wrote format {output_format} to {(output_dir / builder.name).resolve()}"
         )
-    if latex:
-        compile_latex()

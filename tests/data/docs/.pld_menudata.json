@@ -1,0 +1,4104 @@
+{
+    "Morpheme": [
+        {
+            "id": "tri-se",
+            "content": [
+                "mp:-(s)e",
+                "[mp](tri-se)"
+            ]
+        },
+        {
+            "id": "apa-se",
+            "content": [
+                "mp:-se",
+                "[mp](apa-se)"
+            ]
+        },
+        {
+            "id": "apa-neg",
+            "content": [
+                "mp:p\u0268ra",
+                "[mp](apa-neg)"
+            ]
+        },
+        {
+            "id": "way-se",
+            "content": [
+                "mp:-(h)e",
+                "[mp](way-se)"
+            ]
+        }
+    ],
+    "Morph": [
+        {
+            "id": "tri-se-1",
+            "content": [
+                "m:-se 'SUP'",
+                "[m](tri-se-1)"
+            ]
+        },
+        {
+            "id": "tri-se-2",
+            "content": [
+                "m:-je 'SUP'",
+                "[m](tri-se-2)"
+            ]
+        },
+        {
+            "id": "tri-se-3",
+            "content": [
+                "m:-e 'SUP'",
+                "[m](tri-se-3)"
+            ]
+        },
+        {
+            "id": "apa-se-1",
+            "content": [
+                "m:-se 'SUP'",
+                "[m](apa-se-1)"
+            ]
+        }
+    ],
+    "Wordform": [
+        {
+            "id": "tri-person",
+            "content": [
+                "wf:w\u00eftoto-ton",
+                "[wf](tri-person)"
+            ]
+        },
+        {
+            "id": "tri-now",
+            "content": [
+                "wf:menjaar\u00eb",
+                "[wf](tri-now)"
+            ]
+        },
+        {
+            "id": "tri-us",
+            "content": [
+                "wf:k\u00efm\u00eb-njamo",
+                "[wf](tri-us)"
+            ]
+        },
+        {
+            "id": "apa-fire",
+            "content": [
+                "wf:apoto",
+                "[wf](apa-fire)"
+            ]
+        },
+        {
+            "id": "tri-fire",
+            "content": [
+                "wf:mahto",
+                "[wf](tri-fire)"
+            ]
+        },
+        {
+            "id": "wai-fire",
+            "content": [
+                "wf:wehto",
+                "[wf](wai-fire)"
+            ]
+        },
+        {
+            "id": "tri-with",
+            "content": [
+                "wf:ak\u00eb\u00ebr\u00eb-ne",
+                "[wf](tri-with)"
+            ]
+        },
+        {
+            "id": "tri-kure",
+            "content": [
+                "wf:kure",
+                "[wf](tri-kure)"
+            ]
+        }
+    ],
+    "Example": [
+        {
+            "id": "ekiri-1",
+            "content": [
+                "ex:ekiri-1 ek\u0268r\u0268 ru man ero-a\u014b t\u0268-mami-n \u0268na\n\u2018The old man went to his work,\u2019",
+                "[ex](ekiri-1)"
+            ]
+        },
+        {
+            "id": "ekiri-2",
+            "content": [
+                "ex:ekiri-2 j-uwj-a\u014b man t\u0268-w\u0268-n\n\u2018He looked for his machete.\u2019",
+                "[ex](ekiri-2)"
+            ]
+        },
+        {
+            "id": "ekiri-3",
+            "content": [
+                "ex:ekiri-3 \u0268-w\u0268-n mun eto an-k-a\u014b man\n\u2018\u201cWhere might my machete be?\u201d, he asked.\u2019",
+                "[ex](ekiri-3)"
+            ]
+        },
+        {
+            "id": "ekiri-4",
+            "content": [
+                "ex:ekiri-4 r\u0268k r\u0268k r\u0268k j-uwi-tk-a\u014b man\n\u2018So he went looking for it.\u2019",
+                "[ex](ekiri-4)"
+            ]
+        },
+        {
+            "id": "ekiri-5",
+            "content": [
+                "ex:ekiri-5 pat\u0361\u0283a\u014b orotpot-a\u014b man owro warakt\u0361\u0283i\n\u2018He went back into the house.\u2019",
+                "[ex](ekiri-5)"
+            ]
+        },
+        {
+            "id": "ekiri-6",
+            "content": [
+                "ex:ekiri-6 m-ene\u014b paj\u014b \u0268-w\u0268-n\n\u2018\u201cHave you seen my machete, dear?\u201d\u2019",
+                "[ex](ekiri-6)"
+            ]
+        },
+        {
+            "id": "ekiri-7",
+            "content": [
+                "ex:ekiri-7 an-k-a\u014b man t\u0268-muje na\n\u2018He said to his wife.\u2019",
+                "[ex](ekiri-7)"
+            ]
+        },
+        {
+            "id": "ekiri-8",
+            "content": [
+                "ex:ekiri-8 j-apta-gwam t\u0361\u0283utke-rem j-uw\u0268-n\n\u2018His machete was under his arm.\u2019",
+                "[ex](ekiri-8)"
+            ]
+        },
+        {
+            "id": "ekiri-9",
+            "content": [
+                "ex:ekiri-9 otumunto mun eto \u0268-w\u0268-n otumunto\n\u2018\u201cWhere might my machete be, where?\u201d\u2019",
+                "[ex](ekiri-9)"
+            ]
+        },
+        {
+            "id": "ekiri-10",
+            "content": [
+                "ex:ekiri-10 nen-to nen-to j-e\u014b-l\u0268 \u0268-w\u0268-n\n\u2018\u201cHere, here I put my machete.\u201d\u2019",
+                "[ex](ekiri-10)"
+            ]
+        },
+        {
+            "id": "ekiri-11",
+            "content": [
+                "ex:ekiri-11 an-k-a\u014b man i-mu-n\n\u2018His son said:\u2019",
+                "[ex](ekiri-11)"
+            ]
+        },
+        {
+            "id": "ekiri-12",
+            "content": [
+                "ex:ekiri-12 pupa mun-tu mun w-apta-gwam keni o-w\u0268-n\n\u2018\u201cFather, your machete is the one under your arm.\u201d\u2019",
+                "[ex](ekiri-12)"
+            ]
+        },
+        {
+            "id": "ekiri-13",
+            "content": [
+                "ex:ekiri-13 nen tan nen \u0268-w\u0268-n\n\u2018\u201cMy machete is here.\u201d\u2019",
+                "[ex](ekiri-13)"
+            ]
+        },
+        {
+            "id": "ekiri-14",
+            "content": [
+                "ex:ekiri-14 t\u0268mo-\u014bmo araw\u0268-rem-kom an-k-a\u014b-tom man i-mu-n emt\u0361\u0283i-n e-muje keni ni\u014bk\u0268n e-mnop-towo=ge k\u0268k\u0268k\u0268 an-k-a\u014b-tom man\n\u2018His family, his son, his daughter, his wife started laughing (because of all this). Hahaha! They laughed.\u2019",
+                "[ex](ekiri-14)"
+            ]
+        },
+        {
+            "id": "tri-1",
+            "content": [
+                "ex:tri-1 pai i-wae t-ee-se w\u00efraapa\n\u2018The bow was stronger than the tapir.\u2019",
+                "[ex](tri-1)"
+            ]
+        }
+    ],
+    "Language": [
+        {
+            "id": "apa",
+            "content": [
+                "lg:Apala\u00ed",
+                "[lg](apa)"
+            ]
+        },
+        {
+            "id": "tri",
+            "content": [
+                "lg:Tiriy\u00f3",
+                "[lg](tri)"
+            ]
+        },
+        {
+            "id": "hix",
+            "content": [
+                "lg:Hixkary\u00e1na",
+                "[lg](hix)"
+            ]
+        },
+        {
+            "id": "pan",
+            "content": [
+                "lg:Panare",
+                "[lg](pan)"
+            ]
+        },
+        {
+            "id": "mac",
+            "content": [
+                "lg:Macushi",
+                "[lg](mac)"
+            ]
+        },
+        {
+            "id": "wmr",
+            "content": [
+                "lg:Waimiri-Atroari",
+                "[lg](wmr)"
+            ]
+        },
+        {
+            "id": "mak",
+            "content": [
+                "lg:Ye'kwana",
+                "[lg](mak)"
+            ]
+        },
+        {
+            "id": "wai",
+            "content": [
+                "lg:Waiwai",
+                "[lg](wai)"
+            ]
+        },
+        {
+            "id": "way",
+            "content": [
+                "lg:Wayana",
+                "[lg](way)"
+            ]
+        },
+        {
+            "id": "kar",
+            "content": [
+                "lg:Kari'\u00f1a",
+                "[lg](kar)"
+            ]
+        },
+        {
+            "id": "ikp",
+            "content": [
+                "lg:Ikpeng",
+                "[lg](ikp)"
+            ]
+        },
+        {
+            "id": "uxc",
+            "content": [
+                "lg:Upper Xingu Carib",
+                "[lg](uxc)"
+            ]
+        },
+        {
+            "id": "ara",
+            "content": [
+                "lg:Arara",
+                "[lg](ara)"
+            ]
+        },
+        {
+            "id": "ing",
+            "content": [
+                "lg:Ingarik\u00f3",
+                "[lg](ing)"
+            ]
+        },
+        {
+            "id": "pem",
+            "content": [
+                "lg:Pem\u00f3n",
+                "[lg](pem)"
+            ]
+        },
+        {
+            "id": "kap",
+            "content": [
+                "lg:Kap\u00f3n",
+                "[lg](kap)"
+            ]
+        },
+        {
+            "id": "yuk",
+            "content": [
+                "lg:Yukpa",
+                "[lg](yuk)"
+            ]
+        },
+        {
+            "id": "car",
+            "content": [
+                "lg:Karijona",
+                "[lg](car)"
+            ]
+        },
+        {
+            "id": "bak",
+            "content": [
+                "lg:Bakairi",
+                "[lg](bak)"
+            ]
+        },
+        {
+            "id": "tam",
+            "content": [
+                "lg:Tamanaku",
+                "[lg](tam)"
+            ]
+        },
+        {
+            "id": "kax",
+            "content": [
+                "lg:Werikyana",
+                "[lg](kax)"
+            ]
+        },
+        {
+            "id": "aku",
+            "content": [
+                "lg:Akuriy\u00f3",
+                "[lg](aku)"
+            ]
+        },
+        {
+            "id": "jap",
+            "content": [
+                "lg:Japreria",
+                "[lg](jap)"
+            ]
+        },
+        {
+            "id": "cum",
+            "content": [
+                "lg:Kuman\u00e1",
+                "[lg](cum)"
+            ]
+        },
+        {
+            "id": "palm",
+            "content": [
+                "lg:Palmela",
+                "[lg](palm)"
+            ]
+        },
+        {
+            "id": "pime",
+            "content": [
+                "lg:Pimenteira",
+                "[lg](pime)"
+            ]
+        },
+        {
+            "id": "pxan",
+            "content": [
+                "lg:Pauxiana",
+                "[lg](pxan)"
+            ]
+        },
+        {
+            "id": "para",
+            "content": [
+                "lg:Paravilhana",
+                "[lg](para)"
+            ]
+        },
+        {
+            "id": "bona",
+            "content": [
+                "lg:Bonari",
+                "[lg](bona)"
+            ]
+        },
+        {
+            "id": "wayu",
+            "content": [
+                "lg:Wayumara",
+                "[lg](wayu)"
+            ]
+        },
+        {
+            "id": "apia",
+            "content": [
+                "lg:Apiaka-Tocantins",
+                "[lg](apia)"
+            ]
+        },
+        {
+            "id": "opon",
+            "content": [
+                "lg:Op\u00f3n-Carare",
+                "[lg](opon)"
+            ]
+        },
+        {
+            "id": "paux",
+            "content": [
+                "lg:Pauxi",
+                "[lg](paux)"
+            ]
+        },
+        {
+            "id": "sapa",
+            "content": [
+                "lg:Sapara",
+                "[lg](sapa)"
+            ]
+        },
+        {
+            "id": "tive",
+            "content": [
+                "lg:Tiverighotto",
+                "[lg](tive)"
+            ]
+        },
+        {
+            "id": "yao",
+            "content": [
+                "lg:Yao",
+                "[lg](yao)"
+            ]
+        },
+        {
+            "id": "yaru",
+            "content": [
+                "lg:Yarum\u00e1",
+                "[lg](yaru)"
+            ]
+        },
+        {
+            "id": "salu",
+            "content": [
+                "lg:Salum\u00e1",
+                "[lg](salu)"
+            ]
+        },
+        {
+            "id": "siku",
+            "content": [
+                "lg:Sikiana",
+                "[lg](siku)"
+            ]
+        },
+        {
+            "id": "chai",
+            "content": [
+                "lg:Chayma",
+                "[lg](chai)"
+            ]
+        },
+        {
+            "id": "tau",
+            "content": [
+                "lg:Taulipang",
+                "[lg](tau)"
+            ]
+        },
+        {
+            "id": "pat",
+            "content": [
+                "lg:Patamona",
+                "[lg](pat)"
+            ]
+        },
+        {
+            "id": "are",
+            "content": [
+                "lg:Arekuna",
+                "[lg](are)"
+            ]
+        },
+        {
+            "id": "kam",
+            "content": [
+                "lg:Kamarakoto",
+                "[lg](kam)"
+            ]
+        },
+        {
+            "id": "aka",
+            "content": [
+                "lg:Akawaio",
+                "[lg](aka)"
+            ]
+        },
+        {
+            "id": "cgt",
+            "content": [
+                "lg:Kumanagoto",
+                "[lg](cgt)"
+            ]
+        },
+        {
+            "id": "map",
+            "content": [
+                "lg:Mapoyo",
+                "[lg](map)"
+            ]
+        },
+        {
+            "id": "yab",
+            "content": [
+                "lg:Yawarana",
+                "[lg](yab)"
+            ]
+        },
+        {
+            "id": "jawa",
+            "content": [
+                "lg:Jawaperi",
+                "[lg](jawa)"
+            ]
+        },
+        {
+            "id": "pno",
+            "content": [
+                "lg:P\u00e9mono",
+                "[lg](pno)"
+            ]
+        }
+    ],
+    "Form": [
+        {
+            "id": "tri-house",
+            "content": [
+                "f:pakoro se wae",
+                "[f](tri-house)"
+            ]
+        }
+    ],
+    "Source": [
+        {
+            "id": "abbott1976estrutura",
+            "content": [
+                "Abbott, Miriam. 1976. Estrutura oracional da l\u00edngua Makuxi. S\u00e9rie Ling\u00fc\u00edstica 5. 231\u2013266.",
+                "[src](abbott1976estrutura)"
+            ]
+        },
+        {
+            "id": "abbott1985subordinate",
+            "content": [
+                "Abbott, Miriam. 1985. Subordinate clauses in Macushi. In Fortunes, David L. (ed.), Porto Velho Workpapers, 254\u2013267. Bras\u00edlia: SIL.",
+                "[src](abbott1985subordinate)"
+            ]
+        },
+        {
+            "id": "abbott2015dictionary",
+            "content": [
+                "Abbott, Miriam and Foster, Patrick and Key, Mary Ritchie. 2015. Macushi. In Key, Mary Ritchie and Comrie, Bernard (eds.), The Intercontinental Dictionary Series. Leipzig: Max Planck Institute for Evolutionary Anthropology.",
+                "[src](abbott2015dictionary)"
+            ]
+        },
+        {
+            "id": "adam1893materiaux",
+            "content": [
+                "Adam, Lucien. 1893. Mat\u00e9riaux pour servir \u00e0 l'\u00e9tablissement d'une grammaire compar\u00e9e des dialectes de la famille Caribe. Paris: J. Maisonneuve.",
+                "[src](adam1893materiaux)"
+            ]
+        },
+        {
+            "id": "adam1905accawai",
+            "content": [
+                "Adam, Lucien. 1905. Grammaire de l'Accawai. Journal de la Soci\u00e9t\u00e9 des am\u00e9ricanistes 2. 43\u201389.",
+                "[src](adam1905accawai)"
+            ]
+        },
+        {
+            "id": "akawaio2012bible",
+            "content": [
+                "{Wycliffe Bible Translators}. 2012. Khoryenkom Karyehtan\u00e0.",
+                "[src](akawaio2012bible)"
+            ]
+        },
+        {
+            "id": "akawaiocaesar2003",
+            "content": [
+                "Caesar-Fox, Desrey Clementine. 2003. Zauro'n\u00f6dok Agawayo Yau: Variants of Akawaio spoken at Waramadong. (Doctoral dissertation).",
+                "[src](akawaiocaesar2003)"
+            ]
+        },
+        {
+            "id": "alvarez1996reduction",
+            "content": [
+                "\u00c1lvarez, Jos\u00e9. 1996. Vocales caducas y s\u00edlabas tem\u00e1ticas en pem\u00f3n taurep\u00e1n. Omnia 2. 39\u201374.",
+                "[src](alvarez1996reduction)"
+            ]
+        },
+        {
+            "id": "alvarez1998split",
+            "content": [
+                "\u00c1lvarez, Jos\u00e9. 1997. Split Ergativity and Complementary Distribution of NP's and Pronominal Affixes in Pem\u00f3n (Cariban). Opci\u00f3n 13. 69\u201394.",
+                "[src](alvarez1998split)"
+            ]
+        },
+        {
+            "id": "alvarez2000construcciones",
+            "content": [
+                "\u00c1lvarez, Jos\u00e9. 2000. Construcciones progresivas en pem\u00f3n y otras lenguas caribes. Opci\u00f3n. 96\u2013130.",
+                "[src](alvarez2000construcciones)"
+            ]
+        },
+        {
+            "id": "alvarez2000entrada",
+            "content": [
+                "\u00c1lvarez, Jos\u00e9. 2000. La entrada verbal en la lexicograf\u00eda del pem\u00f3n (caribe). Bolet\u00edn de Ling\u00fc\u00edstica 15. 65\u201394.",
+                "[src](alvarez2000entrada)"
+            ]
+        },
+        {
+            "id": "alvarez2008clausulas",
+            "content": [
+                "\u00c1lvarez, Jos\u00e9. 2008. Cl\u00e1usulas relativas, nominalizaci\u00f3n y constituyentes en pem\u00f3n (Caribe). Opci\u00f3n 24. 114\u2013143.",
+                "[src](alvarez2008clausulas)"
+            ]
+        },
+        {
+            "id": "alvarez2016esbozo",
+            "content": [
+                "\u00c1lvarez, Jos\u00e9. 2016. Esbozo de una gram\u00e1tica de la lengua Kari\u2019\u00f1a. (unpublished).",
+                "[src](alvarez2016esbozo)"
+            ]
+        },
+        {
+            "id": "alvarez2018kg",
+            "content": [
+                "\u00c1lvarez, Jos\u00e9. 2018. Roroim\u00fc t\u00f6pai Orinoko kuwak: El viaje de Koch-Gr\u00fcnberg en pem\u00f3n: Presentaci\u00f3n y an\u00e1lisis ling\u00fc\u00edstico. (unpublished).",
+                "[src](alvarez2018kg)"
+            ]
+        },
+        {
+            "id": "alvarez2018kumana",
+            "content": [
+                "\u00c1lvarez, Jos\u00e9. 2018. Kure mana choto maimuru. Maracaibo: Universidad del Zulia.",
+                "[src](alvarez2018kumana)"
+            ]
+        },
+        {
+            "id": "alves2010arara",
+            "content": [
+                "Alves, Ana Carolina Ferreira. 2010. Phonological Aspects of Arara (Carib, Brazil). (MA thesis).",
+                "[src](alves2010arara)"
+            ]
+        },
+        {
+            "id": "alves2013arara",
+            "content": [
+                "Alves, Ana Carolina Ferreira. 2013. Aspectos do sistema fonol\u00f3gico de Arara (Karib). Boletim do Museu Paraense Em\u00edlio Goeldi, Ci\u00eancias Humanas 8. 265\u2013277.",
+                "[src](alves2013arara)"
+            ]
+        },
+        {
+            "id": "alves2013verbo",
+            "content": [
+                "Alves Chagas, Angela Fab\u00edola. 2013. O Verbo Ikpeng: estudo morfossint\u00e1tico e sem\u00e2ntico-lexical. (Doctoral dissertation).",
+                "[src](alves2013verbo)"
+            ]
+        },
+        {
+            "id": "alves2017arara",
+            "content": [
+                "Alves, Ana Carolina Ferreira. 2017. Morfofonologia, morfossintaxe e o sistema de tempo, aspecto e modo em Arara (Karib). (Doctoral dissertation).",
+                "[src](alves2017arara)"
+            ]
+        },
+        {
+            "id": "alves2017wordlist",
+            "content": [
+                "Alves, Ana Carolina Ferreira. 2017. Arara wordlist. (unpublished).",
+                "[src](alves2017wordlist)"
+            ]
+        },
+        {
+            "id": "alves2019arara",
+            "content": [
+                "Ferreira-Alves, Ana Carolina and Chagas, Angela Fab\u00edola Alves and Barbosa, Leonard J\u00e9ferson Grala. 2019. Termos de parentesco: primeiras reconstru\u00e7\u00f5es em Proto-Arara-Ikpeng. Boletim do Museu Paraense Em\u00edlio Goeldi. Ci\u00eancias Humanas 14. 101\u2013119.",
+                "[src](alves2019arara)"
+            ]
+        },
+        {
+            "id": "amodio1996lingua",
+            "content": [
+                "Amodio, Emanuelle and Pira, Vicente. 1996. L\u00edngua Makuxi, Makuxi maimu: Guias para a aprendizagem e dicion\u00e1rio da l\u00edngua Makuxi. Roraima: Nordeste Gr\u00e1fica.",
+                "[src](amodio1996lingua)"
+            ]
+        },
+        {
+            "id": "apalai1986bible",
+            "content": [
+                "{Wycliffe Bible Translators}. 1986. Riton\u00f5po Omiry.",
+                "[src](apalai1986bible)"
+            ]
+        },
+        {
+            "id": "apalaibibleonline",
+            "content": [
+                "{Wycliffe Bible Translators}. n.d. Riton\u00f5po Omiry.",
+                "[src](apalaibibleonline)"
+            ]
+        },
+        {
+            "id": "arandia2018syllable",
+            "content": [
+                "C\u00e1ceres Arandia, Natalia. 2018. Syllable Reduction in Ye\u2019kwana: Morphologized Phonology. International Journal of American Linguistics 84. 159\u2013205.",
+                "[src](arandia2018syllable)"
+            ]
+        },
+        {
+            "id": "bakshi1998vowel",
+            "content": [
+                "Bakshi, Indira and Payne, Doris L. 1998. Vowel harmony and transitive verb classes in Panare: Where are the consonant-initial roots?. In Estrada Fern\u00e1ndez, Z. and Acosta F\u00e9lix, Andr\u00e9s and Figueroa Esteva, Max and L\u00f3pez Cruz, Gerardo (eds.), IV Encuentro Internacional de Ling\u00fc\u00edstica en el Noroeste, 95\u2013115. Hermosillo, Mexico: Unison.",
+                "[src](bakshi1998vowel)"
+            ]
+        },
+        {
+            "id": "barros2018bakairi",
+            "content": [
+                "de Barros, Edir Pina. 2018. Bakairi. (Povos Ind\u00edgenas no Brasil, Instituto Socioambiental).",
+                "[src](barros2018bakairi)"
+            ]
+        },
+        {
+            "id": "basso1973kalapalo",
+            "content": [
+                "Basso, Ellen B. 1973. The Kalapalo Indians of central Brazil. New York: Holt, Rinehart and Winston.",
+                "[src](basso1973kalapalo)"
+            ]
+        },
+        {
+            "id": "basso1977caribspeaking",
+            "content": [
+                "Basso, Ellen B. (ed.) 1977. Carib-Speaking Indians. Tucson, AZ: University of Arizona Press.",
+                "[src](basso1977caribspeaking)"
+            ]
+        },
+        {
+            "id": "basso1986quoted",
+            "content": [
+                "Basso, Ellen B. 1986. Quoted dialogues in Kalapalo narrative discourse. In Sherzer, Joel and Urban, Greg (eds.), Narrative South American discourse, 119\u2013168. Berlin: Mouton de Gruyter.",
+                "[src](basso1986quoted)"
+            ]
+        },
+        {
+            "id": "basso2008epistemic",
+            "content": [
+                "Basso, Ellen B. 2008. Epistemic deixis in Kalapalo. Pragmatics 18. 215\u2013252.",
+                "[src](basso2008epistemic)"
+            ]
+        },
+        {
+            "id": "basso2012kuikuro",
+            "content": [
+                "Basso, Ellen B. 2012. A Grammar of Kalapalo, A Southern Cariban Language. (unpublished).",
+                "[src](basso2012kuikuro)"
+            ]
+        },
+        {
+            "id": "basso2014compounding",
+            "content": [
+                "Basso, Ellen B. 2014. Compounding in Kalapalo, a Southern Cariban language. In Danielsen, Swintha and Hann\u00df, Katja and Z\u00fa\u00f1iga, Fernando (eds.), Word Formation in South American Languages, 181\u2013206. Amsterdam: John Benjamins.",
+                "[src](basso2014compounding)"
+            ]
+        },
+        {
+            "id": "basso2019kalapalo",
+            "content": [
+                "Basso, Ellen B. 2019. A Grammar of Kalapalo, A Southern Cariban Language. (unpublished).",
+                "[src](basso2019kalapalo)"
+            ]
+        },
+        {
+            "id": "beria2000clasificacion",
+            "content": [
+                "Beria, Jos\u00e9. 2000. Clasificaci\u00f3n de las cl\u00e1usulas adverbiales de la lengua kari\u2019\u00f1a. Lingua Americana. 16\u201333.",
+                "[src](beria2000clasificacion)"
+            ]
+        },
+        {
+            "id": "beria2001las",
+            "content": [
+                "Beria, Jos\u00e9. 2001. Las posibilidades coordinativas de la lengua kari\u2019\u00f1a. Opci\u00f3n. 30\u201347.",
+                "[src](beria2001las)"
+            ]
+        },
+        {
+            "id": "beria2003el",
+            "content": [
+                "Beria, Jos\u00e9 and Granados, H. 2003. El relativo de sujeto en Kari\u2019\u00f1a. L\u00ednguas Ind\u00edgenas Americanas. 7\u201322.",
+                "[src](beria2003el)"
+            ]
+        },
+        {
+            "id": "beria2004los",
+            "content": [
+                "Beria, Jos\u00e9. 2004. Los procesos flexivos que modifican la base nominal en kari\u2019\u00f1a. Lingua Americana. 99\u2013119.",
+                "[src](beria2004los)"
+            ]
+        },
+        {
+            "id": "bls1993proceedings",
+            "content": [
+                "Peterson, David A. (ed.) 1993. Proceedings of the Nineteenth Annual Meeting of the Berkeley Linguistics Society: Special Session on Syntactic Issues in Native American Languages. Berkeley: Braun-Brumfield.",
+                "[src](bls1993proceedings)"
+            ]
+        },
+        {
+            "id": "bonfim2015inclusiva",
+            "content": [
+                "Bonfim, Evandro de Sousa. 2015. A pessoa inclusiva em bakairi: morfologia pronominal e ontologia em l\u00ednguas caribe. Espa\u00e7o Amer\u00edndio 9. 35\u201353.",
+                "[src](bonfim2015inclusiva)"
+            ]
+        },
+        {
+            "id": "bruno1996dictionary",
+            "content": [
+                "Bruno, Ana Carla dos Santos. 1996. Dicion\u00e1rio Waimiri-Atroari-Portugu\u00eas. Manaus: Programa {Waimir\u00ed-Atroari} / Conev\u00eanio {FUNAI}-Eletronorte.",
+                "[src](bruno1996dictionary)"
+            ]
+        },
+        {
+            "id": "bruno1996guia",
+            "content": [
+                "Bruno, Ana Carla dos Santos. 1996. Guia de aprendizagem da l\u00edngua Waimir\u00ed-atroari. Manaus: Programa Waimir\u00ed-Atroari, Conv\u00eanio FUNAI / Eletronorte.",
+                "[src](bruno1996guia)"
+            ]
+        },
+        {
+            "id": "bruno2003reduplicacao",
+            "content": [
+                "Bruno, Ana Carla. 2003. Reduplica\u00e7\u00e3o em Waimiri Atroari. Amerindia. 83\u201394.",
+                "[src](bruno2003reduplicacao)"
+            ]
+        },
+        {
+            "id": "bruno2006causative",
+            "content": [
+                "Bruno, Ana Carla dos Santos. 2006. The causative construction in Waimiri Atroari. L\u00ednguas Ind\u00edgenas Americanas 6. 101\u2013108.",
+                "[src](bruno2006causative)"
+            ]
+        },
+        {
+            "id": "bruno2009waimiri",
+            "content": [
+                "Bruno, Ana Carla dos Santos. 2009. Phrase structure, clauses, and word order in Waimiri-Atroari (Carib family). ReVEL 3.",
+                "[src](bruno2009waimiri)"
+            ]
+        },
+        {
+            "id": "bruno2010waimiri",
+            "content": [
+                "Bruno, Ana Carla dos Santos. 2010. Waimiri Atroari verbal morphology. MOARA 2. 235\u2013262.",
+                "[src](bruno2010waimiri)"
+            ]
+        },
+        {
+            "id": "bruno2015case",
+            "content": [
+                "Bruno, Ana Carla dos Santos. 2015. Case Marking in Waimiri Atroari: typical nominative/accusative or nominative with some inverse/split-s features. Revista Lingu\u00ed\u0283tica 4.",
+                "[src](bruno2015case)"
+            ]
+        },
+        {
+            "id": "cabral2001estudos",
+            "content": [
+                "Cabral, Ana Suelly Arruda C\u00e2mara and Rodrigues, Aryon (eds.) 2001. Estudos sobre L\u00ednguas Ind\u00edgenas. Bel\u00e9m: Editora da Universidade Federal do Par\u00e1.",
+                "[src](cabral2001estudos)"
+            ]
+        },
+        {
+            "id": "cabral2002atas",
+            "content": [
+                "Cabral, Ana Suelly Arruda C\u00e2mara and Rodrigues, Aryon D. (eds.) 2002. L\u00ednguas ind\u00edgenas Brasileiras: fonologia, gram\u00e1tica e hist\u00f3ria. Bel\u00e9m: EDUFPA. (Atas do I Encontro Internacional do Grupo de Trabalho sobre L\u00ednguas Ind\u00edgenas da ANPOLL).",
+                "[src](cabral2002atas)"
+            ]
+        },
+        {
+            "id": "cabral2014classificadores",
+            "content": [
+                "Cabral, Ana Suelly Arruda C\u00e2mara and Kalapalo, Kaman and Mehinaku Awet\u00ed, Makaulaka and de Oliveira, Sanderson Castro Soares and Suru\u00ed, Uraan. 2014. Classificadores nominais em tr\u00eas l\u00ednguas ind\u00edgenas da Amaz\u00f4nia brasileira: ampliando tipologias. Revista Brasileira de Ling\u00fc\u00edstica Antropol\u00f3gica 6. 165\u2013193.",
+                "[src](cabral2014classificadores)"
+            ]
+        },
+        {
+            "id": "caceres2014elar",
+            "content": [
+                "C\u00e1ceres, Natalia. 2014. Documentation of Ye'kwana in the Erebato river in Venezuela.",
+                "[src](caceres2014elar)"
+            ]
+        },
+        {
+            "id": "caceres2015absnom",
+            "content": [
+                "C\u00e1ceres, Natalia. 2015. Construcciones basadas en el nominalizador absolutivo *tjap\u00f4. (Paper presented at the Venezuelan Cariban Conference).",
+                "[src](caceres2015absnom)"
+            ]
+        },
+        {
+            "id": "caceres2015yawarana",
+            "content": [
+                "C\u00e1ceres, Natalia. 2015. Yawarana: documentation project collection.",
+                "[src](caceres2015yawarana)"
+            ]
+        },
+        {
+            "id": "caceres2016cuentos",
+            "content": [
+                "C\u00e1ceres Arandia, Natalia. 2016. Colecci\u00f3n de seis cuentos en yabarana. (unpublished).",
+                "[src](caceres2016cuentos)"
+            ]
+        },
+        {
+            "id": "caceres2016ortografia",
+            "content": [
+                "C\u00e1ceres Arandia, Natalia. 2016. Propuesta de ortograf\u00eda yabarana. (unpublished).",
+                "[src](caceres2016ortografia)"
+            ]
+        },
+        {
+            "id": "caceres2017ergative",
+            "content": [
+                "C\u00e1ceres Arandia, Natalia. 2017. Obsolescencia de un sistema innovado: marcaci\u00f3n opcional ergativa en yabarana (caribe). (Paper presented at the Conference on Indigenous Languages of {Latin America} VIII).",
+                "[src](caceres2017ergative)"
+            ]
+        },
+        {
+            "id": "caceres2017guia",
+            "content": [
+                "C\u00e1ceres Arandia, Natalia. 2017. Gu\u00eda b\u00e1sica para apoyar y fomentar la comunicaci\u00f3n oral en yabarana. (unpublished).",
+                "[src](caceres2017guia)"
+            ]
+        },
+        {
+            "id": "caceres2017yawarana",
+            "content": [
+                "C\u00e1ceres Arandia, Natalia and Gildea, Spike and Matt\u00e9i-M\u00fcller, Marie-Claude. 2017. Loss of Inflection in Yawarana (Cariban). (Paper presented at the International Conference on Historical Linguistics 23).",
+                "[src](caceres2017yawarana)"
+            ]
+        },
+        {
+            "id": "caceres2018yawarana",
+            "content": [
+                "C\u00e1ceres, Natalia and Gildea, Spike. 2018. A first analysis of Tense-Aspect constructions in Yawarana (Cariban). (Paper presented at Amaz\u00f3nicas VI).",
+                "[src](caceres2018yawarana)"
+            ]
+        },
+        {
+            "id": "caceres2019calendario",
+            "content": [
+                "C\u00e1ceres Arandia, Natalia and Conde, Olga. 2019. Calendario 2020 para practicar yabarana. (unpublished).",
+                "[src](caceres2019calendario)"
+            ]
+        },
+        {
+            "id": "caceres2020flex",
+            "content": [
+                "C\u00e1ceres Arandia, Natalia. 2020. Yawarana FLEx project with partially parsed and glossed texts and corresponding morpheme lexicon from Natalia C\u00e1ceres Arandia's own fieldwork. (Database in the author's possession.)",
+                "[src](caceres2020flex)"
+            ]
+        },
+        {
+            "id": "camacho2010information",
+            "content": [
+                "Camacho, Jos\u00e9 and Guti\u00e9rrez-Bravo, Rodrigo and S\u00e1nchez, Liliana (eds.) 2010. Information structure in indigenous languages of the Americas. Berlin: Mouton de Gruyter.",
+                "[src](camacho2010information)"
+            ]
+        },
+        {
+            "id": "camargo1996wayana",
+            "content": [
+                "Camargo, Eliane. 1996. Aspects de la phonologie du wayana. Amerindia 21. 115\u2013136.",
+                "[src](camargo1996wayana)"
+            ]
+        },
+        {
+            "id": "camargo1999appartenance",
+            "content": [
+                "Camargo, Eliane. 1999. La relation d'appartenance en wayana. La Linguistique 35. 97\u2013112.",
+                "[src](camargo1999appartenance)"
+            ]
+        },
+        {
+            "id": "camargo2000interaction",
+            "content": [
+                "Camargo, Eliane. 2000. Une interaction entre localisation et aspect: Un exemple de -p\u00ebk\u00eb et -ja/e en wayana. Amerindia. 1\u201324.",
+                "[src](camargo2000interaction)"
+            ]
+        },
+        {
+            "id": "camargo2000ordre",
+            "content": [
+                "Camargo, Eliane. 2000. L'ordre des constituants en wayana: Langue am\u00e9rindienne du plateau guyanais. Cahiers de Linguistique de l\u2019INALCO 3. 147\u2013168.",
+                "[src](camargo2000ordre)"
+            ]
+        },
+        {
+            "id": "camargo2001aspects",
+            "content": [
+                "Camargo, Eliane. 2001. Aspects de la morphologie apalai dans les constructions d\u2019appartenance. Amerindia. 123\u2013146.",
+                "[src](camargo2001aspects)"
+            ]
+        },
+        {
+            "id": "camargo2001chants",
+            "content": [
+                "Camargo, Eliane and Rivi\u00e8re, Herv\u00e9. 2001. Trois chants de guerre wayana. Amerindia 26. 87\u2013122.",
+                "[src](camargo2001chants)"
+            ]
+        },
+        {
+            "id": "camargo2002lexico",
+            "content": [
+                "Camargo, Eliane. 2002. L\u00e9xico biling\u00fce: aparai-portugu\u00eas / portugu\u00eas-aparai. M\u00fcnchen: Lincom Europa.",
+                "[src](camargo2002lexico)"
+            ]
+        },
+        {
+            "id": "camargo2003operadores",
+            "content": [
+                "Camargo, Eliane. 2003. Operadores aspectuais de estado marcando o nome em Wayana (Caribe). L\u00ednguas Ind\u00edgenas Americanas 8. 85\u2013104.",
+                "[src](camargo2003operadores)"
+            ]
+        },
+        {
+            "id": "camargo2003relacoes",
+            "content": [
+                "Camargo, Eliane. 2003. Rela\u00e7\u00f5es sint\u00e1ticas e sem\u00e2nticas na predica\u00e7\u00e3o nominal do Wayana: a ora\u00e7\u00e3o com c\u00f3pula. Amerindia. 133\u2013160.",
+                "[src](camargo2003relacoes)"
+            ]
+        },
+        {
+            "id": "camargo2003verbais",
+            "content": [
+                "Camargo, Eliane. 2003. Classes verbais e sem\u00e2ntica dos argumentos em um sistema sint\u00e1tico cindido: o exemplo do Wayana (Caribe). In Queixal\u00f3s, Francesc (ed.), 83\u2013100. Bras\u00edlia, Paris: Laborat\u00f3rio de L\u00ednguas Ind\u00edgenas, Centre d'\u00e9tudes des langues indig\u00e8nes d'Am\u00e9rique.",
+                "[src](camargo2003verbais)"
+            ]
+        },
+        {
+            "id": "camargo2006lexical",
+            "content": [
+                "Camargo, Eliane. 2006. Lexical categories and word formation processes in Wayana (Cariban language). In Lois, Ximena and Vapnarsky, Valentina (eds.), Lexical categories and root classes in Amerindian languages, 147\u2013188. Bern: Peter Lang.",
+                "[src](camargo2006lexical)"
+            ]
+        },
+        {
+            "id": "camargo2007cindida",
+            "content": [
+                "Camargo, Eliane. 2007. Aspectos da sintaxe cindida em Wayana (Caribe). In Romero-Figueroa, Andr\u00e9s and Garay, Ana Fern\u00e1ndez and Corbera, Angel (eds.), Lenguas ind\u00edgenas de Am\u00e9rica del Sur, 111\u2013126. Caracas: Universidad Cat\u00f3lica Andr\u00e9s Bello.",
+                "[src](camargo2007cindida)"
+            ]
+        },
+        {
+            "id": "camargo2008wayana",
+            "content": [
+                "Camargo, Eliane. 2008. Identidade e Alteridade em Wayana: Uma contribui\u00e7\u00e3o lingu\u00edstica. Campos 9. 105\u2013137.",
+                "[src](camargo2008wayana)"
+            ]
+        },
+        {
+            "id": "camargo2010wayana",
+            "content": [
+                "Camargo, Eliane and Tapinkili, Anaiman. 2010. Hak\u00ebne omijau eitop Wajana-Palasisi / Dictionnaire bilingue Wayana-Fran\u00e7ais. Paris: CELIA/DRAC-Guyane, TEKUREMAI.",
+                "[src](camargo2010wayana)"
+            ]
+        },
+        {
+            "id": "camargo2020wayana",
+            "content": [
+                "Camargo, Eliane and Tapinkili, Anaiman. 2020. Wajana Omi Jat\u00ebku / Wayana au c\u0153ur des mots. Paris: CTHS.",
+                "[src](camargo2020wayana)"
+            ]
+        },
+        {
+            "id": "campbell2012classification",
+            "content": [
+                "Campbell, Lyle. 2012. Classification of the indigenous languages of South America. In Campbell, Lyle and Grondona, Ver\u00f3nica (eds.), The Indigenous Languages of South America, 59\u2013166. Berlin/New York: Mouton de Gruyter.",
+                "[src](campbell2012classification)"
+            ]
+        },
+        {
+            "id": "campbellgrondona2012indigenous",
+            "content": [
+                "Campbell, Lyle and Grondona, Ver\u00f3nica (eds.) 2012. The Indigenous Languages of South America. (The World of Linguistics, 2.) Berlin/New York: Mouton de Gruyter.",
+                "[src](campbellgrondona2012indigenous)"
+            ]
+        },
+        {
+            "id": "campetela1997analise",
+            "content": [
+                "Campetela, Cilene. 1997. An\u00e1lise do sistema de marca\u00e7\u00e3o de caso nas ora\u00e7\u00f5es independentes da l\u00edngua Ikpeng. (MA thesis).",
+                "[src](campetela1997analise)"
+            ]
+        },
+        {
+            "id": "campetela2002aspectos",
+            "content": [
+                "Campetela, Cilene. 2002. Aspectos pros\u00f3dicos da l\u00edngua Ikpeng. (Doctoral dissertation).",
+                "[src](campetela2002aspectos)"
+            ]
+        },
+        {
+            "id": "carlin1997nominal",
+            "content": [
+                "Carlin, Eithne B. 1997. Nominal possession in Trio. In Coerts, Jane A. and de Hoop, Helen (eds.), Linguistics in the Netherlands 1997, 25\u201336. Amsterdam: John Benjamins.",
+                "[src](carlin1997nominal)"
+            ]
+        },
+        {
+            "id": "carlin2002atlas",
+            "content": [
+                "Carlin, Eithne B. and Arends, Jacques (eds.) 2002. Atlas of the Languages of Suriname. Leiden: KITLV Press.",
+                "[src](carlin2002atlas)"
+            ]
+        },
+        {
+            "id": "carlin2002patterns",
+            "content": [
+                "Carlin, Eithne B. 2002. Patterns of language, patterns of thought: the Cariban languages. In Carlin, Eithne B. and Arends, Jacques (eds.), Atlas of the Languages of Suriname, 47\u201381. Leiden: KITLV Press.",
+                "[src](carlin2002patterns)"
+            ]
+        },
+        {
+            "id": "carlin2003experiencer",
+            "content": [
+                "Carlin, Eithne B. 2003. The experiencer role in the expression of mental states and activities in Trio. Amerindia. 161\u201382.",
+                "[src](carlin2003experiencer)"
+            ]
+        },
+        {
+            "id": "carlin2006verbalizers",
+            "content": [
+                "Carlin, Eithne B. 2006. The verbalizers in Trio (Cariban): a semantic description. In Rowicka, Grazyna J. and Carlin, Eithne B. (eds.), What's in a verb, 143\u2013157. Utrecht: LOT.",
+                "[src](carlin2006verbalizers)"
+            ]
+        },
+        {
+            "id": "carlin2009truth",
+            "content": [
+                "Carlin, Eithne B. 2009. Truth and knowledge markers in Wayana (Cariban), Suriname. In Wetzels, W. Leo (ed.), The linguistics of endangered languages, 135\u2013150. Utrecht: LOT.",
+                "[src](carlin2009truth)"
+            ]
+        },
+        {
+            "id": "carlin2010lingarch",
+            "content": [
+                "Carlin, Eithne B. and van de Kerke, Simon (eds.) 2010. Linguistics and archaeology in the Americas. Leiden: Brill.",
+                "[src](carlin2010lingarch)"
+            ]
+        },
+        {
+            "id": "carlin2011theticity",
+            "content": [
+                "Carlin, Eithne B. 2011. Theticity in Trio (Cariban). International Journal of American Linguistics 77. 1\u201331.",
+                "[src](carlin2011theticity)"
+            ]
+        },
+        {
+            "id": "carlin2014guianas",
+            "content": [
+                "Carlin, Eithne B. and Mans, Jimmy. 2014. Movement through Time in the Southern Guianas: Deconstructing the Amerindian Kaleidoscope. In Carlin, Eithne B. and L\u00e9glise, Isabelle and Migge, Bettina and Fat, Paul B. Tjon Sie (eds.), In and Out of Suriname, 76\u2013100. Leiden: Brill.",
+                "[src](carlin2014guianas)"
+            ]
+        },
+        {
+            "id": "carlin2014suriname",
+            "content": [
+                "Carlin, Eithne B. and L\u00e9glise, Isabelle and Migge, Bettina and Fat, Paul B. Tjon Sie (eds.) 2014. In and Out of Suriname. Leiden: Brill.",
+                "[src](carlin2014suriname)"
+            ]
+        },
+        {
+            "id": "cauty1977panare",
+            "content": [
+                "Cauty, A. 1978. An approach to the phonological and syllabic systems of the Panare language. Amerindia 3. 85\u2013103.",
+                "[src](cauty1977panare)"
+            ]
+        },
+        {
+            "id": "chagas2019ikpeng",
+            "content": [
+                "Chagas, Angela Fabiola Alves and Txic\u00e3o, Ayre and Txic\u00e3o, Kay and Txic\u00e3o, Maiua. 2019. Ikpeng: Puron M\u00efran / Hist\u00f3ria do sapo. Revista Lingu\u00ed\u0283tica 15. 303\u2013335.",
+                "[src](chagas2019ikpeng)"
+            ]
+        },
+        {
+            "id": "chavier1999aspectos",
+            "content": [
+                "Chavier, M. 1999. Aspectos de la morfolog\u00eda del Ye\u2019kwana. (MA thesis).",
+                "[src](chavier1999aspectos)"
+            ]
+        },
+        {
+            "id": "clarknamedictionary",
+            "content": [
+                "Clark, Patricia Roberts. 2009. Tribal Names of the Americas: Spelling Variants and Alternative Forms, Cross-Referenced. Jefferson, North Carolina: McFarland.",
+                "[src](clarknamedictionary)"
+            ]
+        },
+        {
+            "id": "coerts1997netherlands",
+            "content": [
+                "Coerts, Jane A. and de Hoop, Helen (eds.) 1997. Linguistics in the Netherlands 1997. Amsterdam: John Benjamins.",
+                "[src](coerts1997netherlands)"
+            ]
+        },
+        {
+            "id": "comrie2014contact",
+            "content": [
+                "Comrie, Bernard and Golluscio, Lucia (eds.) 2014. Language Contact and Documentation / Contacto ling\u00fc\u00edstico y documentaci\u00f3n. Berlin: Walter de Gruyter.",
+                "[src](comrie2014contact)"
+            ]
+        },
+        {
+            "id": "coudreau1892vocab",
+            "content": [
+                "Coudreau, Henri. 1892. Vocabulaires M\u00e9thodiques des Langues Ouayana, Apara\u00ef, Oyampi, \u00c9m\u00e9rillon. (Biblioth\u00e8que Linguistique Am\u00e9ricaine, XV.) Paris: Maisonneuve.",
+                "[src](coudreau1892vocab)"
+            ]
+        },
+        {
+            "id": "coudreau1901voyage",
+            "content": [
+                "Coudreau, Olive. 1901. Voyage au Cumin\u00e1: 20 Avril 1900 -- 7 Septembre 1900. Paris: A. Lahure.",
+                "[src](coudreau1901voyage)"
+            ]
+        },
+        {
+            "id": "courtz2008carib",
+            "content": [
+                "Courtz, Henk. 2008. A Carib grammar and dictionary. Toronto: Magoria Books.",
+                "[src](courtz2008carib)"
+            ]
+        },
+        {
+            "id": "crevels",
+            "content": [
+                "Crevels, Mily. 2012. Language endangerment in South America: The clock is ticking. In Campbell, Lyle and Grondona, Ver\u00f3nica (eds.), The Indigenous Languages of South America, 167\u2013233. Berlin/New York: Mouton de Gruyter.",
+                "[src](crevels)"
+            ]
+        },
+        {
+            "id": "crevels2002current",
+            "content": [
+                "Crevels, Mily and Crevels, Mily and Meira, S\u00e9rgio and van der Voort, Hein (eds.) 2002. Current Studies on South American Languages: Selected papers from the 50th International Congress of Americanists in Warsaw and the Spinoza Workshop on Amerindian Languages in Leiden. Leiden: Research institution of Asian, African, and Amerindian Studies (CNWS).",
+                "[src](crevels2002current)"
+            ]
+        },
+        {
+            "id": "cruz2002posse",
+            "content": [
+                "Cruz, Odileiz Souza. 2002. Posse do nome em Ingarik\u00f3. In Cabral, Ana Suelly Arruda C\u00e2mara and Rodrigues, Aryon D. (eds.), 13\u201321. Bel\u00e9m: EDUFPA. (Atas do I Encontro Internacional do Grupo de Trabalho sobre L\u00ednguas Ind\u00edgenas da ANPOLL).",
+                "[src](cruz2002posse)"
+            ]
+        },
+        {
+            "id": "cruz2005fonologia",
+            "content": [
+                "Cruz, Maria Odileiz Sousa. 2005. Fonologia e gram\u00e1tica Ingarik\u00f3: Ka\u0294pon-Brasil. (Doctoral dissertation).",
+                "[src](cruz2005fonologia)"
+            ]
+        },
+        {
+            "id": "cunha2004macushi",
+            "content": [
+                "Cunha, Carla Maria. 2004. Um estudo de fonologia da l\u00edngua Makuxi (karib): inter-rela\u00e7\u00f5es das teorias fonol\u00f3gicas. (Doctoral dissertation).",
+                "[src](cunha2004macushi)"
+            ]
+        },
+        {
+            "id": "deal2007proceedings",
+            "content": [
+                "Deal, A.R. and Association, Graduate Linguistics Student (eds.) 2007. Proceedings of SULA 4: Semantics of Under-represented Languages in the Americas.",
+                "[src](deal2007proceedings)"
+            ]
+        },
+        {
+            "id": "degoeje1909etudes",
+            "content": [
+                "de Goeje, Claudius Henricus. 1909. \u00c9tudes linguistiques cara\u00efbes. (1.) Amsterdam: Koninklijke Akademie van Wetenschappen te Amsterdam.",
+                "[src](degoeje1909etudes)"
+            ]
+        },
+        {
+            "id": "degoeje1946etudes",
+            "content": [
+                "de Goeje, Claudius Henricus. 1946. \u00c9tudes linguistiques cara\u00efbes. (2.) Amsterdam: Koninklijke Akademie van Wetenschappen te Amsterdam.",
+                "[src](degoeje1946etudes)"
+            ]
+        },
+        {
+            "id": "degoeje1946wayana",
+            "content": [
+                "de Goeje, Claudius Henricus. 1946. Grammaire et vocabulaire de la langue Oayana 1937. In \u00c9tudes linguistiques caribes, 100\u2013238. Amsterdam: Koninklijke Akademie van Wetenschappen te Amsterdam.",
+                "[src](degoeje1946wayana)"
+            ]
+        },
+        {
+            "id": "dequeiroz2018hixka",
+            "content": [
+                "de Queiroz, Ruben Caixeta. 2018. Hixkaryana. (Povos Ind\u00edgenas no Brasil, Instituto Socioambiental).",
+                "[src](dequeiroz2018hixka)"
+            ]
+        },
+        {
+            "id": "derbypullumhandbook1",
+            "content": [
+                "Derbyshire, Desmond C. and Pullum, Geoffrey K. (eds.) 1986. Handbook of Amazonian Languages. (1.) Berlin/New York: Mouton de Gruyter.",
+                "[src](derbypullumhandbook1)"
+            ]
+        },
+        {
+            "id": "derbypullumhandbook2",
+            "content": [
+                "Derbyshire, Desmond C. and Pullum, Geoffrey K. (eds.) 1990. Handbook of Amazonian Languages. (2.) Berlin/New York: Mouton de Gruyter.",
+                "[src](derbypullumhandbook2)"
+            ]
+        },
+        {
+            "id": "derbypullumhandbook3",
+            "content": [
+                "Derbyshire, Desmond C. and Pullum, Geoffrey K. (eds.) 1991. Handbook of Amazonian Languages. (3.) Berlin/New York: Mouton de Gruyter.",
+                "[src](derbypullumhandbook3)"
+            ]
+        },
+        {
+            "id": "derbypullumhandbook4",
+            "content": [
+                "Derbyshire, Desmond C. and Pullum, Geoffrey K. (eds.) 1998. Handbook of Amazonian Languages. (4.) Berlin/New York: Mouton de Gruyter.",
+                "[src](derbypullumhandbook4)"
+            ]
+        },
+        {
+            "id": "derbyshire1961hixkaryana",
+            "content": [
+                "Derbyshire, Desmond C. 1961. Hixkaryana (Carib) syntax structure. International Journal of American Linguistics 27. 125\u2013142,226\u2013236.",
+                "[src](derbyshire1961hixkaryana)"
+            ]
+        },
+        {
+            "id": "derbyshire1961hixkaryana2",
+            "content": [
+                "Derbyshire, Desmond C. 1961. Hixkaryana (Carib) syntax strucure, II. International Journal of American Linguistics 27. 226\u2013236.",
+                "[src](derbyshire1961hixkaryana2)"
+            ]
+        },
+        {
+            "id": "derbyshire1965textos",
+            "content": [
+                "Derbyshire, Desmond C. 1965. Textos Hixkary\u00e2na. (Publica\u00e7\u00f5es Avulsas, 3.) MPEG, Publica\u00e7\u00f5es Avulsas. Bel\u00e9m: MPEG.",
+                "[src](derbyshire1965textos)"
+            ]
+        },
+        {
+            "id": "derbyshire1977ovs",
+            "content": [
+                "Derbyshire, Desmond C. 1977. Word order Universals and the existence of OVS languages. Linguistic Inquiry 8. 590\u2013599.",
+                "[src](derbyshire1977ovs)"
+            ]
+        },
+        {
+            "id": "derbyshire1981objectinitial",
+            "content": [
+                "Derbyshire, Desmond C. and Pullum, Geoffrey K. 1981. Object-initial languages. International Journal of American Linguistics 47. 192\u2013214.",
+                "[src](derbyshire1981objectinitial)"
+            ]
+        },
+        {
+            "id": "derbyshire1986topic",
+            "content": [
+                "Derbyshire, Desmond C. 1986. Topic continuity and OVS order in Hixkaryana. In Sherzer, Joel and Urban, Greg (eds.), Native South American discourse, 237\u2013306. Amsterdam: Mouton de Gruyter.",
+                "[src](derbyshire1986topic)"
+            ]
+        },
+        {
+            "id": "derbyshire1987areal",
+            "content": [
+                "Derbyshire, Desmond C. 1987. Morphosyntactic areal characteristics of Amazonian languages. International Journal of American Linguistics 53. 311\u2013326.",
+                "[src](derbyshire1987areal)"
+            ]
+        },
+        {
+            "id": "derbyshire1990nounclass",
+            "content": [
+                "Derbyshire, Desmond C. and Payne, Doris L. 1990. Noun classification systems of Amazonian languages. In Payne, Doris L. (ed.), Amazonian linguistics, 243\u2013271. Austin: University of Texas Press.",
+                "[src](derbyshire1990nounclass)"
+            ]
+        },
+        {
+            "id": "derbyshire1991ergsystem",
+            "content": [
+                "Derbyshire, Desmond C. 1991. Are Cariban languages moving away from or toward ergative systems?. In Work Papers of the Summer Institute of Linguistics, University of North Dakota Session, 1\u201330.",
+                "[src](derbyshire1991ergsystem)"
+            ]
+        },
+        {
+            "id": "derbyshire1999carib",
+            "content": [
+                "Derbyshire, Desmond C. 1999. Carib. In Dixon, R.M.W. and Aikhenvald, Alexandra Y. (eds.), The Amazonian Languages, 23\u201364. Cambridge: Cambridge University Press.",
+                "[src](derbyshire1999carib)"
+            ]
+        },
+        {
+            "id": "desousa1875para",
+            "content": [
+                "de Sousa, Francisco Bernardino. 1875. Par\u00e1 e Amazonas. Rio de Janeiro: Typographia Nacional.",
+                "[src](desousa1875para)"
+            ]
+        },
+        {
+            "id": "desouza1988arara",
+            "content": [
+                "de Souza, Isaac Costa. 1988. Contribui\u00e7\u00e3o para a fonologia da l\u00edngua Arara (Karib). (MA thesis).",
+                "[src](desouza1988arara)"
+            ]
+        },
+        {
+            "id": "desouza2010arara",
+            "content": [
+                "de Souza, Shirley Dias Cardoso. 2010. The morphology of nouns in the Ugoro\u014bmo language (Arara of Par\u00e1). (MA thesis).",
+                "[src](desouza2010arara)"
+            ]
+        },
+        {
+            "id": "desouza2010pettalk",
+            "content": [
+                "de Souza, Isaac Costa. 2010. A phonological description of \u201cPet Talk\u201d in Arara. (MA thesis).",
+                "[src](desouza2010pettalk)"
+            ]
+        },
+        {
+            "id": "dixon1999amazonian",
+            "content": [
+                "Dixon, R.M.W. and Aikhenvald, Alexandra Y. (eds.) 1999. The Amazonian Languages. Cambridge: Cambridge University Press.",
+                "[src](dixon1999amazonian)"
+            ]
+        },
+        {
+            "id": "douglas2019formal",
+            "content": [
+                "Douglas, Jordan A.G. 2019. A Formal and Semantic Reconstruction of Cariban Postpositions. (MA thesis).",
+                "[src](douglas2019formal)"
+            ]
+        },
+        {
+            "id": "dovale2018waimiri",
+            "content": [
+                "Do Vale, Maria Carmen R. 2018. Waimiri Atroari. (Povos Ind\u00edgenas no Brasil, Instituto Socioambiental).",
+                "[src](dovale2018waimiri)"
+            ]
+        },
+        {
+            "id": "durbin1973note",
+            "content": [
+                "Durbin, Marshall and Seijas, Hayd\u00e9e. 1973. A Note on Panche, Pijao, Pantagora (Palenque), Colima and Muzo. International Journal of American Linguistics 39. 47\u201351.",
+                "[src](durbin1973note)"
+            ]
+        },
+        {
+            "id": "durbin1973proto",
+            "content": [
+                "Durbin, Marshall and Seijas, Hayd\u00e9e. 1973. Proto Hianacoto: Guaque-Carijona-Hianacoto Umaua. International Journal of American Linguistics 39. 22\u201331.",
+                "[src](durbin1973proto)"
+            ]
+        },
+        {
+            "id": "durbin1975yukpa",
+            "content": [
+                "Durbin, Marshall and Seijas, Hayd\u00e9e. 1975. The Phonological Structure of the Western Carib Languages of the Sierra de Perij\u00e1, Venezuela. In Cerulli, Ernesta and Della Ragione, Gilda (eds.), Linguistica - Folklore - Storia americana - Sociologia, 69\u201377. Genoa: Tilgher.",
+                "[src](durbin1975yukpa)"
+            ]
+        },
+        {
+            "id": "durbin1977carib",
+            "content": [
+                "Durbin, Marshall. 1977. The Carib language family. In Basso, Ellen B. (ed.), Carib-Speaking Indians, 23\u201338. Tucson, AZ: University of Arizona Press.",
+                "[src](durbin1977carib)"
+            ]
+        },
+        {
+            "id": "durbin1985survey",
+            "content": [
+                "Durbin, Marshall. 1985. A survey of the Carib language family. In Klein, Harriet E. Manelis and Stark, Louisa (eds.), South American Indian Languages, 325\u2013370. Austin: Texas University Press.",
+                "[src](durbin1985survey)"
+            ]
+        },
+        {
+            "id": "edwards1980short",
+            "content": [
+                "Edwards, W.F. 1980. A short grammar and dictionary of the Akawaio and Arekuna languages of Guyana. Georgetown: University of Guyana.",
+                "[src](edwards1980short)"
+            ]
+        },
+        {
+            "id": "ehrenreich1895",
+            "content": [
+                "Ehrenreich, Paul. 1895. Materialien zur Sprachenkunde Brasiliens. Zeitschrift f\u00fcr Ethnologie 27. 149\u2013176.",
+                "[src](ehrenreich1895)"
+            ]
+        },
+        {
+            "id": "encyclopedia2006",
+            "content": [
+                "Brown, Keith and Anderson, Anne and Bauer, Laurie and Berns, Margie and Miller, Jim and Hirst, Graeme (eds.) 2006. Encyclopedia of Language and Linguistics. (1.) Amsterdam: Elsevier.",
+                "[src](encyclopedia2006)"
+            ]
+        },
+        {
+            "id": "eriksen2011nature",
+            "content": [
+                "Eriksen, Love. 2011. Nature and culture in prehistoric Amazonia: Using G.I.S. to reconstruct ancient ethnogenetic processes from archaeology, linguistics, geography, and ethnohistory. (Doctoral dissertation).",
+                "[src](eriksen2011nature)"
+            ]
+        },
+        {
+            "id": "escoriaza1959maqui",
+            "content": [
+                "de Escoriaza, Dami\u00e1n. 1959. Datos ling\u00fcisticos de la lengua Makiritare. Antropol\u00f3gica 6. 7\u201346.",
+                "[src](escoriaza1959maqui)"
+            ]
+        },
+        {
+            "id": "escoriaza1960maqui",
+            "content": [
+                "de Escoriaza, Dami\u00e1n. 1960. Algunos datos linguisticos mas sobre la lengua Makiritare. Antropol\u00f3gica 7. 61\u201370.",
+                "[src](escoriaza1960maqui)"
+            ]
+        },
+        {
+            "id": "ethnologueonline",
+            "content": [
+                "Simons, Gary F. and Fennig, Charles D. (eds.) 2019. Ethnologue: Languages of the World. 22nd edn. Dallas, Texas: SIL International.",
+                "[src](ethnologueonline)"
+            ]
+        },
+        {
+            "id": "fabrecarib",
+            "content": [
+                "Fabre, Alain. 2005. Caribe.",
+                "[src](fabrecarib)"
+            ]
+        },
+        {
+            "id": "farabee1924central",
+            "content": [
+                "Farabee, William Curtis. 1924. The Central Caribs. Philadelphia: The University Museum.",
+                "[src](farabee1924central)"
+            ]
+        },
+        {
+            "id": "franchetto1977classes",
+            "content": [
+                "Franchetto, Bruna. 1977. Classes sem\u00e2nticas na l\u00edngua Kuik\u00faru. In Atas do II Encontro Nacional de Ling\u00fc\u00edstica, 116\u2013144.",
+                "[src](franchetto1977classes)"
+            ]
+        },
+        {
+            "id": "franchetto1981lovers",
+            "content": [
+                "Franchetto, Bruna. 1981. A desafortunate encounter between lovers. In {The Language Archive} (ed.), Kuikuro Team. (Audio, Video, Text).",
+                "[src](franchetto1981lovers)"
+            ]
+        },
+        {
+            "id": "franchetto1983generosverbais",
+            "content": [
+                "Franchetto, Bruna. 1983. A fala do chefe: g\u00eaneros verbais entre os Kuikuru do Alto Xingu. Cadernos de Estudos Ling\u00fc\u00edsticos. 45\u201372.",
+                "[src](franchetto1983generosverbais)"
+            ]
+        },
+        {
+            "id": "franchetto1986kuikuro",
+            "content": [
+                "Franchetto, Bruna. 1986. Falar Kuik\u00faru: Estudo Etnolinguistico de um grupo Kar\u00edbe do Alto Xingu. (Doctoral dissertation).",
+                "[src](franchetto1986kuikuro)"
+            ]
+        },
+        {
+            "id": "franchetto1986kuikurotexts",
+            "content": [
+                "Franchetto, Bruna. 1986. Falar Kuik\u00faru: Estudo Etnolinguistico de um grupo Kar\u00edbe do Alto Xingu. Volume III: Fonologia e Textos. (Doctoral dissertation).",
+                "[src](franchetto1986kuikurotexts)"
+            ]
+        },
+        {
+            "id": "franchetto1990ergatividade",
+            "content": [
+                "Franchetto, Bruna. 1990. A ergatividade Kuik\u00faro (karibe): algumas propostas de an\u00e1lise. Cadernos de Estudos Ling\u00fc\u00edsticos. 57\u201377.",
+                "[src](franchetto1990ergatividade)"
+            ]
+        },
+        {
+            "id": "franchetto1990ergativity",
+            "content": [
+                "Franchetto, Bruna. 1990. Ergativity and nominativity in Kuik\u00faro and other Carib languages. In Payne, Doris L. (ed.), Amazonian linguistics, 407\u2013427. Austin: University of Texas Press.",
+                "[src](franchetto1990ergativity)"
+            ]
+        },
+        {
+            "id": "franchetto1991ergatividade",
+            "content": [
+                "Franchetto, Bruna. 1991. A ergatividade em l\u00ednguas Karibe: uma hip\u00f3tese explicativa. In Anais do V Encontro Nacional da ANPOLL, 256\u2013264.",
+                "[src](franchetto1991ergatividade)"
+            ]
+        },
+        {
+            "id": "franchetto1991phonology",
+            "content": [
+                "Franchetto, Bruna. 1991. Kuikuro: fonologia. In Menezes, H. Peixoto and de M. Mollica, M. Cec\u00edlia (eds.), Fon\u00e9tica e fonologia, 69\u201371. Rio de Janeiro: UFRJ, Faculdade de Letras.",
+                "[src](franchetto1991phonology)"
+            ]
+        },
+        {
+            "id": "franchetto1994ergatividade",
+            "content": [
+                "Franchetto, Bruna. 1994. A ergatividade Kuik\u00faro: quadro geral, hip\u00f3teses explicativas e uma vis\u00e3o comparativa. Revista Latinoamericana de Estudios Etnoling\u00fc\u00edsticos. 7\u201316.",
+                "[src](franchetto1994ergatividade)"
+            ]
+        },
+        {
+            "id": "franchetto1995phonology",
+            "content": [
+                "Franchetto, Bruna. 1995. Processos fonol\u00f3gicos en Kuik\u00faro: uma vis\u00e3o auto-segmental. In Wetzels, Leo (ed.), Estudos fonol\u00f3gicos das l\u00ednguas ind\u00edgenas brasileiras, 53\u201383. Rio de Janeiro: Universidade Federal do Rio de Janeiro Editora.",
+                "[src](franchetto1995phonology)"
+            ]
+        },
+        {
+            "id": "franchetto2000linguas",
+            "content": [
+                "Franchetto, Bruna. 2000. L\u00ednguas e hist\u00f3ria no Alto Xingu. In Os povos do Alto Xingu, 111\u2013156. Rio de Janeiro: Editora da UFRJ.",
+                "[src](franchetto2000linguas)"
+            ]
+        },
+        {
+            "id": "franchetto2000povos",
+            "content": [
+                "Franchetto, Bruna. 2000. Os povos do Alto Xingu. Rio de Janeiro: Editora da UFRJ.",
+                "[src](franchetto2000povos)"
+            ]
+        },
+        {
+            "id": "franchetto2001estruturas",
+            "content": [
+                "Franchetto, Bruna and Santos, Mara. 2001. Estruturas argumentais em Kuikuro (Karib do Alto Xingu). In Cabral, Ana Suelly Arruda C\u00e2mara and Rodrigues, Aryon (eds.), 101\u2013115. Bel\u00e9m: Editora da Universidade Federal do Par\u00e1.",
+                "[src](franchetto2001estruturas)"
+            ]
+        },
+        {
+            "id": "franchetto2002bodyparts",
+            "content": [
+                "Franchetto, Bruna. 2002. Body parts terminology. In {The Language Archive} (ed.), Kuikuro Team. (Audio, Video, Text).",
+                "[src](franchetto2002bodyparts)"
+            ]
+        },
+        {
+            "id": "franchetto2002kuikuro",
+            "content": [
+                "Franchetto, Bruna. 2002. Kuikuro: uma l\u00edngua ergativa no ramo meridional da fam\u00edlia Karib (Alto Xingu). In Queixal\u00f3s, Francesc (ed.) Bras\u00edlia, Paris: Laborat\u00f3rio de L\u00ednguas Ind\u00edgenas, Centre d'\u00e9tudes des langues indig\u00e8nes d'Am\u00e9rique.",
+                "[src](franchetto2002kuikuro)"
+            ]
+        },
+        {
+            "id": "franchetto2003classificacao",
+            "content": [
+                "Franchetto, Bruna. 2003. As l\u00ednguas Karib do Sul: uma tentativa de classifica\u00e7\u00e3o. (Paper presented at the Symposium \u201cLenguas ind\u00edgenas de Am\u00e9rica del Sur. Ling\u00fc\u00edstica descriptiva e hist\u00f3rico-comparativa, socioling\u00fc\u00edstica y filol\u00f3gica\u201d, 51th International Congress of Americanists).",
+                "[src](franchetto2003classificacao)"
+            ]
+        },
+        {
+            "id": "franchetto2003natureza",
+            "content": [
+                "Franchetto, Bruna. 2003. Natureza dos argumentos e mudan\u00e7a de val\u00eancia a partir de uma classifica\u00e7\u00e3o (sem\u00e2ntica) dos \u201cverbos\u201d Kuikuro. In Queixal\u00f3s, Francesc (ed.) Bras\u00edlia, Paris: Laborat\u00f3rio de L\u00ednguas Ind\u00edgenas, Centre d'\u00e9tudes des langues indig\u00e8nes d'Am\u00e9rique.",
+                "[src](franchetto2003natureza)"
+            ]
+        },
+        {
+            "id": "franchetto2003raices",
+            "content": [
+                "Franchetto, Bruna. 2003. \u00bfRa\u00edces polivalentes o ra\u00edces acategoriales?: L\u00e9xico y gram\u00e1tica en la lengua Kuikuro (Caribe de Amazon\u00eda meridional). (Paper presented at the Symposium \u201cPolivalencia de las ra\u00edces lexicales en las lenguas amerindias\u201d, 51th International Congress of Americanists).",
+                "[src](franchetto2003raices)"
+            ]
+        },
+        {
+            "id": "franchetto2004autre",
+            "content": [
+                "Franchetto, Bruna. 2004. L\u2019autre du m\u00eame: parall\u00e9lisme et grammaire dans l\u2019art verbal des r\u00e9cits Kuikuro (caribe du Haut Xingu, Br\u00e9sil). Amerindia. 213\u2013248.",
+                "[src](franchetto2004autre)"
+            ]
+        },
+        {
+            "id": "franchetto2004coreferentiality",
+            "content": [
+                "Franchetto, Bruna. 2004. Coreferentiality in Kuikuro (Southern Carib, Brazil). In Queixal\u00f3s, Francesc (ed.) Bras\u00edlia, Paris: Laborat\u00f3rio de L\u00ednguas Ind\u00edgenas, Centre d'\u00e9tudes des langues indig\u00e8nes d'Am\u00e9rique.",
+                "[src](franchetto2004coreferentiality)"
+            ]
+        },
+        {
+            "id": "franchetto2006roots",
+            "content": [
+                "Franchetto, Bruna. 2006. Are Kuikuro roots lexical categories?. In Lois, Ximena and Vapnarsky, Valentina (eds.), Lexical categories and root classes in Amerindian languages, 33\u201368. Bern: Peter Lang.",
+                "[src](franchetto2006roots)"
+            ]
+        },
+        {
+            "id": "franchetto2007concepts",
+            "content": [
+                "Franchetto, Bruna and Mehinaku, Mutu\u00e1 and Santos, Mutu\u00e1. 2007. Concepts and forms of \u2018plurality\u2019 in Kuikuro (Southern Carib, Brazil). In Deal, A.R. and Association, Graduate Linguistics Student (eds.), Proceedings of SULA 4: Semantics of Under-represented Languages in the Americas, 99\u2013116.",
+                "[src](franchetto2007concepts)"
+            ]
+        },
+        {
+            "id": "franchetto2007parole",
+            "content": [
+                "Franchetto, Bruna. 2007. Les marques de la parole vraie en Kuikuro, langue caribe du Haut-Xingu (Br\u00e9sil). In Guentch\u00e9va, Zlatka and Landaburu, Jon (eds.), L'\u00e9nonciation M\u00e9diatis\u00e9e II. Le Traitement \u00c9pist\u00e9mologique de L'information, 173\u2013204. Paris: Peeters.",
+                "[src](franchetto2007parole)"
+            ]
+        },
+        {
+            "id": "franchetto2008absolutivo",
+            "content": [
+                "Franchetto, Bruna. 2008. Absolutivo e ergativo pensados a partir do Kuikuro. Amerindia. 37\u201356.",
+                "[src](franchetto2008absolutivo)"
+            ]
+        },
+        {
+            "id": "franchetto2009tempo",
+            "content": [
+                "Franchetto, Bruna. 2009. Tempo nominal em Kuikuro (Karib Alto-Xinguano). ReVEL 7.",
+                "[src](franchetto2009tempo)"
+            ]
+        },
+        {
+            "id": "franchetto2010cartography",
+            "content": [
+                "Franchetto, Bruna and Santos, Mara. 2010. Cartography of expanded CP in Kuikuro (Southern Carib, Brazil). In Camacho, Jos\u00e9 and Guti\u00e9rrez-Bravo, Rodrigo and S\u00e1nchez, Liliana (eds.), Information structure in indigenous languages of the Americas, 87\u2013114. Berlin: Mouton de Gruyter.",
+                "[src](franchetto2010cartography)"
+            ]
+        },
+        {
+            "id": "franchetto2010ergativity",
+            "content": [
+                "Franchetto, Bruna. 2010. The ergativity effect in Kuikuro (Southern Carib, Brazil). In Gildea, Spike and Queixal\u00f3s, Francesc (eds.), Ergativity in Amazonia, 121\u2013158. Amsterdam: John Benjamins.",
+                "[src](franchetto2010ergativity)"
+            ]
+        },
+        {
+            "id": "franchetto2011alto",
+            "content": [
+                "Franchetto, Bruna (ed.) 2011. Alto Xingu. Rio de Janeiro: Museu do \u00cdndio.",
+                "[src](franchetto2011alto)"
+            ]
+        },
+        {
+            "id": "franchetto2016classes",
+            "content": [
+                "Franchetto, Bruna and Meira, S\u00e9rgio. 2016. A phonological hypothesis on the historical origin of Kuikuro and Bakairi verb classes. (Talk held at Amaz\u00f3nicas VI).",
+                "[src](franchetto2016classes)"
+            ]
+        },
+        {
+            "id": "franchetto2017kuikuro",
+            "content": [
+                "Franchetto, Bruna and Fausto, Carlos and {Kuikuro}, \u00c1jahi and {Kuikuro} Mehinaku, Jamalui. 2017. Kuikuro. In Stenzel, Kristine and Franchetto, Bruna (eds.), On this and other worlds, 23\u201388. Berlin: Language Science Press.",
+                "[src](franchetto2017kuikuro)"
+            ]
+        },
+        {
+            "id": "frikel1958classificaccao",
+            "content": [
+                "Frikel, Frei Prot\u00e1sio. 1958. Classifica\u00e7\u00e3o ling\u00fc\u00edstico-etnol\u00f3gica das tribos ind\u00edgenas do Par\u00e1 setentrional e zonas adjacentes. Revista de Antropologia 6. 113\u2013188.",
+                "[src](frikel1958classificaccao)"
+            ]
+        },
+        {
+            "id": "galvao1965txikao",
+            "content": [
+                "Galv\u00e3o, Eduardo and Sim\u00f5es, M\u00e1rio F. 1965. Noticia sobre os Indios Txik\u00e3o - Alto Xingu. Boletim do Museu Paraense Em\u00edlio Goeldi, S\u00e9rie Antropologia 24. 1\u201323.",
+                "[src](galvao1965txikao)"
+            ]
+        },
+        {
+            "id": "garcia1995tiempo",
+            "content": [
+                "Garc\u00eda, Iria. 1995. El tiempo ling\u00fc\u00edstico y el aspecto en la lengua yukpa. (MA thesis).",
+                "[src](garcia1995tiempo)"
+            ]
+        },
+        {
+            "id": "garcia2006diccionario",
+            "content": [
+                "Garc\u00eda Ferrer, Donaldo Jos\u00e9. 2006. Diccionario piloto pem\u00f3n-espa\u00f1ol. (MA thesis).",
+                "[src](garcia2006diccionario)"
+            ]
+        },
+        {
+            "id": "gildea1989panare",
+            "content": [
+                "Gildea, Spike. 1989. Simple and Relative Clauses in Panare. (MA thesis).",
+                "[src](gildea1989panare)"
+            ]
+        },
+        {
+            "id": "gildea1989panarenmlz",
+            "content": [
+                "Gildea, Spike. 1989. Structural correlates to functional change: a Panare nominalizer surfaces as main clause aspect. In Carlson, Robert and DeLancey, Scott and Gildea, Spike and Payne, Doris and Saxena, Anju Saxena (eds.), Proceedings of the Fourth Pacific Linguistic Conference, 165\u2013189.",
+                "[src](gildea1989panarenmlz)"
+            ]
+        },
+        {
+            "id": "gildea1992comparative",
+            "content": [
+                "Gildea, Spike. 1992. Comparative Cariban Morphosyntax: On the Genesis of Ergativity in Independent Clauses. (Doctoral dissertation).",
+                "[src](gildea1992comparative)"
+            ]
+        },
+        {
+            "id": "gildea1993counteruni",
+            "content": [
+                "Gildea, Spike. 1993. On the genesis of a counter-universal pattern of split ergativity in the Cariban family. In Bernstein, Michael (ed.), Proceedings of the Eastern States Conference on Linguistics, 101\u2013116. Ithaca: Cornell Department of Modern Languages and Linguistics.",
+                "[src](gildea1993counteruni)"
+            ]
+        },
+        {
+            "id": "gildea1993developmentpanare",
+            "content": [
+                "Gildea, Spike. 1993. The development of tense markers from demonstrative pronouns in Panare (Cariban). Studies in Language 17. 53\u201374.",
+                "[src](gildea1993developmentpanare)"
+            ]
+        },
+        {
+            "id": "gildea1993rigid",
+            "content": [
+                "Gildea, Spike. 1993. The Rigid VS Order in Panare (Cariban): A Historical Explanation. International Journal of American Linguistics 59. 44\u201363.",
+                "[src](gildea1993rigid)"
+            ]
+        },
+        {
+            "id": "gildea1994agtnmlz",
+            "content": [
+                "Gildea, Spike. 1994. The proto-Cariban and Tup\u00ed-Guaran\u00ed object nominalizing prefix. Revista Latinoamericana de Estudios Etnoling\u00fc\u00edsticos 8. 163\u2013177.",
+                "[src](gildea1994agtnmlz)"
+            ]
+        },
+        {
+            "id": "gildea1994akuriyo",
+            "content": [
+                "Gildea, Spike. 1994. Akuriy\u00f3 field notes. (unpublished).",
+                "[src](gildea1994akuriyo)"
+            ]
+        },
+        {
+            "id": "gildea1994inversion",
+            "content": [
+                "Gildea, Spike. 1994. Semantic and pragmatic inverse: \u2018Inverse alignment\u2019 and \u2018inverse voice\u2019 in Carib of Surinam. In Giv\u00f3n, Talmy (ed.), Voice and inversion, 187\u2013230. Amsterdam/Philadelphia: John Benjamins.",
+                "[src](gildea1994inversion)"
+            ]
+        },
+        {
+            "id": "gildea1995reduction",
+            "content": [
+                "Gildea, Spike. 1995. A Comparative Description of Syllable Reduction in the Cariban Language Family. International Journal of American Linguistics 61. 62\u2013102.",
+                "[src](gildea1995reduction)"
+            ]
+        },
+        {
+            "id": "gildea1997ergativity",
+            "content": [
+                "Gildea, Spike. 1997. Introducing Ergative Word Order via Reanalysis: Word Order Chance in the Cariban Family. In Bybee, Joan L. and Haiman, John and Thompson, Sandra A. (eds.), Essays on Language Function and Language Type, 145\u2013162. Amsterdam: John Benjamins Publishing Company.",
+                "[src](gildea1997ergativity)"
+            ]
+        },
+        {
+            "id": "gildea1997relationevolution",
+            "content": [
+                "Gildea, Spike. 1997. Evolution of Grammatical Relations in Cariban: How Functional Motivation Precedes Syntactic Change. In Giv\u00f3n, T. (ed.), Grammatical Relations, 155\u2013198. Amsterdam: John Benjamins.",
+                "[src](gildea1997relationevolution)"
+            ]
+        },
+        {
+            "id": "gildea1998",
+            "content": [
+                "Gildea, Spike. 1998. On reconstructing grammar: Comparative Cariban morphosyntax. Oxford: Oxford University Press.",
+                "[src](gildea1998)"
+            ]
+        },
+        {
+            "id": "gildea2000reconstructing",
+            "content": [
+                "Gildea, Spike (ed.) 2000. Reconstructing Grammar. (Typological Studies in Language, 43.) Amsterdam: John Benjamins.",
+                "[src](gildea2000reconstructing)"
+            ]
+        },
+        {
+            "id": "gildea2000the",
+            "content": [
+                "Gildea, Spike. 2000. The innovative progressive in Akawaio (Cariban). (Workshop on Amerindian Languages).",
+                "[src](gildea2000the)"
+            ]
+        },
+        {
+            "id": "gildea2000vpgenesis",
+            "content": [
+                "Gildea, Spike. 2000. On the Genesis of the Verb Phrase in Cariban Languages: Diversity through Reanalysis. In Gildea, Spike (ed.), Reconstructing Grammar, 65\u2013106. Amsterdam: John Benjamins.",
+                "[src](gildea2000vpgenesis)"
+            ]
+        },
+        {
+            "id": "gildea2002",
+            "content": [
+                "Gildea, Spike. 2002. Ergativity in the northern Cariban Languages. In Queixal\u00f3s, Francesc (ed.), 137\u2013145. Bras\u00edlia, Paris: Laborat\u00f3rio de L\u00ednguas Ind\u00edgenas, Centre d'\u00e9tudes des langues indig\u00e8nes d'Am\u00e9rique.",
+                "[src](gildea2002)"
+            ]
+        },
+        {
+            "id": "gildea2002etat",
+            "content": [
+                "Gildea, Spike. 2002. Etat de l'art des descriptions linguistiques des langues du groupe Caribe. Faits de Langues. 79\u201384.",
+                "[src](gildea2002etat)"
+            ]
+        },
+        {
+            "id": "gildea2004classification",
+            "content": [
+                "Gildea, Spike. 2003. Proposing a new branch for the Cariban language family. Amerindia. 7\u201332.",
+                "[src](gildea2004classification)"
+            ]
+        },
+        {
+            "id": "gildea2005encyclo",
+            "content": [
+                "Gildea, Spike. 2005. Carib and Cariban Languages. In Strazny, Philipp (ed.), Encyclopedia of linguistics, 173\u2013176. New York: Fitzroy Dearborn.",
+                "[src](gildea2005encyclo)"
+            ]
+        },
+        {
+            "id": "gildea2007greenberg",
+            "content": [
+                "Gildea, Spike and Payne, Doris. 2007. Is Greenberg's \u201cMacro-Carib\u201d viable?. Boletim do Museu Paraense Em\u00edlio Goeldi. Ci\u00eancias Humanas 2. 19\u201372.",
+                "[src](gildea2007greenberg)"
+            ]
+        },
+        {
+            "id": "gildea2008explaining",
+            "content": [
+                "Gildea, Spike. 2008. Explaining similarities between main clauses and nominalized phrases. Amerindia. 57\u201375.",
+                "[src](gildea2008explaining)"
+            ]
+        },
+        {
+            "id": "gildea2009reconstructing",
+            "content": [
+                "Gildea, Spike. 2009. Reconstructing sources for hierarchical alignment in main clause grammar. (Paper presented at the 8th Biennial Conference of the Association for Linguistic Typology, UC Berkeley).",
+                "[src](gildea2009reconstructing)"
+            ]
+        },
+        {
+            "id": "gildea2010ergativity",
+            "content": [
+                "Gildea, Spike and Queixal\u00f3s, Francesc (eds.) 2010. Ergativity in Amazonia. Amsterdam: John Benjamins.",
+                "[src](gildea2010ergativity)"
+            ]
+        },
+        {
+            "id": "gildea2010nomabs",
+            "content": [
+                "Gildea, Spike and Alves, Fl\u00e1via Castro. 2010. Nominative-absolutive: Counter-universal split ergativity in J\u00ea and Cariban. In Gildea, Spike and Queixal\u00f3s, Francesc (eds.), Ergativity in Amazonia, 159\u2013200. Amsterdam: John Benjamins.",
+                "[src](gildea2010nomabs)"
+            ]
+        },
+        {
+            "id": "gildea2010story",
+            "content": [
+                "Gildea, Spike and Hoff, Berend J. and Meira, S\u00e9rgio. 2010. The story of *\u00f4 in the Cariban Family. In Berez, Andrea L. and Mulder, Jean and Rosenblum, Daisy (eds.), Fieldwork and linguistic analysis in Indigenous languages of the Americas, 91\u2013123. University of Hawai'i Press.",
+                "[src](gildea2010story)"
+            ]
+        },
+        {
+            "id": "gildea2012classification",
+            "content": [
+                "Gildea, Spike. 2012. Linguistic studies in the Cariban family. In Campbell, Lyle and Grondona, Ver\u00f3nica (eds.), The Indigenous Languages of South America, 441\u2013494. Berlin/New York: Mouton de Gruyter.",
+                "[src](gildea2012classification)"
+            ]
+        },
+        {
+            "id": "gildea2015valency",
+            "content": [
+                "Gildea, Spike. 2015. The evolution of valence categories in the Cariban family. (Paper presented at the Venezuelan Cariban Conference).",
+                "[src](gildea2015valency)"
+            ]
+        },
+        {
+            "id": "gildea2015venezuelan",
+            "content": [
+                "Gildea, Spike. 2015. 15 years later: Current Perspectives on the Venezuelan Branch Hypothesis. (Paper presented at the Working Conference on Venezuelan Cariban Languages).",
+                "[src](gildea2015venezuelan)"
+            ]
+        },
+        {
+            "id": "gildea2016negation",
+            "content": [
+                "Gildea, Spike and Meira, S\u00e9rgio. 2016. A Comparative survey of Verbal Negation in the Cariban Family. (Talk held at Amaz\u00f3nicas VI).",
+                "[src](gildea2016negation)"
+            ]
+        },
+        {
+            "id": "gildea2016referential",
+            "content": [
+                "Gildea, Spike and Z\u00fa\u00f1iga, Fernando. 2016. Referential hierarchies: A new look at some historical and typological patterns. Linguistics 54. 483\u2013529.",
+                "[src](gildea2016referential)"
+            ]
+        },
+        {
+            "id": "gildea2018causativepairs",
+            "content": [
+                "Gildea, Spike and C\u00e1ceres Arandia, Natalia. 2018. Historical Change in Causative Pairs in the Cariban Family. (Talk held at SLE 2018).",
+                "[src](gildea2018causativepairs)"
+            ]
+        },
+        {
+            "id": "gildea2018reconstructing",
+            "content": [
+                "Gildea, Spike. 2018. Reconstructing the copula and nonverbal predicate constructions in Cariban. In Overall, Simon E. and Vallejos, Rosa and Gildea, Spike (eds.), Nonverbal predication in Amazonian languages, 365\u2013402. Amsterdam: John Benjamins.",
+                "[src](gildea2018reconstructing)"
+            ]
+        },
+        {
+            "id": "gildea2019overview",
+            "content": [
+                "Gildea, Spike and C\u00e1ceres, Natalia. in preparation. The Cariban Language Family. In Epps, Patience and Michael, Lev (eds.), Amazonian Languages. Berlin: Mouton de Gruyter.",
+                "[src](gildea2019overview)"
+            ]
+        },
+        {
+            "id": "gilij1780saggio",
+            "content": [
+                "Gilij, Filippo Salvadore. 1782. Saggio di Storia {Americana}, o sia Storia Naturale, Civile, e Sacra De regni, e delle provincie {Spagnuole} di Terra-ferma nell' {America} meridionale. (1.) Rome: Luigi Perego Salvioni.",
+                "[src](gilij1780saggio)"
+            ]
+        },
+        {
+            "id": "gilij1781saggio",
+            "content": [
+                "Gilij, Filippo Salvadore. 1782. Saggio di Storia {Americana}, o sia Storia Naturale, Civile, e Sacra De regni, e delle provincie {Spagnuole} di Terra-ferma nell' {America} meridionale. (2.) Rome: Luigi Perego Salvioni.",
+                "[src](gilij1781saggio)"
+            ]
+        },
+        {
+            "id": "gilij1782saggio",
+            "content": [
+                "Gilij, Filippo Salvadore. 1782. Saggio di Storia {Americana}, o sia Storia Naturale, Civile, e Sacra De regni, e delle provincie {Spagnuole} di Terra-ferma nell' {America} meridionale. (3.) Rome: Luigi Perego Salvioni.",
+                "[src](gilij1782saggio)"
+            ]
+        },
+        {
+            "id": "gilij1784saggio",
+            "content": [
+                "Gilij, Filippo Salvadore. 1780--1784. Saggio di Storia Americana, o sia Storia Naturale, Civile, e Sacra De regni, e delle provincie Spagnuole di Terra-ferma nell' America meridionale. Rome: Luigi Perego Salvioni.",
+                "[src](gilij1784saggio)"
+            ]
+        },
+        {
+            "id": "gilij1965saggio",
+            "content": [
+                "Gilij, Filippo Salvadore. 1965. Ensayo de historia americana. Caracas: Fuentes para la Historia Colonial de Venezuela.",
+                "[src](gilij1965saggio)"
+            ]
+        },
+        {
+            "id": "gilij1965saggio3",
+            "content": [
+                "Gilij, Filippo Salvadore. 1965. Ensayo de historia americana. (3.) Caracas: Fuentes para la Historia Colonial de Venezuela.",
+                "[src](gilij1965saggio3)"
+            ]
+        },
+        {
+            "id": "gillin1936barama",
+            "content": [
+                "Gillin, John. 1936. The Barama river Caribs of British Guiana. Cambridge: Peabody Museum.",
+                "[src](gillin1936barama)"
+            ]
+        },
+        {
+            "id": "giordani1996yawarana",
+            "content": [
+                "Giordani, Lourdes. 1996. Imagining who we were, believing who we were: A study of ethnic identity, oral history, and socio cultural change among the Yabarana Indians of Venezuela. (Doctoral dissertation).",
+                "[src](giordani1996yawarana)"
+            ]
+        },
+        {
+            "id": "girard1971proto",
+            "content": [
+                "Girard, Victor James. 1971. Proto-Carib phonology. (Doctoral dissertation).",
+                "[src](girard1971proto)"
+            ]
+        },
+        {
+            "id": "givon1994voice",
+            "content": [
+                "Giv\u00f3n, Talmy (ed.) 1994. Voice and inversion. Amsterdam/Philadelphia: John Benjamins.",
+                "[src](givon1994voice)"
+            ]
+        },
+        {
+            "id": "glottolog",
+            "content": [
+                "Hammarstr\u00f6m, Harald and Forkel, Robert and Haspelmath, Martin and Bank, Sebastian. 2020. Glottolog 4.2.1.",
+                "[src](glottolog)"
+            ]
+        },
+        {
+            "id": "gouvea1994parametro",
+            "content": [
+                "Gouv\u00eaa, Ana Cristina de S. Lima. 1994. O par\u00e2metro da ergatividade e a l\u00edngua Karibe Macuxi. (MA thesis).",
+                "[src](gouvea1994parametro)"
+            ]
+        },
+        {
+            "id": "granadillo1997pronoun",
+            "content": [
+                "Granadillo, Tania. 1997. Los pronombres personales en mapoyo. (MA thesis).",
+                "[src](granadillo1997pronoun)"
+            ]
+        },
+        {
+            "id": "granadillo2019mapoyo",
+            "content": [
+                "Granadillo, Tania. 2019. El mapoyo y la rama venezolana de lenguas caribes. Cadernos de Etnoling\u00fc\u00edstica 7. 43\u201355.",
+                "[src](granadillo2019mapoyo)"
+            ]
+        },
+        {
+            "id": "grimes1972languages",
+            "content": [
+                "Grimes, Joseph Evans. 1972. Languages of the Guianas. Norman: Summer Institute of Linguistics of the University of Oklahoma.",
+                "[src](grimes1972languages)"
+            ]
+        },
+        {
+            "id": "gudschinsky",
+            "content": [
+                "Gudschinsky, Sarah C. 1973. Sistemas Contrastivos de Marcadores de Pessoa em Duas L\u00ednguas Carib: Apala\u00ed e Hixkary\u00e1na. S\u00e9rie Ling\u00fc\u00edstica 1. 57\u201362.",
+                "[src](gudschinsky)"
+            ]
+        },
+        {
+            "id": "guentcheva2007enonciation",
+            "content": [
+                "Guentch\u00e9va, Zlatka and Landaburu, Jon (eds.) 2007. L'\u00e9nonciation M\u00e9diatis\u00e9e II. Le Traitement \u00c9pist\u00e9mologique de L'information. (Biblioth\u00e8que de l\u2019Information Grammaticale, 63.) Paris: Peeters.",
+                "[src](guentcheva2007enonciation)"
+            ]
+        },
+        {
+            "id": "guerrero2016carijo",
+            "content": [
+                "Guerrero-Beltr\u00e1n, David Felipe. 2016. Estructura de la oraci\u00f3n simple en Karijona: Lengua Caribe de la Amazon\u00eda Colombiana. (MA thesis).",
+                "[src](guerrero2016carijo)"
+            ]
+        },
+        {
+            "id": "guerrero2016karihona",
+            "content": [
+                "Guerrero-Beltr\u00e1n, David Felipe. 2016. The alignment and person-marking system in Karijona (Cariban, Northwest Amazonia). (Paper presented at the Language and Culture Research Centre, James Cook University).",
+                "[src](guerrero2016karihona)"
+            ]
+        },
+        {
+            "id": "guerrero2019carijo",
+            "content": [
+                "Guerrero Beltr\u00e1n, David Felipe. 2019. The Grammar of Space in Karijona, a Cariban language from Northwest Amazonia. (MA thesis).",
+                "[src](guerrero2019carijo)"
+            ]
+        },
+        {
+            "id": "gutierrez1968gramatica",
+            "content": [
+                "Guti\u00e9rrez, Mariano. 1968. Gram\u00e1tica sucinta de la lengua pem\u00f3n. Madrid: Raycar.",
+                "[src](gutierrez1968gramatica)"
+            ]
+        },
+        {
+            "id": "gutierrez2001gramatica",
+            "content": [
+                "Guti\u00e9rrez, Mariano. 2001. Gram\u00e1tica did\u00e1ctica de la lengua Pem\u00f3n. Caracas: Universidad Cat\u00f3lica Andr\u00e9s Bello.",
+                "[src](gutierrez2001gramatica)"
+            ]
+        },
+        {
+            "id": "hall1988enapa",
+            "content": [
+                "Hall, Katherine and Villal\u00f3n, Mar\u00eda Eugenia. 1988. Una introducci\u00f3n a la fonolog\u00eda E'\u00f1apa. Antropol\u00f3gica 70. 3\u201316.",
+                "[src](hall1988enapa)"
+            ]
+        },
+        {
+            "id": "hall1991degrees",
+            "content": [
+                "Hall, Katherine L. 1991. Degrees of transitivity in De'kwana (Carib) verb forms. (Paper presented at the 47th International Congress of Americanists).",
+                "[src](hall1991degrees)"
+            ]
+        },
+        {
+            "id": "hall2015dictionary",
+            "content": [
+                "Hall, Katherine and Key, Mary Ritchie. 2015. De'kwana. In Key, Mary Ritchie and Comrie, Bernard (eds.), The Intercontinental Dictionary Series. Leipzig: Max Planck Institute for Evolutionary Anthropology.",
+                "[src](hall2015dictionary)"
+            ]
+        },
+        {
+            "id": "hanes1952yukpa",
+            "content": [
+                "Hanes, L.C. 1952. Phonemes of Motilone (Carib). International Journal of American Linguistics 39. 146\u2013149.",
+                "[src](hanes1952yukpa)"
+            ]
+        },
+        {
+            "id": "hawkins1952phonology",
+            "content": [
+                "Hawkins, W. Neill. 1952. A fonolog\u00eda da l\u00edngua Uaiu\u00e1i. S\u00e3o Paulo: Universidade de S\u00e3o Paulo. (Boletim da Facultade de Filosofia, Ci\u00eancias e Letras 157: Etnograf\u00eda e Tup\u00ed-Guaran\u00ed 25).",
+                "[src](hawkins1952phonology)"
+            ]
+        },
+        {
+            "id": "hawkins1953waiwai",
+            "content": [
+                "Hawkins, W. Neill and Hawkins, Robert E. 1953. Verb inflection in Waiwai (Carib). International Journal of American Linguistics 19. 201\u2013211.",
+                "[src](hawkins1953waiwai)"
+            ]
+        },
+        {
+            "id": "hawkins1962waiwai",
+            "content": [
+                "Hawkins, W. Neill. 1962. A morfologia do substantivo na l\u00edngua Uaiuai. (Publica\u00e7\u00f5es Avulsas, 21.) Rio de Janeiro: Universidade de Bras\u00edlia, Museu Nacional. 31pp.",
+                "[src](hawkins1962waiwai)"
+            ]
+        },
+        {
+            "id": "hawkins2015dictionary",
+            "content": [
+                "Hawkins, Robert E. and Key, Mary Ritchie. 2015. Wai Wai. In Key, Mary Ritchie and Comrie, Bernard (eds.), The Intercontinental Dictionary Series. Leipzig: Max Planck Institute for Evolutionary Anthropology.",
+                "[src](hawkins2015dictionary)"
+            ]
+        },
+        {
+            "id": "henley1982panare",
+            "content": [
+                "Henley, Paul. 1982. The Panare: Tradition and change on the Amazonian frontier. New Haven: Yale University Press.",
+                "[src](henley1982panare)"
+            ]
+        },
+        {
+            "id": "hill1994waimiri",
+            "content": [
+                "Hill, Joseph H. and Hill, Tamara E. 1994. Phonological sketch of Waimiri-Atroari (Cariban). (unpublished).",
+                "[src](hill1994waimiri)"
+            ]
+        },
+        {
+            "id": "hixkaryana2012bible",
+            "content": [
+                "{Wycliffe Bible Translators}. 2012. Khoryenkom Karyehtan\u00e0.",
+                "[src](hixkaryana2012bible)"
+            ]
+        },
+        {
+            "id": "hixkaryanaderby1979",
+            "content": [
+                "Derbyshire, Desmond C. 1979. Hixkaryana. (Lingua Descriptive Studies, 1.) Amsterdam: North-Holland.",
+                "[src](hixkaryanaderby1979)"
+            ]
+        },
+        {
+            "id": "hixkaryanaderby1979phd",
+            "content": [
+                "Derbyshire, Desmond C. 1979. Hixkaryana Syntax. (Doctoral dissertation).",
+                "[src](hixkaryanaderby1979phd)"
+            ]
+        },
+        {
+            "id": "hixkaryanaderby1985",
+            "content": [
+                "Derbyshire, Desmond C. 1985. Hixkaryana and Linguistic Typology. Dallas: Summer Institute of Linguistics.",
+                "[src](hixkaryanaderby1985)"
+            ]
+        },
+        {
+            "id": "hodsdon1976analise",
+            "content": [
+                "Hodsdon, Cathy Ann. 1976. An\u00e1lise de cl\u00e1usulas sem\u00e2nticas na l\u00edngua Makuxi. S\u00e9rie Ling\u00fc\u00edstica. 267\u2013300.",
+                "[src](hodsdon1976analise)"
+            ]
+        },
+        {
+            "id": "hoff1968carib",
+            "content": [
+                "Hoff, Berend J. 1968. The Carib Language: Phonology, Morphophonology, Morphology, Texts and Word Index. (Verhandelingen van het Koninklijk instituut voor taal-, land- en volkenkunde, 55.) The Hague: Martinus Nijhoff.",
+                "[src](hoff1968carib)"
+            ]
+        },
+        {
+            "id": "hoff1978order",
+            "content": [
+                "Hoff, Berend J. 1978. The relative order of the Carib finite verb and its nominal dependents. In Jansen, Frank (ed.), Studies on Fronting, 11\u201328. Lesse: Peter de Redder.",
+                "[src](hoff1978order)"
+            ]
+        },
+        {
+            "id": "hoff1986evidentiality",
+            "content": [
+                "Hoff, Berend J. 1986. Evidentiality in Carib: Particles, affixes, and a variant of Wackernagel's Law. Lingua 69. 49\u2013103.",
+                "[src](hoff1986evidentiality)"
+            ]
+        },
+        {
+            "id": "hoff1990the",
+            "content": [
+                "Hoff, Berend J. 1990. The non-modal particles of the Carib language of Surinam and their influence on constituent order. In Payne, Doris L. (ed.), Amazonian linguistics, 495\u2013541. Austin: University of Texas Press.",
+                "[src](hoff1990the)"
+            ]
+        },
+        {
+            "id": "hoff1995configurationality",
+            "content": [
+                "Hoff, Berend J. 1995. Configurationality and nonconfigurationality in the Carib language of Surinam. International Journal of American Linguistics 61. 347\u2013377.",
+                "[src](hoff1995configurationality)"
+            ]
+        },
+        {
+            "id": "hoff1995kalinago",
+            "content": [
+                "Hoff, Berend J. 1995. Language contact, war, and Amerindian historical tradition: The special case of the Island Carib. In Whitehead, Neil L. (ed.), Wolves from the sea, 37\u201360. Leiden: KITLV Press.",
+                "[src](hoff1995kalinago)"
+            ]
+        },
+        {
+            "id": "hoff2009two",
+            "content": [
+                "Hoff, Berend J. and Kiban, Robert J. 2009. Two participles of the Carib language of Surinam, with their nominal, verbal, and adjectival properties. International Journal of American Linguistics 75. 337\u2013364.",
+                "[src](hoff2009two)"
+            ]
+        },
+        {
+            "id": "hoff2017between",
+            "content": [
+                "Hoff, Berend J. and Gildea, Spike and Sapi\u00e9n, Racquel-Mar\u00eda. 2017. Between Evidentiality, Immediacy, and Epistemic Certainty in Kari'nja. (Talk held at SLE 2017).",
+                "[src](hoff2017between)"
+            ]
+        },
+        {
+            "id": "hough2008space",
+            "content": [
+                "Hough, Karen. 2008. The expression \\\\& perception of space in Wayana. (MA thesis).",
+                "[src](hough2008space)"
+            ]
+        },
+        {
+            "id": "howard2001wrought",
+            "content": [
+                "Howard, Catherine V. 2001. Wrought Identities: The Waiwai expeditions in search of the \u201cunseen tribes\u201d of Northern Amazonia. (Doctoral dissertation).",
+                "[src](howard2001wrought)"
+            ]
+        },
+        {
+            "id": "huber1992vocabulario",
+            "content": [
+                "Huber, Randall Q. and Reed, Robert B. 1992. Vocabulario Comparativo: Palabras Selectas de Lenguas Ind\u00edgenas de Colombia. In  Huber, Randall Q. and Reed, Robert B. (eds.) Santaf\u00e9 de Bogot\u00e1: ILV.",
+                "[src](huber1992vocabulario)"
+            ]
+        },
+        {
+            "id": "hubner1907yawapery",
+            "content": [
+                "H\u00fcbner, Georg and Koch-Gr\u00fcnberg, Theodor. 1907. Die Yauaper\u00fd. Zeitschrift f\u00fcr Ethnologie 39. 225\u2013248.",
+                "[src](hubner1907yawapery)"
+            ]
+        },
+        {
+            "id": "hurley1932kaxui",
+            "content": [
+                "Hurley, Jorge. 1932. Vocabularios dos aborigenes dos rios Trombetas, Cachorro e Jacycury. Revista do Instituto Historico e Geographico do Par\u00e1 7. 229\u2013235.",
+                "[src](hurley1932kaxui)"
+            ]
+        },
+        {
+            "id": "ikpeng2015kobayashi",
+            "content": [
+                "de Salles Kobayashi, Filipe Hisao and Soares, Mar\u00edlia Lopes da Costa Fac\u00f3. 2015. A codifica\u00e7\u00e3o de argumentos no verbo Ikpeng (Kar\u00edb). ReVEL 13.",
+                "[src](ikpeng2015kobayashi)"
+            ]
+        },
+        {
+            "id": "ikpengpacheco1997",
+            "content": [
+                "Pach\u00eaco, Frantom\u00e9 B. 1997. Aspectos da gram\u00e1tica Ikpeng (Kar\u00edb). (MA thesis).",
+                "[src](ikpengpacheco1997)"
+            ]
+        },
+        {
+            "id": "ikpengpacheco2001",
+            "content": [
+                "Pach\u00eaco, Frantom\u00e9 B. 2001. Morfossintaxe do verbo Ikpeng (Kar\u00edb). (Doctoral dissertation).",
+                "[src](ikpengpacheco2001)"
+            ]
+        },
+        {
+            "id": "jackson1972wayana",
+            "content": [
+                "Jackson, Walter S. 1972. A Wayana grammar. In Languages of the Guianas, 47\u201377. Norman: Summer Institute of Linguistics of the University of Oklahoma.",
+                "[src](jackson1972wayana)"
+            ]
+        },
+        {
+            "id": "japreriaflores2002",
+            "content": [
+                "Flores, Elexander. 2002. Morfosintaxis del Japreria. (MA thesis).",
+                "[src](japreriaflores2002)"
+            ]
+        },
+        {
+            "id": "jimenez2019dhekwana",
+            "content": [
+                "Jim\u00e9nez Vel\u00e1zquez, Zuleima Maryori. 2019. Los sistemas de alineamiento en dhe\u2019kwana. (MA thesis).",
+                "[src](jimenez2019dhekwana)"
+            ]
+        },
+        {
+            "id": "jones1972trio",
+            "content": [
+                "Jones, Morgan W. 1972. Trio phonology. In Languages of the Guianas, 42\u201346. Norman: Summer Institute of Linguistics of the University of Oklahoma.",
+                "[src](jones1972trio)"
+            ]
+        },
+        {
+            "id": "kalin2012hixkaryana",
+            "content": [
+                "Kalin, Laura. 2012. Hixkaryana: the syntax of object verb subject word order. Coyote Papers. 37\u201345.",
+                "[src](kalin2012hixkaryana)"
+            ]
+        },
+        {
+            "id": "kaufman1994native",
+            "content": [
+                "Kaufman, Terrence. 1994. The native languages of South America. In Moseley, Christopher and Asher, R.E. (eds.), Atlas of the world's languages, 46\u201376. London: Routledge.",
+                "[src](kaufman1994native)"
+            ]
+        },
+        {
+            "id": "kaufman2007native",
+            "content": [
+                "Kaufman, Terrence. 2007. The native languages of South America. In Moseley, Christopher and Asher, R.E. (eds.), Atlas of the world's languages, 59\u201394. London: Routledge.",
+                "[src](kaufman2007native)"
+            ]
+        },
+        {
+            "id": "key2015ids",
+            "content": [
+                "Key, Mary Ritchie and Comrie, Bernard (eds.) 2015. The Intercontinental Dictionary Series. Leipzig: Max Planck Institute for Evolutionary Anthropology.",
+                "[src](key2015ids)"
+            ]
+        },
+        {
+            "id": "kg1928yauarana",
+            "content": [
+                "Koch-Gr\u00fcnberg, Theodor. 1928. Yauar\u00e1na. In Sprachen, 233\u2013245.",
+                "[src](kg1928yauarana)"
+            ]
+        },
+        {
+            "id": "klein1985retrospect",
+            "content": [
+                "Klein, Harriet E. Manelis and Stark, Louisa (eds.) 1985. South American Indian Languages. Austin: Texas University Press.",
+                "[src](klein1985retrospect)"
+            ]
+        },
+        {
+            "id": "koch1908hiana",
+            "content": [
+                "Koch-Gr\u00fcnberg, Theodor. 1908. Die Hian\u00e1koto-Um\u00e1ua. Anthropos 3. 83\u2013124,297\u2013335,952\u2013982.",
+                "[src](koch1908hiana)"
+            ]
+        },
+        {
+            "id": "koch1928roroima",
+            "content": [
+                "Koch-Gr\u00fcnberg, Theodor. 1928. Vom {Roroima} zum {Orinoco}. (4.) Stuttgart: Strecker und Schr\u00f6der.",
+                "[src](koch1928roroima)"
+            ]
+        },
+        {
+            "id": "koehn1965verb",
+            "content": [
+                "Koehn, Edward H. 1965. Bound Person markers of the Apala\u00ed Verb Phrase: Preliminary Analysis. An\u00e1polis, GO: Associa\u00e7\u00e3o Internacional de Lingu\u00edstica, SIL -- Brasil. (unpublished).",
+                "[src](koehn1965verb)"
+            ]
+        },
+        {
+            "id": "koehn1966verb",
+            "content": [
+                "Koehn, Sally S. 1966. Apala\u00ed Verb Structure: Preliminary Analysis. An\u00e1polis, GO: Associa\u00e7\u00e3o Internacional de Lingu\u00edstica, SIL -- Brasil. (unpublished).",
+                "[src](koehn1966verb)"
+            ]
+        },
+        {
+            "id": "koehn1976historical",
+            "content": [
+                "Koehn, Edward H. 1976. The historical tense in Apala\u00ed narrative. International Journal of American Linguistics 42. 243\u2013252.",
+                "[src](koehn1976historical)"
+            ]
+        },
+        {
+            "id": "koehn1986apalai",
+            "content": [
+                "Koehn, Edward and Koehn, Sally. 1986. Apalai. In Derbyshire, Desmond C. and Pullum, Geoffrey K. (eds.), Handbook of Amazonian Languages, 33\u2013127. Berlin/New York: Mouton de Gruyter.",
+                "[src](koehn1986apalai)"
+            ]
+        },
+        {
+            "id": "koehn1995apalai",
+            "content": [
+                "Koehn, Edward H. and Koehn, Sally S. 1995. Vocabul\u00e1rio b\u00e1sico Apala\u00ed-Portugu\u00eas: Dicion\u00e1rio da l\u00edngua Apala\u00ed. Brasilia: Sociedade Internacional de Ling\u00fc\u00edstica.",
+                "[src](koehn1995apalai)"
+            ]
+        },
+        {
+            "id": "koehns1994textos",
+            "content": [
+                "Koehn, Edward and Koehn, Sally. 1994. 14 textos Apala\u00ed. Bras\u00edlia: Summer Institute of Linguistics.",
+                "[src](koehns1994textos)"
+            ]
+        },
+        {
+            "id": "koelewijn1984trio",
+            "content": [
+                "Koelewijn, Cees. 1984. Tar\u00ebno tamu inponop\u00ef panpira. (1.) Leusden: Algemeen Diakonaal Bureau.",
+                "[src](koelewijn1984trio)"
+            ]
+        },
+        {
+            "id": "krause1936yaruma",
+            "content": [
+                "Krause, Fritz. 1936. Die Yarum\u00e1 und Arawine-Indianer Zentralbrasiliens.",
+                "[src](krause1936yaruma)"
+            ]
+        },
+        {
+            "id": "kuikurodossantos2007",
+            "content": [
+                "dos Santos, G\u00e9lsama Mara Ferreira. 2007. Morfologia Kuikuro: Gerando nomes e verbos. (Doctoral dissertation).",
+                "[src](kuikurodossantos2007)"
+            ]
+        },
+        {
+            "id": "lacerda1991waimiri",
+            "content": [
+                "Lacerda, Edith. 1991. Waimiri-Atroari: observa\u00e7\u00f5es ling\u00fc\u00edsticas. (unpublished).",
+                "[src](lacerda1991waimiri)"
+            ]
+        },
+        {
+            "id": "lacerda1996observacoes",
+            "content": [
+                "Lacerda, Edith. 1996. Observa\u00e7\u00f5es sobre morfologia e sintaxe da l\u00edngua Waimiri Atroari. (unpublished).",
+                "[src](lacerda1996observacoes)"
+            ]
+        },
+        {
+            "id": "largo2011yukpa",
+            "content": [
+                "Largo, Wilson S. 2011. Una gram\u00e1tica Yukpa. (unpublished).",
+                "[src](largo2011yukpa)"
+            ]
+        },
+        {
+            "id": "leite1998comparacao",
+            "content": [
+                "Maia, Marcu and Franchetto, Bruna and Leite, Yonne de Freitas and Soares, Mar\u00edlia Fac\u00f3 and Vieira, Marcia Damaso. 1998. Compara\u00e7\u00e3o de aspectos da gram\u00e1tica em l\u00ednguas ind\u00edgenas brasileiras. {DELTA}: Documenta\u00e7\u00e3o de Estudos em Ling\u00fc\u00edstica Te\u00f3rica e Aplicada 14. 349\u2013375.",
+                "[src](leite1998comparacao)"
+            ]
+        },
+        {
+            "id": "lescure1981kalina",
+            "content": [
+                "Renault-Lescure, Odile. 1981. Evolution Lexicale du Galibi: Langue Caribe du Guyane Fran\u00e7aise. (Doctoral dissertation).",
+                "[src](lescure1981kalina)"
+            ]
+        },
+        {
+            "id": "letschert1998trio",
+            "content": [
+                "Letschert, Bento. 1998. Dicion\u00e1rio Portugu\u00eas-Tiriy\u00f3. Bras\u00edlia, S\u00e3o Paulo: MEC, Mari-NHII.",
+                "[src](letschert1998trio)"
+            ]
+        },
+        {
+            "id": "loukotka1968classification",
+            "content": [
+                "Loukotka, \u010cestm\u00edr. 1968. Classification of South American indian languages. In  Wilbert, Johannes (ed.) Los Angeles: Latin American Center, University of California.",
+                "[src](loukotka1968classification)"
+            ]
+        },
+        {
+            "id": "macdonell1994macushi",
+            "content": [
+                "MacDonell, Ronald Beaton. 1994. La phonologie du Makuxi, langue caribe: une analyse fonctionnelle. (MA thesis).",
+                "[src](macdonell1994macushi)"
+            ]
+        },
+        {
+            "id": "macushiabbott1991",
+            "content": [
+                "Abbott, Miriam. 1991. Macushi. In Derbyshire, Desmond C. and Pullum, Geoffrey K. (eds.), Handbook of Amazonian Languages, 23\u2013160. Berlin/New York: Mouton de Gruyter.",
+                "[src](macushiabbott1991)"
+            ]
+        },
+        {
+            "id": "macushicarson1982",
+            "content": [
+                "Carson, Neusa Martins. 1982. Phonology and Morphosyntax of Macuxi (Carib) (Brazil). (Doctoral dissertation).",
+                "[src](macushicarson1982)"
+            ]
+        },
+        {
+            "id": "malekowa1999karina",
+            "content": [
+                "Maleko'wa, Charles and Courtz, Henk. 1999. Kari'na nekarity'san. Paramaribo: Instituut voor Taalwetenschap.",
+                "[src](malekowa1999karina)"
+            ]
+        },
+        {
+            "id": "maquiritaricaceres2011",
+            "content": [
+                "C\u00e1ceres, Natalia. 2011. Grammaire fonctionnelle-typologique du ye'kwana, langue caribe du Venezuela. (Doctoral dissertation).",
+                "[src](maquiritaricaceres2011)"
+            ]
+        },
+        {
+            "id": "maquiritarihall1988",
+            "content": [
+                "Hall, Katherine Lee. 1988. The Morphosyntax of Discourse in De'kwana Carib. (Doctoral dissertation).",
+                "[src](maquiritarihall1988)"
+            ]
+        },
+        {
+            "id": "mariano2002elementos",
+            "content": [
+                "Mariano, Marelvis. 2002. Elementos gramaticales de la lengua de los yukos: Serran\u00eda del Perij\u00e1. (MA thesis).",
+                "[src](mariano2002elementos)"
+            ]
+        },
+        {
+            "id": "martius1867beitrage",
+            "content": [
+                "von Martius, Karl Friedrich Philipp. 1867. Beitr\u00e4ge zur Ethnographie und Sprachenkunde Amerika's zumal Brasiliens: W\u00f6rtersammlung brasilianischer Sprachen. (1.) Leipzig: Fleischer.",
+                "[src](martius1867beitrage)"
+            ]
+        },
+        {
+            "id": "martius1867beitrage2",
+            "content": [
+                "von Martius, Karl Friedrich Philipp. 1867. Beitr\u00e4ge zur Ethnographie und Sprachenkunde Amerika's zumal Brasiliens: W\u00f6rtersammlung brasilianischer Sprachen. (2.) Leipzig: Fleischer.",
+                "[src](martius1867beitrage2)"
+            ]
+        },
+        {
+            "id": "mattei1974panarepossesion",
+            "content": [
+                "Matt\u00e9i-M\u00fcller, Marie-Claude. 1974. El sistema de posesi\u00f3n en la lengua panare. Antropol\u00f3gica. 3\u201314.",
+                "[src](mattei1974panarepossesion)"
+            ]
+        },
+        {
+            "id": "mattei1994diccionario",
+            "content": [
+                "Matt\u00e9i-M\u00fcller, Marie-Claude. 1994. Diccionario ilustrado Panare-Espa\u00f1ol, \u00cdndice Espa\u00f1ol-Panare: Un aporte al estudio de los Panares-E'\u00f1epa. Caracas: Graficas Armitano.",
+                "[src](mattei1994diccionario)"
+            ]
+        },
+        {
+            "id": "mattei2002busca",
+            "content": [
+                "Matt\u00e9i-M\u00fcller, Marie-Claude. 2002. En busca de criterios clasificatorios para la Familia Caribe. In Cabral, Ana Suelly Arruda C\u00e2mara and Rodrigues, Aryon D. (eds.), L\u00ednguas ind\u00edgenas Brasileiras: fonologia, gram\u00e1tica e hist\u00f3ria, 37\u201353. Bel\u00e9m: EDUFPA. (Atas do I Encontro Internacional do Grupo de Trabalho sobre L\u00ednguas Ind\u00edgenas da ANPOLL).",
+                "[src](mattei2002busca)"
+            ]
+        },
+        {
+            "id": "mattei2003pemono",
+            "content": [
+                "Matt\u00e9i-M\u00fcller, Marie-Claude. 2003. P\u00e9mono: eslab\u00f3n perdido entre mapoyo y yawarana, lenguas caribes ergativas de la Guayana noroccidental de Venezuela. Amerindia. 33\u201354.",
+                "[src](mattei2003pemono)"
+            ]
+        },
+        {
+            "id": "mattei2007voir",
+            "content": [
+                "Matt\u00e9i-M\u00fcller, Marie-Claude. 2007. Voir et savoir en Panar\u00e9 (langue caribe du Venezuela). In Guentch\u00e9va, Zlatka and Landaburu, Jon (eds.), L'\u00e9nonciation M\u00e9diatis\u00e9e II. Le Traitement \u00c9pist\u00e9mologique de L'information, 153\u2013172. Paris: Peeters.",
+                "[src](mattei2007voir)"
+            ]
+        },
+        {
+            "id": "matter2019arara",
+            "content": [
+                "Matter, Florian. 2021. The origin of split third person marking in Arara (Cariban). Cadernos de Etnoling\u00fc\u00edstica 8. 1\u201322.",
+                "[src](matter2019arara)"
+            ]
+        },
+        {
+            "id": "matter2021cariban",
+            "content": [
+                "Matter, Florian. 2021. Diachronic and typological aspects of Cariban verbal argument marking. (Doctoral dissertation).",
+                "[src](matter2021cariban)"
+            ]
+        },
+        {
+            "id": "matter2021linking",
+            "content": [
+                "Matter, Florian and van Gijn, Rik. 2021. \u201cLinking\u201d morphology in Tup\u00edan, Cariban, and Macro-J\u00ea languages. (unpublished).",
+                "[src](matter2021linking)"
+            ]
+        },
+        {
+            "id": "matter2021swadesh1",
+            "content": [
+                "Matter, Florian. 2021-01. Modified Swadesh-100 list of 23 Cariban languages. Zenodo.",
+                "[src](matter2021swadesh1)"
+            ]
+        },
+        {
+            "id": "matter2022uniparser",
+            "content": [
+                "Matter, Florian. 2022. uniparser-yawarana.",
+                "[src](matter2022uniparser)"
+            ]
+        },
+        {
+            "id": "matter_cariban_clld",
+            "content": [
+                "Matter, Florian. 2020. Comparative Cariban Database.",
+                "[src](matter_cariban_clld)"
+            ]
+        },
+        {
+            "id": "mattiola2020pluractional",
+            "content": [
+                "Mattiola, Simone and Gildea, Spike. under review. The pluractional marker -p\u00f6d\u00ef of Akawaio (Cariban) and beyond.",
+                "[src](mattiola2020pluractional)"
+            ]
+        },
+        {
+            "id": "medina1997algunas",
+            "content": [
+                "Medina, Raimundo. 1997. Algunas consideraciones sobre la modalidad en yukpa. Lingua Americana 1. 85\u201398.",
+                "[src](medina1997algunas)"
+            ]
+        },
+        {
+            "id": "medina1997inflexion",
+            "content": [
+                "Medina, Raimundo. 1997. Observaciones sobe la inflexi\u00f3n en yukpa. Opci\u00f3n 24. 37\u201362.",
+                "[src](medina1997inflexion)"
+            ]
+        },
+        {
+            "id": "medina1997mapoyo",
+            "content": [
+                "Medina, Francia. 1997. Introducci\u00f3n a la fon\u00e9tica y a la fonolog\u00eda Mapoyo (Caribe). (MA thesis).",
+                "[src](medina1997mapoyo)"
+            ]
+        },
+        {
+            "id": "medina1999accerg",
+            "content": [
+                "Medina, Raimundo. 1999. \u00bfEs la lengua yukpa acusativa o ergativa?. Lingua Americana 3. 7\u201326.",
+                "[src](medina1999accerg)"
+            ]
+        },
+        {
+            "id": "mehinaku2010tetsualu",
+            "content": [
+                "Mehinaku, Mutua. 2010. Tetsual\u00fc: pluralismo de l\u00ednguas e pessoas no Alto Xingu. (Doctoral dissertation).",
+                "[src](mehinaku2010tetsualu)"
+            ]
+        },
+        {
+            "id": "mehinaku2014xingu",
+            "content": [
+                "Mehinaku, Mutua and Franchetto, Bruna. 2014. Tetsual\u00fc: The pluralism of languages and people in the Upper Xingu. In Comrie, Bernard and Golluscio, Lucia (eds.), Language Contact and Documentation / Contacto ling\u00fc\u00edstico y documentaci\u00f3n, 121\u2013164. Berlin: Walter de Gruyter.",
+                "[src](mehinaku2014xingu)"
+            ]
+        },
+        {
+            "id": "meira1997the",
+            "content": [
+                "Meira, S\u00e9rgio. 1997. The evolution of an epi-phenomenal Split-S system in the Cariban family. (MA thesis).",
+                "[src](meira1997the)"
+            ]
+        },
+        {
+            "id": "meira1998proto",
+            "content": [
+                "Meira, S\u00e9rgio. 1998. A reconstruction of Proto-Taranoan: Phonology and Inflectional Morphology. (MA thesis).",
+                "[src](meira1998proto)"
+            ]
+        },
+        {
+            "id": "meira2000proto",
+            "content": [
+                "Meira, S\u00e9rgio. 2000. A reconstruction of Proto-Taranoan: phonology and morphology. M\u00fcnchen: Lincom Europa.",
+                "[src](meira2000proto)"
+            ]
+        },
+        {
+            "id": "meira2000split",
+            "content": [
+                "Meira, S\u00e9rgio. 2000. The accidental intransitive split in the Cariban family. In Gildea, Spike (ed.), Reconstructing Grammar, 201\u2013230. Amsterdam: John Benjamins.",
+                "[src](meira2000split)"
+            ]
+        },
+        {
+            "id": "meira2001wordclass",
+            "content": [
+                "Meira, S\u00e9rgio. 2006. Word class systems in Cariban languages. (unpublished).",
+                "[src](meira2001wordclass)"
+            ]
+        },
+        {
+            "id": "meira2002first",
+            "content": [
+                "Meira, S\u00e9rgio. 2002. A first comparison of pronominal and demonstrative systems in the Cariban language family. In Crevels, Mily and Crevels, Mily and Meira, S\u00e9rgio and van der Voort, Hein (eds.), Current Studies on South American Languages: Selected papers from the 50th International Congress of Americanists in Warsaw and the Spinoza Workshop on Amerindian Languages in Leiden, 255\u2013275. Leiden: Research institution of Asian, African, and Amerindian Studies (CNWS).",
+                "[src](meira2002first)"
+            ]
+        },
+        {
+            "id": "meira2003bakairi",
+            "content": [
+                "Meira, S\u00e9rgio. 2003. A marca\u00e7\u00e3o de pessoa nos verbos em Bakairi (Kar\u00edb). In Queixal\u00f3s, Francesc (ed.), 155\u2013163. Bras\u00edlia, Paris: Laborat\u00f3rio de L\u00ednguas Ind\u00edgenas, Centre d'\u00e9tudes des langues indig\u00e8nes d'Am\u00e9rique.",
+                "[src](meira2003bakairi)"
+            ]
+        },
+        {
+            "id": "meira2003mental",
+            "content": [
+                "Meira, S\u00e9rgio. 2003. Mental state postpositions in Tiriy\u00f3 and other Cariban languages. Linguistic Typology 7. 131\u2013159.",
+                "[src](meira2003mental)"
+            ]
+        },
+        {
+            "id": "meira2003morfologia",
+            "content": [
+                "Meira, S\u00e9rgio. 2003. Morfologia vs. sem\u00e2ntica ou intransitividade cindida em Tiriy\u00f3 (Kar\u00edb). In da Silva, Denize Elena Garcia (ed.), Atas do II Encontro Nacional do GELCO, 261\u2013270.",
+                "[src](meira2003morfologia)"
+            ]
+        },
+        {
+            "id": "meira2003primeras",
+            "content": [
+                "Meira, S\u00e9rgio. 2003. Primeras observaciones sobre la lengua yukpa. Lingua Americana 7.",
+                "[src](meira2003primeras)"
+            ]
+        },
+        {
+            "id": "meira2004demonstratifs",
+            "content": [
+                "Meira, S\u00e9rgio. 2004. Les d\u00e9monstratifs proximaux non-anim\u00e9s de la langue tiriyo (caribe): une \u00e9tude de corpus. Amerindia. 183\u2013200.",
+                "[src](meira2004demonstratifs)"
+            ]
+        },
+        {
+            "id": "meira2005bakairi",
+            "content": [
+                "Meira, S\u00e9rgio. 2005. Reconstructing Pre-Bakairi Segmental Phonology. Anthropological Linguistics 47. 261\u2013291.",
+                "[src](meira2005bakairi)"
+            ]
+        },
+        {
+            "id": "meira2005contrasting",
+            "content": [
+                "Meira, S\u00e9rgio and Terill, Angela. 2005. Contrasting contrastive demonstratives in Tiriy\u00f3 and Lavukaleve. Linguistics 43. 1131\u20131152.",
+                "[src](meira2005contrasting)"
+            ]
+        },
+        {
+            "id": "meira2005southern",
+            "content": [
+                "Meira, S\u00e9rgio and Franchetto, Bruna. 2005. The Southern Cariban languages and the Cariban family. International Journal of American Linguistics 71. 127\u2013192.",
+                "[src](meira2005southern)"
+            ]
+        },
+        {
+            "id": "meira2006approaching",
+            "content": [
+                "Meira, S\u00e9rgio. 2006. Approaching space in Tiriy\u00f3 grammar. In Levinson, Stephen C. and Wilkins, David P. (eds.), Grammars of Space, 311\u2013358. Cambridge: Cambridge University Press.",
+                "[src](meira2006approaching)"
+            ]
+        },
+        {
+            "id": "meira2006cariban",
+            "content": [
+                "Meira, S\u00e9rgio. 2006. Cariban Languages. In Brown, Keith (ed.), Encyclopedia of language and linguistics, 199\u2013203. Oxford: Elsevier.",
+                "[src](meira2006cariban)"
+            ]
+        },
+        {
+            "id": "meira2006familia",
+            "content": [
+                "Meira, S\u00e9rgio. 2006. A fam\u00edlia lingu\u00edstica Caribe (Kar\u00edb). Revista de estudos e pesquisas 3. 157\u2013174.",
+                "[src](meira2006familia)"
+            ]
+        },
+        {
+            "id": "meira2006syntactic",
+            "content": [
+                "Meira, S\u00e9rgio. 2006. Syntactic reanalysis in Yukpa (Cariban). International Journal of American Linguistics 72. 135\u2013150.",
+                "[src](meira2006syntactic)"
+            ]
+        },
+        {
+            "id": "meira2007oracoes",
+            "content": [
+                "Meira, S\u00e9rgio. 2007. Ora\u00e7\u00f5es relativas em l\u00ednguas Kar\u00edb. Boletim do Museu Goeldi, S\u00e9rie Ci\u00eancias Humanas 2. 105\u2013121.",
+                "[src](meira2007oracoes)"
+            ]
+        },
+        {
+            "id": "meira2009property",
+            "content": [
+                "Meira, S\u00e9rgio and Gildea, Spike. 2009. Property concepts in the Cariban family: adjectives, adverbs, and/or nouns. In Wetzels, W. Leo (ed.), The linguistics of endangered languages, 95\u2013133. Utrecht: LOT.",
+                "[src](meira2009property)"
+            ]
+        },
+        {
+            "id": "meira2010origin",
+            "content": [
+                "Meira, S\u00e9rgio and Gildea, Spike and Hoff, Berend J. 2010. On the Origin of Ablaut in the Cariban Family. International Journal of American Linguistics 76. 477\u2013515.",
+                "[src](meira2010origin)"
+            ]
+        },
+        {
+            "id": "meira2015classification",
+            "content": [
+                "Meira, S\u00e9rgio and Birchall, Joshua and Chousou-Polydouri, Natalia. 2015. A character-based internal classification of the Cariban language family. (Talk held at SLE 2015).",
+                "[src](meira2015classification)"
+            ]
+        },
+        {
+            "id": "meira2018demo",
+            "content": [
+                "Meira, S\u00e9rgio. 2018. Tiriy\u00f3: Non-contrastive Exophoric Uses of Demonstratives. In Levinson, Stephen C. and Cutfield, Sarah and Dunn, Michael J. and Enfield, Nick and Meira, S\u00e9rgio (eds.), Demonstratives in Cross-Linguistic Perspective, 222\u2013241. Cambridge: Cambridge University Press.",
+                "[src](meira2018demo)"
+            ]
+        },
+        {
+            "id": "meiraDBakuriyo",
+            "content": [
+                "Meira, S\u00e9rgio. 2022. Akuriy\u00f3 shoebox database.",
+                "[src](meiraDBakuriyo)"
+            ]
+        },
+        {
+            "id": "meiraDBapalai",
+            "content": [
+                "Meira, S\u00e9rgio. 2022. Apala\u00ed shoebox database.",
+                "[src](meiraDBapalai)"
+            ]
+        },
+        {
+            "id": "meiraDBbakairi",
+            "content": [
+                "Meira, S\u00e9rgio. 2022. Bakair\u00ed shoebox database.",
+                "[src](meiraDBbakairi)"
+            ]
+        },
+        {
+            "id": "meiraDBcomp",
+            "content": [
+                "Meira, S\u00e9rgio. 2022. Comparative Cariban shoebox database.",
+                "[src](meiraDBcomp)"
+            ]
+        },
+        {
+            "id": "meiraDBikpeng",
+            "content": [
+                "Meira, S\u00e9rgio. 2022. Ikpeng shoebox database.",
+                "[src](meiraDBikpeng)"
+            ]
+        },
+        {
+            "id": "meiraDBkaxui",
+            "content": [
+                "Meira, S\u00e9rgio. 2022. Werikyana shoebox database.",
+                "[src](meiraDBkaxui)"
+            ]
+        },
+        {
+            "id": "meiraDBmacushi",
+            "content": [
+                "Meira, S\u00e9rgio. 2022. Macushi shoebox database.",
+                "[src](meiraDBmacushi)"
+            ]
+        },
+        {
+            "id": "meiraDBpanare",
+            "content": [
+                "Meira, S\u00e9rgio. 2022. Panare shoebox database.",
+                "[src](meiraDBpanare)"
+            ]
+        },
+        {
+            "id": "meiraDBwaiwai",
+            "content": [
+                "Meira, S\u00e9rgio. 2022. Waiwai shoebox database.",
+                "[src](meiraDBwaiwai)"
+            ]
+        },
+        {
+            "id": "meiraDByukpa",
+            "content": [
+                "Meira, S\u00e9rgio. 2022. Yukpa shoebox database.",
+                "[src](meiraDByukpa)"
+            ]
+        },
+        {
+            "id": "mendez1959yawarana",
+            "content": [
+                "M\u00e9ndez-Arocha, Alberto. 1959. Un vocabulario Yabarana con Apuntes Fon\u00e9ticos. Antropol\u00f3gica 7. 65\u201384.",
+                "[src](mendez1959yawarana)"
+            ]
+        },
+        {
+            "id": "migliazza1965trio",
+            "content": [
+                "Migliazza, Ernesto C. 1965. Notas fonol\u00f3gicas da l\u00edngua Tiriy\u00f3. Boletim do Museu Paraense Em\u00edlio Goeldi. S\u00e9rie Antropologia 29. 1\u201313.",
+                "[src](migliazza1965trio)"
+            ]
+        },
+        {
+            "id": "migliazza1985",
+            "content": [
+                "Migliazza, Ernesto C. 1985. Languages of the Orinoco-Amazon Region: Current Status. In Klein, Harriet E. Manelis and Stark, Louisa (eds.), South American Indian Languages, 17\u2013139. Austin: Texas University Press.",
+                "[src](migliazza1985)"
+            ]
+        },
+        {
+            "id": "monterrey2007pouvoir",
+            "content": [
+                "Silva Monterrey, Nal\u00faa Rosa. 2007. Pouvoir, parent\u00e9 et soci\u00e9t\u00e9 chez les Ye'kwana du Caura-Erebato, au Venuezuela: de la diversit\u00e9 \u00e0 la synth\u00e8se. (Doctoral dissertation).",
+                "[src](monterrey2007pouvoir)"
+            ]
+        },
+        {
+            "id": "montes2000lenguas",
+            "content": [
+                "Gonz\u00e1lez de P\u00e9rez, Mar\u00eda Stella and Rodr\u00edguez de Montes, Mar\u00eda Luisa (eds.) 2000. Lenguas ind\u00edgenas de Colombia. Santaf\u00e9 de Bogot\u00e1: Instituto Caro y Cuervo.",
+                "[src](montes2000lenguas)"
+            ]
+        },
+        {
+            "id": "moore2006brazil",
+            "content": [
+                "Moore, D. 2006. Brazil: Language Situation. In Brown, Keith and Anderson, Anne and Bauer, Laurie and Berns, Margie and Miller, Jim and Hirst, Graeme (eds.), Encyclopedia of Language and Linguistics, 117\u2013128. Amsterdam: Elsevier.",
+                "[src](moore2006brazil)"
+            ]
+        },
+        {
+            "id": "morales2001regularidades",
+            "content": [
+                "Morales Romero, Venancio. 2001. Regularidades morfol\u00f3gicas y sint\u00e1cticas de la lengua kari\u2019\u00f1a. (MA thesis).",
+                "[src](morales2001regularidades)"
+            ]
+        },
+        {
+            "id": "morgado2018wayana",
+            "content": [
+                "Morgado, Paula and Coutinho Barbosa, Gabriel. 2018. Wayana. (Povos Ind\u00edgenas no Brasil, Instituto Socioambiental).",
+                "[src](morgado2018wayana)"
+            ]
+        },
+        {
+            "id": "moseley1994atlas",
+            "content": [
+                "Moseley, Christopher and Asher, R.E. (eds.) 1994. Atlas of the world's languages. London: Routledge.",
+                "[src](moseley1994atlas)"
+            ]
+        },
+        {
+            "id": "mosonyi1978kalina",
+            "content": [
+                "Mosonyi, Jorge C. 1978. Diccionario b\u00e1sico del idioma Cari\u00f1a. Caracas: UCAB.",
+                "[src](mosonyi1978kalina)"
+            ]
+        },
+        {
+            "id": "mosonyi1986lenguas",
+            "content": [
+                "Mosonyi, Jorge C. 1986. Lenguas ind\u00edgenas de Venezuela. Bolet\u00edn de Ling\u00fc\u00edstica 7. 19\u201340.",
+                "[src](mosonyi1986lenguas)"
+            ]
+        },
+        {
+            "id": "mosonyi2000kalina",
+            "content": [
+                "Mosonyi, Esteban Emilio and Tamanaico, Pedro J. Medina. 2000. Kari\u2019\u00f1a. In Mosonyi, Esteban Emilio and Mosonyi, Jorge C. (eds.), 398\u2013450. Caracas: Fundaci\u00f3n Bigott.",
+                "[src](mosonyi2000kalina)"
+            ]
+        },
+        {
+            "id": "mosonyi2000manual",
+            "content": [
+                "Mosonyi, Esteban Emilio and Mosonyi, Jorge C. (eds.) 2000. Manual de lenguas ind\u00edgenas de Venezuela. Caracas: Fundaci\u00f3n Bigott.",
+                "[src](mosonyi2000manual)"
+            ]
+        },
+        {
+            "id": "mosonyi2000pemon",
+            "content": [
+                "Mosonyi, Esteban Emilio and Benavides, Basilio. 2000. Pem\u00f3n. In Mosonyi, Esteban Emilio and Mosonyi, Jorge C. (eds.), 492\u2013543. Caracas: Fundaci\u00f3n Bigott.",
+                "[src](mosonyi2000pemon)"
+            ]
+        },
+        {
+            "id": "mosonyi2004",
+            "content": [
+                "Mosonyi, Esteban Emilio and Gonz\u00e1lez, Jorge Pocaterra. 2004. Experiencias recientes de revitalizaci\u00f3n ling\u00fc\u00edstica en la Venezuela ind\u00edgena. (Paper presented at the F\u00f3rum Universal de les Cultures).",
+                "[src](mosonyi2004)"
+            ]
+        },
+        {
+            "id": "MPIkuikuro",
+            "content": [
+                "{The Language Archive} (ed.) n.d. Kuikuro Team. (Audio, Video, Text).",
+                "[src](MPIkuikuro)"
+            ]
+        },
+        {
+            "id": "muller1975mapoyo",
+            "content": [
+                "Matt\u00e9i-M\u00fcller, Marie Claude. 1975. Vocabulario b\u00e1sico de la lengua mapoya. Antropol\u00f3gica 42. 57\u201378.",
+                "[src](muller1975mapoyo)"
+            ]
+        },
+        {
+            "id": "muller2021yawarana",
+            "content": [
+                "Matt\u00e9i-M\u00fcller, Marie-Claude and C\u00e1ceres Arandia, Natalia. 2019. Yawarana dictionary. (Flex project with 3583 lexical entries. Database in the author's possession.)",
+                "[src](muller2021yawarana)"
+            ]
+        },
+        {
+            "id": "ohagan2019phylogenetic",
+            "content": [
+                "O\u2019Hagan, Zachary and Chousou-Polydouri, Natalia and Michael, Lev. 2019. Phylogenetic classification supports a Northeastern Amazonian Proto-Tup\u00ed-Guaran\u00ed homeland. LIAMES: L\u00ednguas Ind\u00edgenas Americanas 19. 1\u201329.",
+                "[src](ohagan2019phylogenetic)"
+            ]
+        },
+        {
+            "id": "oquendo2000comparacion",
+            "content": [
+                "Oquendo, Luis. 2000. Comparaci\u00f3n entre el japreria y el yukpa. (Paper presented at the 50th International Congress of Americanists).",
+                "[src](oquendo2000comparacion)"
+            ]
+        },
+        {
+            "id": "oquendo2004japreria",
+            "content": [
+                "Oquendo, Luis. 2004. Is Japreria a Yukpa Dialect?. Lingua Americana 8. 87\u201398.",
+                "[src](oquendo2004japreria)"
+            ]
+        },
+        {
+            "id": "oquendo2005anafora",
+            "content": [
+                "Oquendo, Luis and Chavier, Mariela. 2005. La an\u00e1fora en yukpa. Bolet\u00edn Antropol\u00f3gico 23. 7\u201329.",
+                "[src](oquendo2005anafora)"
+            ]
+        },
+        {
+            "id": "oquendo2007gramatica",
+            "content": [
+                "Oquendo, Luis and Morales, Venancio. 2007. Gram\u00e1tica pedag\u00f3gica de la lengua yukpa: nanvonku o tuampatpo yukpape kuripa tusi kuripa voni tatpo yukpa vonku. Caracas: FEDUPEL.",
+                "[src](oquendo2007gramatica)"
+            ]
+        },
+        {
+            "id": "overall2018nonverbal",
+            "content": [
+                "Overall, Simon E. and Vallejos, Rosa and Gildea, Spike (eds.) 2018. Nonverbal predication in Amazonian languages. Amsterdam: John Benjamins.",
+                "[src](overall2018nonverbal)"
+            ]
+        },
+        {
+            "id": "pachano1997analisis",
+            "content": [
+                "Pachano, Maryoris. 1997. An\u00e1lisis sint\u00e1ctico de las posposiciones en la lengua ind\u00edgena yukpa. (MA thesis).",
+                "[src](pachano1997analisis)"
+            ]
+        },
+        {
+            "id": "pacheco1997relative",
+            "content": [
+                "Pach\u00eaco, Frantom\u00e9 B. 1997. A posi\u00e7\u00e3o do Ikpeng (Karib) na tipologia das relativas. In Anais do XX Semin\u00e1rio do CELLIP.",
+                "[src](pacheco1997relative)"
+            ]
+        },
+        {
+            "id": "pacheco1997relativizacao",
+            "content": [
+                "Pach\u00eaco, Frantom\u00e9 B. 1997. Relativiza\u00e7\u00e3o de objeto em Ikpeng/ Txic\u00e3o (Karib): uma proposta de an\u00e1lise. Estudos Ling\u00fc\u00edsticos 26. 697\u2013701.",
+                "[src](pacheco1997relativizacao)"
+            ]
+        },
+        {
+            "id": "pacheco1998nominalizacao",
+            "content": [
+                "Pach\u00eaco, Frantom\u00e9 B. 1998. Nominaliza\u00e7\u00e3o de sujeito e objeto em Ikpeng/Txic\u00e3o (Karib). In, 769\u2013772.",
+                "[src](pacheco1998nominalizacao)"
+            ]
+        },
+        {
+            "id": "pacheco2002aspectos",
+            "content": [
+                "Pach\u00eaco, Frantom\u00e9 B. 2002. Aspectos da morfologia Ikpeng. In Cabral, Ana Suelly Arruda C\u00e2mara and Rodrigues, Aryon D. (eds.), 54\u201361. Bel\u00e9m: EDUFPA. (Atas do I Encontro Internacional do Grupo de Trabalho sobre L\u00ednguas Ind\u00edgenas da ANPOLL).",
+                "[src](pacheco2002aspectos)"
+            ]
+        },
+        {
+            "id": "pacheco2003elipse",
+            "content": [
+                "Pach\u00eaco, Frantom\u00e9 B. 2003. Elipse e reitera\u00e7\u00e3o em textos Ikpeng (Karib). L\u00ednguas Ind\u00edgenas Americanas 3. 53\u201374.",
+                "[src](pacheco2003elipse)"
+            ]
+        },
+        {
+            "id": "pacheco2003intransitivos",
+            "content": [
+                "Pach\u00eaco, Frantom\u00e9 B. 2003. Verbos intransitivos em Ikpeng (Caribe): proposta de organiza\u00e7\u00e3o morfossint\u00e1tica. Amerindia. 95\u2013108.",
+                "[src](pacheco2003intransitivos)"
+            ]
+        },
+        {
+            "id": "pacheco2005nucleares",
+            "content": [
+                "Pach\u00eaco, Frantom\u00e9 B. 2005. As fun\u00e7\u00f5es sint\u00e1ticas nucleares e perif\u00e9ricas em Ikpeng (Kar\u00edb). In Rodrigues, Aryon D. and Cabral, Ana Suelly Arruda C\u00e2mara (eds.), Novos estudos sobre l\u00ednguas ind\u00edgenas, 169\u2013176. Bras\u00edlia: Editora Universidade de Bras\u00edlia.",
+                "[src](pacheco2005nucleares)"
+            ]
+        },
+        {
+            "id": "pacheco2007morfofonologia",
+            "content": [
+                "Pach\u00eaco, Frantom\u00e9 B. 2007. Morfofonologia dos prefixos pessoais em Ikpeng (Kar\u00edb). Estudos Ling\u00fc\u00edsticos 36. 268\u2013277.",
+                "[src](pacheco2007morfofonologia)"
+            ]
+        },
+        {
+            "id": "pacheco2009construcoes",
+            "content": [
+                "Pach\u00eaco, Frantom\u00e9 B. 2009. Constru\u00e7\u00f5es deverbais e processos de subordina\u00e7\u00e3o em Ikpeng (Kar\u00edb): breve discuss\u00e3o. ReVEL 7.",
+                "[src](pacheco2009construcoes)"
+            ]
+        },
+        {
+            "id": "pacheco2014causative",
+            "content": [
+                "Pach\u00eaco, Frantom\u00e9 B. 2014. Constru\u00e7\u00f5es causativas em Ikpeng (Kar\u00edb). In Queixal\u00f3s, Francesc and Telles, Stella and Bruno, Ana Carla (eds.), Incremento de valencia en las lenguas amaz\u00f3nicas, 97\u2013111. Bogot\u00e1: Instituto Caro y Cuervo.",
+                "[src](pacheco2014causative)"
+            ]
+        },
+        {
+            "id": "palencia1998analisis",
+            "content": [
+                "Palencia, Pedro. 1998. An\u00e1lisis de los pronombres reflexivos yukpas en la oraci\u00f3n simple seg\u00fan el principio A de la teor\u00eda de ligamiento de Chomsky. (MA thesis).",
+                "[src](palencia1998analisis)"
+            ]
+        },
+        {
+            "id": "palencia2000causative",
+            "content": [
+                "Palencia, Iraima. 2000. Las construcciones causativas en pem\u00f3n (caribe). Lingua Americana 4. 52\u201366.",
+                "[src](palencia2000causative)"
+            ]
+        },
+        {
+            "id": "palmegiani2002las",
+            "content": [
+                "Palmegiani, Annamar\u00eda. 2002. Las correlaciones de orden en panare, lengua OVS. Bolet\u00edn de Ling\u00fc\u00edstica. 69\u201383.",
+                "[src](palmegiani2002las)"
+            ]
+        },
+        {
+            "id": "panarepayne2013",
+            "content": [
+                "Payne, Thomas E. and Payne, Doris L. 2013. A Typological Grammar of Panare: A Cariban Language of Venezuela. (Brill's Studies in the Indigenous Languages of the Americas.) Leiden: Brill.",
+                "[src](panarepayne2013)"
+            ]
+        },
+        {
+            "id": "paula1970kaxui",
+            "content": [
+                "Paula, Ruth Wallace de Garcia. 1970. Notas fonol\u00f3gicas da l\u00edngua Kaxuy\u00e2na. Boletim do Museu Paraense Em\u00edlio Goeldi - Antropologia 43. 1\u201320.",
+                "[src](paula1970kaxui)"
+            ]
+        },
+        {
+            "id": "paula1980kaxui",
+            "content": [
+                "Paula, Ruth Wallace de Garcia. 1980. L\u00edngua Kaxuy\u00e1na. (Publica\u00e7\u00f5es Avulsas 63: Ling\u00fc\u00edstica, 9.) Publica\u00e7\u00f5es Avulsas 63, Ling\u00fc\u00edstica. Rio de Janeiro: Museu Nacional.",
+                "[src](paula1980kaxui)"
+            ]
+        },
+        {
+            "id": "payne1990amazonian",
+            "content": [
+                "Payne, Doris L. (ed.) 1990. Amazonian linguistics. Austin: University of Texas Press.",
+                "[src](payne1990amazonian)"
+            ]
+        },
+        {
+            "id": "payne1990morphological",
+            "content": [
+                "Payne, Doris L. 1990. Morphological characteristics of lowland South American languages. In Payne, Doris L. (ed.), Amazonian linguistics, 213\u2013241. Austin: University of Texas Press.",
+                "[src](payne1990morphological)"
+            ]
+        },
+        {
+            "id": "payne1990some",
+            "content": [
+                "Payne, David L. 1990. Some widespread grammatical forms in South American languages. In Payne, Doris L. (ed.), Amazonian linguistics, 75\u201387. Austin: University of Texas Press.",
+                "[src](payne1990some)"
+            ]
+        },
+        {
+            "id": "payne1993nonconfigurationality",
+            "content": [
+                "Payne, Doris L. 1993. Nonconfigurationality and discontinuous expressions in Panare. In Peterson, David A. (ed.), Proceedings of the Nineteenth Annual Meeting of the Berkeley Linguistics Society: Special Session on Syntactic Issues in Native American Languages, 121\u2013138. Berkeley: Braun-Brumfield.",
+                "[src](payne1993nonconfigurationality)"
+            ]
+        },
+        {
+            "id": "payne1995object",
+            "content": [
+                "Payne, Thomas E. 1995. Object incorporation in Panare. International Journal of American Linguistics 61. 295\u2013312.",
+                "[src](payne1995object)"
+            ]
+        },
+        {
+            "id": "pelleprat1655galibi",
+            "content": [
+                "Pelleprat, Pierre. 1655. Introduction a la langue des Galibis: sauuages de la terre ferme de l'Amerique Meridionale. Paris: Cramoisy.",
+                "[src](pelleprat1655galibi)"
+            ]
+        },
+        {
+            "id": "pemondearmellada1943gramatica",
+            "content": [
+                "de Armellada, Ces\u00e1reo. 1943. Gram\u00e1tica y diccionario de la lengua {Pem\u00f3n}. (1.) Caracas: Artes Gr\u00e1ficas.",
+                "[src](pemondearmellada1943gramatica)"
+            ]
+        },
+        {
+            "id": "pemondearmellada1944dic",
+            "content": [
+                "de Armellada, Ces\u00e1reo. 1944. Gram\u00e1tica y diccionario de la lengua {Pem\u00f3n}. (2.) Caracas: Artes Gr\u00e1ficas.",
+                "[src](pemondearmellada1944dic)"
+            ]
+        },
+        {
+            "id": "pemondearmellada1994",
+            "content": [
+                "Olza, Jes\u00fas and de Armellada, Ces\u00e1reo. 1994. Gram\u00e1tica de la lengua Pem\u00f3n (morfosintaxis). Caracas: Universidad Cat\u00f3lica Andr\u00e9s Bello.",
+                "[src](pemondearmellada1994)"
+            ]
+        },
+        {
+            "id": "perez2019himno",
+            "content": [
+                "P\u00e9rez, Ana and Fontana, Ana and P\u00e9rez, Pablo and Matt\u00e9i-M\u00fcller, Marie-Claude and C\u00e1ceres Arandia, Natalia and Conde, Olga. 2019. Traducci\u00f3n del himno de Venezuela en yabarana. (unpublished).",
+                "[src](perez2019himno)"
+            ]
+        },
+        {
+            "id": "pessoa2006fonologia",
+            "content": [
+                "Pessoa, Katia Nepomuceno. 2006. Fonologia Taurepang e compara\u00e7\u00e3o preliminar da fonologia de l\u00ednguas do grupo Pem\u00f3ng (fam\u00edlia Caribe). (MA thesis).",
+                "[src](pessoa2006fonologia)"
+            ]
+        },
+        {
+            "id": "pineda1958oponcarare",
+            "content": [
+                "Pineda Giraldo, Roberto. 1958. Vocabulario op\u00f3n-carare. In Pineda Giraldo, Roberto and Fornaguera, Miguel (eds.), Homenaje al profesor Paul Rivet, 191\u2013203. Bogot\u00e1: Editorial ABC.",
+                "[src](pineda1958oponcarare)"
+            ]
+        },
+        {
+            "id": "price1984panare",
+            "content": [
+                "Price, Jana. 1984. Estudio sobre el sistema de sonidos del idioma panare. Caracas: UCAB.",
+                "[src](price1984panare)"
+            ]
+        },
+        {
+            "id": "price2015dictionary",
+            "content": [
+                "Price, Jana and Key, Mary Ritchie. 2015. Panare. In Key, Mary Ritchie and Comrie, Bernard (eds.), The Intercontinental Dictionary Series. Leipzig: Max Planck Institute for Evolutionary Anthropology.",
+                "[src](price2015dictionary)"
+            ]
+        },
+        {
+            "id": "prodoclin2014wonkinom",
+            "content": [
+                "{ProDoclin Ikpeng}. 2014. Wonkinom m\u00efran: livro de narrativas Ikpeng. In  Chagas, Angela F.A. and Ingrid, Lemos Costa (eds.) Rio de Janeiro: Museu do \u00cdndio.",
+                "[src](prodoclin2014wonkinom)"
+            ]
+        },
+        {
+            "id": "queixalos2002ergatividade",
+            "content": [
+                "Queixal\u00f3s, Francesc (ed.) 2002. Ergatividade na Amaz\u00f4nia. (1.) Bras\u00edlia, Paris: Laborat\u00f3rio de L\u00ednguas Ind\u00edgenas, Centre d'\u00e9tudes des langues indig\u00e8nes d'Am\u00e9rique.",
+                "[src](queixalos2002ergatividade)"
+            ]
+        },
+        {
+            "id": "queixalos2003ergatividade",
+            "content": [
+                "Queixal\u00f3s, Francesc (ed.) 2003. Ergatividade na Amaz\u00f4nia. (2.) Bras\u00edlia, Paris: Laborat\u00f3rio de L\u00ednguas Ind\u00edgenas, Centre d'\u00e9tudes des langues indig\u00e8nes d'Am\u00e9rique.",
+                "[src](queixalos2003ergatividade)"
+            ]
+        },
+        {
+            "id": "queixalos2004ergatividade",
+            "content": [
+                "Queixal\u00f3s, Francesc (ed.) 2004. Ergatividade na Amaz\u00f4nia. (3.) Bras\u00edlia, Paris: Laborat\u00f3rio de L\u00ednguas Ind\u00edgenas, Centre d'\u00e9tudes des langues indig\u00e8nes d'Am\u00e9rique.",
+                "[src](queixalos2004ergatividade)"
+            ]
+        },
+        {
+            "id": "queixalos2010intro",
+            "content": [
+                "Queixal\u00f3s, Francesc and Gildea, Spike. 2010. Manifestations of ergativity in Amazonia. In Gildea, Spike and Queixal\u00f3s, Francesc (eds.), Ergativity in Amazonia, 1\u201326. Amsterdam: John Benjamins.",
+                "[src](queixalos2010intro)"
+            ]
+        },
+        {
+            "id": "queixalos2014valencia",
+            "content": [
+                "Queixal\u00f3s, Francesc and Telles, Stella and Bruno, Ana Carla (eds.) 2014. Incremento de valencia en las lenguas amaz\u00f3nicas. Bogot\u00e1: Instituto Caro y Cuervo.",
+                "[src](queixalos2014valencia)"
+            ]
+        },
+        {
+            "id": "reichel1945yukpa",
+            "content": [
+                "Reichel-Dolmatoff, Gerardo. 1945. Los indios motilones: etnograf\u00eda y ling\u00fc\u00edstica. Revista del Instituto Etnol\u00f3gico Nacional 2. 15\u2013115.",
+                "[src](reichel1945yukpa)"
+            ]
+        },
+        {
+            "id": "renaultlescure1983la",
+            "content": [
+                "Renault-Lescure, Odile. 1983. La composition nominale en galibi. Amerindia. 17\u201338.",
+                "[src](renaultlescure1983la)"
+            ]
+        },
+        {
+            "id": "renaultlescure1999le",
+            "content": [
+                "Renault-Lescure, Odile. 1999. Le dispositif aspecto-temporel des verbes finis en kali\u2019na oriental (langue caribe de la Guyane fran\u00e7aise). Actances. 163\u2013176.",
+                "[src](renaultlescure1999le)"
+            ]
+        },
+        {
+            "id": "renaultlescure2001dynamique",
+            "content": [
+                "Renault-Lescure, Odile. 2001. Dynamique des relations actancielles en kali\u2019na de Guyane fran\u00e7aise (ou galibi). Amerindia. 67\u201385.",
+                "[src](renaultlescure2001dynamique)"
+            ]
+        },
+        {
+            "id": "renaultlescure2002le",
+            "content": [
+                "Renault-Lescure, Odile. 2002. Le parfait en kali\u2019na. In Crevels, Mily and Crevels, Mily and Meira, S\u00e9rgio and van der Voort, Hein (eds.), Current Studies on South American Languages: Selected papers from the 50th International Congress of Americanists in Warsaw and the Spinoza Workshop on Amerindian Languages in Leiden, 277\u2013286. Leiden: Research institution of Asian, African, and Amerindian Studies (CNWS).",
+                "[src](renaultlescure2002le)"
+            ]
+        },
+        {
+            "id": "renaultlescure2004les",
+            "content": [
+                "Renault-Lescure, Odile. 2004. Les noms des parties du corps et leur incorporation en kali\u2019na. Amerindia. 109\u2013132.",
+                "[src](renaultlescure2004les)"
+            ]
+        },
+        {
+            "id": "renaultlescure2012personnes",
+            "content": [
+                "Renault-Lescure, Odile. 2012. Personnes et saillance en kali\u2019na. Faits de Langues. 157\u2013168.",
+                "[src](renaultlescure2012personnes)"
+            ]
+        },
+        {
+            "id": "rivet1924langues",
+            "content": [
+                "Rivet, Paul. 1924. Langues Am\u00e9ricaines II: Langues de l'Am\u00e9rique du Sud et des Antilles. In Meillet, Antoine and Cohen, Marcel (eds.), Les Langues du Monde, 639\u2013712. 1st edn. Paris: Champion.",
+                "[src](rivet1924langues)"
+            ]
+        },
+        {
+            "id": "rivet1952langues",
+            "content": [
+                "Rivet, Paul and Loukotka, \u010cestm\u00edr. 1952. Langues de l'Am\u00e9rique du Sud et des Antilles. In Meillet, Antoine and Cohen, Marcel (eds.), Les Langues du Monde, 1067\u20131097. 2nd edn. Paris: Champion.",
+                "[src](rivet1952langues)"
+            ]
+        },
+        {
+            "id": "robayo1986verbal",
+            "content": [
+                "Robayo Moreno, Camilo Alberto. 1986. La flexi\u00f3n verbal del carijona. (MA thesis).",
+                "[src](robayo1986verbal)"
+            ]
+        },
+        {
+            "id": "robayo1987person",
+            "content": [
+                "Robayo Moreno, Camilo Alberto. 1987. Le syst\u00e8me des personnes de la langua carijona. (MA thesis).",
+                "[src](robayo1987person)"
+            ]
+        },
+        {
+            "id": "robayo1989rame",
+            "content": [
+                "Robayo Moreno, Camilo Alberto. 1989. \u201cEn faisant une rame\u201d: texte carijona. Amerindia 14. 189\u2013199.",
+                "[src](robayo1989rame)"
+            ]
+        },
+        {
+            "id": "robayo2000avance",
+            "content": [
+                "Robayo Moreno, Camilo Alberto. 2000. Avance sobre morfolog\u00eda carijona. In Gonz\u00e1lez de P\u00e9rez, Mar\u00eda Stella and Rodr\u00edguez de Montes, Mar\u00eda Luisa (eds.), Lenguas ind\u00edgenas de Colombia, 171\u2013180. Santaf\u00e9 de Bogot\u00e1: Instituto Caro y Cuervo.",
+                "[src](robayo2000avance)"
+            ]
+        },
+        {
+            "id": "robayo2000intro",
+            "content": [
+                "Robayo Moreno, Camilo Alberto. 2000. Introducci\u00f3n al estudio de la lengua yupo o yukpa. In Gonz\u00e1lez de P\u00e9rez, Mar\u00eda Stella and Rodr\u00edguez de Montes, Mar\u00eda Luisa (eds.), Lenguas ind\u00edgenas de Colombia, 709\u2013717. Santaf\u00e9 de Bogot\u00e1: Instituto Caro y Cuervo.",
+                "[src](robayo2000intro)"
+            ]
+        },
+        {
+            "id": "rodrigues1885",
+            "content": [
+                "Rodrigues, Jo\u00e3o Barbosa. 1885. Rio Jauapery: Pacifica\u00e7\u00e3o dos Crichan\u00e1s. Rio de Janeiro: Imprensa Nacional.",
+                "[src](rodrigues1885)"
+            ]
+        },
+        {
+            "id": "rodrigues1996case",
+            "content": [
+                "Rodrigues, Aryon D. 1996. A case of grammatical affinity among Tupi, Karib, and Macro-Je.",
+                "[src](rodrigues1996case)"
+            ]
+        },
+        {
+            "id": "rodrigues2005novos",
+            "content": [
+                "Rodrigues, Aryon D. and Cabral, Ana Suelly Arruda C\u00e2mara (eds.) 2005. Novos estudos sobre l\u00ednguas ind\u00edgenas. Bras\u00edlia: Editora Universidade de Bras\u00edlia.",
+                "[src](rodrigues2005novos)"
+            ]
+        },
+        {
+            "id": "rodrigues2009case",
+            "content": [
+                "Rodrigues, Aryon D. 2009. A case of affinity among Tup\u00ed, Kar\u00edb, and Macro-J\u00ea. Revista Brasileira de Lingu\u00edstica Antropol\u00f3gica 1. 137\u2013162.",
+                "[src](rodrigues2009case)"
+            ]
+        },
+        {
+            "id": "romero-figueroa2000basic",
+            "content": [
+                "Romero-Figueroa, Andr\u00e9s. 2000. Basic word order and sentence types in Kari\u2019\u00f1a. M\u00fcnchen: LINCOM Europa.",
+                "[src](romero-figueroa2000basic)"
+            ]
+        },
+        {
+            "id": "romero2000participant",
+            "content": [
+                "Romero-Figueroa, Andr\u00e9s. 2000. Participant coding in Kari\u00f1a discourse. In Voort, H. van der and van de Kerke, Simon (eds.), Indigenous Languages of Lowland South America, 243\u2013254. Leiden: Research School of Asian, African, and Amerindian Studies.",
+                "[src](romero2000participant)"
+            ]
+        },
+        {
+            "id": "romero2007lenguas",
+            "content": [
+                "Romero-Figueroa, Andr\u00e9s and Garay, Ana Fern\u00e1ndez and Corbera, Angel (eds.) 2007. Lenguas ind\u00edgenas de Am\u00e9rica del Sur. Caracas: Universidad Cat\u00f3lica Andr\u00e9s Bello.",
+                "[src](romero2007lenguas)"
+            ]
+        },
+        {
+            "id": "romerofigueroa2000morfologia",
+            "content": [
+                "Romero-Figueroa, Andr\u00e9s. 2000. Morfolog\u00eda verbal del pem\u00f3n. In Staib, B. (ed.), Linguistica Romanica et Indiana, 551\u2013564. T\u00fcbingen: Gunter Narr Verlag.",
+                "[src](romerofigueroa2000morfologia)"
+            ]
+        },
+        {
+            "id": "romerofigueroa2007adverbial",
+            "content": [
+                "Romero-Figueroa, Andr\u00e9s. 2007. La uni\u00f3n clausal adverbial en las lenguas caribes del norte. In Romero-Figueroa, Andr\u00e9s and Garay, Ana Fern\u00e1ndez and Corbera, Angel (eds.), Lenguas ind\u00edgenas de Am\u00e9rica del Sur, 19\u201328. Caracas: Universidad Cat\u00f3lica Andr\u00e9s Bello.",
+                "[src](romerofigueroa2007adverbial)"
+            ]
+        },
+        {
+            "id": "romerofigueroa2011ergativo",
+            "content": [
+                "Romero-Figueroa, Andr\u00e9s. 2011. El sistema ergativo en las lenguas caribes del norte: \u00bfmuestra signos de debilitamiento?. In Romero-Figueroa, Andr\u00e9s (ed.), Lenguas ind\u00edgenas de Am\u00e9rica, 113\u2013141. Caracas: Universidad Cat\u00f3lica Andr\u00e9s Bello.",
+                "[src](romerofigueroa2011ergativo)"
+            ]
+        },
+        {
+            "id": "romerofigueroa2011lenguas",
+            "content": [
+                "Romero-Figueroa, Andr\u00e9s (ed.) 2011. Lenguas ind\u00edgenas de Am\u00e9rica. Caracas: Universidad Cat\u00f3lica Andr\u00e9s Bello.",
+                "[src](romerofigueroa2011lenguas)"
+            ]
+        },
+        {
+            "id": "romerofigueroa2014comparativos",
+            "content": [
+                "Romero-Figueroa, Andr\u00e9s. 2014. An\u00e1lisis tipol\u00f3gico de los comparativos en las lenguas caribes del norte. Bolet\u00edn de Ling\u00fc\u00edstica 25. 187\u2013216.",
+                "[src](romerofigueroa2014comparativos)"
+            ]
+        },
+        {
+            "id": "romerofigueroa2015clausular",
+            "content": [
+                "Romero-Figueroa, Andr\u00e9s. 2015. Cl\u00e1usular ergativas y no ergativas en ye\u2019kwana (Caribe de norte). L\u00ednguas Ind\u00edgenas Americanas 15. 113\u2013124.",
+                "[src](romerofigueroa2015clausular)"
+            ]
+        },
+        {
+            "id": "rosales1997tiempo",
+            "content": [
+                "Rosales, Cira. 1997. El tiempo ling\u00fc\u00edstico en la estructura sint\u00e1ctica de la lengua yukpa. (MA thesis).",
+                "[src](rosales1997tiempo)"
+            ]
+        },
+        {
+            "id": "rosales1998anclaje",
+            "content": [
+                "Rosales, Cira. 1998. Algunas consideraciones sobre el anclaje del tiempo ling\u00fc\u00edstico en la lengua yukpa. Lingua Americana 2. 38\u201348.",
+                "[src](rosales1998anclaje)"
+            ]
+        },
+        {
+            "id": "rowicka2006verb",
+            "content": [
+                "Rowicka, Grazyna J. and Carlin, Eithne B. (eds.) 2006. What's in a verb. Utrecht: LOT.",
+                "[src](rowicka2006verb)"
+            ]
+        },
+        {
+            "id": "salazar2012gramatica",
+            "content": [
+                "Guti\u00e9rrez, Mariano. 2012. Gram\u00e1tica did\u00e1ctica de la lengua pem\u00f3n. Caracas: Universidad Catolica Andr\u00e9s Bello.",
+                "[src](salazar2012gramatica)"
+            ]
+        },
+        {
+            "id": "sanchez2004oracion",
+            "content": [
+                "S\u00e1nchez, A. 2004. La oraci\u00f3n simple y la cl\u00e1usula relativa en yukpa. (MA thesis).",
+                "[src](sanchez2004oracion)"
+            ]
+        },
+        {
+            "id": "santos2002morfologia",
+            "content": [
+                "dos Santos, G\u00e9lsama Mara Ferreira. 2002. Morfologia Kuikuro: as categorias \u2018nome\u2019 e \u2018verbo\u2019 e os processos de transitiviza\u00e7\u00e3o e intransitiviza\u00e7\u00e3o. (MA thesis).",
+                "[src](santos2002morfologia)"
+            ]
+        },
+        {
+            "id": "santos2008flexionais",
+            "content": [
+                "Santos, G\u00e9lsama Mara Ferreira dos. 2008. As classes morfol\u00f3gicas flexionais da l\u00edngua Kuikuro. L\u00ednguas Ind\u00edgenas Americanas. 105\u2013120.",
+                "[src](santos2008flexionais)"
+            ]
+        },
+        {
+            "id": "santos2014nominalizacao",
+            "content": [
+                "Santos, Mara and Franchetto, Bruna. 2014. Nominaliza\u00e7\u00e3o dos argumentos interno e externo em Kuikuro. In Storto, Luciana and Franchetto, Bruna and Lima, Suzi (eds.), Sintaxe e sem\u00e2ntica do verbo em l\u00ednguas ind\u00edgenas do Brasil, 43\u201364. Lisbon: Mercado de Letras.",
+                "[src](santos2014nominalizacao)"
+            ]
+        },
+        {
+            "id": "sapien2021antipassive",
+            "content": [
+                "Sapi\u00e9n, Racquel-Mar\u00eda and C\u00e1ceres Arandia, Natalia and Gildea, Spike and Meira, S\u00e9rgio. 2021. Antipassive and semantic classes of verbs in the Cariban family. In Janic, Katarzyna and Witzlack-Makarevich, Alena (eds.), The Multifaceted Nature of Antipassive. Amsterdam: John Benjamins.",
+                "[src](sapien2021antipassive)"
+            ]
+        },
+        {
+            "id": "schomburgk1850maqui",
+            "content": [
+                "Schomburgk, Robert. 1850. A vocabulary of the Maiongkong language. Proceedings of the Philological Society IV. 217\u2013223.",
+                "[src](schomburgk1850maqui)"
+            ]
+        },
+        {
+            "id": "schuring2018kaxuyana",
+            "content": [
+                "Schuring, Phillip Arthur. n.d. Uma gram\u00e1tica morfossint\u00e1tica b\u00e2sica da l\u00edngua Katxuyana. (unpublished).",
+                "[src](schuring2018kaxuyana)"
+            ]
+        },
+        {
+            "id": "schuster1976dekuana",
+            "content": [
+                "Schuster, Meinhard. 1976. Dekuana: Beitr\u00e4ge zur Ethnologie der Makiritare. (Ergebnisse der {Frobenius-Expedition} 1954/55 nach {S\u00fcdost-Venezuela}, 3.) M\u00fcnchen: Klaus Renner.",
+                "[src](schuster1976dekuana)"
+            ]
+        },
+        {
+            "id": "seifart2007nominal",
+            "content": [
+                "Seifart, Frank and Payne, Doris L. 2007. Nominal classification in the North West Amazon: Issues in areal diffusion and typological characteristics. International Journal of American Linguistics 73. 281\u2013287.",
+                "[src](seifart2007nominal)"
+            ]
+        },
+        {
+            "id": "seiler2017yawarana",
+            "content": [
+                "Seiler-Baldinger, Annemarie and Matt\u00e9i-M\u00fcller, Marie-Claude. 2017. Los Yawarana (Yabarana). In Perera, Miguel \u00c1ngel and Rivas, Pedro (eds.), Los abor\u00edgenes de Venezuela V, 127\u2013209.",
+                "[src](seiler2017yawarana)"
+            ]
+        },
+        {
+            "id": "sherzer1986native",
+            "content": [
+                "Sherzer, Joel and Urban, Greg (eds.) 1986. Native South American discourse. Amsterdam: Mouton de Gruyter.",
+                "[src](sherzer1986native)"
+            ]
+        },
+        {
+            "id": "shibatani2002grammar",
+            "content": [
+                "Shibatani, Masayoshi (ed.) 2002. The grammar of causation and interpersonal manipulation. Amsterdam: John Benjamins.",
+                "[src](shibatani2002grammar)"
+            ]
+        },
+        {
+            "id": "silva2011prosodic",
+            "content": [
+                "da Silva, Glauber Romling and Franchetto, Bruna. 2011. Prosodic distinctions between the varieties of the Upper-Xingu Carib language: results of an acoustic analysis. Amerindia 35. 41\u201352.",
+                "[src](silva2011prosodic)"
+            ]
+        },
+        {
+            "id": "smoll2014katuena",
+            "content": [
+                "Smoll, Laetitia. 2014. Me: \u027eu\u027eu, \u0278oku and t\u0283itowi\u0283: An analysis of ideophones in Katuena (Tunayana). (MA thesis).",
+                "[src](smoll2014katuena)"
+            ]
+        },
+        {
+            "id": "smoll2015katuena",
+            "content": [
+                "Smoll, Laetitia. 2015. Ideophones in Katuena (Tunayana): a Cariban language of the Amazon basin. Saarbr\u00fccken: LAP Lambert Academic Publishing.",
+                "[src](smoll2015katuena)"
+            ]
+        },
+        {
+            "id": "socorro1998interaccion",
+            "content": [
+                "Socorro S\u00e1nchez, Marlene. 1998. Interacci\u00f3n de morfolog\u00eda y fonolog\u00eda en el sistema verbal del kari\u2019\u00f1a (Caribe). (MA thesis).",
+                "[src](socorro1998interaccion)"
+            ]
+        },
+        {
+            "id": "souza1993arara",
+            "content": [
+                "de Souza, Shirley Dias Cardoso. 1993. Alguns aspectos morfol\u00f3gicos da l\u00edngua Arara (Karib). (MA thesis).",
+                "[src](souza1993arara)"
+            ]
+        },
+        {
+            "id": "souza1994bakairi",
+            "content": [
+                "Souza, T\u00e2nia Concei\u00e7\u00e3o Clemente de. 1994. A sintaxe de uma l\u00edngua ergativa: o Bakair\u00ed. Revista Latinoamericana de Estudios Etnoling\u00fc\u00edsticos 8. 17\u201338.",
+                "[src](souza1994bakairi)"
+            ]
+        },
+        {
+            "id": "souza1997referencialidade",
+            "content": [
+                "Souza, Tania Concei\u00e7\u00e3o Clemente. 1997. Referencialidade e enuncia\u00e7\u00e3o em Bakairi (Carib). In Censabella, Marisa and Viegas Barros, J. Pedro (eds.), III Jornadas de Ling\u00fc\u00edstica Aborigen, 319\u2013327.",
+                "[src](souza1997referencialidade)"
+            ]
+        },
+        {
+            "id": "souza1999bakairi",
+            "content": [
+                "Souza, T\u00e2nia Concei\u00e7\u00e3o Clemente de. 1999. Discurso e oralidade: um estudo em l\u00edngua ind\u00edgena. (Doctoral dissertation).",
+                "[src](souza1999bakairi)"
+            ]
+        },
+        {
+            "id": "souza2003referencialidade",
+            "content": [
+                "Souza, Tania Concei\u00e7\u00e3o Clemente. 2003. Referencialidade em Bakairi. Amerindia. 201\u2013212.",
+                "[src](souza2003referencialidade)"
+            ]
+        },
+        {
+            "id": "souza2004bakairi",
+            "content": [
+                "Souza, Tania Concei\u00e7\u00e3o Clemente. 2004. Bakairi (Southern Brazil Carib): A syntactically ergative Brazilian indigenous language with diathesis inversion. (Doctoral dissertation).",
+                "[src](souza2004bakairi)"
+            ]
+        },
+        {
+            "id": "souza2005ergative",
+            "content": [
+                "Souza, Tania Concei\u00e7\u00e3o Clemente. 2005. Quest\u00f5es sobre ergatividade em Bakairi (Caribe). In Valencia, Alba (ed.), Actas del XIV Congreso Internacional de la ALFAL.",
+                "[src](souza2005ergative)"
+            ]
+        },
+        {
+            "id": "souza2007aspectos",
+            "content": [
+                "Souza, Tania Concei\u00e7\u00e3o Clemente. 2006. Alguns aspectos da ergatividade em Bakairi (Karib). Estudos da L\u00edngua(gem) 4. 137\u2013152.",
+                "[src](souza2007aspectos)"
+            ]
+        },
+        {
+            "id": "souza2007discours",
+            "content": [
+                "Souza, Tania Concei\u00e7\u00e3o Clemente. 2007. Discours et m\u00e9diation en baka\u00efri (langue caribe, Br\u00e9sil). In Guentch\u00e9va, Zlatka and Landaburu, Jon (eds.), L'\u00e9nonciation M\u00e9diatis\u00e9e II. Le Traitement \u00c9pist\u00e9mologique de L'information, 205\u2013218. Paris: Peeters.",
+                "[src](souza2007discours)"
+            ]
+        },
+        {
+            "id": "staib2000linguistica",
+            "content": [
+                "Staib, B. (ed.) 2000. Linguistica Romanica et Indiana. T\u00fcbingen: Gunter Narr Verlag.",
+                "[src](staib2000linguistica)"
+            ]
+        },
+        {
+            "id": "stefanowitsch2002causative",
+            "content": [
+                "Stefanowitsch, Anatol. 2002. Causative constructions in Akawaio. In Shibatani, Masayoshi (ed.), The grammar of causation and interpersonal manipulation, 341\u2013371. Amsterdam: John Benjamins.",
+                "[src](stefanowitsch2002causative)"
+            ]
+        },
+        {
+            "id": "stegeman2014akawaio",
+            "content": [
+                "Stegeman, Ray and Hunter, Rita. 2014. Akawaio-English Dictionary. SIL International.",
+                "[src](stegeman2014akawaio)"
+            ]
+        },
+        {
+            "id": "steinen1894natur",
+            "content": [
+                "Steinen, Karl von den. 1894. Unter den Naturv\u00f6lkern Zentral-Brasiliens: Reiseschilderung und Ergebnisse der zweiten Sching\u00fa-expedition, 1887\u20131888. (Cambridge Library Collection - Linguistics.) Cambridge: Cambridge University Press.",
+                "[src](steinen1894natur)"
+            ]
+        },
+        {
+            "id": "stenzel2017voices",
+            "content": [
+                "Stenzel, Kristine and Franchetto, Bruna (eds.) 2017. On this and other worlds. Berlin: Language Science Press.",
+                "[src](stenzel2017voices)"
+            ]
+        },
+        {
+            "id": "storto2014sintaxe",
+            "content": [
+                "Storto, Luciana and Franchetto, Bruna and Lima, Suzi (eds.) 2014. Sintaxe e sem\u00e2ntica do verbo em l\u00ednguas ind\u00edgenas do Brasil. Lisbon: Mercado de Letras.",
+                "[src](storto2014sintaxe)"
+            ]
+        },
+        {
+            "id": "swiggers2004orden",
+            "content": [
+                "Swiggers, Gisela. 2004. El orden de palabras en yukpa. Lingua Americana. 120\u2013131.",
+                "[src](swiggers2004orden)"
+            ]
+        },
+        {
+            "id": "swiggers2007la",
+            "content": [
+                "Swiggers, Gisela. 2007. La coordinaci\u00f3n en yukpa. Opci\u00f3n 23. 72\u201384.",
+                "[src](swiggers2007la)"
+            ]
+        },
+        {
+            "id": "swiggers2010gramatica",
+            "content": [
+                "Swiggers, Gisela. 2010. Gram\u00e1tica de Referencia del Pem\u00f3n. (Doctoral dissertation).",
+                "[src](swiggers2010gramatica)"
+            ]
+        },
+        {
+            "id": "t",
+            "content": [
+                "Pantaleoni Ricardo, Fany (ed.) 2018. Povos Ind\u00edgenas no Brasil, Instituto Socioambiental.",
+                "[src](t)"
+            ]
+        },
+        {
+            "id": "tamanakumuller1990",
+            "content": [
+                "Matt\u00e9i-M\u00fcller, Marie-Claude and Henley, Paul. 1990. Los Tamanaku: su lengua, su vida. San Cristobal: Universidad Cat\u00f3lica del T\u00e1chira.",
+                "[src](tamanakumuller1990)"
+            ]
+        },
+        {
+            "id": "triocarlin2004",
+            "content": [
+                "Carlin, Eithne B. 2004. A Grammar of Trio: A Cariban Language of Suriname. (Duisburger Arbeiten zur Sprach- und Kulturwissenschaft, 55.) Frankfurt am Main: Peter Lang.",
+                "[src](triocarlin2004)"
+            ]
+        },
+        {
+            "id": "triomeira1999",
+            "content": [
+                "Meira, S\u00e9rgio. 1999. A Grammar of Tiriy\u00f3. (Doctoral dissertation).",
+                "[src](triomeira1999)"
+            ]
+        },
+        {
+            "id": "troncarelli2018ikpeng",
+            "content": [
+                "Troncarelli, Maria Cristina and Menget, Patrick. 2018. Ikpeng. (Povos Ind\u00edgenas no Brasil, Instituto Socioambiental).",
+                "[src](troncarelli2018ikpeng)"
+            ]
+        },
+        {
+            "id": "vandekerke2000bajas",
+            "content": [
+                "van der Voort, Hein and van de Kerke, Simon (eds.) 2000. Essays on indigenous languages of lowland South America: Contributions to the 49th International Congress of Americanists in Quito 1997. Leiden: Research School of Asian, African, and Amerindian Studies (CNWS).",
+                "[src](vandekerke2000bajas)"
+            ]
+        },
+        {
+            "id": "vapnarsky2006lexical",
+            "content": [
+                "Lois, Ximena and Vapnarsky, Valentina (eds.) 2006. Lexical categories and root classes in Amerindian languages. Bern: Peter Lang.",
+                "[src](vapnarsky2006lexical)"
+            ]
+        },
+        {
+            "id": "vegamian1978diccionario",
+            "content": [
+                "Vegamian, Felix M. 1978. Diccionario ilustrado yupa-espa\u00f1ol, espa\u00f1ol-yupa (con onom\u00e1stica y apuntes gramaticales). Caracas: Formateca C.A.",
+                "[src](vegamian1978diccionario)"
+            ]
+        },
+        {
+            "id": "villalon2000person",
+            "content": [
+                "Villal\u00f3n, Mar\u00eda Eugenia and Granadillo, Tania. 2000. Los marcadores de persona de la lengua mapoyo. In van der Voort, Hein and van de Kerke, Simon (eds.), 197\u2013211. Leiden: Research School of Asian, African, and Amerindian Studies (CNWS).",
+                "[src](villalon2000person)"
+            ]
+        },
+        {
+            "id": "villalon2007consonants",
+            "content": [
+                "Villal\u00f3n, Mar\u00eda Eugenia. 2007. Una caracterizaci\u00f3n del sistema conson\u00e1ntico de la lengua mapoyo y propuesta para un alfabeto pr\u00e1ctico. Antropol\u00f3gica. 41\u201370.",
+                "[src](villalon2007consonants)"
+            ]
+        },
+        {
+            "id": "vitorino1991waiwai",
+            "content": [
+                "Vitorino, Marinalva M. 1991. Dicion\u00e1rio bil\u00edng\u00fce Wai-Wai/Portugu\u00eas, Portugu\u00eas/Wai-Wai. Boa Vista: Miss\u00e3o Evang\u00e9lica da Amaz\u00f4nia.",
+                "[src](vitorino1991waiwai)"
+            ]
+        },
+        {
+            "id": "von1892bakairi",
+            "content": [
+                "von den Steinen, Karl. 1892. Die Baka\u00efri-Sprache: W\u00f6rterverzeichniss, S\u00e4tze, Sagen, Grammatik; mit Beitr\u00e4gen zu einer Lautlehre der kara\u00efbischen Grundsprache. Leipzig: Koehler.",
+                "[src](von1892bakairi)"
+            ]
+        },
+        {
+            "id": "voort2000indigenous",
+            "content": [
+                "Voort, H. van der and van de Kerke, Simon (eds.) 2000. Indigenous Languages of Lowland South America. Leiden: Research School of Asian, African, and Amerindian Studies.",
+                "[src](voort2000indigenous)"
+            ]
+        },
+        {
+            "id": "waimiribruno2003",
+            "content": [
+                "Bruno, Ana Carla dos Santos. 2003. Waimiri Atroari Grammar: Some Phonological, Morphological, and Syntactic Aspects. (Doctoral dissertation).",
+                "[src](waimiribruno2003)"
+            ]
+        },
+        {
+            "id": "waiwaihawkins1998",
+            "content": [
+                "Hawkins, Robert E. 1998. Wai Wai. In Derbyshire, Desmond C. and Pullum, Geoffrey K. (eds.), Handbook of Amazonian Languages, 25\u2013224. Berlin/New York: Mouton de Gruyter.",
+                "[src](waiwaihawkins1998)"
+            ]
+        },
+        {
+            "id": "wayanatavares2005",
+            "content": [
+                "Tavares, Petronila da Silva. 2005. A grammar of Wayana. UMI. (Doctoral dissertation).",
+                "[src](wayanatavares2005)"
+            ]
+        },
+        {
+            "id": "wetzels2009linguistics",
+            "content": [
+                "Wetzels, W. Leo (ed.) 2009. The linguistics of endangered languages. Utrecht: LOT.",
+                "[src](wetzels2009linguistics)"
+            ]
+        },
+        {
+            "id": "wheatley1969bakairi",
+            "content": [
+                "Wheatley, James. 1969. Bakairi verb structure. Linguistics 47. 80\u2013100.",
+                "[src](wheatley1969bakairi)"
+            ]
+        },
+        {
+            "id": "yamada2010speech",
+            "content": [
+                "Yamada, Racquel-Mar\u00eda. 2010. Speech community-based documentation, description, and revitalization: Kari'nja in Konomerume. (Doctoral dissertation).",
+                "[src](yamada2010speech)"
+            ]
+        },
+        {
+            "id": "yamada2011evidentiality",
+            "content": [
+                "Yamada, Racquel-Mar\u00eda. 2011. A New Approach to \\textitky- and \\textit-ng in Kari\u2019nja: Evidentiality or Something Else?. International Journal of American Linguistics 77. 59\u201389.",
+                "[src](yamada2011evidentiality)"
+            ]
+        },
+        {
+            "id": "yukpanino1999",
+            "content": [
+                "Ni\u00f1o, Elena. 1999. Aspectos de la morfolog\u00eda del Yukpa. (MA thesis).",
+                "[src](yukpanino1999)"
+            ]
+        }
+    ]
+}

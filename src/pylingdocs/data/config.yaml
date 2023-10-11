@@ -1,0 +1,37 @@
+paths: # Locations: 
+  cldf: cldf/metadata.json # CLDF dataset location: The path to the CLDF metadata file 
+  content: content # the folder containing your text files
+  output: output # the folder to which output is written 
+  add_bib: pld/sources.bib # path to bibfile not contained in the dataset
+output: # Output: General options relating to the produced output.
+  build: # Formats: what formats should be built?
+    - latex
+    - mkdocs
+    - html
+    - plain
+  preview: html # Preview: what format should be used for previewing
+  readme: true # README: create a README.md file?
+  data: false # CLDF data overview: create index and detail pages for database entities?
+# note 1: this option will be True if <rich> below is True
+# note 2: you can point this to a different CLDF metadata.json
+# file
+  rich: False # Rich data: Insert links to this data into the document?
+# (Slow and currently only supported for MkDocs)
+  layout: book # Layout: The layout of the produced document. Other options: `article`, `slides`.
+latex: # LaTeX: LaTeX-specific settings.
+  article: article
+  book: book
+  interlinear_tool: expex
+clld: # CLLD: 
+  db_uri: null # URI to the database of your CLLD app
+input:
+  content_file_prefix: null # how your filenames should be prefixed, if at all
+examples:
+  show_language: true # show the language label? (can be overridden)
+  show_primary: true # show the Primary_Text line? (can be overridden)
+  source_position: after_translation # where to place the source?
+# after_translation / in_preamble
+lfts: # different kinds of entities whose inline representation is: (language) form (‘translation’) ((source))
+  show_language: True
+  show_translation: True
+  show_source: True
