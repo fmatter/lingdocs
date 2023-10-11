@@ -12,7 +12,7 @@ def _fn(base, m, f, v, r):
     m = str(m).lower()
     f = str(f).lower()
     if m == "example" and f == "latex":
-        f = f"{f}_{config['latex']['interlinear_tool']}"
+        f = f"{f}_{config['latex']['interlinear']}"
     if r:
         rs = "_rich"
     else:

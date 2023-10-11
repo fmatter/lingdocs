@@ -22,7 +22,7 @@ nav:
   - usage.md
   - config.md
   - extending.md
-  - output_formats.md
+  - formats.md
   - topic_index.md
 extra_css:
   - assets/nord.css
