@@ -5,7 +5,6 @@ function numberExamples() {
     for (var exc = 0; exc < examples.length; exc++) {
         ex = examples[exc]
         ex.setAttribute("value", exc + 1)
-        console.log(ex)
         var subexamplesol = ex.querySelector("ol.subexample");
         if (subexamplesol) {
             subexamples = subexamplesol.children

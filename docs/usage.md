@@ -1,4 +1,4 @@
-# Getting started
+# Usage
 
 `pylingdocs` is a command line application and is executed by using
 `pylingdocs <COMMAND> --<argument>` (if you\'re a wizard you can use
@@ -112,7 +112,7 @@ role="doc"}.
 [^1]: You don\'t need any of the server stuff, though. Just get
     comfortable using the command line.
 
-# Data formats
+## Data formats
 
 For the moment, [CLDF](https://cldf.clld.org/) is the only available
 input format, via the [cldfviz](https://github.com/cldf/cldfviz/) tool.
@@ -120,11 +120,11 @@ However, it should not be difficult to implement support for other
 formats, if needed.
 
 
-# Markdown format
+## Markdown format
 
 UNDER CONSTRUCTION
 
-## Introduction
+### Introduction
 
 `pylingdocs` uses a custom markdown format. Access to entities in the
 database (examples, morphemes, languages\...) is done in the format
@@ -132,11 +132,9 @@ database (examples, morphemes, languages\...) is done in the format
 ID of the entity. So if you have an example with the ID `narr-23`, you
 can include it in the text with the command `[ex](narr-23)`.
 
-## Models
+### Models
 
-#TBD
-
-## Citing and references
+### Citing and references
 
 Citing sources is done by the commands `[src](bibkey[pages])` and
 `[psrc](bibkey[pages])`. `bibkey` is the identifier of the source (for
@@ -144,13 +142,27 @@ example, a bibkey in a `.bib` file). `[pages]` is optional. For example,
 `[src](meier2009example[229-231])` yields `Meier (2009: 229-231)`, and
 `[psrc](meier2009example[229-231])` `(Meier 2009: 229-231)`.
 
-## Other elements
+### Interlinear examples
 
-### Tables
+While pylingdocs takes care of the formatting of examples, there are
+some parameters you might want to modify. The following table shows the
+basic layout; `[]` mark optional content.
+
+
+  (exno)    |[LANGUAGE/TITLE   [SOURCE]]
+  --------- |---------------------------------------
+            |[PRIMARY TEXT]
+            |OBJECT LINE
+            |GLOSS LINE
+            |'TRANSLATION'  [COMMENT]  [SOURCE]
+
+### Other elements
+
+#### Tables
 
 Every table has an ID; they can be inserted with the directive
 `[table](id)`.
 
-### Crossrefs
+#### Crossrefs
 
 Crossrefs are not yet implemented.

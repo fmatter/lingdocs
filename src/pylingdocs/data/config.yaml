@@ -1,7 +1,3 @@
-paths: # Locations: 
-  cldf: cldf/metadata.json # CLDF dataset location: The path to the CLDF metadata file. 
-  output: output # Output folder: The folder to which output is written. 
-  add_bib: pld/sources.bib # Additional references: Path to a bibfile with references not contained in the dataset.
 output: # Output: General options relating to the produced output.
   build: # Formats: What [formats](/formats) should be built?
     - latex
@@ -18,20 +14,28 @@ output: # Output: General options relating to the produced output.
   rich: False # Rich data: Insert links to this data into the document?
 # (Slow and currently only supported for [MkDocs](/formats#mkdocs)).
   layout: book # Layout: The layout of the produced document. Options: `book`, `article`, `slides`.
+examples: # Interlinear examples: The default options can be overridden by [specifying an argument](/usage#commands), e.g. `show_language=True`. 
+  show_language: true # Show language: Show the language label? 
+  show_primary: true # First line: Show the Primary_Text line?
+  source_position: after_translation # Source position: Where to place the source?
+# after_translation / in_preamble
+lfts: # LFTS: Different kinds of entities whose schematic inline representation is:
+# ```
+# (language) form (‘translation’) ((source))
+# ```
+# The default options can be overridden by [specifying an argument](/usage#commands), e.g. `show_language=True`. 
+  show_language: True # Language: 
+  show_translation: True # Translation: 
+  show_source: True # Source: 
+paths: # Locations: 
+  cldf: cldf/metadata.json # CLDF dataset location: The path to the CLDF metadata file. 
+  output: output # Output folder: The folder to which output is written. 
+  add_bib: pld/sources.bib # Additional references: Path to a bibfile with references not contained in the dataset.
 latex: # LaTeX: LaTeX-specific settings.
   article: article # Article template: The default template for the article layout.
   book: book # Book template: The default template for the book layout.
-  interlinear: expex
+  interlinear: expex # Interlinear package: The preferred setup for interlinear examples in LaTeX.
 clld: # CLLD: 
-  db_uri: null # URI to the database of your CLLD app
-input:
-  content_file_prefix: null # how your filenames should be prefixed, if at all
-examples:
-  show_language: true # show the language label? (can be overridden)
-  show_primary: true # show the Primary_Text line? (can be overridden)
-  source_position: after_translation # where to place the source?
-# after_translation / in_preamble
-lfts: # different kinds of entities whose inline representation is: (language) form (‘translation’) ((source))
-  show_language: True
-  show_translation: True
-  show_source: True
+  db_uri: null # Database location: URI to the database of your CLLD app, i.e. something like `sqlite:///path/to/your/db.sqlite`
+input: # Input: 
+  content_file_prefix: null # File prefix: How your filenames should be prefixed, if at all
