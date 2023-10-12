@@ -106,19 +106,18 @@ def compile_latex(output_dir=config["paths"]["output"]):  # pragma: no cover
         del proc  # help, prospector is forcing me
 
 
-def preview(cldf, source_dir, output_dir, output_format, refresh=True, **kwargs):
+def preview(dataset, source_dir, output_dir, output_format, refresh=True, **kwargs):
     log.info("Rendering preview")
     watchfiles = [str(x) for x in source_dir.iterdir()]
     watchfiles += [str(x) for x in (source_dir / CONTENT_FOLDER).iterdir()]
-    ds = _load_cldf_dataset(cldf)
     structure_file = _get_relative_file(
         folder=source_dir / CONTENT_FOLDER, file=STRUCTURE_FILE
     )
+    config.load_from_dir(source_dir)
     contents = load_content(
         structure_file=structure_file, source_dir=source_dir / CONTENT_FOLDER
     )
-    kwargs["cldf"] = cldf
-    kwargs["dataset"] = ds
+    kwargs["dataset"] = dataset
     kwargs["source_dir"] = source_dir
     kwargs["output_dir"] = output_dir
     builder = builders[output_format]()
@@ -133,12 +132,6 @@ def preview(cldf, source_dir, output_dir, output_format, refresh=True, **kwargs)
 
     create_output(formats=[output_format], **kwargs)
     builder.run_preview()
-    # if html:
-    #     threading.Thread(target=run_server).start()
-    # if clld:
-    #     refresh_clld_db(OUTPUT_DIR / "clld")
-    # if latex:
-    #     compile_latex()
 
 
 def clean_output(output_dir):

@@ -422,6 +422,9 @@ def _load_cldf_dataset(cldf_path):
 def get_structure(structure_file, prefix_mode=None):
     counters = {1: 0, 2: 0, 3: 0, 4: 0}
     files = load(structure_file)
+    if not files:
+        log.error("Please create a structure.yaml file in your docs folder.")
+        sys.exit()
     contents = {}
     prefix_choices = ["alpha", "numerical"]
     for file, values in files.items():
@@ -837,7 +840,7 @@ def build_examples(datas):
         if data.get("lng", None) != first_language:
             single_language = False
     if single_language and resolve_jinja(
-        datas[0]["show_language"], config["lfts"]["show_language"]
+        datas[0]["show_language"], config["examples"]["show_language"]
     ):
         full_preamble += first_language
     for data in datas:

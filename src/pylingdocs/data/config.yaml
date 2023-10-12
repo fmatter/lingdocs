@@ -37,5 +37,6 @@ latex: # LaTeX: LaTeX-specific settings.
   interlinear: expex # Interlinear package: The preferred setup for interlinear examples in LaTeX.
 clld: # CLLD: 
   db_uri: null # Database location: URI to the database of your CLLD app, i.e. something like `sqlite:///path/to/your/db.sqlite`
-input: # Input: 
+input: # Input:
+  sublime: false # Sublime text: Generate data (in the docs folder) for the [Sublime text plugin](https://github.com/fmatter/pylingdocs-sublime/) 
   content_file_prefix: null # File prefix: How your filenames should be prefixed, if at all
