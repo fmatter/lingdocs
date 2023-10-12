@@ -9,7 +9,6 @@ from pycldf.dataset import SchemaError
 from slugify import slugify
 from writio import load
 
-from pylingdocs import __version__
 from pylingdocs.config import DATA_DIR, config
 from pylingdocs.formats import CLLD
 from pylingdocs.helpers import (
@@ -21,6 +20,7 @@ from pylingdocs.helpers import (
 from pylingdocs.models import models
 from pylingdocs.postprocessing import postprocess
 from pylingdocs.preprocessing import preprocess, render_markdown
+import importlib
 
 log = logging.getLogger(__name__)
 
@@ -210,7 +210,7 @@ def create_cldf(
         wasGeneratedBy=[
             {
                 "dc:title": "pylingdocs",
-                "dc:description": __version__,
+                "dc:description": importlib.metadata.version("pylingdocs"),
                 "dc:url": "https://pypi.org/project/pylingdocs",
             }
         ]

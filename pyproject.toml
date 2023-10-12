@@ -2,17 +2,15 @@
 name = "pylingdocs"
 version = "0.0.13.dev"
 authors = ["Florian Matter <flmt@mailbox.org>"]
-license = Apache
+license = "Apache-2.0"
 homepage = "https://fl.mt/pylingdocs"
 repository = "https://www.github.com/fmatter/pylingdocs"
-bugtracker = "https://www.github.com/fmatter/pylingdocs/issues"
 keywords = ["cldf", "markdown", "digital linguistics"]
 readme = "README.md"
 description = "Create data-rich linguistic documents."
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: Apache Software License",
     "Natural Language :: English",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
@@ -22,6 +20,8 @@ classifiers = [
     "Programming Language :: Python :: 3.12"
 ]
 
+[tool.poetry.urls]
+"Bug tracker" = "https://www.github.com/fmatter/pylingdocs/issues"
 
 [tool.poetry.scripts]
 pylingdocs = 'pylingdocs.cli:main'
