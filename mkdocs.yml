@@ -17,9 +17,12 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.superfences
 nav:
-  - "Home": index.md
+  - index.md
   - installation.md
-  - usage.md
+  - Usage:
+    - usage.md
+    - markdown.md
+    - commands.md
   - config.md
   - extending.md
   - formats.md
@@ -35,6 +38,7 @@ theme:
     - navigation.tracking
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.sections
     - toc.follow
     - toc.integrate
   palette: 

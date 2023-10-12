@@ -88,6 +88,9 @@ replace them with `[mp](id)`. There is also the functionality to insert
 entities from your dataset via the \"Tools\" menu. `pylingdocs-gui` does
 not have a database-editor connection yet.
 
+[^1]: You don\'t need any of the server stuff, though. Just get
+    comfortable using the command line.
+
 ### Preview
 
 Since creating the database feeding a CLLD app or compiling LaTeX
@@ -100,18 +103,6 @@ you\'re writing will correspond to in a document for humans. You can use
 previews and then use [grip](https://pypi.org/project/grip/) for
 previewing.
 
-## Commands
-
-The central and only necessary command is `pylingdocs build`, which
-transforms the pylingdocs-flavored markdown into the specified output
-formats. Below, the other commands are listed; you can also see them by
-calling `pylingdocs --help`. For the default values of most arguments,
-check out `the default config file <config>`{.interpreted-text
-role="doc"}.
-
-[^1]: You don\'t need any of the server stuff, though. Just get
-    comfortable using the command line.
-
 ## Data formats
 
 For the moment, [CLDF](https://cldf.clld.org/) is the only available
@@ -119,50 +110,3 @@ input format, via the [cldfviz](https://github.com/cldf/cldfviz/) tool.
 However, it should not be difficult to implement support for other
 formats, if needed.
 
-
-## Markdown format
-
-UNDER CONSTRUCTION
-
-### Introduction
-
-`pylingdocs` uses a custom markdown format. Access to entities in the
-database (examples, morphemes, languages\...) is done in the format
-`[abbr](id)`, where `abbr` represents the kind of entity, and `id` the
-ID of the entity. So if you have an example with the ID `narr-23`, you
-can include it in the text with the command `[ex](narr-23)`.
-
-### Models
-
-### Citing and references
-
-Citing sources is done by the commands `[src](bibkey[pages])` and
-`[psrc](bibkey[pages])`. `bibkey` is the identifier of the source (for
-example, a bibkey in a `.bib` file). `[pages]` is optional. For example,
-`[src](meier2009example[229-231])` yields `Meier (2009: 229-231)`, and
-`[psrc](meier2009example[229-231])` `(Meier 2009: 229-231)`.
-
-### Interlinear examples
-
-While pylingdocs takes care of the formatting of examples, there are
-some parameters you might want to modify. The following table shows the
-basic layout; `[]` mark optional content.
-
-
-  (exno)    |[LANGUAGE/TITLE   [SOURCE]]
-  --------- |---------------------------------------
-            |[PRIMARY TEXT]
-            |OBJECT LINE
-            |GLOSS LINE
-            |'TRANSLATION'  [COMMENT]  [SOURCE]
-
-### Other elements
-
-#### Tables
-
-Every table has an ID; they can be inserted with the directive
-`[table](id)`.
-
-#### Crossrefs
-
-Crossrefs are not yet implemented.

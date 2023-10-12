@@ -14,8 +14,11 @@ Create data-rich linguistic documents with CLDF, with a variety of output format
 Linguistic documents usually contain linguistic data, be it from primary research or sourced from the literature.
 The primary function of pylingdocs is to make the integration of such data as simple as possible.
 To achieve this, all data is stored in a [CLDF](https://cldf.clld.org/) dataset, while the accompanying prose is written in [markdown](https://www.markdownguide.org/).
-This means that **the document that contains no data, only pointers**.
-Changes to the data only have to be done in the dataset, and don't include tinkering with the document - no more manually italicizing object language forms.
+This means that the document that contains no linguistic data, only pointers to the dataset.
+Changes to the data only have to be done in the dataset, and don't include tinkering with the document.
+Presentation of the data in the document is done by templates, 
+
+ - no more manually italicizing object language forms.
 The use of markdown and opinionated-but-customizable output templates results in [separation of content and presentation](https://en.wikipedia.org/wiki/Separation_of_content_and_presentation) in general.
 
 To illustrate, [this plain text](https://github.com/fmatter/pylingdocs/blob/main/docs/demo.txt) in combination with [this dataset](https://github.com/fmatter/pylingdocs/tree/main/tests/data/cldf) can be turned into multiple formats:

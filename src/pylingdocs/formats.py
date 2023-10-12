@@ -23,6 +23,7 @@ from pylingdocs.helpers import (
     latexify_table,
     src,
 )
+import webbrowser
 
 FIGURE_DIR = "figures"
 NUM_PRE = re.compile(r"[\d]+\ ")
@@ -496,6 +497,22 @@ class MkDocs(HTML):
 
     def todo_cmd(cls, url, *_args, **_kwargs):
         return mkdocs_todo(url, **_kwargs)
+
+    def run_preview(cls):
+        from mkdocs.commands.serve import serve
+        from mkdocs.config import load_config
+
+        config_path = config["paths"]["output"] / cls.name / "mkdocs.yml"
+        conf = load_config(config_file=str(config_path))
+        # for k, v in conf.items():
+        #     print("key", k)
+        #     input(v)
+        conf["plugins"].run_event("startup", command="serve", dirty=False)
+        try:
+            webbrowser.open_new_tab("http://localhost:8000")
+            serve(config_file=str(config_path))
+        finally:
+            conf["plugins"].run_event("shutdown")
 
 
 class GitHub(PlainText):

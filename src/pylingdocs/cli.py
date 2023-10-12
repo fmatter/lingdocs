@@ -35,6 +35,7 @@ class OutputCommand(click.Command):
                 click.core.Option(
                     ("--output-dir",),
                     default=config["paths"]["output"],
+                    show_default=True,
                     help="Folder where output is generated.",
                     type=click.Path(path_type=Path),
                 )
@@ -50,6 +51,7 @@ class BuildCommand(OutputCommand):
                 click.core.Option(
                     ("--source",),
                     default=".",
+                    show_default=True,
                     help="Source folder to process.",
                     type=click.Path(exists=True, path_type=Path),
                 ),
@@ -66,10 +68,15 @@ class BuildCommand(OutputCommand):
     "--targets",
     multiple=True,
     default=config["output"]["build"],
+    show_default=True,
     help="List of target output formats.",
 )
 @click.option(
-    "--release", is_flag=True, default=False, help="Prepare for a citeable release"
+    "--release",
+    is_flag=True,
+    default=False,
+    help="Prepare for a citeable release",
+    show_default=True,
 )
 def build(source, targets, cldf, output_dir, release):
     """Create formatted output of pylingdocs project."""
@@ -102,15 +109,21 @@ def build(source, targets, cldf, output_dir, release):
 @main.command(cls=BuildCommand)
 @click.option(
     "--target",
-    default=config["output"]["preview"],
+    default=None,
     help="Output format for the preview.",
 )
-@click.option("--refresh", default=True, help="Re-render preview on file change.")
+@click.option(
+    "--refresh",
+    default=True,
+    help="Re-render preview on file change.",
+    show_default=True,
+)
 def preview(source, target, cldf, output_dir, refresh):
     """Create a live preview using a lightweight, human-readable output format"""
     source = Path(source)
     config.load_from_dir(source)
     config["paths"]["output"] = output_dir
+    target = target or config["output"]["preview"]
     if cldf is None:
         cldf = config["paths"]["cldf"]
     metadata = load(source / "metadata.yaml") or {}
