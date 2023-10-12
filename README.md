@@ -5,8 +5,6 @@ Create data-rich linguistic documents with CLDF, with a variety of output format
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6567304.svg)](https://doi.org/10.5281/zenodo.6567304)
 ![License](https://img.shields.io/github/license/fmatter/pylingdocs)
 [![Tests](https://img.shields.io/github/actions/workflow/status/fmatter/pylingdocs/tests.yml?label=tests)](https://github.com/fmatter/pylingdocs/actions/workflows/tests.yml)
-[![Linting](https://img.shields.io/github/actions/workflow/status/fmatter/pylingdocs/lint.yml?label=linting)](https://github.com/fmatter/pylingdocs/actions/workflows/lint.yml)
-[![Codecov](https://img.shields.io/codecov/c/github/fmatter/pylingdocs)](https://app.codecov.io/gh/fmatter/pylingdocs/)
 [![PyPI](https://img.shields.io/pypi/v/pylingdocs.svg)](https://pypi.org/project/pylingdocs)
 ![Versions](https://img.shields.io/pypi/pyversions/pylingdocs)
 
