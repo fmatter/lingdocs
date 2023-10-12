@@ -180,7 +180,7 @@ def check_abbrevs(dataset, source_dir, content):
     abbrev_dict = {}
     abbrev_path = Path(source_dir) / "abbreviations.csv"
     if abbrev_path.is_file():  # add abbreviations added locally
-        for rec in pd.read_csv(abbrev_dict).to_dict("records"):
+        for rec in pd.read_csv(abbrev_path).to_dict("records"):
             abbrev_dict[rec["ID"]] = rec["Description"]
     for table in dataset.tables:  # add abbreviations found in the CLDF dataset
         if str(table.url) == "abbreviations.csv":
