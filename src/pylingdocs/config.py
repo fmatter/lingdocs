@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 
 DATA_DIR = files("pylingdocs") / "data"
 MD_LINK_PATTERN = re.compile(r"\[(?P<label>[^]]*)]\((?P<url>[^)]+)\)")
-LOG_LEVEL = logging.DEBUG
+LOG_LEVEL = logging.INFO
 PLD_DIR = Path("./pld")
 MANEX_DIR = "manual_examples"
 BENCH = "bench"

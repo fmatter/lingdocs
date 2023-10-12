@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2023-10-12
+
 ### Added
 * [mkdocs](https://www.mkdocs.org/) template
 * proper layout (`book`/`article`/`slides`) handling
@@ -210,6 +212,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Initial release.
 
 [Unreleased]: https://github.com/fmatter/pylingdocs/compare/0.0.12...HEAD
+[0.1.0]: https://github.com/fmatter/pylingdocs/compare/0.0.12...0.0.12
 [0.0.12]: https://github.com/fmatter/pylingdocs/compare/0.0.11...0.0.12
 [0.0.11]: https://github.com/fmatter/pylingdocs/compare/0.0.10...0.0.11
 [0.0.10]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.10
