@@ -66,8 +66,7 @@ class BuildCommand(OutputCommand):
 @click.option(
     "--targets",
     multiple=True,
-    default=config["output"]["build"],
-    show_default=True,
+    default=None,
     help="List of target output formats.",
 )
 @click.option(
@@ -91,7 +90,9 @@ def build(source, targets, cldf, output_dir, release):
         ),
     )
     metadata = load(source / "metadata.yaml")
-
+    targets = targets or config["output"]["build"]
+    if not isinstance(targets, list):
+        targets = [targets]
     create_output(
         contents,
         source,
@@ -103,6 +104,8 @@ def build(source, targets, cldf, output_dir, release):
     )
     if config["output"]["readme"]:
         write_readme(source / "metadata.yaml", release=release)
+    if config["input"]["sublime"]:
+        generate_autocomplete(ds, source / "docs")
 
 
 @main.command(cls=BuildCommand)
@@ -125,11 +128,12 @@ def preview(source, target, cldf, output_dir, refresh):
     target = target or config["output"]["preview"]
     if cldf is None:
         cldf = config["paths"]["cldf"]
+    ds = _load_cldf_dataset(cldf)
     metadata = load(source / "metadata.yaml") or {}
     run_preview(
-        cldf,
-        source,
-        output_dir,
+        dataset=ds,
+        source_dir=source,
+        output_dir=output_dir,
         refresh=refresh,
         output_format=target,
         metadata=metadata,
@@ -234,18 +238,6 @@ def author_config():
     yaml_path = conf_path / "author_config.yaml"
     log.info(f"Saving to {yaml_path}")
     dump(val_dict, yaml_path)
-
-
-@main.command()
-@click.option(
-    "--cldf",
-    default=config["paths"]["cldf"],
-    help="Path to metadata.json of CLDF dataset.",
-)
-@click.option("--target", default=CONTENT_FOLDER, help="Content folder.")
-def sublime(cldf, target):
-    ds = _load_cldf_dataset(cldf)
-    generate_autocomplete(ds, target)
 
 
 if __name__ == "__main__":

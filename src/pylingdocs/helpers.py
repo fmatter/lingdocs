@@ -495,7 +495,6 @@ def read_config_file(kind):
 
 
 def write_config_file(kind, content):
-    input(f"Writing kind {kind}")
     if kind == "settings":
         dump(content, "config.yaml")
     elif kind == "metadata":

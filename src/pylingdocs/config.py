@@ -27,7 +27,6 @@ def merge_dicts(a, b):
                     log.warning(
                         "Your configuration file is too nested. Please check it."
                     )
-                    input("ja aber hallo")
                 else:
                     a[k1][k2] = v2
         else:

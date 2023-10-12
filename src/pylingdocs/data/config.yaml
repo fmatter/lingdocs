@@ -16,7 +16,7 @@ output: # Output: General options relating to the produced output.
   layout: book # Layout: The layout of the produced document. Options: `book`, `article`, `slides`.
 examples: # Interlinear examples: The default options can be overridden by [specifying an argument](/usage#commands), e.g. `show_language=True`. 
   show_language: true # Show language: Show the language label? 
-  show_primary: true # First line: Show the Primary_Text line?
+  show_primary: true # Show first line: Show the Primary_Text line?
   source_position: after_translation # Source position: Where to place the source?
 # after_translation / in_preamble
 lfts: # LFTS: Different kinds of entities whose schematic inline representation is:
@@ -24,9 +24,9 @@ lfts: # LFTS: Different kinds of entities whose schematic inline representation 
 # (language) form (‘translation’) ((source))
 # ```
 # The default options can be overridden by [specifying an argument](/usage#commands), e.g. `show_language=True`. 
-  show_language: True # Language: 
-  show_translation: True # Translation: 
-  show_source: True # Source: 
+  show_language: True # Show language: 
+  show_translation: True # Show free translation: 
+  show_source: True # Show source: 
 paths: # Locations: 
   cldf: cldf/metadata.json # CLDF dataset location: The path to the CLDF metadata file. 
   output: output # Output folder: The folder to which output is written. 
@@ -37,6 +37,6 @@ latex: # LaTeX: LaTeX-specific settings.
   interlinear: expex # Interlinear package: The preferred setup for interlinear examples in LaTeX.
 clld: # CLLD: 
   db_uri: null # Database location: URI to the database of your CLLD app, i.e. something like `sqlite:///path/to/your/db.sqlite`
-input: # Input:
-  sublime: false # Sublime text: Generate data (in the docs folder) for the [Sublime text plugin](https://github.com/fmatter/pylingdocs-sublime/) 
-  content_file_prefix: null # File prefix: How your filenames should be prefixed, if at all
+input: # Input: 
+  sublime: false # Sublime text: Generate data (in the docs folder) for the [Sublime text plugin](https://github.com/fmatter/pylingdocs-sublime/).
+  content_file_prefix: null # File prefix: How your filenames should be prefixed, if at all.

@@ -292,6 +292,7 @@ def create_output(
     abbrev_dict = check_abbrevs(
         dataset, source_dir, "\n\n".join([x["content"] for x in contents.values()])
     )
+
     figure_metadata = load_figure_metadata(source_dir)
     for output_format in formats:
         with tqdm(total=6, desc=f"Building {output_format} output") as pbar:

@@ -112,8 +112,9 @@ class Example(Base_ORM):
     shortcut = "ex"
 
     def autocomplete_string(self, entry):
+        objs = [x if x else "" for x in entry["Analyzed_Word"]]
         return (
-            f"ex:{entry['ID']} {' '.join(entry['Analyzed_Word'])}\n‘{entry['Translated_Text']}’",  # noqa: E501
+            f"ex:{entry['ID']} {' '.join(objs)}\n‘{entry['Translated_Text']}’",  # noqa: E501
             f"[ex]({entry['ID']})",
         )
 

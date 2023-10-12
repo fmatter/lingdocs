@@ -3,6 +3,7 @@ plugins:
   - search
   - mkdocstrings
   - yaml-docstrings
+  - site-urls
 watch:
   - src
 markdown_extensions:
@@ -18,8 +19,8 @@ markdown_extensions:
   - pymdownx.superfences
 nav:
   - index.md
-  - installation.md
-  - Usage:
+  - User guide:
+    - installation.md
     - usage.md
     - markdown.md
     - commands.md
