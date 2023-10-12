@@ -31,7 +31,7 @@ To illustrate, [this plain text](https://github.com/fmatter/pylingdocs/blob/main
 
 It is also possible to integrate the output into [CLLD](https://clld.org/) web apps, using the [clld-document-plugin](https://github.com/fmatter/clld-document-plugin/); an example can be inspected [here](https://fl.mt/yawarana-sketch).
 
-## Quickstart 🔥
+## 🔥 Quickstart
 
 1. `pip install pylingdocs` ([full installation guide](https://fl.mt/pylingdocs/installation))
 2. create or get a CLDF dataset
