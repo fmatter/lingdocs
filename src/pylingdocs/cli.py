@@ -4,8 +4,7 @@ import sys
 from pathlib import Path
 
 import click
-import yaml
-from writio import load
+from writio import load, dump
 
 from pylingdocs.cldf import create_cldf, generate_autocomplete
 from pylingdocs.config import CONTENT_FOLDER, STRUCTURE_FILE, config
@@ -162,8 +161,9 @@ def check(source, cldf, output_dir):
     help="Additional documents",
     type=click.Path(exists=True, path_type=Path),
 )
-def cldf(source, cldf, output_dir, latex, add):
-    del latex
+def cldf(source, cldf, output_dir, add):
+    config.load_from_dir(source)
+    cldf = cldf or config["paths"]["cldf"]
     ds = _load_cldf_dataset(cldf)
     contents = load_content(
         source_dir=source / CONTENT_FOLDER,
@@ -233,8 +233,7 @@ def author_config():
     conf_path.mkdir(parents=True, exist_ok=True)
     yaml_path = conf_path / "author_config.yaml"
     log.info(f"Saving to {yaml_path}")
-    with open(yaml_path, "w", encoding="utf-8") as f:
-        yaml.dump(val_dict, f)
+    dump(val_dict, yaml_path)
 
 
 @main.command()

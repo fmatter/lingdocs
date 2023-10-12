@@ -121,13 +121,19 @@ def create_cldf(
         "![](", "![](/static/images/"
     )  # rudely assume that all images live in the static dir
     delim = "\n# "
-    parts = tent.split(delim)[1::]
-    if len(parts) == 0 or config["output"]["layout"] in ["slides", "article"]:
+    chapters = []
+    if config["output"]["layout"] in ["slides", "article"]:
         # these use # as section markers, so we add a level for the html output
         tent = tent.replace("\n#", "\n##")
-        tent = f"# {metadata_dict['title']}\n\n" + tent
+        chapters.append(
+            {
+                "ID": "landingpage",
+                "Description": tent,
+                "Name": " ",
+            }
+        )
     else:
-        chapters = []
+        parts = tent.split(delim)[1::]
         title_dic = {}
         tag_dic = {}
         chapter_dic = {}
@@ -180,13 +186,9 @@ def create_cldf(
                     "Number": i + 1,
                 }
             )
-    ds.write()
+    ds.write()  # todo: is this necessary?
     ds.copy(dest=output_dir / "cldf")
     ds = pycldf.Dataset.from_metadata(output_dir / "cldf" / ds.filename)
-
-    # bib_data = _load_bib(metadata_file)
-    # for key, entry in bib_data.entries.items():
-    #     ds.properties["dc:bibliographicCitation"] = Source.from_entry(key, entry) # todo: fix
 
     ds.properties[
         "dc:title"
