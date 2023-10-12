@@ -395,7 +395,7 @@ def split_ref(s):
     return bibkey, pages
 
 
-def _load_cldf_dataset(cldf_path):
+def load_cldf_dataset(cldf_path):
     try:
         ds = Dataset.from_metadata(cldf_path)
         temp_path = Path(tempfile.gettempdir()) / "cldf"
@@ -423,7 +423,9 @@ def get_structure(structure_file, prefix_mode=None):
     counters = {1: 0, 2: 0, 3: 0, 4: 0}
     files = load(structure_file)
     if not files:
-        log.error("Please create a structure.yaml file in your docs folder.")
+        log.error(
+            f"Please create a {STRUCTURE_FILE} file in your {CONTENT_FOLDER} folder."
+        )
         sys.exit()
     contents = {}
     prefix_choices = ["alpha", "numerical"]
@@ -470,7 +472,7 @@ def write_content_file(
     contents = get_structure(prefix_mode=prefix_mode, structure_file=structure_file)
     if file_id not in contents:
         log.error(
-            f"File with handle {file_id} not found, please check your structure.yaml file and your content files"
+            f"File with handle {file_id} not found, please check your {CONTENT_FOLDER}/{STRUCTURE_FILE} file and your content files"
         )
         raise ValueError
     w_path = Path(source_dir) / contents[file_id]["filename"]

@@ -5,7 +5,7 @@ from pathlib import Path
 import pycldf
 from clldutils import jsonlib
 
-from pylingdocs.config import DATA_DIR
+from pylingdocs.config import DATA_DIR, PLD_DIR
 
 log = logging.getLogger(__name__)
 
@@ -68,7 +68,7 @@ class Base:
                     f"{self.shortcut}:{entry[label]}",
                     f"[{self.shortcut}]({entry['ID']})",
                 )
-        log.warning(f"Unable to generate preview string for {entry['ID']}")
+        log.warning(f"Unable to generate preview string for {self.name} {entry['ID']}")
         return entry["ID"]
 
 
@@ -163,8 +163,8 @@ models = [
     Form(),
 ]
 
-if Path("pld/models.py").is_file():
-    sys.path.insert(1, "pld")
+if Path(f"{PLD_DIR}/models.py").is_file():
+    sys.path.insert(1, str(PLD_DIR))
     from models import models as custom_models
 
     for mm in custom_models:

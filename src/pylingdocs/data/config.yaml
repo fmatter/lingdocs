@@ -30,7 +30,7 @@ lfts: # LFTS: Different kinds of entities whose schematic inline representation 
 paths: # Locations: 
   cldf: cldf/metadata.json # CLDF dataset location: The path to the CLDF metadata file. 
   output: output # Output folder: The folder to which output is written. 
-  add_bib: pld/sources.bib # Additional references: Path to a bibfile with references not contained in the dataset.
+  add_bib: extra/sources.bib # Additional references: Path to a bibfile with references not contained in the dataset.
 latex: # LaTeX: LaTeX-specific settings.
   article: article # Article template: The default template for the article layout.
   book: book # Book template: The default template for the book layout.

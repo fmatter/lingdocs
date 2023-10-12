@@ -1,0 +1,4 @@
+paths:
+  cldf: {{ cookiecutter.cldf }}
+input:
+  sublime: {{ cookiecutter.use_sublime_text }}

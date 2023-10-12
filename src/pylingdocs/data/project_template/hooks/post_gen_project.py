@@ -5,7 +5,9 @@ import cookiecutter
 from writio import dump
 
 from pylingdocs.cldf import generate_autocomplete
-from pylingdocs.helpers import _load_cldf_dataset
+from pylingdocs.helpers import load_cldf_dataset
+from writio import load, dump
+from pylingdocs.config import CONTENT_FOLDER
 
 PROJECT_DIR = Path.cwd().resolve()
 
@@ -16,7 +18,7 @@ def remove_file(filename):
 
 def create_file(file):
     filename = file + ".md"
-    filepath = PROJECT_DIR / "content" / filename
+    filepath = PROJECT_DIR / CONTENT_FOLDER / filename
     dump(
         f"# {file.capitalize()} [label]({file})\n\nInsert your content here (find this file at {filepath.resolve()})",
         filepath,
@@ -30,15 +32,22 @@ for i, file in enumerate({{cookiecutter.files.split(",")}}):
     create_file(file)
 
 # add .. to path if relative to pylingdocs project
-config = ConfigParser()
-config.read(PROJECT_DIR / "pylingdocs.cfg")
-path = "{{ cookiecutter.cldf }}"
-if not path.startswith("/"):
-    path = Path("..") / path
-config.set("paths", "cldf", str(path))
-with open(PROJECT_DIR / "pylingdocs.cfg", "w", encoding="utf-8") as configfile:
-    config.write(configfile)
+
+
+def relativize(path):
+    if not str(path).startswith("/"):
+        return Path("..") / path
+    return Path(path)
+
+
+config = load(PROJECT_DIR / "config.yaml")
+path = relativize("{{ cookiecutter.cldf }}")
+config["paths"]["cldf"] = str(path)
+dump(config, PROJECT_DIR / "config.yaml")
 
 if "Yes" == "{{ cookiecutter.use_sublime_text }}":
-    ds = _load_cldf_dataset(path)
-    generate_autocomplete(ds, PROJECT_DIR)
+    while not path.is_file():
+        path = Path(input("Please enter a path to a metadata file: ").strip(" "))
+    else:
+        ds = load_cldf_dataset(path)
+        generate_autocomplete(ds, PROJECT_DIR)

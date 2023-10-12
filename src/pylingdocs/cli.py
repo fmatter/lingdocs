@@ -8,7 +8,7 @@ from writio import dump, load
 
 from pylingdocs.cldf import create_cldf, generate_autocomplete
 from pylingdocs.config import CONTENT_FOLDER, STRUCTURE_FILE, config
-from pylingdocs.helpers import _get_relative_file, _load_cldf_dataset, load_content
+from pylingdocs.helpers import _get_relative_file, load_cldf_dataset, load_content
 from pylingdocs.helpers import new as create_new
 from pylingdocs.helpers import write_readme
 from pylingdocs.output import check_abbrevs, check_ids, clean_output
@@ -82,7 +82,7 @@ def build(source, targets, cldf, output_dir, release):
     config.load_from_dir(source)
     if not cldf:
         cldf = config["paths"]["cldf"]
-    ds = _load_cldf_dataset(cldf)
+    ds = load_cldf_dataset(cldf)
     contents = load_content(
         source_dir=source / CONTENT_FOLDER,
         structure_file=_get_relative_file(
@@ -128,7 +128,7 @@ def preview(source, target, cldf, output_dir, refresh):
     target = target or config["output"]["preview"]
     if cldf is None:
         cldf = config["paths"]["cldf"]
-    ds = _load_cldf_dataset(cldf)
+    ds = load_cldf_dataset(cldf)
     metadata = load(source / "metadata.yaml") or {}
     run_preview(
         dataset=ds,
@@ -146,7 +146,7 @@ def check(source, cldf, output_dir):
     del output_dir
     if cldf is None:
         cldf = config["paths"]["cldf"]
-    ds = _load_cldf_dataset(cldf)
+    ds = load_cldf_dataset(cldf)
     contents = load_content(
         source_dir=source / CONTENT_FOLDER,
         structure_file=_get_relative_file(
@@ -168,7 +168,7 @@ def check(source, cldf, output_dir):
 def cldf(source, cldf, output_dir, add):
     config.load_from_dir(source)
     cldf = cldf or config["paths"]["cldf"]
-    ds = _load_cldf_dataset(cldf)
+    ds = load_cldf_dataset(cldf)
     contents = load_content(
         source_dir=source / CONTENT_FOLDER,
         structure_file=_get_relative_file(

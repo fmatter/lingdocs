@@ -10,7 +10,14 @@ from cldfviz.text import render
 from jinja2 import DictLoader
 from writio import load
 
-from pylingdocs.config import DATA_DIR, MANEX_DIR, MD_LINK_PATTERN, TABLE_DIR, config
+from pylingdocs.config import (
+    DATA_DIR,
+    MANEX_DIR,
+    MD_LINK_PATTERN,
+    TABLE_DIR,
+    config,
+    PLD_DIR,
+)
 from pylingdocs.helpers import (
     comma_and_list,
     func_dict,
@@ -38,7 +45,7 @@ def _load_templates(builder):
     pld_util = load(DATA_DIR / "util.j2")
 
     # for output_format, f_templates in templates.items():
-    util_path = Path(f"pld/model_templates/{builder.name}_util.md")
+    util_path = Path(f"{PLD_DIR}/model_templates/{builder.name}_util.md")
     if not util_path.is_file():
         util_path = DATA_DIR / "model_templates" / f"{builder.name}_util.md"
     for loader in ["text", "data"]:

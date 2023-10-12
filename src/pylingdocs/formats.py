@@ -822,8 +822,8 @@ class Latex(PlainText):
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs]}
 
 
-if Path("pld/formats.py").is_file():
-    sys.path.insert(1, "pld")
+if Path(f"{PLD_DIR}/formats.py").is_file():
+    sys.path.insert(1, str(PLD_DIR))
     from formats import formats
 
     for fmt in formats:
