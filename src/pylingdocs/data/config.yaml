@@ -4,7 +4,7 @@ output: # Output: General options relating to the produced output.
     - mkdocs
     - html
     - plain
-  preview: html # Preview: What format should be used for [previewing](/usage#preview).
+  preview: mkdocs # Preview: What format should be used for [previewing](/usage#preview).
   readme: true # README: Should a README.md file be created?
   data: false # CLDF data appendix: Create index and detail pages for database entities?
 
