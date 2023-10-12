@@ -201,6 +201,7 @@ def create_cldf(
     elif "id" in metadata_dict:
         ds.properties["dc:identifier"] = metadata_dict["id"]
 
+    ds.properties["dc:abstract"] = metadata_dict["abstract"]
     ds.properties["dc:license"] = metadata_dict["license"]
     ds.properties["dc:description"] = metadata_dict["abstract"]
     ds.properties["rdf:ID"] = metadata_dict["id"]
