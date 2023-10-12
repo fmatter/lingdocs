@@ -11,7 +11,7 @@ Create data-rich linguistic documents with CLDF, with a variety of output format
 [![PyPI](https://img.shields.io/pypi/v/pylingdocs.svg)](https://pypi.org/project/pylingdocs)
 ![Versions](https://img.shields.io/pypi/pyversions/pylingdocs)
 
-## Introduction
+## About
 Linguistic documents usually contain linguistic data, be it from primary research or sourced from the literature.
 The primary function of pylingdocs is to make the integration of such data as simple as possible.
 To achieve this, all data is stored in a [CLDF](https://cldf.clld.org/) dataset, while the accompanying prose is written in [markdown](https://www.markdownguide.org/).
@@ -33,7 +33,7 @@ It is also possible to integrate the output into [CLLD](https://clld.org/) web a
 
 ## Quickstart 🔥
 
-1. `pip install pylingdocs` ([full installation guide](installation))
+1. `pip install pylingdocs` ([full installation guide](https://fl.mt/pylingdocs/installation))
 2. create or get a CLDF dataset
 3. `pylingdocs new`, point to `metadata.json` file
 4. `pylingdocs preview`
