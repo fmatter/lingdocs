@@ -9,17 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * [mkdocs](https://www.mkdocs.org/) template
+* proper layout (`book`/`article`/`slides`) handling
 
 ### Fixed
 * multipart LaTeX examples
 
 ### Changed
 * more straightforward customization
+* configuration with `.yaml` file rather than `.cfg`
 * improved template loading
 * mkdocs for documentation
 * new [expex-acro](https://ctan.org/pkg/expex-acro) version
 * `builders` settings is now named `build`
-* configuration via YAML
 * makeover for CLI
 * `contents` folder is now called `docs`
 

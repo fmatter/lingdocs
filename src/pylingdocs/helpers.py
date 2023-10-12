@@ -494,6 +494,26 @@ def read_config_file(kind):
     raise ValueError
 
 
+class Enumerator:
+    def __init__(self):
+        self.counters = {1: 0, 2: 0, 3: 0, 4: 0}
+
+    def string(self):
+        res = []
+        for value in self.counters.values():
+            if value != 0:
+                res.append(str(value))
+        return ".".join(res) + "."
+
+    def parse(self, line):
+        lvl = len(line) - len(line.lstrip("#"))
+        self.counters[lvl] += 1
+        for k in self.counters:
+            if k > lvl:
+                self.counters[k] = 0
+        return self.string()
+
+
 def write_config_file(kind, content):
     if kind == "settings":
         dump(content, "config.yaml")

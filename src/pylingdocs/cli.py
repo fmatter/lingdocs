@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 import click
-from writio import load, dump
+from writio import dump, load
 
 from pylingdocs.cldf import create_cldf, generate_autocomplete
 from pylingdocs.config import CONTENT_FOLDER, STRUCTURE_FILE, config

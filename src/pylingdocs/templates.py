@@ -3,7 +3,6 @@ import logging
 from writio import load
 
 from pylingdocs.config import DATA_DIR, PLD_DIR, config
-from pylingdocs.formats import builders
 
 log = logging.getLogger(__name__)
 
@@ -24,7 +23,7 @@ def _fn(base, m, f, v, r):
 
 def _parent_builder(builder):
     res = builder.__class__.__bases__[0]
-    if res.name == "boilerplate" or res == object:
+    if res == object or res.name == "boilerplate":
         return None
     return res()
 
@@ -99,7 +98,7 @@ def _candidates(base, cbase, m, b):
 
 def find_template(model, builder, view, rich=config["output"]["rich"]):
     """Finds a template for a given model, a given output format, a given view; data-rich or not"""
-    log.debug(f"Searching template: {model.name}/{builder.label}_{view}")
+    log.debug(f"Searching template: {model.name}/{builder.name}_{view}")
     custom_base = PLD_DIR / "model_templates"
     base = DATA_DIR / "model_templates"
 
@@ -110,15 +109,17 @@ def find_template(model, builder, view, rich=config["output"]["rich"]):
     # input(cands)
 
     for b, m, f in _candidates(base, custom_base, model, builder):
-        path = _fn(b, m.name, f.label, view, r=rich)
+        path = _fn(b, m.name, f.name, view, r=rich)
         if path.is_file():
+            log.debug(f"Using template {path}")
             return path
     for b, m, f in _candidates(base, custom_base, model, builder):
-        path = _fn(base, m.name, f.label, view, r=not rich)
+        path = _fn(b, m.name, f.name, view, r=not rich)
         if path.is_file():
+            log.debug(f"Using template {path}")
             return path
     log.warning(
-        f"No template found for {model.name}/{builder.label}_{view} (last try {path})"
+        f"No template found for {model.name}/{builder.name}_{view} (last try {path})"
     )
     return None
 
@@ -131,23 +132,21 @@ name_dict = {
 }
 
 
-def load_templates(target_builders, models, rich=config["output"]["rich"]):
-    templates = {fn: {"text": {}, "data": {}} for fn in target_builders}
-    for fn in target_builders:
-        f = builders[fn]()
-        for m in models:
-            for view in ["inline", "list"]:
-                res = find_template(m, f, view, rich=rich)
-                if res:
-                    templates[f.label]["text"][
-                        f"{m.cldf_table}_{name_dict[view]}.md"
-                    ] = load(res)
-            for view in ["index", "detail"]:
-                res = find_template(m, f, view, rich=rich)
-                if res:
-                    templates[f.label]["data"][
-                        f"{m.cldf_table}_{name_dict[view]}.md"
-                    ] = load(res)
+def load_templates(target_builder, models, rich=config["output"]["rich"]):
+    # templates = {fn: {"text": {}, "data": {}} for fn in target_builders}
+    templates = {"text": {}, "data": {}}
+    f = target_builder
+    # for fn in target_builders:
+    # f = builders[fn]()
+    for m in models:
+        for view in ["inline", "list"]:
+            res = find_template(m, f, view, rich=rich)
+            if res:
+                templates["text"][f"{m.cldf_table}_{name_dict[view]}.md"] = load(res)
+        for view in ["index", "detail"]:
+            res = find_template(m, f, view, rich=rich)
+            if res:
+                templates["data"][f"{m.cldf_table}_{name_dict[view]}.md"] = load(res)
     return templates
 
 

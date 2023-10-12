@@ -7,9 +7,9 @@ theme:
     logo: octicons/book-24
   features:
     - navigation.path
-    - navigation.tracking
+    - navigation.tracking{%if cookiecutter.layout == "book" %}
     - navigation.tabs
-    - navigation.tabs.sticky
+    - navigation.tabs.sticky{%endif%}
     - navigation.top
     - toc.follow
     - toc.integrate
@@ -37,7 +37,7 @@ markdown_extensions:
   # - tables
   # - md_in_html
 plugins:
-    - awesome-pages
+    - awesome-pages{% if cookiecutter.layout=="book" %}
     - enumerate-headings:
         toc_depth: 6
         include:
@@ -46,7 +46,7 @@ plugins:
           - index.md
           - references.md
           - data/index.md
-          - data/*
+          - data/*{%endif%}
     - search
     # - git-revision-date-localized
     - site-urls

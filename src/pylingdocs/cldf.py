@@ -224,6 +224,7 @@ def create_cldf(
                         preprocess(d["Description"], source_dir), **kwargs
                     ),
                     ds,
+                    builder=clld,
                     decorate_gloss_string=CLLD.decorate_gloss_string,
                     output_format="clld",
                 ),

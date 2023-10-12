@@ -15,7 +15,6 @@ from pylingdocs.config import BENCH, CONTENT_FOLDER, STRUCTURE_FILE, config
 from pylingdocs.formats import builders
 from pylingdocs.helpers import (
     _get_relative_file,
-    _load_cldf_dataset,
     check_abbrevs,
     extract_chapters,
     func_dict,
@@ -106,7 +105,13 @@ def compile_latex(output_dir=config["paths"]["output"]):  # pragma: no cover
         del proc  # help, prospector is forcing me
 
 
-def preview(dataset, source_dir, output_dir, output_format, refresh=True, **kwargs):
+def preview(output_format, **kwargs):
+    builder = builders[output_format]()
+    builder.open_preview()
+    _preview(builder=builder, **kwargs)
+
+
+def _preview(dataset, source_dir, output_dir, builder, refresh=True, **kwargs):
     log.info("Rendering preview")
     watchfiles = [str(x) for x in source_dir.iterdir()]
     watchfiles += [str(x) for x in (source_dir / CONTENT_FOLDER).iterdir()]
@@ -120,17 +125,16 @@ def preview(dataset, source_dir, output_dir, output_format, refresh=True, **kwar
     kwargs["dataset"] = dataset
     kwargs["source_dir"] = source_dir
     kwargs["output_dir"] = output_dir
-    builder = builders[output_format]()
     if refresh:
         wkwargs = kwargs.copy()
-        wkwargs["output_format"] = output_format
+        wkwargs["builder"] = builder
         reloader = hupper.start_reloader(
-            "pylingdocs.output.preview", worker_kwargs=wkwargs
+            "pylingdocs.output._preview", worker_kwargs=wkwargs
         )
         reloader.watch_files(watchfiles)
     kwargs["contents"] = contents
 
-    create_output(formats=[output_format], **kwargs)
+    create_output(formats=[builder.name], **kwargs)
     builder.run_preview()
 
 
@@ -339,7 +343,7 @@ def create_output(
                     abbrev_dict=abbrev_dict,
                     ref_labels=ref_labels,
                     ref_locations=ref_locations,
-                    parts=chapters,
+                    chapters=chapters,
                 )
             pbar.update(1)
         if config["output"]["data"]:

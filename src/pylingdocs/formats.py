@@ -4,6 +4,7 @@ import re
 import shutil
 import sys
 import threading
+import webbrowser
 from http.server import SimpleHTTPRequestHandler, test
 from pathlib import Path
 
@@ -11,19 +12,22 @@ import panflute
 from cookiecutter.main import cookiecutter
 from jinja2 import Environment, PackageLoader
 from jinja2.exceptions import TemplateNotFound
+from mkdocs.commands.serve import serve
+from mkdocs.config import load_config
 from slugify import slugify
-from writio import load
+from writio import dump, load
 
 from pylingdocs.config import DATA_DIR, MD_LINK_PATTERN, PLD_DIR, config
 from pylingdocs.helpers import (
+    Enumerator,
     decorate_gloss_string,
+    extract_chapters,
     get_sections,
     html_example_wrap,
     html_gloss,
     latexify_table,
     src,
 )
-import webbrowser
 
 FIGURE_DIR = "figures"
 NUM_PRE = re.compile(r"[\d]+\ ")
@@ -128,12 +132,15 @@ class OutputFormat:
         log.error(f"Could not find cookiecutter folder for {cls.name}")
         sys.exit()
 
+    def adapt_layout(cls, content, metadata):
+        pass
+
     def write_folder(
         cls,
         output_dir,
         source_dir,
         content=None,
-        parts=None,
+        chapters=None,
         metadata=None,
         abbrev_dict=None,
         ref_labels=None,
@@ -142,16 +149,16 @@ class OutputFormat:
         # log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
         if not abbrev_dict:
             abbrev_dict = {}
-
         extra = {
             "name": cls.name,
-            "chapters": parts,
+            "chapters": chapters,
             "project_title": metadata.get("title", "A beautiful title"),
             "glossing_abbrevs": cls.register_glossing_abbrevs(abbrev_dict),
             "ref_labels": str(ref_labels),
             "ref_locations": str(ref_locations),
             "data": config["output"]["data"],
             "site_url": metadata.get("site_url", None),
+            "layout": config["output"]["layout"],
         }
         if "authors" in metadata:
             extra["author"] = cls.author_list(metadata["authors"])
@@ -163,7 +170,7 @@ class OutputFormat:
             content = cls.preprocess(content)
             extra.update({"content": content})
 
-        landingpage_path = Path("pld") / f"{cls.name}_index.md"
+        landingpage_path = PLD_DIR / f"{cls.name}_index.md"
         if landingpage_path.is_file():
             extra["landingpage"] = load(landingpage_path)
 
@@ -177,6 +184,9 @@ class OutputFormat:
             overwrite_if_exists=True,
             no_input=True,
         )
+
+        cls.adapt_layout(content, metadata=extra)
+
         figure_dir = source_dir / FIGURE_DIR
         if figure_dir.is_dir():
             target_dir = output_dir / cls.name / cls.figure_dir
@@ -252,7 +262,8 @@ class OutputFormat:
     def preprocess(cls, content):
         return content
 
-    def postprocess(cls, content):
+    def postprocess(cls, content, metadata=None):
+        del metadata
         return content
 
     def table(cls, df, caption, label):
@@ -286,6 +297,9 @@ class OutputFormat:
             f"Not rendering live preview for format {cls.name} {config['paths']['output'].resolve()}"
         )
 
+    def open_preview(cls):
+        pass
+
 
 class PlainText(OutputFormat):
     name = "plain"
@@ -305,7 +319,7 @@ class PlainText(OutputFormat):
             return f"[exref-{url}]({end})"
         return f"[exref-{url}]"
 
-    def postprocess(cls, content):
+    def postprocess(cls, content, metadata=None):
         output = []
         examples = []
         exref_pattern = r"\[exref-(?P<url>.*?)\](\((?P<end>.+)\))?"
@@ -457,8 +471,34 @@ class MkDocs(HTML):
             .replace("(#source-", "(site:references/#source-")
         )
 
-    def postprocess(cls, content):
+    def postprocess(cls, content, metadata=None):
+        metadata = metadata or {}
+        if config["output"]["layout"] == "article":
+            enm = Enumerator()
+            out = []
+            i = 1
+            for line in content.split("\n"):
+                if line.startswith("#"):
+                    out.append(line.replace("# ", f"## {enm.parse(line)} "))
+                    if line.startswith("# "):
+                        i += 1
+                else:
+                    out.append(line)
+            content = "#" + metadata["title"] + "\n\n" + "\n".join(out)
         return content
+
+    def adapt_layout(cls, content, metadata):
+        if config["output"]["layout"] in ["book"]:
+            chapters = extract_chapters(content, mode="pandoc")
+            doc_path = config["paths"]["output"] / "mkdocs" / "docs"
+            for k, v in chapters.items():
+                dump(v, doc_path / f"{k}.md")
+            index = f"""---
+hide:
+    - navigation
+---
+{metadata.get("landingpage", "")}"""
+            dump(index, doc_path / "index.md")
 
     def table(cls, df, caption, label):
         tabular = df.to_html(escape=False, index=False)
@@ -498,21 +538,27 @@ class MkDocs(HTML):
     def todo_cmd(cls, url, *_args, **_kwargs):
         return mkdocs_todo(url, **_kwargs)
 
-    def run_preview(cls):
-        from mkdocs.commands.serve import serve
-        from mkdocs.config import load_config
+    def open_preview(cls):
+        def run():
+            webbrowser.open_new_tab("http://localhost:8000")
 
+        t = threading.Timer(5, run)
+        t.start()
+
+    def run_preview(cls):
         config_path = config["paths"]["output"] / cls.name / "mkdocs.yml"
         conf = load_config(config_file=str(config_path))
         # for k, v in conf.items():
         #     print("key", k)
         #     input(v)
         conf["plugins"].run_event("startup", command="serve", dirty=False)
-        try:
-            webbrowser.open_new_tab("http://localhost:8000")
-            serve(config_file=str(config_path))
-        finally:
-            conf["plugins"].run_event("shutdown")
+
+        threading.Thread(target=serve(config_file=str(config_path))).start()
+
+        # try:
+        #     serve(config_file=str(config_path))
+        # finally:
+        #     conf["plugins"].run_event("shutdown")
 
 
 class GitHub(PlainText):

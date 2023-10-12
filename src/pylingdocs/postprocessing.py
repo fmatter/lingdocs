@@ -3,6 +3,7 @@ import re
 from io import StringIO
 
 import pandas as pd
+from writio import load
 
 from pylingdocs.helpers import load_table_metadata
 
@@ -64,4 +65,4 @@ def postprocess(md_str, builder, source_dir="."):
     )
     md_str = "".join(insert_manex(md_str, builder, MANEX_PATTERN))
     md_str = "".join(insert_tables(md_str, builder, tables))
-    return builder.postprocess(md_str)
+    return builder.postprocess(md_str, load(source_dir / "metadata.yaml"))

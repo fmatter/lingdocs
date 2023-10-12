@@ -32,33 +32,36 @@ for model in models:
 log.debug("Loading templates")
 loaders = {}
 
-templates = load_templates(config["output"]["build"], models)
-pld_util = load(DATA_DIR / "util.j2")
 
-for output_format, f_templates in templates.items():
-    util_path = Path(f"pld/model_templates/{output_format}_util.md")
+def _load_templates(builder):
+    templates = load_templates(builder, models)
+    pld_util = load(DATA_DIR / "util.j2")
+
+    # for output_format, f_templates in templates.items():
+    util_path = Path(f"pld/model_templates/{builder.name}_util.md")
     if not util_path.is_file():
-        util_path = DATA_DIR / "model_templates" / f"{output_format}_util.md"
+        util_path = DATA_DIR / "model_templates" / f"{builder.name}_util.md"
     for loader in ["text", "data"]:
-        f_templates[loader]["pld_util.md"] = pld_util
-        f_templates[loader][
+        templates[loader]["pld_util.md"] = pld_util
+        templates[loader][
             "ParameterTable_detail.md"
         ] = "{{ctx.cldf.name}}"  # todo is this needed?
-        f_templates[loader]["fmt_util.md"] = load(util_path)
-    loaders[output_format] = {
-        "text": DictLoader(f_templates["text"]),
-        "data": DictLoader(f_templates["data"]),
+        templates[loader]["fmt_util.md"] = load(util_path)
+    loaders[builder.name] = {
+        "text": DictLoader(templates["text"]),
+        "data": DictLoader(templates["data"]),
         "example_in_detail": DictLoader(
             {
-                **f_templates["data"],
+                **templates["data"],
                 **{
-                    "ExampleTable_detail.md": f_templates["text"][
+                    "ExampleTable_detail.md": templates["text"][
                         "ExampleTable_detail.md"
                     ]
                 },
             }
         ),
     }
+
 
 bool_dic = {"True": True, "False": False}
 
@@ -101,6 +104,7 @@ def render_markdown(
     data_format="cldf",
     **kwargs,
 ):
+    _load_templates(builder)
     if data_format == "cldf":
         if builder.name != "clld":
             if "MediaTable" in ds.components:
