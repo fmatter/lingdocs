@@ -764,7 +764,7 @@ def _build_example(
     )
     source_position = source_position or config["examples"]["source_position"]
     show_language = _resolve_jinja(
-        show_language, config["examples"]["show_primary"], "show_language"
+        show_language, config["examples"]["show_language"], "show_language"
     )
 
     if not title and lng and show_language:
