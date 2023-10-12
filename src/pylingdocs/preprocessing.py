@@ -70,7 +70,7 @@ def preprocess_cldfviz(md):
         current, key, url = get_md_pattern(m)
         if key in tables:
             args = []
-            kwargs = {"table": tables[key]["label"]}
+            kwargs = {}
             if "?" in url:
                 url, arguments = url.split("?")
                 for arg in arguments.split("&"):
