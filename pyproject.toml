@@ -3,6 +3,19 @@ name = "pylingdocs"
 version = "0.0.13.dev"
 authors = ["Florian Matter <flmt@mailbox.org>"]
 description = "Create data-rich linguistic documents."
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12"
+]
+
 
 [tool.poetry.scripts]
 pylingdocs = 'pylingdocs.cli:main'
