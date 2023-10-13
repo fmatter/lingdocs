@@ -11,7 +11,7 @@ from cldfviz.text import render
 from tqdm import tqdm
 from writio import dump, load
 
-from pylingdocs.config import BENCH, CONTENT_FOLDER, STRUCTURE_FILE, config
+from pylingdocs.config import BENCH, CONTENT_FOLDER, STRUCTURE_FILE, config, EXTRA_DIR
 from pylingdocs.formats import builders
 from pylingdocs.helpers import (
     _get_relative_file,
@@ -115,6 +115,9 @@ def _preview(dataset, source_dir, output_dir, builder, refresh=True, **kwargs):
     log.info("Rendering preview")
     watchfiles = [str(x) for x in source_dir.iterdir()]
     watchfiles += [str(x) for x in (source_dir / CONTENT_FOLDER).iterdir()]
+    extra = source_dir / EXTRA_DIR
+    if extra.is_dir():
+        watchfiles += [str(x) for x in extra.iterdir()]
     structure_file = _get_relative_file(
         folder=source_dir / CONTENT_FOLDER, file=STRUCTURE_FILE
     )

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * `extra` directory for user material
+* also, preview watches it
 
 ### Fixed
 * project template
