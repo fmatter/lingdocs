@@ -91,7 +91,7 @@ def build(source, targets, cldf, output_dir, release):
     )
     metadata = load(source / "metadata.yaml")
     targets = targets or config["output"]["build"]
-    if not isinstance(targets, list):
+    if not isinstance(targets, list) and not isinstance(targets, tuple):
         targets = [targets]
     create_output(
         contents,

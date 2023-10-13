@@ -1,8 +1,7 @@
 from pathlib import Path
 from shutil import copy
+from pylingdocs.config import PLD_DIR
 
-# from pylingdocs.helpers import extract_chapters
-# from pylingdocs.config import config
 try:
     from importlib.resources import files  # pragma: no cover
 except ImportError:  # pragma: no cover
