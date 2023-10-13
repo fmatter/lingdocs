@@ -39,6 +39,7 @@ class Config:
     def __init__(self):
         self.data = load(DATA_DIR / "config.yaml")
         self.fix_paths()
+        self.dependents()
 
     def load_from_dir(self, path="."):
         locp = Path(path) / "config.yaml"
@@ -48,6 +49,11 @@ class Config:
         else:
             log.warning(f"No config file found at {locp}")
         self.fix_paths()
+        self.dependents()
+
+    def dependents(self):
+        if self.data["output"]["rich"]:
+            self.data["output"]["data"] = True
 
     def fix_paths(self):
         for k, v in self.data["paths"].items():
