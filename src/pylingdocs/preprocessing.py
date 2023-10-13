@@ -14,9 +14,9 @@ from pylingdocs.config import (
     DATA_DIR,
     MANEX_DIR,
     MD_LINK_PATTERN,
+    PLD_DIR,
     TABLE_DIR,
     config,
-    PLD_DIR,
 )
 from pylingdocs.helpers import (
     comma_and_list,

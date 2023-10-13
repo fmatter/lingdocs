@@ -1,3 +1,4 @@
+import importlib
 import logging
 import re
 from pathlib import Path
@@ -20,7 +21,6 @@ from pylingdocs.helpers import (
 from pylingdocs.models import models
 from pylingdocs.postprocessing import postprocess
 from pylingdocs.preprocessing import preprocess, render_markdown
-import importlib
 
 log = logging.getLogger(__name__)
 

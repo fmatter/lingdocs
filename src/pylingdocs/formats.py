@@ -19,10 +19,10 @@ from writio import dump, load
 
 from pylingdocs.config import (
     DATA_DIR,
+    EXTRA_DIR,
     MD_LINK_PATTERN,
     PLD_DIR,
     config,
-    EXTRA_DIR,
     merge_dicts,
 )
 from pylingdocs.helpers import (

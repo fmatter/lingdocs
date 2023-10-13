@@ -2,12 +2,11 @@ from configparser import ConfigParser
 from pathlib import Path
 
 import cookiecutter
-from writio import dump
+from writio import dump, load
 
 from pylingdocs.cldf import generate_autocomplete
-from pylingdocs.helpers import load_cldf_dataset
-from writio import load, dump
 from pylingdocs.config import CONTENT_FOLDER
+from pylingdocs.helpers import load_cldf_dataset
 
 PROJECT_DIR = Path.cwd().resolve()
 
