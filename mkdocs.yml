@@ -1,4 +1,5 @@
 site_name: pylingdocs
+repo_url: https://github.com/fmatter/pylingdocs
 plugins:
   - search
   - mkdocstrings
@@ -6,6 +7,7 @@ plugins:
   - site-urls
 watch:
   - src
+  - .
 markdown_extensions:
   - mkdocs-click
   - markdown_include.include:
@@ -24,10 +26,10 @@ nav:
     - usage.md
     - markdown.md
     - commands.md
+    - extra.md
   - config.md
   - extending.md
   - formats.md
-  - topic_index.md
 extra_css:
   - assets/nord.css
 theme:

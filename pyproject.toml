@@ -29,7 +29,7 @@ pylingdocs = 'pylingdocs.cli:main'
 [tool.poetry.dependencies]
 python = "^3.8.1"
 click = "^8.1.7"
-pandas = "2.0.3"
+pandas = "^2.0.3"
 pycldf = "^1.35.0"
 python-slugify = "^8.0.1"
 cldfviz = "^1.0.0"

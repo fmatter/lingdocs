@@ -4,8 +4,9 @@ Create data-rich linguistic documents with CLDF, with a variety of output format
 
 [![PyPI](https://img.shields.io/pypi/v/pylingdocs.svg)](https://pypi.org/project/pylingdocs)
 ![Versions](https://img.shields.io/pypi/pyversions/pylingdocs)
-![License](https://img.shields.io/github/license/fmatter/pylingdocs)
+[![License](https://img.shields.io/github/license/fmatter/pylingdocs)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Tests](https://img.shields.io/github/actions/workflow/status/fmatter/pylingdocs/tests.yml?label=tests)](https://github.com/fmatter/pylingdocs/actions/workflows/tests.yml)
+[![Changelog](https://img.shields.io/badge/keep_a-changelog-DC673D)](changes)
 
 ## About
 Linguistic documents usually contain linguistic data, be it from primary research or sourced from the literature.
