@@ -17,7 +17,14 @@ from mkdocs.config import load_config
 from slugify import slugify
 from writio import dump, load
 
-from pylingdocs.config import DATA_DIR, MD_LINK_PATTERN, PLD_DIR, config
+from pylingdocs.config import (
+    DATA_DIR,
+    MD_LINK_PATTERN,
+    PLD_DIR,
+    config,
+    EXTRA_DIR,
+    merge_dicts,
+)
 from pylingdocs.helpers import (
     Enumerator,
     decorate_gloss_string,
@@ -132,7 +139,7 @@ class OutputFormat:
         log.error(f"Could not find cookiecutter folder for {cls.name}")
         sys.exit()
 
-    def adapt_layout(cls, content, metadata):
+    def adjust_layout(cls, content, metadata):
         pass
 
     def write_folder(
@@ -157,7 +164,6 @@ class OutputFormat:
             "ref_labels": str(ref_labels),
             "ref_locations": str(ref_locations),
             "data": config["output"]["data"],
-            "site_url": metadata.get("site_url", None),
             "layout": config["output"]["layout"],
         }
         if "authors" in metadata:
@@ -170,7 +176,7 @@ class OutputFormat:
             content = cls.preprocess(content)
             extra.update({"content": content})
 
-        landingpage_path = PLD_DIR / f"{cls.name}_index.md"
+        landingpage_path = EXTRA_DIR / f"{cls.name}_index.md"
         if landingpage_path.is_file():
             extra["landingpage"] = load(landingpage_path)
 
@@ -185,7 +191,7 @@ class OutputFormat:
             no_input=True,
         )
 
-        cls.adapt_layout(content, metadata=extra)
+        cls.adjust_layout(content, metadata=extra)
 
         figure_dir = source_dir / FIGURE_DIR
         if figure_dir.is_dir():
@@ -487,7 +493,7 @@ class MkDocs(HTML):
             content = "#" + metadata["title"] + "\n\n" + "\n".join(out)
         return content
 
-    def adapt_layout(cls, content, metadata):
+    def adjust_layout(cls, content, metadata):
         if config["output"]["layout"] in ["book"]:
             chapters = extract_chapters(content, mode="pandoc")
             doc_path = config["paths"]["output"] / "mkdocs" / "docs"
@@ -499,6 +505,13 @@ hide:
 ---
 {metadata.get("landingpage", "")}"""
             dump(index, doc_path / "index.md")
+        custom_conf = EXTRA_DIR / "mkdocs.yml"
+        if custom_conf.is_file():
+            custom_conf = load(custom_conf)
+            out_path = Path(config["paths"]["output"]) / cls.name / "mkdocs.yml"
+            out_conf = load(out_path)
+            nconf = merge_dicts(out_conf, custom_conf)
+            dump(nconf, out_path)
 
     def table(cls, df, caption, label):
         tabular = df.to_html(escape=False, index=False)

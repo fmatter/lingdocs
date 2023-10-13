@@ -23,7 +23,6 @@
         "overrides/*/*.html"
     ],
     "landingpage": "",
-    "site_url": "",
     "data": "",
     "layout": ""
 }

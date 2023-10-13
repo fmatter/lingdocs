@@ -1,6 +1,5 @@
 from pathlib import Path
 from shutil import copy
-from pylingdocs.config import PLD_DIR
 
 try:
     from importlib.resources import files  # pragma: no cover
