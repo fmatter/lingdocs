@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * project template
-* a bug with the `--targets` argument
+* a bug with the `-targets` argument
 * `landingpage.md`
 * `rich` option automatically makes `data` true
 
@@ -83,12 +83,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 * unglossed words don't throw errors
 
-## [0.0.10] -- 2022-10-15
+## [0.0.10] - 2022-10-15
 
 ### Added
 * methods for reading and writing project configuration files
 
-## [0.0.9] -- 2022-09-19
+## [0.0.9] - 2022-09-19
 
 ### Changed
 * more informative `check` function, now with offending files and lines
@@ -102,7 +102,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `update-structure` adapted to new structure handling
 * make relative path in setup wizard relative to CLDF dataset
 
-## [0.0.8] -- 2022-08-23
+## [0.0.8] - 2022-08-23
 
 ### Added
 * sources in sublime text data
@@ -110,13 +110,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 * preview function
 
-## [0.0.7] -- 2022-08-20
+## [0.0.7] - 2022-08-20
 
 ### Fixed
 
 * default HTML pandoc output should be "html"
 
-## [0.0.6] -- 2022-08-20
+## [0.0.6] - 2022-08-20
 
 ### Added
 * `pre_cell` and `post_cell` keywords in table metadata to apply markdown to entire table
@@ -134,7 +134,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * simpler document structure
 
-## [0.0.5] -- 2022-07-21
+## [0.0.5] - 2022-07-21
 
 ### Added
 * HTML preview with autorefresh
@@ -153,7 +153,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * whitespace in github output
 * various small things
 
-## [0.0.4] -- 2022-06-03
+## [0.0.4] - 2022-06-03
 
 ### Added
 * `todo` text command
@@ -167,7 +167,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * nicer LaTeX memoir template
 
-## [0.0.3] -- 2022-05-27
+## [0.0.3] - 2022-05-27
 
 ### Added
 * manual (i.e., non-interlinear) examples (`[manex](id)`)
@@ -185,9 +185,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * prettier LaTeX layouting
 * HTML layout
 * `wf` shortcut for forms
-* relative file paths, `--source` should work now
+* relative file paths, `-source` should work now
 
-## [0.0.2] -- 2022-05-20
+## [0.0.2] - 2022-05-20
 
 ### Added
 * generate data for the [Sublime Text plugin](https://github.com/fmatter/pylingdocs-sublime/) with `pylingdocs sublime`
@@ -204,8 +204,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     * Cognateset
 * new templates:
     * LaTeX `handout`
-* `--latex` option for the `build` and `preview` commands
-* `--release` option for better citability
+* `-latex` option for the `build` and `preview` commands
+* `-release` option for better citability
 * better HTML
 * [expex-acro](https://github.com/fmatter/expex-acro/) in LaTeX templates
 
@@ -221,8 +221,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[Unreleased]: https://github.com/fmatter/pylingdocs/compare/0.0.12...HEAD
-[0.1.0]: https://github.com/fmatter/pylingdocs/compare/0.0.12...0.0.12
+[Unreleased]: https://github.com/fmatter/pylingdocs/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/fmatter/pylingdocs/compare/0.0.12...v0.1.0
 [0.0.12]: https://github.com/fmatter/pylingdocs/compare/0.0.11...0.0.12
 [0.0.11]: https://github.com/fmatter/pylingdocs/compare/0.0.10...0.0.11
 [0.0.10]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.10
