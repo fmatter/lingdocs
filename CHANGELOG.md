@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 * project template
 * a bug with the `--targets` argument
+* `landingpage.md`
 
 ## [0.1.0] - 2023-10-12
 

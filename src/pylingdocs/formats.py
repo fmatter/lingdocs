@@ -176,7 +176,7 @@ class OutputFormat:
             content = cls.preprocess(content)
             extra.update({"content": content})
 
-        landingpage_path = EXTRA_DIR / f"{cls.name}_index.md"
+        landingpage_path = EXTRA_DIR / f"landingpage_{cls.name}.md"
         if landingpage_path.is_file():
             extra["landingpage"] = load(landingpage_path)
 
