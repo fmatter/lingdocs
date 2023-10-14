@@ -11,7 +11,7 @@ from cldfviz.text import render
 from tqdm import tqdm
 from writio import dump, load
 
-from pylingdocs.config import BENCH, CONTENT_FOLDER, STRUCTURE_FILE, config, EXTRA_DIR
+from pylingdocs.config import BENCH, CONTENT_FOLDER, EXTRA_DIR, STRUCTURE_FILE, config
 from pylingdocs.formats import builders
 from pylingdocs.helpers import (
     _get_relative_file,

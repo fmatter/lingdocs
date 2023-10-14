@@ -7,15 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+* the entire new project template
+* a bug with the `-targets` argument
+* `rich` option automatically makes `data` true
+
 ### Changed
 * `extra` directory for user material
-* also, preview watches it
-
-### Fixed
-* project template
-* a bug with the `-targets` argument
-* `landingpage.md`
-* `rich` option automatically makes `data` true
+* also, preview reloading is sensitive to it
+* `extra/landingpage.md` and `extra/<FORMAT>_landingpage.md`
 
 ## [0.1.0] - 2023-10-12
 
