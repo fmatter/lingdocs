@@ -22,3 +22,29 @@ def release(source):
             else:
                 print("folder", f)
     md = load(source / "metadata.yaml")
+
+
+#     info = json.loads(
+#         subprocess.run(
+#             ["mike", "list", "-j"],
+#             universal_newlines=True,
+#             check=True,
+#             stdout=subprocess.PIPE,
+#         ).stdout
+#     )
+
+#     for item in info:
+#         version = item["version"]
+#         if "dev" in version:
+#             print(f"Deleting {version}")
+#             subprocess.run(
+#                 ["mike", "delete", version],
+#                 universal_newlines=True,
+#                 check=True,
+#                 stdout=subprocess.PIPE,
+#             )
+
+#     subprocess.run(["mike", "deploy", "--push", "--update-aliases", current, "latest"])
+#     subprocess.run(["mike", "set-default", "--push", "latest"])
+# else:
+#     subprocess.run(["mike", "deploy", current])
