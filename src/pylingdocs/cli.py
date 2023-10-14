@@ -17,6 +17,7 @@ from pylingdocs.output import create_output
 from pylingdocs.output import preview as run_preview
 from pylingdocs.output import update_structure as do_update_structure
 from pylingdocs.preprocessing import preprocess_cldfviz
+from pylingdocs.releasing import release as release_cmd
 
 log = logging.getLogger(__name__)
 
@@ -199,6 +200,11 @@ def cldf(source, cldf, output_dir, add):
 @main.command()
 def update_structure():
     do_update_structure()
+
+
+@main.command(cls=BuildCommand)
+def release(output_dir, source, cldf):  # pragma: no cover
+    release_cmd(source)
 
 
 @main.command(cls=OutputCommand)

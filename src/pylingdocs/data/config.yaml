@@ -40,3 +40,9 @@ clld: # CLLD:
 input: # Input: 
   sublime: false # Sublime text: Generate data (in the docs folder) for the [Sublime text plugin](https://github.com/fmatter/pylingdocs-sublime/).
   content_file_prefix: null # File prefix: How your filenames should be prefixed, if at all.
+releasing:
+  zip:
+    latex: pdf
+    cldf: cldf
+    mkdocs: site
+    plain: txt
