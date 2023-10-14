@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2023-10-13
+
 ### Fixed
 * the entire new project template
 * a bug with the `-targets` argument
@@ -221,7 +223,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[Unreleased]: https://github.com/fmatter/pylingdocs/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/fmatter/pylingdocs/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/fmatter/pylingdocs/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/fmatter/pylingdocs/compare/0.0.12...v0.1.0
 [0.0.12]: https://github.com/fmatter/pylingdocs/compare/0.0.11...0.0.12
 [0.0.11]: https://github.com/fmatter/pylingdocs/compare/0.0.10...0.0.11
