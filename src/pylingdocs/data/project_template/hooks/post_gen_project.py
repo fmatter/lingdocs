@@ -1,4 +1,3 @@
-from configparser import ConfigParser
 from pathlib import Path
 
 import cookiecutter
@@ -47,6 +46,5 @@ dump(config, PROJECT_DIR / "config.yaml")
 if "Yes" == "{{ cookiecutter.use_sublime_text }}":
     while not path.is_file():
         path = Path(input("Please enter a path to a metadata file: ").strip(" "))
-    else:
-        ds = load_cldf_dataset(path)
-        generate_autocomplete(ds, PROJECT_DIR)
+    ds = load_cldf_dataset(path)
+    generate_autocomplete(ds, PROJECT_DIR)
