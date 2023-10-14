@@ -2,11 +2,11 @@
 
 Create data-rich linguistic documents with CLDF, with a variety of output formats.
 
-[![PyPI](https://img.shields.io/pypi/v/pylingdocs.svg)](https://pypi.org/project/pylingdocs)
-![Versions](https://img.shields.io/pypi/pyversions/pylingdocs)
-[![License](https://img.shields.io/github/license/fmatter/pylingdocs)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Tests](https://img.shields.io/github/actions/workflow/status/fmatter/pylingdocs/tests.yml?label=tests)](https://github.com/fmatter/pylingdocs/actions/workflows/tests.yml)
-[![Changelog](https://img.shields.io/badge/keep_a-changelog-DC673D)](changes)
+[![Versions](https://img.shields.io/pypi/pyversions/pylingdocs?labelColor=4C566A&color=26619C)](https://www.python.org/)
+[![PyPI](https://img.shields.io/pypi/v/pylingdocs.svg?labelColor=4C566A&color=5E81AC)](https://pypi.org/project/pylingdocs)
+[![License](https://img.shields.io/github/license/fmatter/pylingdocs?labelColor=4C566A&color=81A1C1)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Tests](https://img.shields.io/github/actions/workflow/status/fmatter/pylingdocs/tests.yml?label=tests&labelColor=4C566A&color=8FBCBB)](https://github.com/fmatter/pylingdocs/actions/workflows/tests.yml)
+[![Changelog](https://img.shields.io/badge/changelog-v0.1.1-DC673D?labelColor=4C566A&color=88C0D0)](changes)
 
 ## About
 Linguistic documents usually contain linguistic data, be it from primary research or sourced from the literature.
