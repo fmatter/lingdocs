@@ -60,7 +60,7 @@ def parse_heading(string):
     attr_list = re.search("({.*?})", title)
     if attr_list:
         attr_list = attr_list.group()
-        tag = re.findall(r"#(.*?)\s+}", attr_list)[0]
+        tag = re.findall(r"{\s?\#(.*?)\s?}", attr_list)[0]
         title = title.replace(attr_list, "")
     else:
         tag = slugify(title, allow_unicode=True)
