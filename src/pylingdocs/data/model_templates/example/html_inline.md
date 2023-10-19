@@ -27,7 +27,8 @@
     comment=comment,
     show_language=with_language,
     source_position=src_pos,
-    show_primary=with_primaryText
+    show_primary=with_primaryText,
+    audio=get_audio(ctx.cldf.mediaReference)
     ) %}
 ```{=html}
 <ol class="{{class_}}">

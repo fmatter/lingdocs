@@ -30,6 +30,8 @@ Here is an example on how to create a modified HTML format, where todos are form
 
 
 ```python
+from pylingdocs.formats import HTML
+
 def custom_todo(url, **kwargs):
     return f"<span title='{url}'>TODO</span>"
 
@@ -49,6 +51,8 @@ class CustomHTML(HTML):
 <img src="static/figures/{filename}" alt="{caption}" />
 <figcaption id="fig:{url}" aria-hidden="true">{caption}</figcaption>
 </figure>"""
+
+formats = [CustomHTML]
 
 ```
 

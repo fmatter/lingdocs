@@ -15,6 +15,7 @@ from jinja2.exceptions import TemplateNotFound
 from mkdocs.commands.serve import serve
 from mkdocs.config import load_config
 from slugify import slugify
+from tqdm import tqdm
 from writio import dump, load
 
 from pylingdocs.config import (
@@ -88,6 +89,7 @@ class OutputFormat:
     ref_locations = {}
     data_dir = "data"
     fallback_layout = "basic"
+    audio_path = "audio"
 
     @property
     def label(cls):
@@ -134,12 +136,21 @@ class OutputFormat:
             tpl_path = b / cls.name / config["output"]["layout"]
             if not tpl_path.is_dir():
                 tpl_path = b / cls.name / cls.fallback_layout
+            if not tpl_path.is_dir():
+                tpl_path = (
+                    b / cls.__class__.__bases__[0].name / config["output"]["layout"]
+                )
+            if not tpl_path.is_dir():
+                tpl_path = b / cls.__class__.__bases__[0].name / cls.fallback_layout
             if tpl_path.is_dir():
                 return str(tpl_path)
         log.error(f"Could not find cookiecutter folder for {cls.name}")
         sys.exit()
 
     def adjust_layout(cls, content, metadata):
+        pass
+
+    def get_audio(cls, dic, url):
         pass
 
     def write_folder(
@@ -152,6 +163,7 @@ class OutputFormat:
         abbrev_dict=None,
         ref_labels=None,
         ref_locations=None,
+        audio=None,
     ):  # pylint: disable=too-many-arguments
         # log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
         if not abbrev_dict:
@@ -202,6 +214,32 @@ class OutputFormat:
                 target = target_dir / file.name
                 if not target.is_file():
                     shutil.copy(file, target)
+
+        def _iterdir(d):
+            if d.is_file():
+                yield d
+            elif d.name not in [".", ".."]:
+                for sd in d.iterdir():
+                    for sdi in _iterdir(sd):
+                        yield sdi
+
+        if EXTRA_DIR / cls.name:
+            for d in _iterdir(EXTRA_DIR / cls.name):
+                parents = str(d.parents[0]).replace(str(EXTRA_DIR) + "/", "", 1)
+                (output_dir / parents).mkdir(exist_ok=True, parents=True)
+                out_path = output_dir / parents / d.name
+                shutil.copy(d, out_path)
+
+        cls.copy_audio(audio, output_dir)
+
+    def copy_audio(cls, audio, out_path):
+        if config["paths"]["audio"].is_dir():
+            (out_path / cls.name / cls.audio_path).mkdir(exist_ok=True, parents=True)
+            for media in tqdm(audio.values(), desc="Audio"):
+                src_path = config["paths"]["audio"] / media["Download_URL"].path
+                target_path = out_path / cls.name / cls.audio_path / Path(src_path).name
+                if src_path.is_file() and not target_path.is_file():
+                    shutil.copy(src_path, target_path)
 
     def register_glossing_abbrevs(cls, abbrev_dict):
         del abbrev_dict
@@ -469,6 +507,7 @@ class MkDocs(HTML):
     figure_dir = "docs/figures"
     data_dir = "docs/data"
     file_ext = "md"
+    audio_path = "docs/assets/audio"
 
     def preprocess(cls, content):
         return (
@@ -476,6 +515,12 @@ class MkDocs(HTML):
             .replace("```", "")
             .replace("(#source-", "(site:references/#source-")
         )
+
+    def get_audio(cls, dic, url):
+        if url not in dic:
+            log.warning(url)
+            return ""
+        return {"url": f"site:assets/audio/{dic[url]['url']}", "type": dic[url]["url"]}
 
     def postprocess(cls, content, metadata=None):
         metadata = metadata or {}
@@ -505,6 +550,7 @@ hide:
 ---
 {metadata.get("landingpage", "")}"""
             dump(index, doc_path / "index.md")
+
         custom_conf = EXTRA_DIR / "mkdocs.yml"
         if custom_conf.is_file():
             custom_conf = load(custom_conf)
