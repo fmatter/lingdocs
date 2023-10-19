@@ -775,6 +775,7 @@ def _build_example(
     quotes=("‘", "’"),
     parentheses=("(", ")"),
     translation_sep=" / ",
+    audio=None,
 ):
     ex_dic = {"obj": obj, "gls": gls, "id": ex_id}
     preamble = []
@@ -821,6 +822,8 @@ def _build_example(
     ex_dic["postamble"] = " ".join(postamble)
     if postamble:
         ex_dic["postamble"] = parentheses[0] + ex_dic["postamble"] + parentheses[1]
+    if audio:
+        ex_dic["audio"] = audio
     return ex_dic
 
 

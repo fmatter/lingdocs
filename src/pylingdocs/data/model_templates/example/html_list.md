@@ -17,7 +17,7 @@
             txt=ctx.cldf.primaryText,
             lng=ctx.related("languageReference").name,
             src=util.get_src_string(ctx, source),
-            ex_id=example_id or ctx.cldf.id,
+            ex_id=ctx.cldf.id,
             title=title,
             comment=comment,
             show_language=with_language,

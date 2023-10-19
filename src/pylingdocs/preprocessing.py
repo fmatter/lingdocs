@@ -44,10 +44,16 @@ def _load_templates(builder):
     templates = load_templates(builder, models)
     pld_util = load(DATA_DIR / "util.j2")
 
+    def resolve_path(base, in_path, builder):
+        path = base / in_path.format(name=builder.name)
+        if not path.is_file():
+            return base / in_path.format(name=builder.__class__.__bases__[0].name)
+        return path
+
     # for output_format, f_templates in templates.items():
-    util_path = Path(f"{PLD_DIR}/model_templates/{builder.name}_util.md")
+    util_path = resolve_path(PLD_DIR, "model_templates/{name}_util.md", builder)
     if not util_path.is_file():
-        util_path = DATA_DIR / "model_templates" / f"{builder.name}_util.md"
+        util_path = resolve_path(DATA_DIR, "model_templates/{name}_util.md", builder)
     for loader in ["text", "data"]:
         templates[loader]["pld_util.md"] = pld_util
         templates[loader][
@@ -124,7 +130,7 @@ def render_markdown(
                 }
             else:
                 audio_dict = {}
-            func_dict["get_audio"] = lambda x: audio_dict.get(x, None)
+            func_dict["get_audio"] = lambda x: builder.get_audio(audio_dict, x)
             func_dict["decorate_gloss_string"] = decorate_gloss_string
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val
