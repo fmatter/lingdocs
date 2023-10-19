@@ -338,6 +338,10 @@ def create_output(
             if builder.name == "latex":
                 metadata["bibfile"] = dataset.bibpath.name
             if builder.single_output:
+                audio_dic = {}
+                if config[builder.name].get("audio"):
+                    for x in dataset.iter_rows("MediaTable"):
+                        audio_dic[x["ID"]] = x
                 builder.write_folder(
                     output_dir,
                     source_dir=source_dir,
@@ -347,6 +351,7 @@ def create_output(
                     ref_labels=ref_labels,
                     ref_locations=ref_locations,
                     chapters=chapters,
+                    audio=audio_dic,
                 )
             pbar.update(1)
         if config["output"]["data"]:

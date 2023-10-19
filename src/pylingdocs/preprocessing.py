@@ -130,7 +130,7 @@ def render_markdown(
                 }
             else:
                 audio_dict = {}
-            func_dict["get_audio"] = lambda x: audio_dict.get(x, None)
+            func_dict["get_audio"] = lambda x: builder.get_audio(audio_dict, x)
             func_dict["decorate_gloss_string"] = decorate_gloss_string
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val

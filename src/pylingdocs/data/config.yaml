@@ -24,17 +24,20 @@ lfts: # LFTS: Different kinds of entities whose schematic inline representation 
 # (language) form (‘translation’) ((source))
 # ```
 # The default options can be overridden by [specifying an argument](/usage#commands), e.g. `show_language=True`. 
-  show_language: True # Show language: 
-  show_translation: True # Show free translation: 
-  show_source: True # Show source: 
+  show_language: true # Show language:  
+  show_translation: true # Show free translation:  
+  show_source: true # Show source:  
 paths: # Locations: 
   cldf: cldf/metadata.json # CLDF dataset location: The path to the CLDF metadata file. 
   output: output # Output folder: The folder to which output is written. 
   add_bib: extra/sources.bib # Additional references: Path to a bibfile with references not contained in the dataset.
+  audio: extra/audio # Adding audio: this folder needs to contain <MediaReference>.wav or <MediaReference>.mp3 files.
 latex: # LaTeX: LaTeX-specific settings.
   article: article # Article template: The default template for the article layout.
   book: book # Book template: The default template for the book layout.
   interlinear: expex # Interlinear package: The preferred setup for interlinear examples in LaTeX.
+mkdocs:
+  audio: null # Adding audio: Add a path to your audio base URL.
 clld: # CLLD: 
   db_uri: null # Database location: URI to the database of your CLLD app, i.e. something like `sqlite:///path/to/your/db.sqlite`
 input: # Input: 
