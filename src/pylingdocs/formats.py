@@ -134,6 +134,12 @@ class OutputFormat:
             tpl_path = b / cls.name / config["output"]["layout"]
             if not tpl_path.is_dir():
                 tpl_path = b / cls.name / cls.fallback_layout
+            if not tpl_path.is_dir():
+                tpl_path = (
+                    b / cls.__class__.__bases__[0].name / config["output"]["layout"]
+                )
+            if not tpl_path.is_dir():
+                tpl_path = b / cls.__class__.__bases__[0].name / cls.fallback_layout
             if tpl_path.is_dir():
                 return str(tpl_path)
         log.error(f"Could not find cookiecutter folder for {cls.name}")
@@ -202,6 +208,21 @@ class OutputFormat:
                 target = target_dir / file.name
                 if not target.is_file():
                     shutil.copy(file, target)
+
+        def _iterdir(d):
+            if d.is_file():
+                yield d
+            elif d.name not in [".", ".."]:
+                for sd in d.iterdir():
+                    for sdi in _iterdir(sd):
+                        yield sdi
+
+        if EXTRA_DIR / cls.name:
+            for d in _iterdir(EXTRA_DIR / cls.name):
+                parents = str(d.parents[0]).replace(str(EXTRA_DIR) + "/", "", 1)
+                (output_dir / parents).mkdir(exist_ok=True, parents=True)
+                out_path = output_dir / parents / d.name
+                shutil.copy(d, out_path)
 
     def register_glossing_abbrevs(cls, abbrev_dict):
         del abbrev_dict
@@ -505,6 +526,7 @@ hide:
 ---
 {metadata.get("landingpage", "")}"""
             dump(index, doc_path / "index.md")
+
         custom_conf = EXTRA_DIR / "mkdocs.yml"
         if custom_conf.is_file():
             custom_conf = load(custom_conf)
