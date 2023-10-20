@@ -45,3 +45,4 @@ input: # Input:
   content_file_prefix: null # File prefix: How your filenames should be prefixed, if at all.
 plain: {} # Empty settings for plaintext format
 html: {} # Empty settings for simple HTML format
+docx: {} # Empty settings for docx format

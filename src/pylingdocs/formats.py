@@ -879,7 +879,41 @@ class Latex(PlainText):
         yield content[current:]
 
 
-builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs]}
+class Docx(GitHub):
+    name = "docx"
+    file_ext = "md"
+
+    def preprocess(cls, content):
+        return content
+
+    def adjust_layout(cls, content, metadata):
+        target = config["paths"]["output"] / cls.name / "document.md"
+        if target.is_file():
+            import subprocess
+
+            process = subprocess.Popen(
+                [
+                    "pandoc",
+                    str(target),
+                    "-o",
+                    "word.docx",
+                    "-L",
+                    "pandoc-ling.lua",
+                    "-F",
+                    "pandoc-crossref",
+                ]
+            )
+        else:
+            log.warning(f"File {target.resolve()} does not exist.")
+
+    def table(cls, df, caption, label):
+        tabular = df.to_markdown(index=False)
+        if not caption:
+            return tabular
+        return f"{caption}{{#tbl:{label}}}\n" + df.to_markdown(index=False)
+
+
+builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs, Docx]}
 
 
 if Path(f"{PLD_DIR}/formats.py").is_file():
