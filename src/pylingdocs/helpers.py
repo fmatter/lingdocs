@@ -21,6 +21,7 @@ from pylingdocs.config import (
     CONTENT_FOLDER,
     DATA_DIR,
     FIGURE_DIR,
+    EXTRA_DIR,
     STRUCTURE_FILE,
     TABLE_DIR,
     config,
@@ -178,21 +179,16 @@ def check_abbrevs(dataset, source_dir, content):
     for text_gloss in re.findall(r"\[gl\]\((.*?)\)", content):
         gloss_cands.append(text_gloss)
     abbrev_dict = {}
-    abbrev_path = Path(source_dir) / "abbreviations.csv"
-    if abbrev_path.is_file():  # add abbreviations added locally
-        for rec in pd.read_csv(abbrev_path).to_dict("records"):
-            abbrev_dict[rec["ID"]] = rec["Description"]
+
     for table in dataset.tables:  # add abbreviations found in the CLDF dataset
         if str(table.url) == "abbreviations.csv":
             for rec in table:
                 abbrev_dict[rec["ID"].lower()] = rec["Description"]
-            dataset.write(
-                **{
-                    "abbreviations.csv": [
-                        {"ID": k, "Description": v} for k, v in abbrev_dict.items()
-                    ]
-                }
-            )
+
+    abbrev_path = source_dir / EXTRA_DIR / "abbreviations.csv"
+    if abbrev_path.is_file():  # add abbreviations added locally
+        for rec in pd.read_csv(abbrev_path).to_dict("records"):
+            abbrev_dict[rec["ID"]] = rec["Description"]
     gloss_cands = list(dict.fromkeys(gloss_cands))
     for x in map(str.lower, gloss_cands):
         if x not in abbrev_dict:

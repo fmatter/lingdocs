@@ -148,7 +148,7 @@ class OutputFormat:
         log.error(f"Could not find cookiecutter folder for {cls.name}")
         sys.exit()
 
-    def adjust_layout(cls, content, metadata):
+    def adjust_layout(cls, content, metadata, source_dir):
         pass
 
     def get_audio(cls, dic, url):
@@ -167,8 +167,7 @@ class OutputFormat:
         audio=None,
     ):  # pylint: disable=too-many-arguments
         # log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
-        if not abbrev_dict:
-            abbrev_dict = {}
+        abbrev_dict = abbrev_dict or {}
         extra = {
             "name": cls.name,
             "chapters": chapters,
@@ -189,7 +188,7 @@ class OutputFormat:
             content = cls.preprocess(content)
             extra.update({"content": content})
 
-        landingpage_path = EXTRA_DIR / f"landingpage_{cls.name}.md"
+        landingpage_path = source_dir / EXTRA_DIR / f"landingpage_{cls.name}.md"
         if landingpage_path.is_file():
             extra["landingpage"] = load(landingpage_path)
 
@@ -204,7 +203,7 @@ class OutputFormat:
             no_input=True,
         )
 
-        cls.adjust_layout(content, metadata=extra)
+        cls.adjust_layout(content, metadata=extra, source_dir=source_dir)
 
         figure_dir = source_dir / FIGURE_DIR
         if figure_dir.is_dir():
@@ -224,8 +223,8 @@ class OutputFormat:
                     for sdi in _iterdir(sd):
                         yield sdi
 
-        if EXTRA_DIR / cls.name:
-            for d in _iterdir(EXTRA_DIR / cls.name):
+        if source_dir / EXTRA_DIR / cls.name:
+            for d in _iterdir(source_dir / EXTRA_DIR / cls.name):
                 parents = str(d.parents[0]).replace(str(EXTRA_DIR) + "/", "", 1)
                 (output_dir / parents).mkdir(exist_ok=True, parents=True)
                 out_path = output_dir / parents / d.name
@@ -539,7 +538,7 @@ class MkDocs(HTML):
             content = "#" + metadata["title"] + "\n\n" + "\n".join(out)
         return content
 
-    def adjust_layout(cls, content, metadata):
+    def adjust_layout(cls, content, metadata, source_dir):
         if config["output"]["layout"] in ["book"]:
             chapters = extract_chapters(content, mode="pandoc")
             doc_path = config["paths"]["output"] / "mkdocs" / "docs"
@@ -552,7 +551,7 @@ hide:
 {metadata.get("landingpage", "")}"""
             dump(index, doc_path / "index.md")
 
-        custom_conf = EXTRA_DIR / "mkdocs.yml"
+        custom_conf = source_dir / EXTRA_DIR / "mkdocs.yml"
         if custom_conf.is_file():
             custom_conf = load(custom_conf)
             out_path = Path(config["paths"]["output"]) / cls.name / "mkdocs.yml"
