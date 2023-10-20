@@ -218,7 +218,7 @@ class OutputFormat:
         def _iterdir(d):
             if d.is_file():
                 yield d
-            elif d.name not in [".", ".."]:
+            elif d.name not in [".", ".."] and d.is_dir():
                 for sd in d.iterdir():
                     for sdi in _iterdir(sd):
                         yield sdi
