@@ -46,7 +46,7 @@ def _load_templates(builder):
 
     def resolve_path(base, in_path, builder):
         path = base / in_path.format(name=builder.name)
-        if not path.is_file():
+        if not path.is_file() and builder.__class__.__bases__[0] != object:
             parent_path = base / in_path.format(
                 name=builder.__class__.__bases__[0].name
             )
