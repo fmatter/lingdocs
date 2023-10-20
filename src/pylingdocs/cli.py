@@ -110,6 +110,12 @@ def build(source, targets, cldf, output_dir, release):
 
 
 @main.command(cls=BuildCommand)
+@click.option("--bump", "-b", default="patch")
+def release(**kwargs):
+    release_cmd(**kwargs)
+
+
+@main.command(cls=BuildCommand)
 @click.option(
     "--target",
     default=None,
@@ -200,11 +206,6 @@ def cldf(source, cldf, output_dir, add):
 @main.command()
 def update_structure():
     do_update_structure()
-
-
-@main.command(cls=BuildCommand)
-def release(output_dir, source, cldf):  # pragma: no cover
-    release_cmd(source)
 
 
 @main.command(cls=OutputCommand)

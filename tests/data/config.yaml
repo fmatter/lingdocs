@@ -1,7 +1,7 @@
 paths:
   cldf: ../cldf/metadata.json
 output:
-  preview: html
+  preview: mkdocs
   build:
     - mkdocs
     - latex

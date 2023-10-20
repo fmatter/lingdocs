@@ -25,9 +25,13 @@ def merge_dicts(a, b):
         if isinstance(v1, dict):
             for k2, v2 in v1.items():
                 if isinstance(v2, dict):
-                    log.warning(
-                        "Your configuration file is too nested. Please check it."
-                    )
+                    for k3, v3 in v2.items():
+                        if isinstance(v3, dict):
+                            log.warning(
+                                "Your configuration file is too nested. Please check it."
+                            )
+                        else:
+                            a[k1][k2][k3] = v3
                 else:
                     a[k1][k2] = v2
         else:
