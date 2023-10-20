@@ -1,13 +1,14 @@
 import logging
-import sys
-import jinja2
-from pathlib import Path
-import keepachangelog
-from writio import dump, load
 import re
 import shutil
+import sys
+from pathlib import Path
 
-from pylingdocs.config import config, DATA_DIR
+import jinja2
+import keepachangelog
+from writio import dump, load
+
+from pylingdocs.config import DATA_DIR, config
 
 log = logging.getLogger(__name__)
 
