@@ -17,7 +17,7 @@ from pylingdocs.output import create_output
 from pylingdocs.output import preview as run_preview
 from pylingdocs.output import update_structure as do_update_structure
 from pylingdocs.preprocessing import preprocess_cldfviz
-from pylingdocs.releasing import release as release_cmd
+from pylingdocs.releasing import run_releases
 
 log = logging.getLogger(__name__)
 
@@ -112,7 +112,7 @@ def build(source, targets, cldf, output_dir, release):
 @main.command(cls=BuildCommand)
 @click.option("--bump", "-b", default="patch")
 def release(**kwargs):
-    release_cmd(**kwargs)
+    run_releases(**kwargs)
 
 
 @main.command(cls=BuildCommand)
