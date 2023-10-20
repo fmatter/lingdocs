@@ -4,6 +4,7 @@ from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import load_content
 from pylingdocs.helpers import split_ref
 from pylingdocs.helpers import src
+from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import write_file, bump
 
 
@@ -29,24 +30,25 @@ def test_refsplit():
 
 def test_gloss_decoration():
     test_cases = {
-        "3P-kill-1SG": "\\gl{3}\\gl{p}-kill-\\gl{1}\\gl{sg}",
-        "K. kill-REM": "K. kill-\\gl{rem}",
-        "laugh[3SG.IMP]": "laugh[\\gl{3}\\gl{sg}.\\gl{imp}]",
-        "3>3-kill-IPFV.PST": "\\gl{3}>\\gl{3}-kill-\\gl{ipfv}.\\gl{pst}",
-        "go-3SG.PST-1>2-CAUS[ERG]": "go-\\gl{3}\\gl{sg}.\\gl{pst}-\\gl{1}>\\gl{2}-\\gl{caus}[\\gl{erg}]",
-        "K.-ERG[3SG>2PL.PST]": "K.-\\gl{erg}[\\gl{3}\\gl{sg}>\\gl{2}\\gl{pl}.\\gl{pst}]",
-        "M.SG": "\\gl{m}.\\gl{sg}",
-        "test-3.PROG and-more-words": "test-\\gl{3}.\\gl{prog} and-more-words",
-        "child\\PL": "child\\\\gl{pl}",
-        "G14-child": "\\gl{g14}-child",
-        "child(G14)": "child(\\gl{g14})",
-        "1>3": "\\gl{1}>\\gl{3}",
-        "1S": "\\gl{1}\\gl{s}",
-        "3SG.F": "\\gl{3}\\gl{sg}.\\gl{f}",
-        "leave<PRS>-INF": "leave<\\gl{prs}>-\\gl{inf}",
-        "3>F": "\\gl{3}>\\gl{f}",
-        "F>3": "\\gl{f}>\\gl{3}",
-        "1SG.PRO": "\\gl{1}\\gl{sg}.\\gl{pro}",
+        "3P-kill-1SG": "|3||p|-kill-|1||sg|",
+        "K. kill-REM": "K. kill-|rem|",
+        "laugh[3SG.IMP]": "laugh[|3||sg|.|imp|]",
+        "3>3-kill-IPFV.PST": "|3|>|3|-kill-|ipfv|.|pst|",
+        "go-3SG.PST-1>2-CAUS[ERG]": "go-|3||sg|.|pst|-|1|>|2|-|caus|[|erg|]",
+        "K.-ERG[3SG>2PL.PST]": "K.-|erg|[|3||sg|>|2||pl|.|pst|]",
+        "M.SG": "|m|.|sg|",
+        "test-3.PROG and-more-words": "test-|3|.|prog| and-more-words",
+        "child\\PL": "child\\|pl|",
+        "G14-child": "|g14|-child",
+        "child(G14)": "child(|g14|)",
+        "1>3": "|1|>|3|",
+        "1S": "|1||s|",
+        "3SG.F": "|3||sg|.|f|",
+        "leave<PRS>-INF": "leave<|prs|>-|inf|",
+        "3>F": "|3|>|f|",
+        "F>3": "|f|>|3|",
+        "1SG.PRO": "|1||sg|.|pro|",
+        "P._A.": "P._A.",
     }
     for raw, expex in test_cases.items():
-        assert decorate_gloss_string(raw) == expex
+        assert decorate_gloss_string(raw, decoration=lambda x: f"|{x}|") == expex

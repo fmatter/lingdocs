@@ -693,28 +693,31 @@ def resolve_glossing_combination(input_string):
 def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
     if not input_string:
         return ""
-    words_list = input_string.split(" ")
-    for i, word in enumerate(words_list):  # pylint: disable=too-many-nested-blocks
-        output = " "
-        # take proper nouns into account
-        if len(word) == 2 and word[0] == word[0].upper() and word[1] == ".":
-            output += word
-        else:
-            parts = split_word(word)
-            for j, part in enumerate(parts):
-                if is_gloss_abbr_candidate(part, parts, j):
-                    # take care of numbered genders
-                    if part[0] == "G" and re.match(r"\d", part[1:]):
-                        output += decoration(
-                            part.lower()
-                        )  # decoration(part[0].lower()) + part[1:] # if the number should not be part of the abbreviation
+    gloss_list = input_string.split(" ")
+    for i, gloss in enumerate(gloss_list):  # pylint: disable=too-many-nested-blocks
+        res = []
+        for word in gloss.split("_"):
+            output = " "
+            # take proper nouns into account
+            if len(word) == 2 and word[0] == word[0].upper() and word[1] == ".":
+                output += word
+            else:
+                parts = split_word(word)
+                for j, part in enumerate(parts):
+                    if is_gloss_abbr_candidate(part, parts, j):
+                        # take care of numbered genders
+                        if part[0] == "G" and re.match(r"\d", part[1:]):
+                            output += decoration(
+                                part.lower()
+                            )  # decoration(part[0].lower()) + part[1:] # if the number should not be part of the abbreviation
+                        else:
+                            for glosspart in resolve_glossing_combination(part):
+                                output += decoration(glosspart.lower())
                     else:
-                        for gloss in resolve_glossing_combination(part):
-                            output += decoration(gloss.lower())
-                else:
-                    output += part
-        words_list[i] = output[1:]
-    gloss_text_upcased = " ".join(words_list)
+                        output += part
+            res.append(output[1:])
+        gloss_list[i] = "_".join(res)
+    gloss_text_upcased = " ".join(gloss_list)
     return gloss_text_upcased
 
 
