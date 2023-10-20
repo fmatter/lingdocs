@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * bug in CLDF creation
 * HTML example IDs
 * parsing glosses of the form `X._Y.` (multi-word glosses of single-word proper names)
+* glossing abbreviations
 
 ## [0.1.1] - 2023-10-13
 
