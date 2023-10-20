@@ -302,6 +302,9 @@ def create_output(
 
     figure_metadata = load_figure_metadata(source_dir)
     for output_format in formats:
+        if output_format not in builders:
+            log.warning(f"Unknown output format '{output_format}'.")
+            continue
         with tqdm(total=6, desc=f"Building {output_format} output") as pbar:
             builder = builders[output_format]()
             builder.figure_metadata = figure_metadata
