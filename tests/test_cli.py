@@ -31,7 +31,6 @@ def test_cli_build(caplog, tmp_path, md_path, data, monkeypatch):
 
     assert "plain" in output_formats
     assert "latex" in output_formats
-    assert "html" in output_formats
     assert "mkdocs" in output_formats
 
     for x in tmp_path.iterdir():

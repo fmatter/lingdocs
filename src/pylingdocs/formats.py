@@ -66,6 +66,7 @@ def mkdocs_todo(url, **kwargs):
 
 
 def latex_todo(url, **kwargs):
+    return ""
     if kwargs.get("release", False):
         return ""
     return f"\\todo{{{url}}}"
@@ -218,7 +219,7 @@ class OutputFormat:
         def _iterdir(d):
             if d.is_file():
                 yield d
-            elif d.name not in [".", ".."]:
+            elif d.name not in [".", ".."] and d.is_dir():
                 for sd in d.iterdir():
                     for sdi in _iterdir(sd):
                         yield sdi
