@@ -58,15 +58,17 @@ def release_changelog(metadata):
         dump(cl, clp)
 
 
-def release(source, cldf, output_dir, bump):
-    print(source)
+def run_releases(source, output_dir, bump, **kwargs):
     config.load_from_dir(source)
     metadata = load(source / "metadata.yaml")
     if config["output"]["changelog"]:
         release_changelog(metadata)
     metadata["version"] = bump_version(metadata["version"], bump)
     dump(metadata, source / "metadata.yaml")
+    build_archive(output_dir)
 
+
+def build_archive(output_dir):
     def _dedict(file):
         if isinstance(file, dict):
             name = list(file.values())[0]
@@ -79,6 +81,7 @@ def release(source, cldf, output_dir, bump):
     build_path = Path(output_dir / "build")
     build_path.mkdir(exist_ok=True, parents=True)
     for fmt, target in config["releasing"]["zip"].items():
+        contents[fmt] = []
         if fmt == "cldf":
             if target is True:
                 contents["cldf"].append(output_dir / fmt)
@@ -95,18 +98,11 @@ def release(source, cldf, output_dir, bump):
                 targets = target
             for target in targets:
                 target, rename = _dedict(target)
-                fmt, target = _dedict(target)
                 for f in fmt_path.iterdir():
-                    if f.is_file():
-                        if f.suffix == "." + target or f.name == target:
-                            print("success, file", f)
-                            contents.setdefault(fmt, [])
-                            contents[fmt].append({f: rename})
-                    else:
-                        if f.name == target:
-                            print("success folder", f)
-                            contents.setdefault(fmt, [])
-                            contents[fmt].append(({f: rename}))
+                    if f.is_file() and f.suffix == "." + target:
+                        contents[fmt].append({f: rename})
+                    elif f.name == target:
+                        contents[fmt].append(({f: rename}))
 
     def _copy(file, fmt_dir):
         file, name = _dedict(file)
@@ -119,13 +115,11 @@ def release(source, cldf, output_dir, bump):
 
     for fmt, files in contents.items():
         if len(files) == 1:
-            print(files[0])
             _copy(files[0], build_path)
         else:
             fmt_dir = build_path / fmt
             fmt_dir.mkdir(exist_ok=True, parents=True)
             for file in files:
-                print(file)
                 _copy(file, fmt_dir)
 
 
