@@ -4,7 +4,13 @@ from pylingdocs.helpers import decorate_gloss_string
 from pylingdocs.helpers import load_content
 from pylingdocs.helpers import split_ref
 from pylingdocs.helpers import src
-from pylingdocs.helpers import write_file
+from pylingdocs.helpers import write_file, bump
+
+
+def test_bump():
+    assert bump("0.1.2") == "0.1.3"
+    assert bump("0.1.2", step="minor") == "0.2.0"
+    assert bump("0.1.2", step="major") == "1.0.0"
 
 
 def test_structure():
