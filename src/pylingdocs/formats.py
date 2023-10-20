@@ -66,6 +66,7 @@ def mkdocs_todo(url, **kwargs):
 
 
 def latex_todo(url, **kwargs):
+    return ""
     if kwargs.get("release", False):
         return ""
     return f"\\todo{{{url}}}"
