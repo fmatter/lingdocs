@@ -97,14 +97,6 @@ def update_structure(
         file.rename(new_path)
 
 
-def compile_latex(output_dir=config["paths"]["output"]):  # pragma: no cover
-    log.info("Compiling LaTeX document.")
-    with subprocess.Popen(
-        "latexmk --quiet --xelatex main.tex", shell=True, cwd=output_dir / "latex"
-    ) as proc:
-        del proc  # help, prospector is forcing me
-
-
 def preview(output_format, **kwargs):
     builder = builders[output_format]()
     builder.open_preview()
@@ -275,6 +267,7 @@ def create_output(
     dataset,
     output_dir,
     metadata=None,
+    _compile=False,
     **kwargs,
 ):  # pylint: disable=too-many-arguments
     """Run different builders.
@@ -291,6 +284,7 @@ def create_output(
     """
     if isinstance(metadata, (str, PosixPath)):
         metadata = load(metadata) or None
+    metadata["bibfile"] = dataset.bibpath.name
     output_dir = Path(output_dir)
     source_dir = Path(source_dir)
     if not output_dir.is_dir():
@@ -338,8 +332,6 @@ def create_output(
             pbar.update(1)
             preprocessed = postprocess(preprocessed, builder, source_dir)
             pbar.update(1)
-            if builder.name == "latex":
-                metadata["bibfile"] = dataset.bibpath.name
             if builder.single_output:
                 audio_dic = {}
                 if config[builder.name].get("audio"):
@@ -356,6 +348,15 @@ def create_output(
                     chapters=chapters,
                     audio=audio_dic,
                 )
+                if builder.name == "latex":
+                    shutil.copy(
+                        dataset.bibpath,
+                        source_dir / output_dir / builder.name / dataset.bibpath.name,
+                    )
+                    metadata["bibfile"] = dataset.bibpath.name
+                if _compile:
+                    builder.compile(source_dir, output_dir)
+
             pbar.update(1)
         if config["output"]["data"]:
             write_details(builder, output_dir, dataset)

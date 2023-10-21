@@ -2,6 +2,7 @@
 import logging
 import re
 import shutil
+import subprocess
 import sys
 import threading
 import webbrowser
@@ -235,7 +236,7 @@ class OutputFormat:
     def copy_audio(cls, audio, out_path):
         if config["paths"]["audio"].is_dir():
             (out_path / cls.name / cls.audio_path).mkdir(exist_ok=True, parents=True)
-            for media in tqdm(audio.values(), desc="Audio"):
+            for media in tqdm(audio.values(), desc="Copying audio"):
                 src_path = config["paths"]["audio"] / media["Download_URL"].path
                 target_path = out_path / cls.name / cls.audio_path / Path(src_path).name
                 if src_path.is_file() and not target_path.is_file():
@@ -342,6 +343,9 @@ class OutputFormat:
         )
 
     def open_preview(cls):
+        pass
+
+    def compile(cls, source, output_dir):
         pass
 
 
@@ -619,6 +623,21 @@ hide:
         # finally:
         #     conf["plugins"].run_event("shutdown")
 
+    def compile(cls, source, output_dir):
+        log.info("Compiling MkDocs HTML.")
+        base = source / output_dir / cls.name
+        mkd_file = base / "mkdocs.yml"
+        if not mkd_file.is_file():
+            log.error(f"Not found: {mkd_file.resolve()}")
+            return
+        old = load(mkd_file)
+        temp = old.copy()
+        temp["site_url"] = "http://www.example.com/"
+        temp["plugins"].append("offline")
+        dump(temp, mkd_file)
+        subprocess.run("mkdocs build".split(" "), cwd=source / output_dir / cls.name)
+        dump(old, mkd_file)
+
 
 class GitHub(PlainText):
     name = "github"
@@ -876,6 +895,15 @@ class Latex(PlainText):
             else:
                 yield content[m.start() : m.end()]
         yield content[current:]
+
+    def compile(cls, source, output_dir):
+        log.info("Compiling LaTeX document.")
+        p = subprocess.Popen(
+            "latexmk --xelatex main.tex",
+            shell=True,
+            cwd=source / output_dir / cls.name,
+        )
+        p.wait()
 
 
 builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs]}
