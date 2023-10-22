@@ -1,3 +1,1 @@
-:)
-
 [](ExampleTable#cldf:{{ctx.id}})

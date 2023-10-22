@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * parsing glosses of the form `X._Y.` (multi-word glosses of single-word proper names)
 * glossing abbreviations
 * whitespace in LFTS macro
+* template loading
 
 ## [0.1.1] - 2023-10-13
 
