@@ -49,7 +49,7 @@ source=None
 {% set with_language, with_source, with_translation = resolve_lfts(with_language, with_source, with_translation) %}
 {%if with_language %}{% if mode=="orm" %}{{entity.language.name}} {% else %}[](LanguageTable#cldf:{{entity["Language_ID"]}}) {%endif%}
 {%endif%}
-{{form_str}}{%if translation %} {{quot_left}}{{decorate_gloss_string(translation)}}{{quot_right}}{% elif with_translation %}{% if mode=="orm" %} {{quot_left}}{{decorate_gloss_string(get_translation_orm(entity))}}{{quot_right}}{% else %} {{quot_left}}{{decorate_gloss_string(get_translation_dict(entity))}}{{quot_right}}{% endif %}{% endif %}
-{% if with_source %}{% if source %} {{ source }} {% else %}{%if mode == "orm" %} {{src(entity.references[0].__str__(), mode=citation_mode, parens=True)}}{%elif entity["Source"]%}{{src(entity["Source"], mode=citation_mode, parens=True)}}{% endif %}{% endif %}
+{{form_str}}{%if translation %} {{quot_left}}{{decorate_gloss_string(translation)}}{{quot_right}} {% elif with_translation %}{% if mode=="orm" %} {{quot_left}}{{decorate_gloss_string(get_translation_orm(entity))}}{{quot_right}}{% else %} {{quot_left}}{{decorate_gloss_string(get_translation_dict(entity))}}{{quot_right}}{% endif %}{% endif %}
+{% if with_source %}{% if source %} {{ source }} {% else %}{%if mode == "orm" %} {{src(entity.references[0].__str__(), mode=citation_mode, parens=True)}}{%elif entity["Source"]%} {{src(entity["Source"], mode=citation_mode, parens=True)}}{% endif %}{% endif %}
 {% endif %}
 {%- endmacro %}
