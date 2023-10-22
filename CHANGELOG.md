@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * glossing abbreviations
 * whitespace in LFTS macro
 * template loading
+* record numbers
 
 ## [0.1.1] - 2023-10-13
 

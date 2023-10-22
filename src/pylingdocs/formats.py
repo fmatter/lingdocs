@@ -13,6 +13,7 @@ from cookiecutter.main import cookiecutter
 from jinja2 import Environment, PackageLoader
 from jinja2.exceptions import TemplateNotFound
 from mkdocs.commands.serve import serve
+
 from mkdocs.config import load_config
 from slugify import slugify
 from tqdm import tqdm
@@ -495,11 +496,14 @@ for (var i = 0; i < targets.length; i++) {{
     class Handler(SimpleHTTPRequestHandler):
         def __init__(self, *args, **kwargs):
             super().__init__(
-                *args, directory=str(Path(config["paths"]["output"]) / "html"), **kwargs
+                *args, directory=str(config["paths"]["output"] / "html"), **kwargs
             )
 
+    def run_server(cls):
+        test(cls.Handler)
+
     def run_preview(cls):
-        threading.Thread(target=test(cls.Handler)).start()
+        threading.Thread(target=cls.run_server).start()
 
 
 class MkDocs(HTML):
@@ -596,28 +600,6 @@ hide:
 
     def todo_cmd(cls, url, *_args, **_kwargs):
         return mkdocs_todo(url, **_kwargs)
-
-    def open_preview(cls):
-        def run():
-            webbrowser.open_new_tab("http://localhost:8000")
-
-        t = threading.Timer(5, run)
-        t.start()
-
-    def run_preview(cls):
-        config_path = config["paths"]["output"] / cls.name / "mkdocs.yml"
-        conf = load_config(config_file=str(config_path))
-        # for k, v in conf.items():
-        #     print("key", k)
-        #     input(v)
-        conf["plugins"].run_event("startup", command="serve", dirty=False)
-
-        threading.Thread(target=serve(config_file=str(config_path))).start()
-
-        # try:
-        #     serve(config_file=str(config_path))
-        # finally:
-        #     conf["plugins"].run_event("shutdown")
 
 
 class GitHub(PlainText):

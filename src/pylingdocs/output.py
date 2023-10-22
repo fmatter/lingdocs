@@ -105,12 +105,12 @@ def compile_latex(output_dir=config["paths"]["output"]):  # pragma: no cover
         del proc  # help, prospector is forcing me
 
 
-def preview(output_format, **kwargs):
-    builder = builders[output_format]()
-    _preview(builder=builder, **kwargs)
+# def preview(output_format, **kwargs):
+#     builder = builders[output_format]()
+#     _preview(builder=builder, **kwargs)
 
 
-def _preview(dataset, source_dir, output_dir, builder, refresh=True, **kwargs):
+def preview(dataset, source_dir, output_dir, builder, refresh=True, **kwargs):
     log.info("Rendering preview")
     watchfiles = [str(x) for x in source_dir.iterdir()]
     watchfiles += [str(x) for x in (source_dir / CONTENT_FOLDER).iterdir()]
@@ -127,10 +127,7 @@ def _preview(dataset, source_dir, output_dir, builder, refresh=True, **kwargs):
     kwargs["dataset"] = dataset
     kwargs["source_dir"] = source_dir
     kwargs["output_dir"] = output_dir
-    kwargs["contents"] = contents
 
-    create_output(formats=[builder.name], **kwargs)
-    builder.run_preview()
     if refresh:
         wkwargs = kwargs.copy()
         wkwargs["builder"] = builder
@@ -138,6 +135,9 @@ def _preview(dataset, source_dir, output_dir, builder, refresh=True, **kwargs):
             "pylingdocs.output.preview", worker_kwargs=wkwargs
         )
         reloader.watch_files(watchfiles)
+    create_output(contents, formats=[builder.name], **kwargs)
+    kwargs["contents"] = contents
+    builder.run_preview()
 
 
 def clean_output(output_dir):
