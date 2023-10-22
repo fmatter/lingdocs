@@ -112,6 +112,7 @@ def compile_latex(output_dir=config["paths"]["output"]):  # pragma: no cover
 
 def preview(dataset, source_dir, output_dir, builder, refresh=True, **kwargs):
     log.info("Rendering preview")
+
     watchfiles = [str(x) for x in source_dir.iterdir()]
     watchfiles += [str(x) for x in (source_dir / CONTENT_FOLDER).iterdir()]
     extra = source_dir / EXTRA_DIR

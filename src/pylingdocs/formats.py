@@ -342,9 +342,6 @@ class OutputFormat:
             f"Not rendering live preview for format {cls.name} {config['paths']['output'].resolve()}"
         )
 
-    def open_preview(cls):
-        pass
-
 
 class PlainText(OutputFormat):
     name = "plain"
@@ -600,6 +597,9 @@ hide:
 
     def todo_cmd(cls, url, *_args, **_kwargs):
         return mkdocs_todo(url, **_kwargs)
+
+    def run_preview(cls):
+        log.warning(f"Not rendering live preview for format {cls.name}.")
 
 
 class GitHub(PlainText):
