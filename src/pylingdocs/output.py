@@ -107,7 +107,6 @@ def compile_latex(output_dir=config["paths"]["output"]):  # pragma: no cover
 
 def preview(output_format, **kwargs):
     builder = builders[output_format]()
-    builder.open_preview()
     _preview(builder=builder, **kwargs)
 
 
@@ -128,17 +127,17 @@ def _preview(dataset, source_dir, output_dir, builder, refresh=True, **kwargs):
     kwargs["dataset"] = dataset
     kwargs["source_dir"] = source_dir
     kwargs["output_dir"] = output_dir
-    if refresh:
-        wkwargs = kwargs.copy()
-        wkwargs["builder"] = builder
-        reloader = hupper.start_reloader(
-            "pylingdocs.output._preview", worker_kwargs=wkwargs
-        )
-        reloader.watch_files(watchfiles)
     kwargs["contents"] = contents
 
     create_output(formats=[builder.name], **kwargs)
     builder.run_preview()
+    if refresh:
+        wkwargs = kwargs.copy()
+        wkwargs["builder"] = builder
+        reloader = hupper.start_reloader(
+            "pylingdocs.output.preview", worker_kwargs=wkwargs
+        )
+        reloader.watch_files(watchfiles)
 
 
 def clean_output(output_dir):
