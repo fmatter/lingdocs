@@ -43,6 +43,7 @@ class Config:
 
     def load_from_dir(self, path="."):
         locp = Path(path) / "config.yaml"
+        self.data["SOURCE"] = Path(path)
         if locp.is_file():
             log.debug(f"Loading config file from {locp}")
             self.data = merge_dicts(self.data, load(locp))

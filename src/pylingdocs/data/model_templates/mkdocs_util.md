@@ -31,7 +31,7 @@
 {{item.get(preferred, item.get("Form", item.get("Primary_Text", item.get("Title", item.get("ID", "unknown")))))}}
 {%- endmacro %}
 
-{% macro link(item, anchor=None, html=False, preferred="Name", label=None) %}
+{% macro link(item, anchor=None, html=False, preferred="Name", label=None, prefix="data/") %}
 {% if anchor is not none %}
 {% set anchor_text = "#"+anchor %}
 {% endif %}
@@ -40,9 +40,9 @@
 {% endif %}
 {% if item is not none %}
 {% if html %}
-<a href="site:data/{{item.table.label}}/{{item['ID']}}/{{anchor_text}}">{{label}}</a>
+<a href="site:{{prefix}}{{item.table.label}}/{{item['ID']}}/{{anchor_text}}">{{label}}</a>
 {% else %}
-[{{label}}](site:data/{{item.table.label}}/{{item["ID"]}}/{{anchor_text}}){% endif %}
+[{{label}}](site:{{prefix}}{{item.table.label}}/{{item["ID"]}}/{{anchor_text}}){% endif %}
 {% endif %}
 {%- endmacro %}
 
@@ -76,7 +76,7 @@ personal knowledge
 
 {% macro render_singles(rich) %}
 {% for key, val in rich.fields.items() %}
-    {% if (key is not in rich.foreignkeys and val is not none)%}
+    {% if (key is not in rich.foreignkeys and key is not in ["Tags", "References"] and val is not none)%}
     {% if key == "Segments" %}
         {% set val = " ".join(val) %}
     {% endif %}
@@ -107,7 +107,7 @@ personal knowledge
 === "Stems"
         {% elif key == "stemparts" and table_label(component)=="stems" %}
 === "Morphs"
-        {% elif key == "wordformstems" %}
+        {% elif key in ["wordformstems", "tags"] %}
         {% elif key == "wordformparts" and table_label(component)=="morphs" %}
 === "Wordforms"
         {% else %}

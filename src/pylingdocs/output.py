@@ -171,8 +171,8 @@ def check_ids(contents, dataset, source_dir):
 def write_details(builder, output_dir, dataset):
     loader = loaders[builder.name]["data"]
     text_loader = loaders[builder.name]["text"]
-    output_dir = output_dir / builder.name / builder.data_dir
-    output_dir.mkdir(exist_ok=True, parents=True)
+    data_dir = output_dir / builder.name / builder.data_dir
+    data_dir.mkdir(exist_ok=True, parents=True)
     func_dict["decorate_gloss_string"] = builder.decorate_gloss_string
     func_dict["ref_labels"] = builder.ref_labels
     if config["output"]["rich"]:
@@ -181,7 +181,7 @@ def write_details(builder, output_dir, dataset):
         table_list = list((k, v, v.name) for k, v in data.tables.items())
     else:
         log.info(
-            f"Writing data for {builder.name} to {output_dir.resolve()}, this may take a while. Set data = False in the [output] section of your config file to turn off."
+            f"Writing data for {builder.name} to {data_dir.resolve()}, this may take a while. Set data = False in the [output] section of your config file to turn off."
         )
         table_list = [
             (str(table.url).replace(".csv", ""), table, get_table_name(table))
@@ -192,7 +192,9 @@ def write_details(builder, output_dir, dataset):
     for label, table, name in table_list:
         # if label not in ["derivationalprocesses"]:
         #     continue
-        table_dir = output_dir / label
+        table_dir = data_dir / label
+        if label == "topics":
+            table_dir = output_dir / builder.name / builder.topic_dir
         if f"{name}_index.{builder.file_ext}" not in loader.list_templates():
             log.warning(f"Not writing index for {name}")
         else:
@@ -215,7 +217,17 @@ def write_details(builder, output_dir, dataset):
                 )
             index = builder.preprocess(index)
             if index.strip() != "":
-                dump(index, table_dir / f"index.{builder.file_ext}")
+                if label == "topics":
+                    dump(
+                        index,
+                        output_dir
+                        / builder.name
+                        / builder.topic_dir
+                        / ".."
+                        / f"topics.{builder.file_ext}",
+                    )
+                else:
+                    dump(index, table_dir / f"index.{builder.file_ext}")
 
         if f"{name}_detail.md" not in loader.list_templates():
             log.warning(f"Not writing details for {name}")
@@ -249,7 +261,7 @@ def write_details(builder, output_dir, dataset):
                     cldf_dict=dataset,
                     loader=detail_loader,
                     func_dict=func_dict,
-                )  # rodo prettify
+                )  # todo prettify
                 if "#cldf" in detail:
                     detail = render(
                         doc=detail,
@@ -263,9 +275,9 @@ def write_details(builder, output_dir, dataset):
     if model_index:
         dump(
             "# Data\n\n" + "\n".join(model_index),
-            output_dir / f"index.{builder.file_ext}",
+            data_dir / f"index.{builder.file_ext}",
         )
-        dump("\n".join(data_nav), output_dir / ".pages")
+        dump("\n".join(data_nav), data_dir / ".pages")
 
 
 def create_output(

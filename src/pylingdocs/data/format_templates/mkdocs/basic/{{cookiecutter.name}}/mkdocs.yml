@@ -50,6 +50,8 @@ plugins:
     - search
     # - git-revision-date-localized
     - site-urls
+    - tags:
+        tags_file: tags.md
 extra_css:
   - assets/examples.css
   - assets/alignment.css
