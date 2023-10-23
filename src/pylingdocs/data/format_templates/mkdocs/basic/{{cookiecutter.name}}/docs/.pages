@@ -3,9 +3,7 @@
   - Chapters:{% for chapter in cookiecutter.chapters %}
     - {{ chapter }}.md{% endfor %}
     - references.md
-  - Index:
-    - Topics: topics.md
-    - Tags: tags.md{% if cookiecutter.data %}
+  - Index: index{% if cookiecutter.data %}
   - Data: data{% endif %}
 {%else%}
 nav:

@@ -223,8 +223,7 @@ def write_details(builder, output_dir, dataset):
                         output_dir
                         / builder.name
                         / builder.topic_dir
-                        / ".."
-                        / f"topics.{builder.file_ext}",
+                        / f"index.{builder.file_ext}",
                     )
                 else:
                     dump(index, table_dir / f"index.{builder.file_ext}")
