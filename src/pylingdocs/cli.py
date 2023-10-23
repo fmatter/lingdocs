@@ -81,14 +81,14 @@ def build(source, targets, cldf, output_dir, _compile):
     source = Path(source)
     config.load_from_dir(source)
     if not cldf:
-        cldf = config["paths"]["cldf"]
-    ds = load_cldf_dataset(cldf)
+        cldf = config["SOURCE"] / config["paths"]["cldf"]
     contents = load_content(
         source_dir=source / CONTENT_FOLDER,
         structure_file=_get_relative_file(
             folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
         ),
     )
+    ds = load_cldf_dataset(cldf, contents=contents)
     metadata = load(source / "metadata.yaml")
     targets = targets or config["output"]["build"]
     if not isinstance(targets, list) and not isinstance(targets, tuple):
@@ -190,7 +190,7 @@ def check(source, cldf, output_dir):
 )
 def cldf(source, cldf, output_dir, add):
     config.load_from_dir(source)
-    cldf = cldf or config["paths"]["cldf"]
+    cldf = cldf or config["SOURCE"] / config["paths"]["cldf"]
     ds = load_cldf_dataset(cldf)
     contents = load_content(
         source_dir=source / CONTENT_FOLDER,
@@ -214,7 +214,7 @@ def cldf(source, cldf, output_dir, add):
         ds,
         source,
         output_dir,
-        metadata_file="metadata.yaml",
+        metadata_file=config["SOURCE"] / "metadata.yaml",
         add_documents=add_docs,
     )
 

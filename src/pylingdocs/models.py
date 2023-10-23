@@ -152,6 +152,12 @@ class Form(Base_ORM):
     shortcut = "f"
 
 
+class Topic(Base):
+    name = "Topic"
+    cldf_table = "topics.csv"
+    shortcut = "top"
+
+
 models = [
     Morpheme(),
     Morph(),
@@ -161,6 +167,7 @@ models = [
     Text(),
     Cognateset(),
     Form(),
+    Topic(),
 ]
 
 if Path(f"{PLD_DIR}/models.py").is_file():

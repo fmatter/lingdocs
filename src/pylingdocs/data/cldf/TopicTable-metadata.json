@@ -26,6 +26,12 @@
                 "dc:conformsTo": "CLDF Markdown"
             },
             {
+                "name": "Tags",
+                "required":false,
+                "datatype": "string",
+                "separator": ","
+            },
+            {
                 "name": "References",
                 "required": true,
                 "datatype": "json",
