@@ -1,16 +1,96 @@
 import logging
+import os
 import re
 import shutil
+import subprocess
 import sys
+import zipfile
 from pathlib import Path
 
 import jinja2
 import keepachangelog
 from writio import dump, load
 
-from pylingdocs.config import DATA_DIR, config
+from pylingdocs.config import (
+    BUILD_DIR,
+    CONTENT_FOLDER,
+    DATA_DIR,
+    EXTRA_DIR,
+    MANEX_DIR,
+    PLD_DIR,
+    TABLE_DIR,
+    config,
+)
 
 log = logging.getLogger(__name__)
+
+
+class ReleaseMode:
+    name = "release"
+
+    @classmethod
+    def version_list(cls):
+        raise NotImplementedError(f"Do not use {cls.name} for releasing.")
+
+    @classmethod
+    def release(cls):
+        raise NotImplementedError(f"Do not use {cls.name} for releasing.")
+
+
+def zipdir(path, zipfile):
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            zipfile.write(
+                os.path.join(root, file),
+                os.path.relpath(os.path.join(root, file), os.path.join(path, "..")),
+            )
+
+
+class LocalZip:
+    name = "zip"
+    directory = "zips"
+
+    @classmethod
+    def version_list(cls, source):
+        if (source / cls.directory).is_dir():
+            return [
+                f.name
+                for f in (source / cls.directory).iterdir()
+                if f.is_file() and f.suffix == ".zip"
+            ]
+        return []
+
+    @classmethod
+    def release(cls, name, source):
+        (source / cls.directory).mkdir(exist_ok=True, parents=True)
+        with zipfile.ZipFile(
+            source / cls.directory / f"{name}.zip", "w", zipfile.ZIP_DEFLATED
+        ) as zipf:
+            zipdir(source / BUILD_DIR / name, zipf)
+
+
+modes = [LocalZip]
+
+
+def _version(v):
+    return "v" + v.strip("v")
+
+
+def run_releases(source, output_dir, bump, **kwargs):
+    config.load_from_dir(source)
+    metadata = load(source / "metadata.yaml")
+    if config["output"]["changelog"]:
+        release_changelog(metadata)
+    metadata["version"] = bump_version(metadata["version"], bump)
+    dump(metadata, source / "metadata.yaml")
+    version = _version(metadata["version"])
+    build_archive(source, output_dir, metadata["id"] + version)
+    for mode in modes:
+        if version in mode.version_list(source):
+            log.error(f"{version} already exists.")
+            sys.exit()
+    for mode in modes:
+        mode.release(metadata["id"] + version, source)
 
 
 def bump_version(version, step="patch"):
@@ -58,17 +138,7 @@ def release_changelog(metadata):
         dump(cl, clp)
 
 
-def run_releases(source, output_dir, bump, **kwargs):
-    config.load_from_dir(source)
-    metadata = load(source / "metadata.yaml")
-    if config["output"]["changelog"]:
-        release_changelog(metadata)
-    metadata["version"] = bump_version(metadata["version"], bump)
-    dump(metadata, source / "metadata.yaml")
-    build_archive(output_dir)
-
-
-def build_archive(output_dir):
+def build_archive(source, output_dir, version):
     def _dedict(file):
         if isinstance(file, dict):
             name = list(file.values())[0]
@@ -78,19 +148,20 @@ def build_archive(output_dir):
         return file, name
 
     contents = {"cldf": []}
-    build_path = Path(output_dir / "build")
+    build_path = source / BUILD_DIR / version
     build_path.mkdir(exist_ok=True, parents=True)
     for fmt, target in config["releasing"]["zip"].items():
         contents[fmt] = []
         if fmt == "cldf":
             if target is True:
-                contents["cldf"].append(output_dir / fmt)
+                contents["cldf"].append(source / output_dir / fmt)
         else:
-            fmt_path = output_dir / fmt
+            fmt_path = source / output_dir / fmt
             if not fmt_path.is_dir():
-                log.warning(
-                    f"No directory {fmt_path.resolve()}.\nRemove {fmt} from the releasing>zip entry or build the format."
-                )
+                if not fmt_path.is_dir():
+                    log.warning(
+                        f"No directory {fmt_path.resolve()}.\nRemove {fmt} from the releasing>zip entry or build the format."
+                    )
                 sys.exit()
             if not isinstance(target, list):
                 targets = [target]
@@ -113,6 +184,29 @@ def build_archive(output_dir):
             print("copying dir", file, "to", fmt_dir, "/", name)
             shutil.copytree(file, fmt_dir / name, dirs_exist_ok=True)
 
+    for content in [
+        EXTRA_DIR,
+        PLD_DIR,
+        CONTENT_FOLDER,
+        TABLE_DIR,
+        MANEX_DIR,
+        "metadata.yaml",
+        "config.yaml",
+        "CHANGELOG.md",
+        "README.md",
+    ]:
+        src_dir = build_path / "src"
+        target = source / output_dir / content
+        if target.is_file():
+            shutil.copy(target, src_dir / target.name)
+            print("source file", target)
+        elif target.is_dir():
+            shutil.copytree(target, src_dir / target.name)
+            print("source folder", target)
+        else:
+            print(f"Path not found: {target}")
+        pass
+
     for fmt, files in contents.items():
         if len(files) == 1:
             _copy(files[0], build_path)
@@ -121,6 +215,13 @@ def build_archive(output_dir):
             fmt_dir.mkdir(exist_ok=True, parents=True)
             for file in files:
                 _copy(file, fmt_dir)
+
+    for _dir in build_path.iterdir():
+        if _dir.is_dir() and not any(_dir.iterdir()):
+            log.warning(
+                f"Empty directory {_dir.resolve()}, not including in the archive."
+            )
+            _dir.rmdir()
 
 
 #     info = json.loads(

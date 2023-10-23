@@ -11,9 +11,7 @@ from pylingdocs.config import CONTENT_FOLDER, STRUCTURE_FILE, config
 from pylingdocs.helpers import _get_relative_file, load_cldf_dataset, load_content
 from pylingdocs.helpers import new as create_new
 from pylingdocs.helpers import write_readme
-from pylingdocs.output import check_abbrevs, check_ids, clean_output
-from pylingdocs.output import compile_latex as cmplatex
-from pylingdocs.output import create_output
+from pylingdocs.output import check_abbrevs, check_ids, clean_output, create_output
 from pylingdocs.output import preview as run_preview
 from pylingdocs.output import update_structure as do_update_structure
 from pylingdocs.preprocessing import preprocess_cldfviz
@@ -71,13 +69,14 @@ class BuildCommand(OutputCommand):
     help="List of target output formats.",
 )
 @click.option(
-    "--release",
+    "--compile",
+    "_compile",
     is_flag=True,
     default=False,
-    help="Prepare for a citeable release",
+    help="Compile create output, where applicable.",
     show_default=True,
 )
-def build(source, targets, cldf, output_dir, release):
+def build(source, targets, cldf, output_dir, _compile):
     """Create formatted output of pylingdocs project."""
     source = Path(source)
     config.load_from_dir(source)
@@ -95,13 +94,7 @@ def build(source, targets, cldf, output_dir, release):
     if not isinstance(targets, list) and not isinstance(targets, tuple):
         targets = [targets]
     create_output(
-        contents,
-        source,
-        targets,
-        ds,
-        output_dir,
-        metadata=metadata,
-        release=release,
+        contents, source, targets, ds, output_dir, metadata=metadata, _compile=_compile
     )
     if config["output"]["readme"]:
         write_readme(source / "metadata.yaml", release=release)
@@ -111,8 +104,29 @@ def build(source, targets, cldf, output_dir, release):
 
 @main.command(cls=BuildCommand)
 @click.option("--bump", "-b", default="patch")
-def release(**kwargs):
-    run_releases(**kwargs)
+def release(source, cldf, output_dir, **kwargs):
+    source = Path(source)
+    config.load_from_dir(source)
+    if not cldf:
+        cldf = config["paths"]["cldf"]
+    ds = load_cldf_dataset(cldf)
+    contents = load_content(
+        source_dir=source / CONTENT_FOLDER,
+        structure_file=_get_relative_file(
+            folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
+        ),
+    )
+    metadata = load(source / "metadata.yaml")
+    create_output(
+        contents,
+        source,
+        config["output"]["build"],
+        ds,
+        output_dir,
+        metadata=metadata,
+        _compile=True,
+    )
+    run_releases(source, output_dir, **kwargs)
 
 
 @main.command(cls=BuildCommand)
@@ -137,12 +151,14 @@ def preview(source, target, cldf, output_dir, refresh):
         cldf = config["paths"]["cldf"]
     ds = load_cldf_dataset(cldf)
     metadata = load(source / "metadata.yaml") or {}
+    from pylingdocs.formats import builders
+
     run_preview(
         dataset=ds,
         source_dir=source,
         output_dir=output_dir,
         refresh=refresh,
-        output_format=target,
+        builder=builders[target](),
         metadata=metadata,
     )
 
@@ -206,12 +222,6 @@ def cldf(source, cldf, output_dir, add):
 @main.command()
 def update_structure():
     do_update_structure()
-
-
-@main.command(cls=OutputCommand)
-def compile_latex(output_dir):  # pragma: no cover
-    """Compile the generated LaTeX output"""
-    cmplatex(output_dir=output_dir)
 
 
 @main.command(cls=OutputCommand)

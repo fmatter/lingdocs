@@ -25,8 +25,8 @@
 {%- endmacro %}
 
 {% macro txt_src(data) -%}
-{% if data["Record_Number"] %}
-{{data["Text_ID"]}}: {{data["Record_Number"]}}{% else %}
+{% if data["Sentence_Number"] %}
+{{data["Text_ID"]}}: {{data["Sentence_Number"]}}{% else %}
 {{data["Text_ID"]}}{% endif %}
 {%- endmacro %}
 

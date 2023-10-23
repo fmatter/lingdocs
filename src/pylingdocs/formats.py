@@ -2,6 +2,7 @@
 import logging
 import re
 import shutil
+import subprocess
 import sys
 import threading
 import webbrowser
@@ -13,6 +14,7 @@ from cookiecutter.main import cookiecutter
 from jinja2 import Environment, PackageLoader
 from jinja2.exceptions import TemplateNotFound
 from mkdocs.commands.serve import serve
+
 from mkdocs.config import load_config
 from slugify import slugify
 from tqdm import tqdm
@@ -235,7 +237,7 @@ class OutputFormat:
     def copy_audio(cls, audio, out_path):
         if config["paths"]["audio"].is_dir():
             (out_path / cls.name / cls.audio_path).mkdir(exist_ok=True, parents=True)
-            for media in tqdm(audio.values(), desc="Audio"):
+            for media in tqdm(audio.values(), desc="Copying audio"):
                 src_path = config["paths"]["audio"] / media["Download_URL"].path
                 target_path = out_path / cls.name / cls.audio_path / Path(src_path).name
                 if src_path.is_file() and not target_path.is_file():
@@ -342,6 +344,9 @@ class OutputFormat:
         )
 
     def open_preview(cls):
+        pass
+
+    def compile(cls, source, output_dir):
         pass
 
 
@@ -495,11 +500,14 @@ for (var i = 0; i < targets.length; i++) {{
     class Handler(SimpleHTTPRequestHandler):
         def __init__(self, *args, **kwargs):
             super().__init__(
-                *args, directory=str(Path(config["paths"]["output"]) / "html"), **kwargs
+                *args, directory=str(config["paths"]["output"] / "html"), **kwargs
             )
 
+    def run_server(cls):
+        test(cls.Handler)
+
     def run_preview(cls):
-        threading.Thread(target=test(cls.Handler)).start()
+        threading.Thread(target=cls.run_server).start()
 
 
 class MkDocs(HTML):
@@ -597,27 +605,23 @@ hide:
     def todo_cmd(cls, url, *_args, **_kwargs):
         return mkdocs_todo(url, **_kwargs)
 
-    def open_preview(cls):
-        def run():
-            webbrowser.open_new_tab("http://localhost:8000")
-
-        t = threading.Timer(5, run)
-        t.start()
-
     def run_preview(cls):
-        config_path = config["paths"]["output"] / cls.name / "mkdocs.yml"
-        conf = load_config(config_file=str(config_path))
-        # for k, v in conf.items():
-        #     print("key", k)
-        #     input(v)
-        conf["plugins"].run_event("startup", command="serve", dirty=False)
+        log.warning(f"Not rendering live preview for format {cls.name}.")
 
-        threading.Thread(target=serve(config_file=str(config_path))).start()
-
-        # try:
-        #     serve(config_file=str(config_path))
-        # finally:
-        #     conf["plugins"].run_event("shutdown")
+    def compile(cls, source, output_dir):
+        log.info("Compiling MkDocs HTML.")
+        base = source / output_dir / cls.name
+        mkd_file = base / "mkdocs.yml"
+        if not mkd_file.is_file():
+            log.error(f"Not found: {mkd_file.resolve()}")
+            return
+        old = load(mkd_file)
+        temp = old.copy()
+        temp["site_url"] = "http://www.example.com/"
+        temp["plugins"].append("offline")
+        dump(temp, mkd_file)
+        subprocess.run("mkdocs build".split(" "), cwd=source / output_dir / cls.name)
+        dump(old, mkd_file)
 
 
 class GitHub(PlainText):
@@ -876,6 +880,15 @@ class Latex(PlainText):
             else:
                 yield content[m.start() : m.end()]
         yield content[current:]
+
+    def compile(cls, source, output_dir):
+        log.info("Compiling LaTeX document.")
+        p = subprocess.Popen(
+            "latexmk --xelatex main.tex",
+            shell=True,
+            cwd=source / output_dir / cls.name,
+        )
+        p.wait()
 
 
 class Docx(GitHub):

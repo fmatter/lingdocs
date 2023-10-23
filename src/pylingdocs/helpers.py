@@ -20,8 +20,8 @@ from writio import dump, load
 from pylingdocs.config import (
     CONTENT_FOLDER,
     DATA_DIR,
-    FIGURE_DIR,
     EXTRA_DIR,
+    FIGURE_DIR,
     STRUCTURE_FILE,
     TABLE_DIR,
     config,

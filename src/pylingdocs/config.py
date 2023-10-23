@@ -18,6 +18,7 @@ CONTENT_FOLDER = "docs"
 STRUCTURE_FILE = "structure.yaml"
 FIGURE_DIR = "figures"
 TABLE_DIR = "tables"
+BUILD_DIR = "builds"
 
 
 def merge_dicts(a, b):
