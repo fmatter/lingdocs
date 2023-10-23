@@ -130,12 +130,14 @@ def preview(source, target, cldf, output_dir, refresh):
         cldf = config["paths"]["cldf"]
     ds = load_cldf_dataset(cldf)
     metadata = load(source / "metadata.yaml") or {}
+    from pylingdocs.formats import builders
+
     run_preview(
         dataset=ds,
         source_dir=source,
         output_dir=output_dir,
         refresh=refresh,
-        output_format=target,
+        builder=builders[target](),
         metadata=metadata,
     )
 

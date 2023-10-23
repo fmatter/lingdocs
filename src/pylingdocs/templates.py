@@ -102,21 +102,22 @@ def find_template(model, builder, view, rich=config["output"]["rich"]):
     custom_base = PLD_DIR / "model_templates"
     base = DATA_DIR / "model_templates"
 
+    # import pandas as pd
     # cands = []
     # for b, m, f in _candidates(base, custom_base, model, builder):
     #     cands.append({"Base": b.parents[0], "Model": m.name, "Format": f.label})
     # cands = pd.DataFrame(cands)
-    # input(cands)
+    # input(cands.to_string())
 
     for b, m, f in _candidates(base, custom_base, model, builder):
         path = _fn(b, m.name, f.name, view, r=rich)
         if path.is_file():
-            log.debug(f"Using template {path}")
+            log.debug(f"Using template {path} for {model.name}/{builder.name}_{view}")
             return path
     for b, m, f in _candidates(base, custom_base, model, builder):
         path = _fn(b, m.name, f.name, view, r=not rich)
         if path.is_file():
-            log.debug(f"Using template {path}")
+            log.debug(f"Using template {path} for {model.name}/{builder.name}_{view}")
             return path
     log.warning(
         f"No template found for {model.name}/{builder.name}_{view} (last try {path})"
@@ -132,7 +133,9 @@ name_dict = {
 }
 
 
-def load_templates(target_builder, models, rich=config["output"]["rich"]):
+def load_templates(target_builder, models, rich=None):
+    config.load_from_dir(".")
+    rich = rich or config["output"]["rich"]
     # templates = {fn: {"text": {}, "data": {}} for fn in target_builders}
     templates = {"text": {}, "data": {}}
     f = target_builder

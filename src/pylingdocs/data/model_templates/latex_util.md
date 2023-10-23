@@ -16,7 +16,7 @@
 {% if data is undefined %}
 {{ctx.data["Text_ID"]}}{% if ctx.data["Sentence_Number"] %}: {{ctx.data["Sentence_Number"]}}{%endif%}{% if ctx.data["Phrase_Number"] %} ({{ctx.data["Phrase_Number"]}}){%endif%}
 {% else %}
-{{link(data["examples"][ctx.id].text, anchor=ctx.id, html=True)}}{% if ctx.data["Record_Number"] %}: {{ctx.data["Record_Number"]}}{%endif%}
+{{link(data["examples"][ctx.id].text, anchor=ctx.id, html=True)}}{% if ctx.data["Sentence_Number"] %}: {{ctx.data["Sentence_Number"]}}{%endif%}
 {% endif %}
 {%- endmacro %}
 
