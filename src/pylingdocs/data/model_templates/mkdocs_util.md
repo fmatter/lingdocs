@@ -47,10 +47,10 @@
 {%- endmacro %}
 
 {% macro txt_src(ctx) -%}
-{% if data is undefined %}
-{{ctx.data["Text_ID"]}}{% if ctx.data["Record_Number"] %}: {{ctx.data["Record_Number"]}}{%endif%}
+{%- if data is undefined %}
+{{ctx.data["Text_ID"]}}{% if ctx.data["Sentence_Number"] %}: {{ctx.data["Sentence_Number"]}}{%endif%}
 {% else %}
-{{link(data["examples"][ctx.id].text, anchor=ctx.id, html=True)}}{% if ctx.data["Record_Number"] %}: {{ctx.data["Record_Number"]}}{%endif%}
+{{link(data["examples"][ctx.id].text, anchor=ctx.id, html=True)}}{% if ctx.data["Sentence_Number"] %}: {{ctx.data["Sentence_Number"]}}{%endif%}
 {% endif %}
 {%- endmacro %}
 
