@@ -91,7 +91,7 @@ class OutputFormat:
     ref_labels = {}
     ref_locations = {}
     data_dir = "data"
-    topic_dir = "topic"
+    topic_dir = "topics"
     fallback_layout = "basic"
     audio_path = "audio"
 
@@ -515,7 +515,7 @@ class MkDocs(HTML):
     name = "mkdocs"
     figure_dir = "docs/figures"
     data_dir = "docs/data"
-    topic_dir = "docs/topics"
+    topic_dir = "docs/index/topics"
     file_ext = "md"
     audio_path = "docs/assets/audio"
 

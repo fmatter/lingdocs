@@ -31,7 +31,7 @@
 {{item.get(preferred, item.get("Form", item.get("Primary_Text", item.get("Title", item.get("ID", "unknown")))))}}
 {%- endmacro %}
 
-{% macro link(item, anchor=None, html=False, preferred="Name", label=None, prefix="data/") %}
+{% macro link(item, anchor=None, html=False, preferred="Name", label=None, prefix="data/", table_path=item.table.label) %}
 {% if anchor is not none %}
 {% set anchor_text = "#"+anchor %}
 {% endif %}
@@ -40,9 +40,9 @@
 {% endif %}
 {% if item is not none %}
 {% if html %}
-<a href="site:{{prefix}}{{item.table.label}}/{{item['ID']}}/{{anchor_text}}">{{label}}</a>
+<a href="site:{{prefix}}{{table_path}}/{{item['ID']}}/{{anchor_text}}">{{label}}</a>
 {% else %}
-[{{label}}](site:{{prefix}}{{item.table.label}}/{{item["ID"]}}/{{anchor_text}}){% endif %}
+[{{label}}](site:{{prefix}}{{table_path}}/{{item["ID"]}}/{{anchor_text}}){% endif %}
 {% endif %}
 {%- endmacro %}
 

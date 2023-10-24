@@ -8,6 +8,6 @@ tags:{% for tag in rich["Tags"]%}
 ---
 
 {%endif%}
-# {{util.get_label(rich)}}
+# {{table_label(component,mode="singular").capitalize()}}: {{util.get_label(rich)}}
 {{util.render_singles(rich)}}
 {{util.render_multis(rich)}}
