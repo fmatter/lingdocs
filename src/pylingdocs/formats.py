@@ -13,7 +13,6 @@ from cookiecutter.main import cookiecutter
 from jinja2 import Environment, PackageLoader
 from jinja2.exceptions import TemplateNotFound
 from mkdocs.commands.serve import serve
-
 from mkdocs.config import load_config
 from slugify import slugify
 from tqdm import tqdm
