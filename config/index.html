@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.5">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6a10b989.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.35e1ed30.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
@@ -717,6 +717,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#adding-audio" class="md-nav__link">
+    Adding audio
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -747,6 +754,26 @@
           <li class="md-nav__item">
   <a href="#interlinear-package" class="md-nav__link">
     Interlinear package
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mkdocs" class="md-nav__link">
+    mkdocs
+  </a>
+  
+    <nav class="md-nav" aria-label="mkdocs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-audio_1" class="md-nav__link">
+    Adding audio
   </a>
   
 </li>
@@ -800,6 +827,20 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plain" class="md-nav__link">
+    plain
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#html" class="md-nav__link">
+    html
+  </a>
   
 </li>
       
@@ -875,22 +916,22 @@ directory where you are executing <code>pylingdocs</code>.</p>
 <p>General options relating to the produced output.</p>
 <h4 id="formats">Formats</h4>
 <p>What <a href="/formats">formats</a> should be built?</p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">output</span><span class="p">:</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">build</span><span class="p">:</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">latex</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mkdocs</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">html</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plain</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span style="color: #81a1c1">output</span><span style="color: #eceff4">:</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">build</span><span style="color: #eceff4">:</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span style="color: #d8dee9">    </span><span style="color: #eceff4">-</span><span style="color: #d8dee9"> latex</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span style="color: #d8dee9">    </span><span style="color: #eceff4">-</span><span style="color: #d8dee9"> mkdocs</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span style="color: #d8dee9">    </span><span style="color: #eceff4">-</span><span style="color: #d8dee9"> html</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span style="color: #d8dee9">    </span><span style="color: #eceff4">-</span><span style="color: #d8dee9"> plain</span>
 </span></code></pre></div>
 <h4 id="preview">Preview</h4>
 <p>What format should be used for <a href="/usage#preview">previewing</a>.</p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">output</span><span class="p">:</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">preview</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;mkdocs&#39;</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span style="color: #81a1c1">output</span><span style="color: #eceff4">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">preview</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> </span><span style="color: #a3be8c">&#39;mkdocs&#39;</span>
 </span></code></pre></div>
 <h4 id="readme">README</h4>
 <p>Should a README.md file be created?</p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">output</span><span class="p">:</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">readme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span style="color: #81a1c1">output</span><span style="color: #eceff4">:</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">readme</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> true</span>
 </span></code></pre></div>
 <h4 id="cldf-data-appendix">CLDF data appendix</h4>
 <p>Create index and detail pages for database entities?</p>
@@ -899,105 +940,120 @@ directory where you are executing <code>pylingdocs</code>.</p>
 <li>You can point this to a different CLDF metadata.json
  file</li>
 </ol>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">output</span><span class="p">:</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span style="color: #81a1c1">output</span><span style="color: #eceff4">:</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">data</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> false</span>
 </span></code></pre></div>
 <h4 id="rich-data">Rich data</h4>
 <p>Insert links to this data into the document?
  (Slow and currently only supported for <a href="/formats#mkdocs">MkDocs</a>).</p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">output</span><span class="p">:</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">rich</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span style="color: #81a1c1">output</span><span style="color: #eceff4">:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">rich</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> false</span>
 </span></code></pre></div>
 <h4 id="layout">Layout</h4>
 <p>The layout of the produced document. Options: <code>book</code>, <code>article</code>, <code>slides</code>.</p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">output</span><span class="p">:</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">layout</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;book&#39;</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span style="color: #81a1c1">output</span><span style="color: #eceff4">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">layout</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> </span><span style="color: #a3be8c">&#39;book&#39;</span>
 </span></code></pre></div>
 <h3 id="interlinear-examples">Interlinear examples</h3>
 <p>The default options can be overridden by <a href="/usage#commands">specifying an argument</a>, e.g. <code>show_language=True</code>. </p>
 <h4 id="show-language">Show language</h4>
 <p>Show the language label? </p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">examples</span><span class="p">:</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">show_language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span style="color: #81a1c1">examples</span><span style="color: #eceff4">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">show_language</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> true</span>
 </span></code></pre></div>
 <h4 id="show-first-line">Show first line</h4>
 <p>Show the Primary_Text line?</p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">examples</span><span class="p">:</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">show_primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span style="color: #81a1c1">examples</span><span style="color: #eceff4">:</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">show_primary</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> true</span>
 </span></code></pre></div>
 <h4 id="source-position">Source position</h4>
 <p>Where to place the source?
  after_translation / in_preamble</p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">examples</span><span class="p">:</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">source_position</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;after_translation&#39;</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span style="color: #81a1c1">examples</span><span style="color: #eceff4">:</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">source_position</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> </span><span style="color: #a3be8c">&#39;after_translation&#39;</span>
 </span></code></pre></div>
 <h3 id="lfts">LFTS</h3>
 <p>Different kinds of entities whose schematic inline representation is:
- <div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>(language) form (‘translation’) ((source))
+ <div class="language-text highlight" style="background: #2E3440"><pre style="line-height: 125%;"><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>(language) form (‘translation’) ((source))
 </span></code></pre></div>
  The default options can be overridden by <a href="/usage#commands">specifying an argument</a>, e.g. <code>show_language=True</code>. </p>
 <h4 id="show-language_1">Show language</h4>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">lfts</span><span class="p">:</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">show_language</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span style="color: #81a1c1">lfts</span><span style="color: #eceff4">:</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">show_language</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> true</span>
 </span></code></pre></div>
 <h4 id="show-free-translation">Show free translation</h4>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">lfts</span><span class="p">:</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">show_translation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span style="color: #81a1c1">lfts</span><span style="color: #eceff4">:</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">show_translation</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> true</span>
 </span></code></pre></div>
 <h4 id="show-source">Show source</h4>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">lfts</span><span class="p">:</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">show_source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span style="color: #81a1c1">lfts</span><span style="color: #eceff4">:</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">show_source</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> true</span>
 </span></code></pre></div>
 <h3 id="locations">Locations</h3>
 <h4 id="cldf-dataset-location">CLDF dataset location</h4>
 <p>The path to the CLDF metadata file. </p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">paths</span><span class="p">:</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">cldf</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;cldf/metadata.json&#39;</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span style="color: #81a1c1">paths</span><span style="color: #eceff4">:</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">cldf</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> </span><span style="color: #a3be8c">&#39;cldf/metadata.json&#39;</span>
 </span></code></pre></div>
 <h4 id="output-folder">Output folder</h4>
 <p>The folder to which output is written. </p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">paths</span><span class="p">:</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;output&#39;</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span style="color: #81a1c1">paths</span><span style="color: #eceff4">:</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">output</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> </span><span style="color: #a3be8c">&#39;output&#39;</span>
 </span></code></pre></div>
 <h4 id="additional-references">Additional references</h4>
 <p>Path to a bibfile with references not contained in the dataset.</p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nt">paths</span><span class="p">:</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">add_bib</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;extra/sources.bib&#39;</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span style="color: #81a1c1">paths</span><span style="color: #eceff4">:</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">add_bib</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> </span><span style="color: #a3be8c">&#39;extra/sources.bib&#39;</span>
+</span></code></pre></div>
+<h4 id="adding-audio">Adding audio</h4>
+<p>this folder needs to contain <MediaReference>.wav or <MediaReference>.mp3 files.</p>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span style="color: #81a1c1">paths</span><span style="color: #eceff4">:</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">audio</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> </span><span style="color: #a3be8c">&#39;extra/audio&#39;</span>
 </span></code></pre></div>
 <h3 id="latex">LaTeX</h3>
 <p>LaTeX-specific settings.</p>
 <h4 id="article-template">Article template</h4>
 <p>The default template for the article layout.</p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nt">latex</span><span class="p">:</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="nt">article</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;article&#39;</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span style="color: #81a1c1">latex</span><span style="color: #eceff4">:</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">article</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> </span><span style="color: #a3be8c">&#39;article&#39;</span>
 </span></code></pre></div>
 <h4 id="book-template">Book template</h4>
 <p>The default template for the book layout.</p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nt">latex</span><span class="p">:</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nt">book</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;book&#39;</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span style="color: #81a1c1">latex</span><span style="color: #eceff4">:</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">book</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> </span><span style="color: #a3be8c">&#39;book&#39;</span>
 </span></code></pre></div>
 <h4 id="interlinear-package">Interlinear package</h4>
 <p>The preferred setup for interlinear examples in LaTeX.</p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">latex</span><span class="p">:</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nt">interlinear</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;expex&#39;</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span style="color: #81a1c1">latex</span><span style="color: #eceff4">:</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">interlinear</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> </span><span style="color: #a3be8c">&#39;expex&#39;</span>
+</span></code></pre></div>
+<h3 id="mkdocs">mkdocs</h3>
+<h4 id="adding-audio_1">Adding audio</h4>
+<p>Add a path to your audio base URL.</p>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span style="color: #81a1c1">mkdocs</span><span style="color: #eceff4">:</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">audio</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> null</span>
 </span></code></pre></div>
 <h3 id="clld">CLLD</h3>
 <h4 id="database-location">Database location</h4>
 <p>URI to the database of your CLLD app, i.e. something like <code>sqlite:///path/to/your/db.sqlite</code></p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">clld</span><span class="p">:</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nt">db_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span style="color: #81a1c1">clld</span><span style="color: #eceff4">:</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">db_uri</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> null</span>
 </span></code></pre></div>
 <h3 id="input">Input</h3>
 <h4 id="sublime-text">Sublime text</h4>
 <p>Generate data (in the docs folder) for the <a href="https://github.com/fmatter/pylingdocs-sublime/">Sublime text plugin</a>.</p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nt">input</span><span class="p">:</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">sublime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span style="color: #81a1c1">input</span><span style="color: #eceff4">:</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">sublime</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> false</span>
 </span></code></pre></div>
 <h4 id="file-prefix">File prefix</h4>
 <p>How your filenames should be prefixed, if at all.</p>
-<div class="language-yaml highlight"><span class="filename">Default:</span><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nt">input</span><span class="p">:</span>
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">content_file_prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<div class="language-yaml highlight" style="background: #2E3440"><span class="filename">Default:</span><pre style="line-height: 125%;"><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span style="color: #81a1c1">input</span><span style="color: #eceff4">:</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span style="color: #d8dee9">  </span><span style="color: #81a1c1">content_file_prefix</span><span style="color: #eceff4">:</span><span style="color: #d8dee9"> null</span>
 </span></code></pre></div>
+<h3 id="plain">plain</h3>
+<p>Empty settings for plaintext format</p>
+<h3 id="html">html</h3>
+<p>Empty settings for simple HTML format</p>
 
 
 

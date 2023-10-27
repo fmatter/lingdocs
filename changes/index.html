@@ -12,7 +12,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.5">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
     
     
       
@@ -20,7 +20,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6a10b989.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.35e1ed30.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
@@ -587,31 +587,50 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="unreleased"><a href="https://github.com/fmatter/pylingdocs/compare/v0.1.1...HEAD">Unreleased</a></h2>
-<h2 id="011-2023-10-13"><a href="https://github.com/fmatter/pylingdocs/compare/v0.1.0...v0.1.1">0.1.1</a> - 2023-10-13</h2>
+<h2 id="unreleased"><a href="https://github.com/fmatter/pylingdocs/compare/v0.1.2...HEAD">Unreleased</a></h2>
+<h2 id="012-2023-10-27"><a href="https://github.com/fmatter/pylingdocs/compare/v0.1.1...v0.1.2">0.1.2</a> - 2023-10-27</h2>
+<h3 id="added">Added</h3>
+<ul>
+<li>audio in mkdocs</li>
+</ul>
+<h3 id="changed">Changed</h3>
+<ul>
+<li>much simpler custom format setup</li>
+</ul>
 <h3 id="fixed">Fixed</h3>
+<ul>
+<li>bug in CLDF creation</li>
+<li>HTML example IDs</li>
+<li>parsing glosses of the form <code>X._Y.</code> (multi-word glosses of single-word proper names)</li>
+<li>glossing abbreviations</li>
+<li>whitespace in LFTS macro</li>
+<li>template loading</li>
+<li>record numbers</li>
+</ul>
+<h2 id="011-2023-10-13"><a href="https://github.com/fmatter/pylingdocs/compare/v0.1.0...v0.1.1">0.1.1</a> - 2023-10-13</h2>
+<h3 id="fixed_1">Fixed</h3>
 <ul>
 <li>the entire new project template</li>
 <li>a bug with the <code>-targets</code> argument</li>
 <li><code>rich</code> option automatically makes <code>data</code> true</li>
 </ul>
-<h3 id="changed">Changed</h3>
+<h3 id="changed_1">Changed</h3>
 <ul>
 <li><code>extra</code> directory for user material</li>
 <li>also, preview reloading is sensitive to it</li>
 <li><code>extra/landingpage.md</code> and <code>extra/&lt;FORMAT&gt;_landingpage.md</code></li>
 </ul>
 <h2 id="010-2023-10-12"><a href="https://github.com/fmatter/pylingdocs/compare/0.0.12...v0.1.0">0.1.0</a> - 2023-10-12</h2>
-<h3 id="added">Added</h3>
+<h3 id="added_1">Added</h3>
 <ul>
 <li><a href="https://www.mkdocs.org/">mkdocs</a> template</li>
 <li>proper layout (<code>book</code>/<code>article</code>/<code>slides</code>) handling</li>
 </ul>
-<h3 id="fixed_1">Fixed</h3>
+<h3 id="fixed_2">Fixed</h3>
 <ul>
 <li>multipart LaTeX examples</li>
 </ul>
-<h3 id="changed_1">Changed</h3>
+<h3 id="changed_2">Changed</h3>
 <ul>
 <li>more straightforward customization</li>
 <li>configuration with <code>.yaml</code> file rather than <code>.cfg</code></li>
@@ -623,7 +642,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li><code>contents</code> folder is now called <code>docs</code></li>
 </ul>
 <h2 id="0012-2023-07-02"><a href="https://github.com/fmatter/pylingdocs/compare/0.0.11...0.0.12">0.0.12</a> - 2023-07-02</h2>
-<h3 id="added_1">Added</h3>
+<h3 id="added_2">Added</h3>
 <ul>
 <li>table of contents in markdown output</li>
 <li>option to choose LaTeX <code>book</code> template</li>
@@ -635,7 +654,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li><code>bare</code> argument for exrefs</li>
 <li>one-stop solution for example layouting</li>
 </ul>
-<h3 id="fixed_2">Fixed</h3>
+<h3 id="fixed_3">Fixed</h3>
 <ul>
 <li>LaTeX examples</li>
 <li>handling of abbreviations</li>
@@ -646,14 +665,14 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>default table metadata</li>
 <li>datasets without sources work now</li>
 </ul>
-<h3 id="changed_2">Changed</h3>
+<h3 id="changed_3">Changed</h3>
 <ul>
 <li>if undefined, <code>LATEX_TOPLEVEL</code> is determined based on the LaTeX template</li>
 <li>using <a href="https://github.com/fmatter/cldf-ldd/">cldf-ldd</a></li>
 <li>better HTML output</li>
 </ul>
 <h2 id="0011-2022-11-27"><a href="https://github.com/fmatter/pylingdocs/compare/0.0.10...0.0.11">0.0.11</a> - 2022-11-27</h2>
-<h3 id="added_2">Added</h3>
+<h3 id="added_3">Added</h3>
 <ul>
 <li>in the table metadata file, <code>header_column</code> can be set to <code>false</code> if the first column should be treated as a "content" column</li>
 <li>more sophisticated citing facilities</li>
@@ -661,30 +680,30 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>option to create sublime autocompletion data upon project initialization</li>
 </ul>
 <h3 id="removed">Removed</h3>
-<h3 id="changed_3">Changed</h3>
+<h3 id="changed_4">Changed</h3>
 <ul>
 <li>if a non-existing table is requested, a CSV file is generated</li>
 <li>HTML: smaller font sizes for titles</li>
 <li>HTML: center align figures</li>
 <li>HTML: more line spacing in table cells (when using line breaks)</li>
 </ul>
-<h3 id="fixed_3">Fixed</h3>
+<h3 id="fixed_4">Fixed</h3>
 <ul>
 <li>unglossed words don't throw errors</li>
 </ul>
 <h2 id="0010-2022-10-15"><a href="https://github.com/fmatter/pylingdocs/releases/tag/0.0.10">0.0.10</a> - 2022-10-15</h2>
-<h3 id="added_3">Added</h3>
+<h3 id="added_4">Added</h3>
 <ul>
 <li>methods for reading and writing project configuration files</li>
 </ul>
 <h2 id="009-2022-09-19"><a href="https://github.com/fmatter/pylingdocs/releases/tag/0.0.9">0.0.9</a> - 2022-09-19</h2>
-<h3 id="changed_4">Changed</h3>
+<h3 id="changed_5">Changed</h3>
 <ul>
 <li>more informative <code>check</code> function, now with offending files and lines</li>
 <li><code>src</code> and <code>psrc</code> in clld table captions</li>
 <li>lowercase <code>paths</code> and <code>output</code> sections in config file</li>
 </ul>
-<h3 id="fixed_4">Fixed</h3>
+<h3 id="fixed_5">Fixed</h3>
 <ul>
 <li>preview function again</li>
 <li>apply cell decoration to content cells only</li>
@@ -693,21 +712,21 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>make relative path in setup wizard relative to CLDF dataset</li>
 </ul>
 <h2 id="008-2022-08-23"><a href="https://github.com/fmatter/pylingdocs/releases/tag/0.0.8">0.0.8</a> - 2022-08-23</h2>
-<h3 id="added_4">Added</h3>
+<h3 id="added_5">Added</h3>
 <ul>
 <li>sources in sublime text data</li>
 </ul>
-<h3 id="fixed_5">Fixed</h3>
+<h3 id="fixed_6">Fixed</h3>
 <ul>
 <li>preview function</li>
 </ul>
 <h2 id="007-2022-08-20"><a href="https://github.com/fmatter/pylingdocs/releases/tag/0.0.7">0.0.7</a> - 2022-08-20</h2>
-<h3 id="fixed_6">Fixed</h3>
+<h3 id="fixed_7">Fixed</h3>
 <ul>
 <li>default HTML pandoc output should be "html"</li>
 </ul>
 <h2 id="006-2022-08-20"><a href="https://github.com/fmatter/pylingdocs/releases/tag/0.0.6">0.0.6</a> - 2022-08-20</h2>
-<h3 id="added_5">Added</h3>
+<h3 id="added_6">Added</h3>
 <ul>
 <li><code>pre_cell</code> and <code>post_cell</code> keywords in table metadata to apply markdown to entire table</li>
 <li><code>pylingdocs author-config</code> command</li>
@@ -722,12 +741,12 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <ul>
 <li>text cldf metadata (now in <a href="https://github.com/fmatter/clld-corpus-plugin/blob/main/src/clld_corpus_plugin/cldf/TextTable-metadata.json">clld-corpus-plugin</a>)</li>
 </ul>
-<h3 id="changed_5">Changed</h3>
+<h3 id="changed_6">Changed</h3>
 <ul>
 <li>simpler document structure</li>
 </ul>
 <h2 id="005-2022-07-21"><a href="https://github.com/fmatter/pylingdocs/releases/tag/0.0.5">0.0.5</a> - 2022-07-21</h2>
-<h3 id="added_6">Added</h3>
+<h3 id="added_7">Added</h3>
 <ul>
 <li>HTML preview with autorefresh</li>
 <li>preview in CLLD apps with <a href="https://github.com/fmatter/clld-document-plugin">clld-document-plugin</a></li>
@@ -737,18 +756,18 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>language-form-translation-source template</li>
 <li>hide todos in releases</li>
 </ul>
-<h3 id="changed_6">Changed</h3>
+<h3 id="changed_7">Changed</h3>
 <ul>
 <li>table metadata are stored in human-friendlier YAML</li>
 </ul>
-<h3 id="fixed_7">Fixed</h3>
+<h3 id="fixed_8">Fixed</h3>
 <ul>
 <li>don't split articles and slides</li>
 <li>whitespace in github output</li>
 <li>various small things</li>
 </ul>
 <h2 id="004-2022-06-03"><a href="https://github.com/fmatter/pylingdocs/releases/tag/0.0.4">0.0.4</a> - 2022-06-03</h2>
-<h3 id="added_7">Added</h3>
+<h3 id="added_8">Added</h3>
 <ul>
 <li><code>todo</code> text command</li>
 <li>IGT examples as part of manual multipart examples</li>
@@ -759,12 +778,12 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <ul>
 <li>bugs</li>
 </ul>
-<h3 id="changed_7">Changed</h3>
+<h3 id="changed_8">Changed</h3>
 <ul>
 <li>nicer LaTeX memoir template</li>
 </ul>
 <h2 id="003-2022-05-27"><a href="https://github.com/fmatter/pylingdocs/releases/tag/0.0.3">0.0.3</a> - 2022-05-27</h2>
-<h3 id="added_8">Added</h3>
+<h3 id="added_9">Added</h3>
 <ul>
 <li>manual (i.e., non-interlinear) examples (<code>[manex](id)</code>)</li>
 <li>references in LaTeX and HTML IGT examples</li>
@@ -778,7 +797,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <ul>
 <li>many small bugs</li>
 </ul>
-<h3 id="changed_8">Changed</h3>
+<h3 id="changed_9">Changed</h3>
 <ul>
 <li>prettier LaTeX layouting</li>
 <li>HTML layout</li>
@@ -786,7 +805,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>relative file paths, <code>-source</code> should work now</li>
 </ul>
 <h2 id="002-2022-05-20"><a href="https://github.com/fmatter/pylingdocs/releases/tag/0.0.2">0.0.2</a> - 2022-05-20</h2>
-<h3 id="added_9">Added</h3>
+<h3 id="added_10">Added</h3>
 <ul>
 <li>generate data for the <a href="https://github.com/fmatter/pylingdocs-sublime/">Sublime Text plugin</a> with <code>pylingdocs sublime</code></li>
 <li>create a new project with <code>pylingdocs new</code></li>
@@ -819,7 +838,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>CITATION.CFF</li>
 <li>some CLDF metadata (now in <a href="https://github.com/fmatter/clld-morphology-plugin">clld-morphology-plugin</a>)</li>
 </ul>
-<h3 id="changed_9">Changed</h3>
+<h3 id="changed_10">Changed</h3>
 <ul>
 <li>if the <code>structure_file</code> and <code>table_md</code> paths are only files, they are assumed to be in the content and tables folders, respectively </li>
 </ul>
