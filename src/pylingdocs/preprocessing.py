@@ -120,7 +120,7 @@ def render_markdown(
     builder,
     decorate_gloss_string=lambda x: x,
     data_format="cldf",
-    rich=config["output"]["rich"],
+    rich=config["data"]["rich"],
     **kwargs,
 ):
     _load_templates(builder, rich=rich)
