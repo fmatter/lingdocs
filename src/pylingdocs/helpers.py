@@ -408,6 +408,7 @@ def load_cldf_dataset(cldf_path):
             ds.write()
         return ds
     except FileNotFoundError as e:
+        raise e
         log.error(e)
         log.error(
             f"Could not load CLDF dataset from {Path(cldf_path).resolve()}. Please specify a path to a valid CLDF metadata file."  # noqa: E501
@@ -919,11 +920,15 @@ def lfts_link(
     with_translation=config["lfts"]["show_translation"],
     source=None,
     translation=None,
+    italicize=True,
 ):
     out = []
     if with_language:
         out.append(link(rich.language))
-    out.append(link(rich, label="*" + get_rich_label(rich) + "*"))
+    label = get_rich_label(rich)
+    if italicize:
+        label = "*" + label + "*"
+    out.append(link(rich, label=label))
     if with_translation:
         trans = translation or rich["Parameter_ID"]
         if isinstance(trans, list):
@@ -935,12 +940,30 @@ def lfts_link(
     return " ".join(out)
 
 
-def table_label(string):
-    if string.endswith(".csv"):
-        return string.replace(".csv", "")
-    if string.endswith("Table"):
-        return string.replace("Table", "s").lower()
-    raise ValueError(f"Cannot parse component name {string}")
+def table_label(string, source="filename", target="multi"):
+    if source == "filename" or "csv" in string:
+        string = string.replace(".csv", "").rstrip("s")
+    if source == "name" or "Table" in string:
+        string = string.replace("Table", "").lower()
+    if source != "single":
+        name = string.rstrip("s")
+    else:
+        name = string
+    patterns = {
+        "single": "{name}",
+        "multi": "{name}s",
+        "name": "{name}",
+        "filename": "{name}s.csv",
+    }
+    return patterns[target].format(name=name)
+
+
+# def table_label(string):
+#     if string.endswith(".csv"):
+#         return string.replace(".csv", "")
+#     if string.endswith("Table"):
+#         return string.replace("Table", "s").lower()
+#     raise ValueError(f"Cannot parse component name {string}")
 
 
 func_dict = {

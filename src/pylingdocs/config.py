@@ -52,8 +52,9 @@ class Config:
         self.dependents()
 
     def dependents(self):
-        if self.data["data"]["rich"]:
-            self.data["data"]["data"] = True
+        pass
+        # if self.data["data"]["rich"]:
+        #     self.data["data"]["data"] = True
 
     def fix_paths(self):
         for k, v in self.data["paths"].items():

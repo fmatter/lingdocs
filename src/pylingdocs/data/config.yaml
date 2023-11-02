@@ -9,9 +9,7 @@ output: # Output: General options relating to the produced output.
   layout: book # Layout: The layout of the produced document. Options: `book`, `article`, `slides`.
 data: # CLDF data appendix: Create index and detail pages for database entities?
   data: false # This feature is disabled by default.
-# 1. This option will be set to `true` if `rich` below is true
-# 2. You can point this to a different CLDF metadata.json
-# file
+# You can point this to a different CLDF metadata.json file
   rich: false # Rich data: Insert links to this data into the document?
 # (Slow and currently only supported for [MkDocs](/formats#mkdocs)).
   light: false # Light data: Only include entities referenced in document.

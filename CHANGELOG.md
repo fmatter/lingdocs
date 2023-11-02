@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+* allow rich data when called from outside of folder
+
+### Changed
+* table label in detail view
+* I guess you can have output with links in it without writing all the data again
+
 ## [0.1.2] - 2023-10-27
 
 ### Added

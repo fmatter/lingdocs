@@ -13,6 +13,7 @@ from writio import dump, load
 
 from pylingdocs.config import BENCH, CONTENT_FOLDER, EXTRA_DIR, STRUCTURE_FILE, config
 from pylingdocs.formats import builders
+from pylingdocs.helpers import table_label
 from pylingdocs.helpers import (
     _get_relative_file,
     check_abbrevs,
@@ -175,6 +176,7 @@ def write_details(builder, output_dir, dataset, content):
     output_dir.mkdir(exist_ok=True, parents=True)
     func_dict["decorate_gloss_string"] = builder.decorate_gloss_string
     func_dict["ref_labels"] = builder.ref_labels
+    func_dict["table_label"] = table_label
     log.info(
         f"Writing data for {builder.name} to {output_dir.resolve()}, this may take a while. Set data = False in the [data] section of your config file to turn off."
     )
@@ -239,11 +241,8 @@ def write_details(builder, output_dir, dataset, content):
                     for rec in dataset.iter_rows(name)
                 }
             for rid, detail in tqdm(items.items(), desc=name):
-                if config["data"]["light"]:
-                    if rid in content:
-                        print(f":)))))) {rid}")
-                    else:
-                        continue
+                if config["data"]["light"] and rid not in content:
+                    continue
                 filepath = table_dir / f"{rid}.{builder.file_ext}"
                 if filepath.is_file():
                     continue
@@ -252,7 +251,7 @@ def write_details(builder, output_dir, dataset, content):
                     cldf_dict=dataset,
                     loader=detail_loader,
                     func_dict=func_dict,
-                )  # rodo prettify
+                )  # todo prettify
                 if "#cldf" in detail:
                     detail = render(
                         doc=detail,

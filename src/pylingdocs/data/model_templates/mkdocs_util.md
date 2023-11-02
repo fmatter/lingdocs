@@ -83,7 +83,7 @@ personal knowledge
     {% if key == "Source" and val|length != 0%}
         {% set val = src(val[0]) %}
     {% endif %}
-    {% if key == "Morpho_Segments" %}
+    {% if key == "Morpho_Segments" and val is not none %}
         {% set val = "-".join(val) %}
     {% endif %}
 * {{key}}: {{val}}
