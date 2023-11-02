@@ -326,7 +326,7 @@ def create_output(
                 **kwargs,
             )
             pbar.update(1)
-            preprocessed += "\n\n" + builder.reference_list()
+            content += "\n\n" + builder.reference_list()
             # second run to insert reference list
             pbar.update(1)
             content = render_markdown(
