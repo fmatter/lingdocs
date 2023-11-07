@@ -225,43 +225,75 @@ def write_details(builder, output_dir, dataset, content):
             log.warning(f"Not writing details for {name}")
         else:
             table_dir.mkdir(exist_ok=True, parents=True)
+            detail_loader = loader
             # when in detail mode and listing examples, load the in-text example view (instead of linking))
             if label != "examples":
                 detail_loader = loaders[builder.name]["example_in_detail"]
-            else:
-                detail_loader = loader
-
             if name.endswith("Table"):
-                items = {
+                details = {
                     rec.id: f"[]({name}#cldf:{rec.id})" for rec in dataset.objects(name)
                 }
             else:
-                items = {
+                details = {
                     rec["ID"]: f"[]({name}#cldf:{rec['ID']})"
                     for rec in dataset.iter_rows(name)
                 }
-            for rid, detail in tqdm(items.items(), desc=name):
-                if config["data"]["light"] and rid not in content:
-                    continue
-                filepath = table_dir / f"{rid}.{builder.file_ext}"
-                if filepath.is_file():
-                    continue
-                detail = render(
-                    doc="".join(preprocess_cldfviz(detail)),
+            # details = {}
+            # for rid, detail in tqdm(items.items(), desc=name):
+            #     if config["data"]["light"] and rid not in content:
+            #         continue
+            #     details[rid] = detail
+            # filepath = table_dir / f"{rid}.{builder.file_ext}"
+            # if filepath.is_file():
+            #     continue
+            # detail = render(
+            #     doc="".join(preprocess_cldfviz(detail)),
+            #     cldf_dict=dataset,
+            #     loader=detail_loader,
+            #     func_dict=func_dict,
+            # )  # todo prettify
+            # if "#cldf" in detail:
+            #     detail = render(
+            #         doc=detail,
+            #         cldf_dict=dataset,
+            #         loader=text_loader,
+            #         func_dict=func_dict,
+            #     )
+            delim = "\nhundeeier\n"
+            if name != "constructions.csv":
+                details = {
+                    rid: d
+                    for rid, d in details.items()
+                    if not (config["data"]["light"] and rid not in content)
+                }
+            preprocessed = "".join(preprocess_cldfviz(delim.join(details.values())))
+            print(1, len(preprocessed))
+            print(preprocessed)
+            detail_text = render(
+                doc=preprocessed,
+                cldf_dict=dataset,
+                loader=detail_loader,
+                func_dict=func_dict,
+            )  # todo prettify
+            print(2, len(detail_text))
+            print(detail_text)
+            if "#cldf" in detail_text:
+                detail_text = render(
+                    doc=detail_text,
                     cldf_dict=dataset,
-                    loader=detail_loader,
+                    loader=text_loader,
                     func_dict=func_dict,
-                )  # todo prettify
-                if "#cldf" in detail:
-                    detail = render(
-                        doc=detail,
-                        cldf_dict=dataset,
-                        loader=text_loader,
-                        func_dict=func_dict,
-                    )
-                detail = builder.preprocess(detail)
-                if detail.strip() != "":
-                    dump(detail, filepath)
+                )
+            print(3, len(detail_text))
+            detail_texts = builder.preprocess(detail_text).split(delim)
+            print(detail_texts)
+            print(len(detail_texts) == len(details))
+            for (rid, detail), content in tqdm(
+                zip(details.items(), detail_texts), desc=name
+            ):
+                filepath = table_dir / f"{rid}.{builder.file_ext}"
+                if content.strip() != "":
+                    dump(content, filepath)
     if model_index:
         dump(
             "# Data\n\n" + "\n".join(model_index),
