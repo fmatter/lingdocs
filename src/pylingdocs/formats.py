@@ -177,12 +177,12 @@ class OutputFormat:
             "ref_locations": str(ref_locations),
             "data": config["output"]["data"],
             "layout": config["output"]["layout"],
+            "conf": config.data.get(cls.name, {}),
         }
         if "authors" in metadata:
             extra["author"] = cls.author_list(metadata["authors"])
         else:
             extra["author"] = cls.author_list([])
-
         if content is not None:
             content = content.replace("![](", "![](images/")
             content = cls.preprocess(content)
@@ -191,9 +191,7 @@ class OutputFormat:
         landingpage_path = source_dir / EXTRA_DIR / f"landingpage_{cls.name}.md"
         if landingpage_path.is_file():
             extra["landingpage"] = load(landingpage_path)
-
         extra.update(**metadata)
-
         template_path = cls.get_layout_path()
         cookiecutter(
             template_path,

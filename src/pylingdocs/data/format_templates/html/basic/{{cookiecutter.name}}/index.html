@@ -60,6 +60,8 @@
             alignment.innerHTML = plotWord(alignment.innerHTML, 'span');
         }
     </script>
-
+{% if cookiecutter.conf.get("hypothes.is") %}
+<script src="https://hypothes.is/embed.js" async></script>
+{% endif %}
 </body>
 </html> 

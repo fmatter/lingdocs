@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+* [hypothe.is](https://hypothes.is/) functionality for HTML
+
 ## [0.1.2] - 2023-10-27
 
 ### Added
