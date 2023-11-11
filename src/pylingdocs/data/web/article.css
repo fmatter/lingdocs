@@ -71,13 +71,13 @@ article.dd {
 }
 
 article {
-  font-family: 'Latin Modern', Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-family: "Latin Modern", Georgia, Cambria, "Times New Roman", Times, serif;
   line-height: 1.8;
 
   max-width: 80ch;
   min-height: 100vh;
   overflow-x: hidden;
-/*  margin: 0 auto;*/
+  /*  margin: 0 auto;*/
   margin-right: 20%;
   padding: 2rem 1.25rem;
 
@@ -86,14 +86,14 @@ article {
   text-rendering: optimizeLegibility;
 }
 
-article img{
+article img {
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
 article figcaption {
-    text-align: center;
+  text-align: center;
 }
 
 /* Justify and hyphenate all paragraphs */
@@ -152,7 +152,10 @@ article h6 {
   margin-top: 2.5rem;
 }
 
-article h3, h4, h5, h6 {
+article h3,
+h4,
+h5,
+h6 {
   line-height: 1.625rem;
 }
 
@@ -160,7 +163,9 @@ article h1 + h2 {
   margin-top: 1.625rem;
 }
 
-article h2 + h3, h3 + h4, h4 + h5 {
+article h2 + h3,
+h3 + h4,
+h4 + h5 {
   margin-top: 0.8rem;
 }
 
@@ -168,28 +173,30 @@ article h5 + h6 {
   margin-top: -0.8rem;
 }
 
-article h2, h3, h4, h5, h6 {
+article h2,
+h3,
+h4,
+h5,
+h6 {
   margin-bottom: 0.8rem;
 }
 
 /*end of latex.css*/
 
+/*adapted from https://code-boxx.com/collapsible-list-html-css-js/#sec-download*/
+/* (A) CONTAINER */
+.collapse,
+.collapse ul {
+  list-style-type: none;
+  padding-left: 10px;
+}
 
-
-      /*adapted from https://code-boxx.com/collapsible-list-html-css-js/#sec-download*/
-      /* (A) CONTAINER */
-      .collapse,
-      .collapse ul {
-        list-style-type: none;
-        padding-left: 10px;
-    }
-
-    /* (C) TOGGLE */
-    .toggleWrap {
-        /*  padding: 10px;*/
-        cursor: pointer;
-    }
-      /*.toggleWrap::before {
+/* (C) TOGGLE */
+.toggleWrap {
+  /*  padding: 10px;*/
+  cursor: pointer;
+}
+/*.toggleWrap::before {
   display: inline-block;
   width: 15px;
   content: "🞂";
@@ -198,103 +205,100 @@ article h2, h3, h4, h5, h6 {
 
 /* (D) SHOW/HIDE */
 .collapse ol {
-    display: none;
+  display: none;
 }
 .toggleWrap.show + ol {
-    display: block;
+  display: block;
 }
 
 /* 1. Enable smooth scrolling */
 html {
-    /*  scroll-behavior: smooth;*/
+  /*  scroll-behavior: smooth;*/
 }
 
 /* 2. Make nav sticky */
 nav {
-    position: sticky;
-    top: 2rem;
-    align-self: start;
+  position: sticky;
+  top: 2rem;
+  align-self: start;
 }
 
 /* 3. ScrollSpy active styles (see JS tab for activation) */
 .toc li.active > span > a {
-    color: #333;
-    font-weight: 500;
+  color: #333;
+  font-weight: 500;
 }
 
 .toc li.active > a {
-    color: #333;
-    font-weight: 500;
+  color: #333;
+  font-weight: 500;
 }
 
 .toc div {
-    text-decoration: none;
-    display: block;
-    padding: 0.125rem 0;
-    color: #ccc;
-    transition: all 50ms ease-in-out; /* 💡 This small transition makes setting of the active state smooth */
+  text-decoration: none;
+  display: block;
+  padding: 0.125rem 0;
+  color: #ccc;
+  transition: all 50ms ease-in-out; /* 💡 This small transition makes setting of the active state smooth */
 }
 
 /* Sidebar Navigation */
 .toc {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 .toc a {
-    text-decoration: none;
-    display: block;
-    padding: 0.125rem 0;
-    color: #ccc;
-    transition: all 50ms ease-in-out; /* 💡 This small transition makes setting of the active state smooth */
+  text-decoration: none;
+  display: block;
+  padding: 0.125rem 0;
+  color: #ccc;
+  transition: all 50ms ease-in-out; /* 💡 This small transition makes setting of the active state smooth */
 }
 
 .toc a:hover,
 .toc a:focus {
-    color: #666;
+  color: #666;
 }
 
 /** Poor man's reset **/
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html,
 body {
-    background: #fff;
+  background: #fff;
 }
 
 ul,
 ol {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 li {
-    margin-left: 1rem;
+  margin-left: 1rem;
 }
 
 h1 {
-    font-weight: 300;
+  font-weight: 300;
 }
 
 /** page layout **/
 main {
-    display: grid;
-    grid-template-columns: 20em 1fr;
-    max-width: 100em;
-    width: 90%;
-    margin: 0;
+  display: grid;
+  grid-template-columns: 20em 1fr;
+  max-width: 100em;
+  width: 90%;
+  margin: 0;
 }
 
-
-
-sidenote, .sidenote {
- display: inline;
- float: right;
- position: relative;
- width: 20vw;
- margin-right: -10vw;
- font-size: 16px;
+sidenote,
+.sidenote {
+  display: inline;
+  float: right;
+  position: relative;
+  width: 20vw;
+  margin-right: -10vw;
+  font-size: 16px;
 }
-
-
