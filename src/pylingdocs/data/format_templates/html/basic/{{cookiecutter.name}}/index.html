@@ -113,12 +113,37 @@
       /** page layout **/
       main {
         display: grid;
-        grid-template-columns: 15em 1fr;
+        grid-template-columns: 20em 1fr;
         max-width: 100em;
         width: 90%;
-        margin: 0 auto;
+        margin: 0;
       }
     </style>
+  </head>
+  <body>
+    <main>
+      <div>
+        <nav class="toc">
+          <ol id="nav-items" class="collapse"></ol>
+        </nav>
+      </div>
+      <div>
+        <article>
+          <h1>{{ cookiecutter.project_title }}</h1>
+          <div class="author">{{ cookiecutter.author }}</div>
+          <div class="version">version {{ cookiecutter.version }}</div>
+          {% if cookiecutter.abstract %}
+          <div class="abstract">
+            <b>Abstract</b>
+            <p>{{ cookiecutter.abstract }}</p>
+          </div>
+          {% endif %} {{ cookiecutter.content }}
+          <script>
+            {{cookiecutter.glossing_abbrevs}}
+          </script>
+        </article>
+      </div>
+    </main>
     <script src="examples.js"></script>
     <script src="glossing.js"></script>
     <script src="crossref.js"></script>
@@ -146,9 +171,8 @@
         }
       });
       repl = { "🞃 ": "🞂 ", "🞂 ": "🞃 " };
-      function toggle(tog) {
+      function toggleArrow(tog) {
         tog.innerHTML = repl[tog.innerHTML];
-        tog.parentNode.classList.toggle("show");
       }
 
       var nav = document.getElementById("nav-items"); // get the div holding our eventual table of contents
@@ -157,20 +181,15 @@
         target.classList.remove("active");
         if (target.children[0].classList.contains("toggleWrap")) {
           target.children[0].classList.remove("show");
-        } else {
-          console.log("how to collapse?");
-          console.log(target);
+          toggleArrow(target.children[0].children[0])  
         }
       }
 
       function expand(target) {
         target.classList.add("active");
         if (target.children[0].classList.contains("toggleWrap")) {
+          toggleArrow(target.children[0].children[0])  
           target.children[0].classList.add("show");
-          // target.innerHTML = repl[.innerHTML]
-        } else {
-          console.log("how to expand?");
-          console.log(target);
         }
       }
 
@@ -182,10 +201,8 @@
             const id = entry.target.getAttribute("id");
             target = document.querySelector(`nav [id="nav-${id}"]`);
             if (entry.intersectionRatio > 0) {
-              // console.log("activating "+ id)
               expand(target);
             } else {
-              // console.log("collapsing "+ id)
               collapse(target);
             }
           });
@@ -202,7 +219,8 @@
           tog.classList.add("toggle");
           tog.innerHTML = "🞂 ";
           tog.onclick = function () {
-            toggle(tog);
+            tog.parentNode.classList.toggle("show");
+            toggleArrow(tog);
           };
           i.previousSibling.style = "display: inline;";
           let line = document.createElement("span");
@@ -213,34 +231,5 @@
         }
       });
     </script>
-  </head>
-  <body>
-    <main>
-      <div>
-        <nav class="toc">
-          <ol id="nav-items" class="collapse"></ol>
-        </nav>
-      </div>
-      <div>
-        <article>
-          <h1>{{ cookiecutter.project_title }}</h1>
-          <div class="author">{{ cookiecutter.author }}</div>
-          <div class="version">version {{ cookiecutter.version }}</div>
-          {% if cookiecutter.abstract %}
-          <div class="abstract">
-            <b>Abstract</b>
-            <p>{{ cookiecutter.abstract }}</p>
-          </div>
-          {% endif %} {{ cookiecutter.content }}
-          <script>
-            {
-              {
-                cookiecutter.glossing_abbrevs;
-              }
-            }
-          </script>
-        </article>
-      </div>
-    </main>
   </body>
 </html>
