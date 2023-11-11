@@ -1,4 +1,4 @@
-// FM: from https://github.com/tupian-language-resources/tular/blob/8f1b79ea56ddf2972035edb4c4e27a50884bf0ec/tular/static/alignment.js
+// fm: copied from https://github.com/tupian-language-resources/tular/blob/8f1b79ea56ddf2972035edb4c4e27a50884bf0ec/tular/static/alignment.js
 
 /* Highlight Module of DIGHL.js
  *
