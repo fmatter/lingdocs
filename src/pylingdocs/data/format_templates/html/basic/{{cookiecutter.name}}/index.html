@@ -8,16 +8,129 @@
     <link rel="stylesheet" href="alignment.css">
     <link rel="stylesheet" href="glossing.css">
     <title>{{ cookiecutter.project_title }}</title>
+    <style>
+
+/*adapted from https://code-boxx.com/collapsible-list-html-css-js/#sec-download*/
+        /* (A) CONTAINER */
+.collapse, .collapse ul {
+  list-style-type: none;
+  padding-left: 10px;
+}
+
+/* (C) TOGGLE */
+.toggleWrap {
+/*  padding: 10px;*/
+  cursor: pointer;
+}
+/*.toggleWrap::before {
+  display: inline-block;
+  width: 15px;
+  content: "🞂";
+}*/
+/*.toggleWrap.show::before { content: "🞃"; }*/
+
+/* (D) SHOW/HIDE */
+.collapse ol { display: none; }
+.toggleWrap.show + ol { display: block; }
+
+
+/* 1. Enable smooth scrolling */
+html {
+/*  scroll-behavior: smooth;*/
+}
+
+/* 2. Make nav sticky */
+nav {
+  position: sticky;
+  top: 2rem;
+  align-self: start;
+}
+
+/* 3. ScrollSpy active styles (see JS tab for activation) */
+.toc li.active > span > a {
+  color: #333;
+  font-weight: 500;
+}
+
+.toc li.active > a {
+  color: #333;
+  font-weight: 500;
+}
+
+
+.toc div {
+  text-decoration: none;
+  display: block;
+  padding: .125rem 0;
+  color: #ccc;
+  transition: all 50ms ease-in-out; /* 💡 This small transition makes setting of the active state smooth */
+}
+
+/* Sidebar Navigation */
+.toc {
+  padding-left: 0;
+}
+
+.toc a {
+  text-decoration: none;
+  display: block;
+  padding: .125rem 0;
+  color: #ccc;
+  transition: all 50ms ease-in-out; /* 💡 This small transition makes setting of the active state smooth */
+}
+
+.toc a:hover,
+.toc a:focus {
+  color: #666;
+}
+
+/** Poor man's reset **/
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  background: #fff;
+}
+
+
+ul, ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+li {
+  margin-left: 1rem;
+}
+
+h1 {
+  font-weight: 300;
+}
+
+/** page layout **/
+main {
+  display: grid;
+  grid-template-columns: 15em 1fr;
+  max-width: 100em;
+  width: 90%;
+  margin: 0 auto;
+}
+
+    </style>
 </head>
 <body>
+    <main>
+        <div>
+         <nav class="toc">
+            <ol id="nav-items" class="collapse">
+            </ol>
+        </nav>
+    </div>
+    <div>
     <article>
         <h1>{{ cookiecutter.project_title }}</h1>
         <div class="author">{{ cookiecutter.author }}</div>
         <div class="version"> version {{ cookiecutter.version }} </div>
-        <div id="toc-wrapper">
-            <button onclick="toggleTOC()">Toggle TOC</button>
-            <div id="toc"></div>
-        </div>
         {% if cookiecutter.abstract %}
         <div class="abstract">
             <b>Abstract</b>
@@ -32,7 +145,7 @@
             {{ cookiecutter.glossing_abbrevs }}
         </script>
     </article>
-
+</div>
     <script src="examples.js"></script> 
     <script src="glossing.js"></script> 
     <script src="crossref.js"></script>
@@ -43,6 +156,14 @@
         numberSections()
         numberCaptions()
         resolveCrossrefs()
+    </script>
+    <script type="text/javascript">
+document.querySelectorAll('.subitems').forEach(function(subitems) {
+        if (subitems.children.length == 0){
+            subitems.parentNode.removeChild(subitems);
+        }
+});
+
     </script>
     <script>
         function toggleTOC() {
@@ -63,5 +184,79 @@
 {% if cookiecutter.conf.get("hypothes.is") %}
 <script src="https://hypothes.is/embed.js" async></script>
 {% endif %}
+<script type="text/javascript">
+        repl = {"🞃 ": "🞂 ", "🞂 ": "🞃 "}
+    function toggle(tog){
+        tog.innerHTML = repl[tog.innerHTML]
+        tog.parentNode.classList.toggle("show");
+    }
+</script>
+<script type="text/javascript">
+    var nav = document.getElementById("nav-items") // get the div holding our eventual table of contents
+
+function collapse(target){
+    target.classList.remove('active');
+    if (target.children[0].classList.contains("toggleWrap")){
+        target.children[0].classList.remove("show")
+    } else{
+        console.log("how to collapse?")
+        console.log(target)
+    }
+}
+
+function expand(target){
+    target.classList.add('active');
+    if (target.children[0].classList.contains("toggleWrap")){
+        target.children[0].classList.add("show")
+        // target.innerHTML = repl[.innerHTML]
+    } else{
+        console.log("how to expand?")
+        console.log(target)
+    }
+}
+
+
+function modifyTOC(target){}
+
+
+window.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            const id = entry.target.getAttribute('id');
+            target = document.querySelector(`nav [id="nav-${id}"]`)
+            if (entry.intersectionRatio > 0) {
+                // console.log("activating "+ id)
+                expand(target)
+            } else {
+                // console.log("collapsing "+ id)
+                collapse(target)
+            }
+        });
+    });
+  // Track all sections that have an `id` applied
+  // document.querySelectorAll("h2, h3, h4, h5, h6").forEach((section) => {
+  document.querySelectorAll('section[id]').forEach((section) => {
+    observer.observe(section);
+  });
+});
+</script>
+<script type="text/javascript">
+    window.addEventListener("load", () => {
+  for (let i of document.querySelectorAll(".collapse ol")) {
+    let tog = document.createElement("span");
+    tog.classList.add("toggle")
+    tog.innerHTML = "🞂 "
+    tog.onclick = function(){toggle(tog)}; 
+    i.previousSibling.style = "display: inline;"
+
+    let line = document.createElement("span")
+    line.classList.add("toggleWrap")
+    line.appendChild(tog)   
+    line.appendChild(i.previousSibling);
+
+    i.parentElement.insertBefore(line, i);
+  }
+});
+</script>
 </body>
 </html> 

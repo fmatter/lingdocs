@@ -470,7 +470,7 @@ for (var i = 0; i < targets.length; i++) {{
             content,
             output_format="html",
             input_format="markdown",
-            extra_args=["--shift-heading-level-by=1"],
+            extra_args=["--shift-heading-level-by=1", "--section-divs"],
         )
         unresolved_labels = re.findall(r"{#(.*?)}", html_output)
         if unresolved_labels:
