@@ -1,0 +1,68 @@
+.collapse,
+.collapse ul {
+  list-style-type: none;
+  padding-left: 10px;
+}
+
+.toggleWrap {
+  cursor: pointer;
+}
+.collapse ol {
+  display: none;
+}
+.toggleWrap.show + ol {
+  display: block;
+}
+
+/*adapted from https://css-tricks.com/sticky-table-of-contents-with-scrolling-active-states/*/
+/* 1. Enable smooth scrolling */
+
+/*html {
+    scroll-behavior: smooth;
+}*/
+
+/* 2. Make nav sticky */
+nav {
+  position: sticky;
+  top: 2rem;
+  align-self: start;
+}
+
+/* 3. ScrollSpy active styles (see JS tab for activation) */
+.toc li.active > span > a {
+  color: #333;
+  font-weight: 500;
+}
+
+.toc li.active > a {
+  color: #333;
+  font-weight: 500;
+}
+
+.toc div {
+  text-decoration: none;
+  display: block;
+  padding: 0.125rem 0;
+  color: #ccc;
+  transition: all 50ms ease-in-out; /* 💡 This small transition makes setting of the active state smooth */
+}
+
+/* Sidebar Navigation */
+.toc {
+  padding-left: 0;
+}
+
+.toc a {
+  text-decoration: none;
+  display: block;
+  padding: 0.125rem 0;
+  color: #ccc;
+  transition: all 50ms ease-in-out; /* 💡 This small transition makes setting of the active state smooth */
+}
+
+.toc a:hover,
+.toc a:focus {
+  color: #666;
+}
+
+

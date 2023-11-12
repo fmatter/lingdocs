@@ -33,10 +33,8 @@ Apart from database references, discussed in [ref](sec:sources), there are a num
     * or bare: [exref](tri-1?bare)
 * glosses: [gl](acc)
 * todos: [todo](we need to talk about this)
-* tables (with automatically generated table labels like [ref](tab:consonants)):
+* tables and figures (with automatically generated table labels like [ref](tab:consonants) and [ref](fig:cognates)):
 
 [table](consonants)
-
-* figures (with automatically generated table labels like [ref](fig:cognates)):
 
 [figure](cognates)

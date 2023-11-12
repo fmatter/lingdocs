@@ -14,6 +14,8 @@
 
 [ex](tri-1?source=Sérgio Meira, p.c.)
 
+[ex](ekiri-14)
+
 # Manual examples
 
 Sometimes you want a non-interlinear example, maybe with a form, or a simple list, or a table.

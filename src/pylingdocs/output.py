@@ -27,6 +27,7 @@ from pylingdocs.helpers import (
 )
 from pylingdocs.postprocessing import postprocess
 from pylingdocs.preprocessing import (
+    _load_templates,
     loaders,
     preprocess,
     preprocess_cldfviz,
@@ -155,14 +156,16 @@ def check_ids(contents, dataset, source_dir):
         log.info("No missing IDs found.")
 
 
-def write_details(builder, output_dir, dataset):
+def write_details(builder, output_dir, dataset, rich=False):
+    if len(loaders) == 0:
+        _load_templates(builder, rich=True)
     loader = loaders[builder.name]["data"]
     text_loader = loaders[builder.name]["text"]
     output_dir = output_dir / builder.name / builder.data_dir
     output_dir.mkdir(exist_ok=True, parents=True)
     func_dict["decorate_gloss_string"] = builder.decorate_gloss_string
     func_dict["ref_labels"] = builder.ref_labels
-    if config["output"]["rich"]:
+    if rich or config["output"]["rich"]:
         data = CLDFDataset(dataset, orm=True)
         func_dict["data"] = data
         table_list = list((k, v, v.name) for k, v in data.tables.items())
