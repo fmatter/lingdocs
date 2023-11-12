@@ -1,6 +1,6 @@
 {% if cookiecutter.layout == "book" %}nav:
-  - Home: index.md
-  - Description:{% for chapter in cookiecutter.chapters %}
+  - About: index.md
+  - Chapters:{% for chapter in cookiecutter.chapters %}
     - '{{ chapter }}.md'{% endfor %}
     - 'references.md'{% if cookiecutter.data %}
   - Data: data{% endif %}

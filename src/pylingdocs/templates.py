@@ -5,6 +5,7 @@ from writio import load
 from pylingdocs.config import DATA_DIR, PLD_DIR, config
 
 log = logging.getLogger(__name__)
+# log.setLevel(logging.DEBUG)
 
 
 def _fn(base, m, f, v, r):
@@ -110,17 +111,20 @@ def find_template(model, builder, view, rich=config["output"]["rich"]):
     # input(cands.to_string())
 
     for b, m, f in _candidates(base, custom_base, model, builder):
+        log.debug(f"{b}:{m}/{f}")
         path = _fn(b, m.name, f.name, view, r=rich)
         if path.is_file():
             log.debug(f"Using template {path} for {model.name}/{builder.name}_{view}")
             return path
     for b, m, f in _candidates(base, custom_base, model, builder):
-        path = _fn(b, m.name, f.name, view, r=not rich)
-        if path.is_file():
-            log.debug(f"Using template {path} for {model.name}/{builder.name}_{view}")
-            return path
+        poor_path = _fn(b, m.name, f.name, view, r=not rich)
+        if poor_path.is_file():
+            log.debug(
+                f"Using template {poor_path} for {model.name}/{builder.name}_{view}"
+            )
+            return poor_path
     log.warning(
-        f"No template found for {model.name}/{builder.name}_{view} (last try {path})"
+        f"No template found for {model.name}/{builder.name}_{view} (last tries {path} and {poor_path})"
     )
     return None
 

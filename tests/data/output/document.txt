@@ -43,7 +43,8 @@ pylingdocs-specific commands, all patterning like links:
     -   or bare: (3)
 -   glosses: ACC
 -   todos: [todo: we need to talk about this]
--   tables (with automatically generated table labels like Table 3.1):
+-   tables and figures (with automatically generated table labels like
+    Table 3.1 and Figure 3.1):
 
 Table 3.1: Consonant phonemes of Yawarana:
 
@@ -60,8 +61,6 @@ Table 3.1: Consonant phonemes of Yawarana:
 
   glide       /w /                      /y/                   
   -----------------------------------------------------------------------
-
--   figures (with automatically generated table labels like Figure 3.1):
 
 (Figure 3.1: figures/cognates.jpg)
 
@@ -131,16 +130,22 @@ Interlinear examples
     tapir  3-super  NPST-COP-NPST  bow
     ‘The bow was stronger than the tapir.’
 
+(8) (ekiri-14)
+    tɨmo-ŋmo  arawɨ-rem-kom  an-k-aŋ-tom        man  i-mu-n        emt͡ʃi-n       e-muje      keni  niŋkɨn  e-mnop-towo=ge     kɨkɨkɨ      an-k-aŋ-tom        man
+    AUX-PL    begin-NMLZ-PL  3-say-REM.CONT-PL  AFF  3>3-son-PERT  daughter-PERT  3POSS-wife  REL   PL      3>3-mock-NMLZ=INS  IDEO.laugh  3-say-REM.CONT-PL  AFF
+    ‘His family, his son, his daughter, his wife started laughing
+    (because of all this). Hahaha! They laughed.’
+
 Manual examples
 
 Sometimes you want a non-interlinear example, maybe with a form, or a
 simple list, or a table.
 
-(8) 
+(9) 
 
 eis
 
-(9) 
+(10) 
 
 zwöi
 

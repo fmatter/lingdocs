@@ -13,7 +13,6 @@ from cookiecutter.main import cookiecutter
 from jinja2 import Environment, PackageLoader
 from jinja2.exceptions import TemplateNotFound
 from mkdocs.commands.serve import serve
-
 from mkdocs.config import load_config
 from slugify import slugify
 from tqdm import tqdm
@@ -53,7 +52,9 @@ def blank_todo(url, **_kwargs):
 def html_todo(url, **kwargs):
     if kwargs.get("release", False):
         return ""
+    return f"<span class='sidenote'>to do: {url}</span>"
     if "?" in str(url):
+        return "sidenote<span class='sidenote'>{url}</span>"
         return f"<span title='{url}'>❓</span>"
     return f"<span title='{url}'>❗️</span>"
 
@@ -178,12 +179,12 @@ class OutputFormat:
             "ref_locations": str(ref_locations),
             "data": config["output"]["data"],
             "layout": config["output"]["layout"],
+            "conf": config.data.get(cls.name, {}),
         }
         if "authors" in metadata:
             extra["author"] = cls.author_list(metadata["authors"])
         else:
             extra["author"] = cls.author_list([])
-
         if content is not None:
             content = content.replace("![](", "![](images/")
             content = cls.preprocess(content)
@@ -192,9 +193,7 @@ class OutputFormat:
         landingpage_path = source_dir / EXTRA_DIR / f"landingpage_{cls.name}.md"
         if landingpage_path.is_file():
             extra["landingpage"] = load(landingpage_path)
-
         extra.update(**metadata)
-
         template_path = cls.get_layout_path()
         cookiecutter(
             template_path,
@@ -473,7 +472,7 @@ for (var i = 0; i < targets.length; i++) {{
             content,
             output_format="html",
             input_format="markdown",
-            extra_args=["--shift-heading-level-by=1"],
+            extra_args=["--shift-heading-level-by=1", "--section-divs"],
         )
         unresolved_labels = re.findall(r"{#(.*?)}", html_output)
         if unresolved_labels:

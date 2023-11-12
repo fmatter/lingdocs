@@ -20,8 +20,8 @@ from writio import dump, load
 from pylingdocs.config import (
     CONTENT_FOLDER,
     DATA_DIR,
-    FIGURE_DIR,
     EXTRA_DIR,
+    FIGURE_DIR,
     STRUCTURE_FILE,
     TABLE_DIR,
     config,
@@ -417,6 +417,7 @@ def load_cldf_dataset(cldf_path):
 
 def get_structure(structure_file, prefix_mode=None):
     counters = {1: 0, 2: 0, 3: 0, 4: 0}
+    print(structure_file)
     files = load(structure_file)
     if not files:
         log.error(
@@ -448,7 +449,7 @@ def get_structure(structure_file, prefix_mode=None):
     return contents
 
 
-def load_content(source_dir=".", structure_file="."):
+def load_content(source_dir="docs", structure_file="docs/structure.yaml"):
     contents = get_structure(
         prefix_mode="", structure_file=structure_file
     )  # todo config

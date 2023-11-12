@@ -1,38 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="examples.css">
-    <link rel="stylesheet" href="styling.css">
-    <link rel="stylesheet" href="tables.css">
-    <link rel="stylesheet" href="alignment.css">
-    <link rel="stylesheet" href="glossing.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pylingdocs: A Demo</title>
+    <link rel="stylesheet" href="article.css"/>
+    <link rel="stylesheet" href="tables.css"/>
+    <link rel="stylesheet" href="examples.css"/>
+    <link rel="stylesheet" href="glossing.css"/>
+    <link rel="stylesheet" href="alignment.css"/>
+    <link rel="stylesheet" href="toc.css"/>
+    <style>
+        main {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          max-width: 120em;
+          width: 100%;
+          margin: 0;
+        }
+            article {
+                margin: 0 auto;     /*centers main on page*/
+                padding-right: 30%;
+            }
+
+    </style>
+    <script src="examples.js"></script>
+    <script src="glossing.js"></script>
+    <script src="crossref.js"></script>
+    <script src="alignment.js"></script>
+    <script type="text/javascript" src="https://livejs.com/live.js"></script>
+    
+    <script src="https://hypothes.is/embed.js" async></script>
+    
 </head>
 <body>
-    <article>
-        <h1>Pylingdocs: A Demo</h1>
-        <div class="author">Florian Matter</div>
-        <div class="version"> version 0.0.1.draft </div>
-        <div id="toc-wrapper">
-            <button onclick="toggleTOC()">Toggle TOC</button>
-            <div id="toc"></div>
+    <main>
+        <div>
+            <nav class="toc">
+                <ol id="nav-items" class="collapse"></ol>
+            </nav>
         </div>
-        
-        <div class="abstract">
-            <b>Abstract</b>
-            <p>
-                This is a short document demonstrating the capabilities (and limits?) of pylingdocs.
-            </p>
-        </div>
-        
-
-        <h2 id="sec:intro">Introduction</h2>
+        <article>
+            <h1>Pylingdocs: A Demo</h1>
+            <div class="version">v0.0.1.draft</div>
+            <div class="author">Florian Matter</div>
+            
+            <div class="abstract">
+                <b>Abstract</b>
+                <p>This is a short document demonstrating the capabilities (and limits?) of pylingdocs.</p>
+            </div>
+             <section id="sec:intro" class="level2">
+<h2>Introduction</h2>
 <p>This document does double service as a test for
 <code>pylingdocs</code> and a showcase of its capabilities. It aims to
 demonstrate every feature and model currently available in
 <code>pylingdocs</code>.</p>
-<h2 id="common-markdown">Common markdown</h2>
+</section>
+<section id="common-markdown" class="level2">
+<h2>Common markdown</h2>
 <p>You can use all the familiar markdown components. Here is a link to
 the <a href="https://github.com/fmatter/pylingdocs/">pylingdocs github
 repo</a>. Here is some <strong>bold</strong> and <em>italic</em> and
@@ -59,7 +84,9 @@ axis seem to be conceptually different concerns, even if we were to
 assume that there are principies favouring one direction over the other.
 (<a href="#source-alvarez1998split">Álvarez 1997</a>: 71)</p>
 </blockquote>
-<h2 id="pld-md">Pylingdocs markdown</h2>
+</section>
+<section id="pld-md" class="level2">
+<h2>Pylingdocs markdown</h2>
 <p>Apart from database references, discussed in
 <a href='#sec:sources' class='crossref' name='sec:sources' >ref</a>,
 there are a number of <code>pylingdocs</code>-specific commands, all
@@ -79,9 +106,12 @@ corresponding <code>label</code> commands</li>
 </ul></li>
 <li>glosses: <span class="gloss">acc<span
 class="tooltiptext gloss-acc"></span></span></li>
-<li>todos: <span title="we need to talk about this">❗️</span></li>
-<li>tables (with automatically generated table labels like
-<a href='#tab:consonants' class='crossref' name='tab:consonants' >ref</a>):</li>
+<li>todos: <span class="sidenote">to do: we need to talk about
+this</span></li>
+<li>tables and figures (with automatically generated table labels like
+<a href='#tab:consonants' class='crossref' name='tab:consonants' >ref</a>
+and
+<a href='#fig:cognates' class='crossref' name='fig:cognates' >ref</a>):</li>
 </ul>
 <table border="1" class="dataframe">
 <caption class="table" id="tab:consonants">
@@ -197,18 +227,17 @@ glide
 </tr>
 </tbody>
 </table>
-<ul>
-<li>figures (with automatically generated table labels like
-<a href='#fig:cognates' class='crossref' name='fig:cognates' >ref</a>):</li>
-</ul>
 <figure>
 <img src="figures/cognates.jpg" alt="Cognate identification strategy" />
 <figcaption id="fig:cognates" aria-hidden="true">
 Cognate identification strategy
 </figcaption>
 </figure>
-<h2 id="sec:data">Other linguistic data</h2>
-<h3 id="native-cldf-components">Native CLDF components</h3>
+</section>
+<section id="sec:data" class="level2">
+<h2>Other linguistic data</h2>
+<section id="native-cldf-components" class="level3">
+<h3>Native CLDF components</h3>
 <ul>
 <li>forms: Tiriyó <i>pakoro se wae</i> ‘I want a house’ (<a
 href="#source-triomeira1999">Meira 1999</a>: 417)</li>
@@ -216,7 +245,9 @@ href="#source-triomeira1999">Meira 1999</a>: 417)</li>
 <li>cognate sets:</li>
 </ul>
 <p>None</p>
-<h3 id="non-native-components">Non-native components</h3>
+</section>
+<section id="non-native-components" class="level3">
+<h3>Non-native components</h3>
 <p>Tiriyó <i>-e</i> ‘<span class="gloss">sup<span
 class="tooltiptext gloss-sup"></span></span>’ (<a
 href="#source-triomeira1999">Meira 1999</a>: 327) is a variant of Tiriyó
@@ -235,7 +266,10 @@ translation, try Tiriyó <i>kure</i> ‘good’ (<a
 href="#source-triomeira1999">Meira 1999</a>: 345).</p></li>
 <li><p>This dataset contains the Ikpeng text The old man.</p></li>
 </ul>
-<h2 id="interlinear-examples">Interlinear examples</h2>
+</section>
+</section>
+<section id="interlinear-examples" class="level2">
+<h2>Interlinear examples</h2>
 <ol class="example">
 <li class=example id ="ekiri-13">
   <div class="interlinear-wrapper">
@@ -443,7 +477,70 @@ href="#source-triomeira1999">Meira 1999</a>: 345).</p></li>
   </div>
 </li>
 </ol>
-<h2 id="manual-examples">Manual examples</h2>
+<ol class="example">
+<li class=example id ="ekiri-14">
+  <div class="interlinear-wrapper">
+    <div class="preamble"> Ikpeng  </div>
+        <div class="text">tïmongmo arawïremkom ankangtom man imun emtxin emuye keni ningkïn emnoptowoge: Kïkïkï ankangtom man.</div>
+        <div class="interlinear">
+          <span class="obj">tɨmo-ŋmo</span>
+          <span class="gls"><span class="gloss">aux<span class="tooltiptext gloss-aux" ></span></span>-<span class="gloss">pl<span class="tooltiptext gloss-pl" ></span></span></span>
+        </div>
+        <div class="interlinear">
+          <span class="obj">arawɨ-rem-kom</span>
+          <span class="gls">begin-<span class="gloss">nmlz<span class="tooltiptext gloss-nmlz" ></span></span>-<span class="gloss">pl<span class="tooltiptext gloss-pl" ></span></span></span>
+        </div>
+        <div class="interlinear">
+          <span class="obj">an-k-aŋ-tom</span>
+          <span class="gls"><span class="gloss">3<span class="tooltiptext gloss-3" ></span></span>-say-<span class="gloss">rem<span class="tooltiptext gloss-rem" ></span></span>.<span class="gloss">cont<span class="tooltiptext gloss-cont" ></span></span>-<span class="gloss">pl<span class="tooltiptext gloss-pl" ></span></span></span>
+        </div>
+        <div class="interlinear">
+          <span class="obj">man</span>
+          <span class="gls"><span class="gloss">aff<span class="tooltiptext gloss-aff" ></span></span></span>
+        </div>
+        <div class="interlinear">
+          <span class="obj">i-mu-n</span>
+          <span class="gls"><span class="gloss">3<span class="tooltiptext gloss-3" ></span></span>><span class="gloss">3<span class="tooltiptext gloss-3" ></span></span>-son-<span class="gloss">pert<span class="tooltiptext gloss-pert" ></span></span></span>
+        </div>
+        <div class="interlinear">
+          <span class="obj">emt͡ʃi-n</span>
+          <span class="gls">daughter-<span class="gloss">pert<span class="tooltiptext gloss-pert" ></span></span></span>
+        </div>
+        <div class="interlinear">
+          <span class="obj">e-muje</span>
+          <span class="gls"><span class="gloss">3<span class="tooltiptext gloss-3" ></span></span><span class="gloss">poss<span class="tooltiptext gloss-poss" ></span></span>-wife</span>
+        </div>
+        <div class="interlinear">
+          <span class="obj">keni</span>
+          <span class="gls"><span class="gloss">rel<span class="tooltiptext gloss-rel" ></span></span></span>
+        </div>
+        <div class="interlinear">
+          <span class="obj">niŋkɨn</span>
+          <span class="gls"><span class="gloss">pl<span class="tooltiptext gloss-pl" ></span></span></span>
+        </div>
+        <div class="interlinear">
+          <span class="obj">e-mnop-towo=ge</span>
+          <span class="gls"><span class="gloss">3<span class="tooltiptext gloss-3" ></span></span>><span class="gloss">3<span class="tooltiptext gloss-3" ></span></span>-mock-<span class="gloss">nmlz<span class="tooltiptext gloss-nmlz" ></span></span>=<span class="gloss">ins<span class="tooltiptext gloss-ins" ></span></span></span>
+        </div>
+        <div class="interlinear">
+          <span class="obj">kɨkɨkɨ</span>
+          <span class="gls"><span class="gloss">ideo<span class="tooltiptext gloss-ideo" ></span></span>.laugh</span>
+        </div>
+        <div class="interlinear">
+          <span class="obj">an-k-aŋ-tom</span>
+          <span class="gls"><span class="gloss">3<span class="tooltiptext gloss-3" ></span></span>-say-<span class="gloss">rem<span class="tooltiptext gloss-rem" ></span></span>.<span class="gloss">cont<span class="tooltiptext gloss-cont" ></span></span>-<span class="gloss">pl<span class="tooltiptext gloss-pl" ></span></span></span>
+        </div>
+        <div class="interlinear">
+          <span class="obj">man</span>
+          <span class="gls"><span class="gloss">aff<span class="tooltiptext gloss-aff" ></span></span></span>
+        </div>
+    <div class="ftr">‘His family, his son, his daughter, his wife started laughing (because of all this). Hahaha! They laughed.’ (ikp-ekiri) </div>
+  </div>
+</li>
+</ol>
+</section>
+<section id="manual-examples" class="level2">
+<h2>Manual examples</h2>
 <p>Sometimes you want a non-interlinear example, maybe with a form, or a
 simple list, or a table.</p>
 <ol class="example">
@@ -460,7 +557,9 @@ zwöi
 </div>
 </li>
 </ol>
-<h2 id="sec:sources">Citing literature</h2>
+</section>
+<section id="sec:sources" class="level2">
+<h2>Citing literature</h2>
 <ul>
 <li>see <a href="#source-alvarez1998split">Álvarez 1997</a> or <a
 href="#source-alvarez1998split">Álvarez 1997</a>: 133-134</li>
@@ -483,7 +582,9 @@ href="#source-triomeira1999">Meira 1999</a>: 218</li>
 href="#source-triomeira1999">Meira 1999</a>: 218)</li>
 </ul></li>
 </ul>
-<h2 id="references">References</h2>
+</section>
+<section id="references" class="level2">
+<h2>References</h2>
 <ul>
 <li><a id="source-alvarez1998split"> </a>Álvarez, José. 1997. Split
 Ergativity and Complementary Distribution of NP’s and Pronominal Affixes
@@ -497,6 +598,7 @@ Tiriyó. (Doctoral dissertation).</li>
 <li><a id="source-wayanatavares2005"> </a>Tavares, Petronila da Silva.
 2005. A grammar of Wayana. UMI. (Doctoral dissertation).</li>
 </ul>
+</section>
 <aside id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />
@@ -509,43 +611,26 @@ href="#source-koehn1986apalai">Koehn and Koehn 1986</a>: 77).<a
 href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </aside>
-        <script>
-            var abbrev_dict={'cor': 'coreferential', 'hod': 'hodiernal past', 'cont': 'continuous', 'part': 'particle', 'ideo': 'ideophone', 'iter': 'iterative', 'rem': 'remove past', 'uncert': 'uncertainty', 'inan': 'inanimate', 'aff': 'affirmative', 'npst': 'non-past', 'pert': 'pertensive', 'ill': 'illative', 'sup': 'supine', 'obl': 'oblique', '3': 'third person', '1': 'first person', 'poss': 'possessive', 'dist': 'distal', '2': 'second person', 'loc': 'locative', 'nmlz': 'nominalizer/nominalization', 'prox': 'proximal/proximate', 'voc': 'vocative', 'rel': 'relative', 'aux': 'auxiliary', 'pl': 'plural', 'ins': 'instrumental', 'cop': 'copula', 'acc': 'accusative'}; for (var key in abbrev_dict){
+            <script>var abbrev_dict={'cor': 'coreferential', 'hod': 'hodiernal past', 'cont': 'continuous', 'part': 'particle', 'ideo': 'ideophone', 'iter': 'iterative', 'rem': 'remove past', 'uncert': 'uncertainty', 'inan': 'inanimate', 'aff': 'affirmative', 'npst': 'non-past', 'pert': 'pertensive', 'ill': 'illative', 'sup': 'supine', 'obl': 'oblique', '3': 'third person', '1': 'first person', 'poss': 'possessive', 'dist': 'distal', '2': 'second person', 'loc': 'locative', 'nmlz': 'nominalizer/nominalization', 'prox': 'proximal/proximate', 'voc': 'vocative', 'rel': 'relative', 'aux': 'auxiliary', 'pl': 'plural', 'ins': 'instrumental', 'cop': 'copula', 'acc': 'accusative'}; for (var key in abbrev_dict){
 var targets = document.getElementsByClassName('gloss-'+key)
 for (var i = 0; i < targets.length; i++) {
     targets[i].innerHTML = abbrev_dict[key];
 }
-};
-        </script>
-    </article>
-
-    <script src="examples.js"></script> 
-    <script src="glossing.js"></script> 
-    <script src="crossref.js"></script>
-    <script src="alignment.js"></script>
-    <script type="text/javascript" src="https://livejs.com/live.js"></script>
+};</script>
+        </article>
+    </main>
     <script>
-        numberExamples()
-        numberSections()
-        numberCaptions()
-        resolveCrossrefs()
-    </script>
-    <script>
-        function toggleTOC() {
-          var x = document.getElementById("toc");
-          if (x.style.display === "none") {
-            x.style.display = "block";
-          } else {
-            x.style.display = "none";
-          }
-        } 
+        numberExamples();
+        numberSections();
+        numberCaptions();
+        resolveCrossrefs();
     </script>
     <script>
         var alignments = document.getElementsByClassName("alignment");
-        for (var i=0,alignment; alignment=alignments[i]; i++) {
-            alignment.innerHTML = plotWord(alignment.innerHTML, 'span');
+        for (var i = 0, alignment; (alignment = alignments[i]); i++) {
+            alignment.innerHTML = plotWord(alignment.innerHTML, "span");
         }
     </script>
-
+    <script type="text/javascript" src="toc.js"></script>
 </body>
-</html> 
+</html>

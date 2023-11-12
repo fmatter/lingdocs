@@ -40,8 +40,8 @@ log.debug("Loading templates")
 loaders = {}
 
 
-def _load_templates(builder):
-    templates = load_templates(builder, models)
+def _load_templates(builder, rich=None):
+    templates = load_templates(builder, models, rich=rich)
     pld_util = load(DATA_DIR / "util.j2")
 
     def resolve_path(base, in_path, builder):
@@ -120,9 +120,10 @@ def render_markdown(
     builder,
     decorate_gloss_string=lambda x: x,
     data_format="cldf",
+    rich=config["output"]["rich"],
     **kwargs,
 ):
-    _load_templates(builder)
+    _load_templates(builder, rich=rich)
     if data_format == "cldf":
         if builder.name != "clld":
             if "MediaTable" in ds.components:
@@ -140,7 +141,7 @@ def render_markdown(
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val
             func_dict["ref_labels"] = builder.ref_labels
-            if config["output"]["rich"]:
+            if rich:
                 data = CLDFDataset(ds)
                 func_dict["data"] = data.tables
             preprocessed = render(
