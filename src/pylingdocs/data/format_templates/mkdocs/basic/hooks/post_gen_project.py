@@ -13,7 +13,6 @@ for filename in [
     "examples.css",
     "examples.js",
     "glossing.js",
-    "styling.css",
     "crossref.js",
     "glossing.css",
     "alignment.css",

@@ -1,0 +1,211 @@
+dl {
+  display: grid;
+  grid-template-columns: max-content auto;
+}
+
+dt {
+  grid-column-start: 1;
+}
+
+dd {
+  grid-column-start: 2;
+}
+
+/* Center title and paragraph */
+.abstract,
+.abstract p {
+  text-align: center;
+  margin-top: 0;
+}
+.abstract {
+  margin: 1rem 0;
+}
+.abstract > h2 {
+  font-size: 1rem;
+  margin-bottom: -0.2rem;
+}
+
+.version {
+  margin: 0.85rem 0;
+  text-align: center;
+  font-family: monospace;
+}
+
+/*adapted from https://latex.vercel.app/style.css*/
+/*MIT License
+
+Copyright (c) 2020 Vincent Dörig
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.*/
+
+/* Remove default margin */
+article.h1,
+article.h2,
+article.h3,
+article.h4,
+article.p,
+article.ul[class],
+article.ol[class],
+article.li,
+article.figure,
+article.figcaption,
+article.dl,
+article.dd {
+  margin: 0;
+}
+
+article {
+  font-family: "Latin Modern", Georgia, Cambria, "Times New Roman", Times, serif;
+  line-height: 1.8;
+
+  min-height: 100vh;
+  overflow-x: hidden;
+  /*  margin: 0 auto;*/
+/*  margin-right: 20%;
+*/
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  padding-left: 0rem;
+  padding-right: 7.25rem;
+  color: hsl(0, 5%, 10%);
+    max-width: 80ch;
+
+  text-rendering: optimizeLegibility;
+}
+
+article table {
+    max-width: 140ch;
+}
+
+article figure {
+  display: block;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+article caption {
+  text-align: left;
+}
+
+/* Justify and hyphenate all paragraphs */
+article p {
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  margin-top: 1rem;
+}
+
+/* Center align the title */
+article h1:first-child {
+  text-align: center;
+}
+
+/* Center align author name, use small caps and add vertical spacing  */
+article .author {
+  margin: 0.85rem 0;
+  font-variant-caps: small-caps;
+  text-align: center;
+}
+
+/* Heading typography */
+article h1 {
+  font-size: 2rem;
+  line-height: 3.25rem;
+  margin-bottom: 1rem;
+}
+
+article h2 {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  margin-top: 3rem;
+}
+
+article h3 {
+  font-size: 1.3rem;
+  margin-top: 2.5rem;
+}
+
+article h4 {
+  font-size: 1.2rem;
+  margin-top: 2rem;
+}
+
+article h5 {
+  font-size: 1rem;
+  margin-top: 1.8rem;
+}
+
+article h6 {
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: normal;
+  margin-top: 2.5rem;
+}
+
+article h3,
+h4,
+h5,
+h6 {
+  line-height: 1.625rem;
+}
+
+article h1 + h2 {
+  margin-top: 1.625rem;
+}
+
+article h2 + h3,
+h3 + h4,
+h4 + h5 {
+  margin-top: 0.8rem;
+}
+
+article h5 + h6 {
+  margin-top: -0.8rem;
+}
+
+article h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 0.8rem;
+}
+
+/*end of latex.css*/
+
+
+/*adapted from https://kennethfriedman.org/thoughts/2019/marginal-notes/media/marginal_note_example.html*/
+sidenote,
+.sidenote {
+  display: inline;
+  float: right;
+  position: relative;
+  width: 20vw;
+  margin-right: -22vw;
+  font-size: 16px;
+}
+
+article a.crossref{
+    color: #D08770;
+}
+
+article a.exref{
+    color: #425580;
+}

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pylingdocs"
-version = "0.1.2.dev"
+version = "0.1.3.dev"
 authors = ["Florian Matter <flmt@mailbox.org>"]
 license = "Apache-2.0"
 homepage = "https://fl.mt/pylingdocs"
