@@ -38,10 +38,13 @@ latex: # LaTeX: LaTeX-specific settings.
   interlinear: expex # Interlinear package: The preferred setup for interlinear examples in LaTeX.
 mkdocs:
   audio: null # Adding audio: Add a path to your audio base URL.
+  hypothes.is: false # hypothes.is: Use [hypothes.is](https://hypothes.is) for online annotation.
 clld: # CLLD: 
-  db_uri: null # Database location: URI to the database of your CLLD app, i.e. something like `sqlite:///path/to/your/db.sqlite`
+  db_uri: null # Database location: URI to the database of your CLLD app, i.e. something like `sqlite:///path/to/your/db.sqlite`.
+html:
+  hypothes.is: true # hypothes.is: Use [hypothes.is](https://hypothes.is) for online annotation.
 input: # Input: 
   sublime: false # Sublime text: Generate data (in the docs folder) for the [Sublime text plugin](https://github.com/fmatter/pylingdocs-sublime/).
   content_file_prefix: null # File prefix: How your filenames should be prefixed, if at all.
-plain: {} # Empty settings for plaintext format
-html: {} # Empty settings for simple HTML format
+plain: {} # Empty settings for plaintext format.
+github: {} # Empty settings for github format.

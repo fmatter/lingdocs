@@ -67,7 +67,7 @@ def test_build(data, dataset, caplog, monkeypatch, tmp_path):
         output_dir="output",
         dataset=dataset,
         formats=formats.keys(),
-        structure=data / "content/structure.yaml",
+        structure=data / "docs/structure.yaml",
         metadata=load(data / "metadata.yaml"),
     )
     for fmt, fname in formats.items():

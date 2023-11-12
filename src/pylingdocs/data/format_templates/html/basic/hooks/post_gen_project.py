@@ -18,7 +18,9 @@ for filename in [
     "alignment.css",
     "alignment.js",
     "tables.css",
-    "styling.css",
+    "article.css",
+    "toc.js",
+    "toc.css",
 ]:
     source = Path(WEB_DIR / filename)
     target = Path(".")

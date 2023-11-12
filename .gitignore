@@ -1,3 +1,5 @@
+poetry.lock
+tasks.py
 Makefile
 etc
 # Byte-compiled / optimized / DLL files

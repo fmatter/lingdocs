@@ -1,5 +1,5 @@
 /*adapted from https://linguistics.stackexchange.com/a/534*/
-.interlinear-wrapper {clear: both; text-align: left;}
+.interlinear-wrapper {clear: both; text-align: left; overflow: visible;}
 .interlinear {float: left; margin: 0.25em; text-align: left;}
 .interlinear .obj, .interlinear .gls, .interlinear-wrapper {display: block; margin: 2px 0;}
 .interlinear-wrapper div.text { font-style: italic; text-align: left;}
@@ -8,6 +8,7 @@
 
 ol.example {
   list-style-type: lower-alpha;
+  
 }
 
 ol.subexample {

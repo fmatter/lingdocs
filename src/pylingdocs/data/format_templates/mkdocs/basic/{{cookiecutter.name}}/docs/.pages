@@ -1,9 +1,8 @@
 {% if cookiecutter.layout == "book" %}nav:
   - About: index.md
   - Chapters:{% for chapter in cookiecutter.chapters %}
-    - {{ chapter }}.md{% endfor %}
-    - references.md
-  - Index: index{% if cookiecutter.data %}
+    - '{{ chapter }}.md'{% endfor %}
+    - 'references.md'{% if cookiecutter.data %}
   - Data: data{% endif %}
 {%else%}
 nav:
