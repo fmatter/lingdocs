@@ -48,7 +48,7 @@ function numberSections(start=0){
     // store what level the last node was so we can build a hierarchical TOC
     var lastNodes = {}
     sections.forEach(function(section, i) {
-    var heading = section.querySelectorAll("h2, h3, h4, h5, h6")[0];
+        var heading = section.querySelectorAll("h2, h3, h4, h5, h6")[0];
         var level = heading.tagName.toLowerCase();
         var levelInt = parseInt(level.charAt(level.length - 1))
         counters[level] += 1
@@ -83,6 +83,7 @@ function numberSections(start=0){
                 reached = true;
             }
         });
+        refLabels[section.id] = prefix + number // for crossref resolution
     });
 
 
@@ -316,6 +317,9 @@ function resolveCrossrefs(){
     var refs = document.querySelectorAll("a.crossref");
     refs.forEach(function(ref, i) {
         ref.textContent = refLabels[ref.name]
+        console.log(ref.name)
+        console.log(refLabels[ref.name])
+
         if (ref.name in refLocations){
             ref.href = "/"+refLocations[ref.name] + "#" + ref.href.split("#").pop()
         }

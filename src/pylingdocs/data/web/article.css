@@ -18,7 +18,7 @@ dd {
   margin-top: 0;
 }
 .abstract {
-  margin: 2.25rem 0;
+  margin: 1rem 0;
 }
 .abstract > h2 {
   font-size: 1rem;
@@ -74,26 +74,33 @@ article {
   font-family: "Latin Modern", Georgia, Cambria, "Times New Roman", Times, serif;
   line-height: 1.8;
 
-  max-width: 80ch;
   min-height: 100vh;
   overflow-x: hidden;
   /*  margin: 0 auto;*/
-  margin-right: 20%;
-  padding: 2rem 1.25rem;
-
+/*  margin-right: 20%;
+*/
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  padding-left: 0rem;
+  padding-right: 7.25rem;
   color: hsl(0, 5%, 10%);
+    max-width: 80ch;
 
   text-rendering: optimizeLegibility;
 }
 
-article img {
+article table {
+    max-width: 140ch;
+}
+
+article figure {
   display: block;
-  margin-left: auto;
+  margin-left: 0;
   margin-right: auto;
 }
 
-article figcaption {
-  text-align: center;
+article caption {
+  text-align: left;
 }
 
 /* Justify and hyphenate all paragraphs */
@@ -121,7 +128,7 @@ article .author {
 article h1 {
   font-size: 2rem;
   line-height: 3.25rem;
-  margin-bottom: 1.625rem;
+  margin-bottom: 1rem;
 }
 
 article h2 {
@@ -183,122 +190,22 @@ h6 {
 
 /*end of latex.css*/
 
-/*adapted from https://code-boxx.com/collapsible-list-html-css-js/#sec-download*/
-/* (A) CONTAINER */
-.collapse,
-.collapse ul {
-  list-style-type: none;
-  padding-left: 10px;
-}
 
-/* (C) TOGGLE */
-.toggleWrap {
-  /*  padding: 10px;*/
-  cursor: pointer;
-}
-/*.toggleWrap::before {
-  display: inline-block;
-  width: 15px;
-  content: "🞂";
-}*/
-/*.toggleWrap.show::before { content: "🞃"; }*/
-
-/* (D) SHOW/HIDE */
-.collapse ol {
-  display: none;
-}
-.toggleWrap.show + ol {
-  display: block;
-}
-
-/* 1. Enable smooth scrolling */
-html {
-  /*  scroll-behavior: smooth;*/
-}
-
-/* 2. Make nav sticky */
-nav {
-  position: sticky;
-  top: 2rem;
-  align-self: start;
-}
-
-/* 3. ScrollSpy active styles (see JS tab for activation) */
-.toc li.active > span > a {
-  color: #333;
-  font-weight: 500;
-}
-
-.toc li.active > a {
-  color: #333;
-  font-weight: 500;
-}
-
-.toc div {
-  text-decoration: none;
-  display: block;
-  padding: 0.125rem 0;
-  color: #ccc;
-  transition: all 50ms ease-in-out; /* 💡 This small transition makes setting of the active state smooth */
-}
-
-/* Sidebar Navigation */
-.toc {
-  padding-left: 0;
-}
-
-.toc a {
-  text-decoration: none;
-  display: block;
-  padding: 0.125rem 0;
-  color: #ccc;
-  transition: all 50ms ease-in-out; /* 💡 This small transition makes setting of the active state smooth */
-}
-
-.toc a:hover,
-.toc a:focus {
-  color: #666;
-}
-
-/** Poor man's reset **/
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  background: #fff;
-}
-
-ul,
-ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-li {
-  margin-left: 1rem;
-}
-
-h1 {
-  font-weight: 300;
-}
-
-/** page layout **/
-main {
-  display: grid;
-  grid-template-columns: 20em 1fr;
-  max-width: 100em;
-  width: 90%;
-  margin: 0;
-}
-
+/*adapted from https://kennethfriedman.org/thoughts/2019/marginal-notes/media/marginal_note_example.html*/
 sidenote,
 .sidenote {
   display: inline;
   float: right;
   position: relative;
   width: 20vw;
-  margin-right: -10vw;
+  margin-right: -22vw;
   font-size: 16px;
+}
+
+article a.crossref{
+    color: #D08770;
+}
+
+article a.exref{
+    color: #425580;
 }

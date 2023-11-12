@@ -2,11 +2,14 @@ table {
 border-collapse: collapse;
 /*display: inline;*/
 /*margin:4px;*/
+align: left;
 border-spacing: 0px 0px;
 /*margin: 0 auto;*/
 border: none;
-  margin-left: auto;
+  margin-left: 0;
   margin-right: auto;
+  margin-top: 1em;
+  margin-top: 1em;
 }
 
 td, th {

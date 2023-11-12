@@ -20,6 +20,7 @@ for filename in [
     "tables.css",
     "article.css",
     "toc.js",
+    "toc.css",
 ]:
     source = Path(WEB_DIR / filename)
     target = Path(".")

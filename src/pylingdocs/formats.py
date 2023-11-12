@@ -52,12 +52,9 @@ def blank_todo(url, **_kwargs):
 def html_todo(url, **kwargs):
     if kwargs.get("release", False):
         return ""
+    return f"<span class='sidenote'>to do: {url}</span>"
     if "?" in str(url):
-        return """
-<label for="sn-1" class="sidenote-toggle sidenote-number"></label>
-<input type="checkbox" id="sn-1" class="sidenote-toggle" />
-<span class="sidenote">TEST</span>"""
-        return "sidenote<span class='sidenote'>This is the marginal note within the paragraph.</span>"
+        return "sidenote<span class='sidenote'>{url}</span>"
         return f"<span title='{url}'>❓</span>"
     return f"<span title='{url}'>❗️</span>"
 

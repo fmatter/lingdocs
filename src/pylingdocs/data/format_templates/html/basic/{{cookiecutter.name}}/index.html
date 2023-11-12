@@ -9,6 +9,21 @@
     <link rel="stylesheet" href="examples.css"/>
     <link rel="stylesheet" href="glossing.css"/>
     <link rel="stylesheet" href="alignment.css"/>
+    <link rel="stylesheet" href="toc.css"/>
+    <style>
+        main {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          max-width: 120em;
+          width: 100%;
+          margin: 0;
+        }
+            article {
+                margin: 0 auto;     /*centers main on page*/
+                padding-right: 30%;
+            }
+
+    </style>
     <script src="examples.js"></script>
     <script src="glossing.js"></script>
     <script src="crossref.js"></script>
@@ -27,8 +42,8 @@
         </div>
         <article>
             <h1>{{ cookiecutter.project_title }}</h1>
+            <div class="version">v{{ cookiecutter.version }}</div>
             <div class="author">{{ cookiecutter.author }}</div>
-            <div class="version">version {{ cookiecutter.version }}</div>
             {% if cookiecutter.abstract %}
             <div class="abstract">
                 <b>Abstract</b>
