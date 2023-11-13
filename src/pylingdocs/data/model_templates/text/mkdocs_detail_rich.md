@@ -1,3 +1,5 @@
+{% import 'fmt_util.md' as util %}
 {% set rich = data[table_label(component)][ctx["ID"]] %}
-# {{get_rich_label(rich)}}
+
+# {{table_label(component,target="single").capitalize()}}: {{util.get_label(rich)}}
 TBD

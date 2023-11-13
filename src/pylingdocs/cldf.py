@@ -10,13 +10,15 @@ from pycldf.dataset import SchemaError
 from slugify import slugify
 from writio import load
 
-from pylingdocs.config import DATA_DIR, config
+from pylingdocs.config import DATA_DIR, config, EXTRA_DIR
 from pylingdocs.formats import CLLD
 from pylingdocs.helpers import (
+    get_topics,
     check_abbrevs,
     get_sections,
     load_figure_metadata,
     read_file,
+    table_metadata,
 )
 from pylingdocs.models import models
 from pylingdocs.postprocessing import postprocess
@@ -24,24 +26,13 @@ from pylingdocs.preprocessing import preprocess, render_markdown
 
 log = logging.getLogger(__name__)
 
-TOPIC_PATH = Path("./topic_index.csv")
+TOPIC_PATH = Path(EXTRA_DIR) / "topic_index.csv"
 
 
-def metadata(table_name):
-    path = DATA_DIR / "cldf" / f"{table_name}-metadata.json"
-    if not path.is_file():
-        path = (
-            Path(pycldf.__file__).resolve().parent
-            / "components"
-            / f"{table_name}-metadata.json"
-        )
-    return jsonlib.load(path)
-
-
-ContributorTable = metadata("ContributorTable")
-ChapterTable = metadata("ChapterTable")
-TopicTable = metadata("TopicTable")
-AbbreviationTable = metadata("AbbreviationTable")
+ContributorTable = table_metadata("ContributorTable")
+ChapterTable = table_metadata("ChapterTable")
+TopicTable = table_metadata("TopicTable")
+AbbreviationTable = table_metadata("AbbreviationTable")
 tables = [ContributorTable, ChapterTable, AbbreviationTable, TopicTable]
 
 Reference_Column = {
@@ -80,24 +71,6 @@ def get_chapters(output_dir):
                 }
             )
     return chapter_list
-
-
-def get_topics(title_dic, tag_dic):
-    topics = []
-    if TOPIC_PATH.is_file():
-        topic_index = pd.read_csv(TOPIC_PATH)
-        for topic in topic_index.to_dict("records"):
-            topic["ID"] = slugify(topic["Name"])
-            topic["References"] = [
-                {
-                    "Chapter": tag_dic[section],
-                    "ID": section,
-                    "Label": title_dic[section],
-                }
-                for section in topic["Sections"].split(",")
-            ]
-            topics.append(topic)
-    return topics
 
 
 def create_cldf(
@@ -256,7 +229,6 @@ def create_cldf(
     }
 
     ds.add_component(ChapterTable)
-    TOPIC_PATH = Path("./topic_index.csv")
     if TOPIC_PATH.is_file():
         ds.add_component(TopicTable)
         table_dic[TopicTable["url"]] = get_topics(title_dic, tag_dic)

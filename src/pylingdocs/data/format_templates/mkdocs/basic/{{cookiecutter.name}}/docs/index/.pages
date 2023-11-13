@@ -1,0 +1,5 @@
+nav:
+  - Topics: index/topics
+  - Tags: index/tags
+
+collapse_single_pages: true

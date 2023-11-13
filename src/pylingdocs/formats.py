@@ -92,6 +92,7 @@ class OutputFormat:
     ref_labels = {}
     ref_locations = {}
     data_dir = "data"
+    topic_dir = "topics"
     fallback_layout = "basic"
     audio_path = "audio"
 
@@ -178,7 +179,7 @@ class OutputFormat:
             "glossing_abbrevs": cls.register_glossing_abbrevs(abbrev_dict),
             "ref_labels": str(ref_labels),
             "ref_locations": str(ref_locations),
-            "data": config["output"]["data"],
+            "data": config["data"]["data"],
             "layout": config["output"]["layout"],
             "conf": config.data.get(cls.name, {}),
         }
@@ -513,6 +514,7 @@ class MkDocs(HTML):
     name = "mkdocs"
     figure_dir = "docs/figures"
     data_dir = "docs/data"
+    topic_dir = "docs/index/topics"
     file_ext = "md"
     audio_path = "docs/assets/audio"
 

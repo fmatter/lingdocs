@@ -61,3 +61,7 @@ personal knowledge
 {% if format=="subexample" %}{%else%}
 \xe{%endif%}
 {%- endmacro %}
+
+{% macro link(item, anchor=None, html=False, preferred="Name") %}
+{{get_label(item, preferred=preferred)}}
+{%- endmacro %}

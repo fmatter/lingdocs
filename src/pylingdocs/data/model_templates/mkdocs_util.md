@@ -31,7 +31,7 @@
 {{item.get(preferred, item.get("Form", item.get("Primary_Text", item.get("Title", item.get("ID", "unknown")))))}}
 {%- endmacro %}
 
-{% macro link(item, anchor=None, html=False, preferred="Name", label=None) %}
+{% macro link(item, anchor=None, html=False, preferred="Name", label=None, prefix="data/", table_path=item.table.label) %}
 {% if anchor is not none %}
 {% set anchor_text = "#"+anchor %}
 {% endif %}
@@ -40,9 +40,9 @@
 {% endif %}
 {% if item is not none %}
 {% if html %}
-<a href="site:data/{{item.table.label}}/{{item['ID']}}/{{anchor_text}}">{{label}}</a>
+<a href="site:{{prefix}}{{table_path}}/{{item['ID']}}/{{anchor_text}}">{{label}}</a>
 {% else %}
-[{{label}}](site:data/{{item.table.label}}/{{item["ID"]}}/{{anchor_text}}){% endif %}
+[{{label}}](site:{{prefix}}{{table_path}}/{{item["ID"]}}/{{anchor_text}}){% endif %}
 {% endif %}
 {%- endmacro %}
 
@@ -76,17 +76,26 @@ personal knowledge
 
 {% macro render_singles(rich) %}
 {% for key, val in rich.fields.items() %}
-    {% if (key is not in rich.foreignkeys and val is not none)%}
-    {% if key == "Segments" %}
-        {% set val = " ".join(val) %}
-    {% endif %}
-    {% if key == "Source" and val|length != 0%}
-        {% set val = src(val[0]) %}
-    {% endif %}
-    {% if key == "Morpho_Segments" %}
-        {% set val = "-".join(val) %}
-    {% endif %}
+    {% if (key is not in rich.foreignkeys and key is not in ["Tags", "References"] and val is not none)%}
+        {% if key == "Segments"%} {%if val|length > 0 %}
+            {% set val = " ".join(val) %}
 * {{key}}: {{val}}
+{%endif%}
+        {% elif key == "Parameter_ID"%}{%if val|length > 0 %}
+            {% set val = ", ".join(val) %}
+* {{key}}: {{val}}
+{%endif%}
+        {% elif key == "Source"%} {%if val|length > 0 %}
+            {% set val = src(val[0]) %}
+* {{key}}: {{val}}
+{%endif%}
+        {% elif key == "Morpho_Segments" %}{%if val|length > 0 %}
+            {% set val = "-".join(val) %}
+* {{key}}: {{val}}
+{%endif%}
+        {% else %}
+* {{key}}: {{val}}
+        {% endif %}
     {% endif %}
 {% endfor %}
 {% for key, val in rich.single_refs.items() %}
@@ -107,7 +116,7 @@ personal knowledge
 === "Stems"
         {% elif key == "stemparts" and table_label(component)=="stems" %}
 === "Morphs"
-        {% elif key == "wordformstems" %}
+        {% elif key in ["wordformstems", "tags"] %}
         {% elif key == "wordformparts" and table_label(component)=="morphs" %}
 === "Wordforms"
         {% else %}
