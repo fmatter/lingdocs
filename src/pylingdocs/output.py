@@ -266,6 +266,15 @@ def write_details(builder, output_dir, dataset, content):
                     for rid, d in details.items()
                     if not (config["data"]["light"] and rid not in content)
                 }
+            # bundles = []
+            # processed = []
+            # for v in details.values():
+            #     if len(bundles) == 1000:
+            #         processed.append("".join(preprocess_cldfviz(delim.join(bundles))))
+            #         print(f"{len(processed)*1000}/{len(details)}")
+            #         bundles = []
+            #     bundles.append(v)
+            # processed.append("".join(preprocess_cldfviz(delim.join(bundles))))
             preprocessed = "".join(preprocess_cldfviz(delim.join(details.values())))
             detail_text = render(
                 doc=preprocessed,
