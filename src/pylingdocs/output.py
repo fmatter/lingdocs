@@ -274,7 +274,7 @@ def write_details(builder, output_dir, dataset, content):
             #         loader=text_loader,
             #         func_dict=func_dict,
             #     )
-            delim = "\nDATA_DELIM\n"
+            delim = "DATA-DELIM"
             if name != "constructions.csv":
                 details = {
                     rid: d
