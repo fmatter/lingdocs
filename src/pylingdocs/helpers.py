@@ -949,11 +949,15 @@ def table_label(string, source="filename", target="multi"):
         name = string.rstrip("s")
     else:
         name = string
+    if "parts" in name:
+        plural = "{name}"
+    else:
+        plural = "{name}s"
     patterns = {
         "single": "{name}",
-        "multi": "{name}s",
+        "multi": plural,
         "name": "{name}",
-        "filename": "{name}s.csv",
+        "filename": f"{plural}.csv",
     }
     return patterns[target].format(name=name)
 

@@ -259,7 +259,7 @@ def write_details(builder, output_dir, dataset, content):
             #         loader=text_loader,
             #         func_dict=func_dict,
             #     )
-            delim = "\nhundeeier\n"
+            delim = "\nDATA_DELIM\n"
             if name != "constructions.csv":
                 details = {
                     rid: d
@@ -267,16 +267,12 @@ def write_details(builder, output_dir, dataset, content):
                     if not (config["data"]["light"] and rid not in content)
                 }
             preprocessed = "".join(preprocess_cldfviz(delim.join(details.values())))
-            print(1, len(preprocessed))
-            print(preprocessed)
             detail_text = render(
                 doc=preprocessed,
                 cldf_dict=dataset,
                 loader=detail_loader,
                 func_dict=func_dict,
             )  # todo prettify
-            print(2, len(detail_text))
-            print(detail_text)
             if "#cldf" in detail_text:
                 detail_text = render(
                     doc=detail_text,
@@ -284,10 +280,7 @@ def write_details(builder, output_dir, dataset, content):
                     loader=text_loader,
                     func_dict=func_dict,
                 )
-            print(3, len(detail_text))
             detail_texts = builder.preprocess(detail_text).split(delim)
-            print(detail_texts)
-            print(len(detail_texts) == len(details))
             for (rid, detail), content in tqdm(
                 zip(details.items(), detail_texts), desc=name
             ):
