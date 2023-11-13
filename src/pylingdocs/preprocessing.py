@@ -120,10 +120,12 @@ def render_markdown(
     builder,
     decorate_gloss_string=lambda x: x,
     data_format="cldf",
-    rich=config["output"]["rich"],
+    rich=None,
     **kwargs,
 ):
     _load_templates(builder, rich=rich)
+    config.load_from_dir()
+    rich = rich or config["data"]["rich"]
     if data_format == "cldf":
         if builder.name != "clld":
             if "MediaTable" in ds.components:
