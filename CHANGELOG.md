@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * [hypothe.is](https://hypothes.is/) functionality for HTML
+* tags & index
 
 ### Fixed
 * allow rich data when called from outside of folder
