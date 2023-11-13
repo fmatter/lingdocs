@@ -97,7 +97,7 @@ def _candidates(base, cbase, m, b):
             yield x
 
 
-def find_template(model, builder, view, rich=config["output"]["rich"]):
+def find_template(model, builder, view, rich=config["data"]["rich"]):
     """Finds a template for a given model, a given output format, a given view; data-rich or not"""
     log.debug(f"Searching template: {model.name}/{builder.name}_{view}")
     custom_base = PLD_DIR / "model_templates"
@@ -139,7 +139,7 @@ name_dict = {
 
 def load_templates(target_builder, models, rich=None):
     config.load_from_dir(".")
-    rich = rich or config["output"]["rich"]
+    rich = rich or config["data"]["rich"]
     # templates = {fn: {"text": {}, "data": {}} for fn in target_builders}
     templates = {"text": {}, "data": {}}
     f = target_builder

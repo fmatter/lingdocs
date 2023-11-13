@@ -178,7 +178,7 @@ class OutputFormat:
             "glossing_abbrevs": cls.register_glossing_abbrevs(abbrev_dict),
             "ref_labels": str(ref_labels),
             "ref_locations": str(ref_locations),
-            "data": config["output"]["data"],
+            "data": config["data"]["data"],
             "layout": config["output"]["layout"],
             "conf": config.data.get(cls.name, {}),
         }

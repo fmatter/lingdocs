@@ -13,6 +13,7 @@ from writio import dump, load
 
 from pylingdocs.config import BENCH, CONTENT_FOLDER, EXTRA_DIR, STRUCTURE_FILE, config
 from pylingdocs.formats import builders
+from pylingdocs.helpers import table_label
 from pylingdocs.helpers import (
     _get_relative_file,
     check_abbrevs,
@@ -169,56 +170,60 @@ def check_ids(contents, dataset, source_dir):
         log.info("No missing IDs found.")
 
 
-def write_details(builder, output_dir, dataset, rich=False):
-    if len(loaders) == 0:
-        _load_templates(builder, rich=True)
+def write_details(builder, output_dir, dataset, content):
     loader = loaders[builder.name]["data"]
     text_loader = loaders[builder.name]["text"]
     data_dir = output_dir / builder.name / builder.data_dir
     data_dir.mkdir(exist_ok=True, parents=True)
     func_dict["decorate_gloss_string"] = builder.decorate_gloss_string
     func_dict["ref_labels"] = builder.ref_labels
-    if rich or config["output"]["rich"]:
+    func_dict["table_label"] = table_label
+    log.info(
+        f"Writing data for {builder.name} to {output_dir.resolve()}, this may take a while. Set data = False in the [data] section of your config file to turn off."
+    )
+    if config["data"]["rich"]:
+        log.info(
+            f"Rich data, too! Set rich = False in the [data] section of your config file to turn off."
+        )
         data = CLDFDataset(dataset, orm=True)
         func_dict["data"] = data
         table_list = list((k, v, v.name) for k, v in data.tables.items())
     else:
-        log.info(
-            f"Writing data for {builder.name} to {data_dir.resolve()}, this may take a while. Set data = False in the [output] section of your config file to turn off."
-        )
         table_list = [
             (str(table.url).replace(".csv", ""), table, get_table_name(table))
             for table in dataset.tables
         ]
     model_index = []
     data_nav = ["nav:"]
-    for label, table, name in table_list:
+    for label, table, name in tqdm(table_list):
         # if label not in ["derivationalprocesses"]:
         #     continue
         table_dir = data_dir / label
         if label == "topics":
             table_dir = output_dir / builder.name / builder.topic_dir
         if f"{name}_index.{builder.file_ext}" not in loader.list_templates():
-            log.warning(f"Not writing index for {name}")
+            log.debug(f"Not writing index for {name}")
         else:
             model_index.append(f"* [{label}]({label})")
             data_nav.append(f"  - {label.capitalize()}: data/{label}")
             table_dir.mkdir(exist_ok=True, parents=True)
-            index = f"[]({name}#cldf:__all__)"
-            index = render(
-                doc="".join(preprocess_cldfviz(index)),
-                cldf_dict=dataset,
-                loader=loader,
-                func_dict=func_dict,
-            )  # todo prettify
-            if "#cldf" in index:
+            index = ""
+            if not config["data"]["light"]:
+                index = f"[]({name}#cldf:__all__)"
                 index = render(
-                    doc=index,
+                    doc="".join(preprocess_cldfviz(index)),
                     cldf_dict=dataset,
-                    loader=text_loader,
+                    loader=loader,
                     func_dict=func_dict,
-                )
-            index = builder.preprocess(index)
+                )  # todo prettify
+                if "#cldf" in index:
+                    index = render(
+                        doc=index,
+                        cldf_dict=dataset,
+                        loader=text_loader,
+                        func_dict=func_dict,
+                    )
+                index = builder.preprocess(index)
             if index.strip() != "":
                 if label == "topics":
                     dump(
@@ -235,45 +240,77 @@ def write_details(builder, output_dir, dataset, rich=False):
             log.warning(f"Not writing details for {name}")
         else:
             table_dir.mkdir(exist_ok=True, parents=True)
+            detail_loader = loader
             # when in detail mode and listing examples, load the in-text example view (instead of linking))
             if label != "examples":
                 detail_loader = loaders[builder.name]["example_in_detail"]
-            else:
-                detail_loader = loader
-
             if name.endswith("Table"):
-                items = {
+                details = {
                     rec.id: f"[]({name}#cldf:{rec.id})" for rec in dataset.objects(name)
                 }
             else:
-                items = {
+                details = {
                     rec["ID"]: f"[]({name}#cldf:{rec['ID']})"
                     for rec in dataset.iter_rows(name)
                 }
-            i = 0
-            for rid, detail in tqdm(items.items(), desc=name):
-                i += 1
-                if i > 5:
-                    continue
-                filepath = table_dir / f"{rid}.{builder.file_ext}"
-                if filepath.is_file():
-                    continue
-                detail = render(
-                    doc="".join(preprocess_cldfviz(detail)),
+            # details = {}
+            # for rid, detail in tqdm(items.items(), desc=name):
+            #     if config["data"]["light"] and rid not in content:
+            #         continue
+            #     details[rid] = detail
+            # filepath = table_dir / f"{rid}.{builder.file_ext}"
+            # if filepath.is_file():
+            #     continue
+            # detail = render(
+            #     doc="".join(preprocess_cldfviz(detail)),
+            #     cldf_dict=dataset,
+            #     loader=detail_loader,
+            #     func_dict=func_dict,
+            # )  # todo prettify
+            # if "#cldf" in detail:
+            #     detail = render(
+            #         doc=detail,
+            #         cldf_dict=dataset,
+            #         loader=text_loader,
+            #         func_dict=func_dict,
+            #     )
+            delim = "\nDATA_DELIM\n"
+            if name != "constructions.csv":
+                details = {
+                    rid: d
+                    for rid, d in details.items()
+                    if not (config["data"]["light"] and rid not in content)
+                }
+            # bundles = []
+            # processed = []
+            # for v in details.values():
+            #     if len(bundles) == 1000:
+            #         processed.append("".join(preprocess_cldfviz(delim.join(bundles))))
+            #         print(f"{len(processed)*1000}/{len(details)}")
+            #         bundles = []
+            #     bundles.append(v)
+            # processed.append("".join(preprocess_cldfviz(delim.join(bundles))))
+            preprocessed = "".join(preprocess_cldfviz(delim.join(details.values())))
+            detail_text = render(
+                doc=preprocessed,
+                cldf_dict=dataset,
+                loader=detail_loader,
+                func_dict=func_dict,
+            )  # todo prettify
+            if "#cldf" in detail_text:
+                detail_text = render(
+                    doc=detail_text,
                     cldf_dict=dataset,
-                    loader=detail_loader,
+                    loader=text_loader,
                     func_dict=func_dict,
-                )  # todo prettify
-                if "#cldf" in detail:
-                    detail = render(
-                        doc=detail,
-                        cldf_dict=dataset,
-                        loader=text_loader,
-                        func_dict=func_dict,
-                    )
-                detail = builder.preprocess(detail)
-                if detail.strip() != "":
-                    dump(detail, filepath)
+                )
+            detail_texts = builder.preprocess(detail_text).split(delim)
+            for (rid, detail), content in tqdm(
+                zip(details.items(), detail_texts), desc=name
+            ):
+                filepath = table_dir / f"{rid}.{builder.file_ext}"
+                if content.strip() != "":
+                    dump(content, filepath)
     if model_index:
         dump(
             "# Data\n\n" + "\n".join(model_index),
@@ -330,7 +367,7 @@ def create_output(
             builder.ref_labels = ref_labels
             builder.ref_locations = ref_locations
             preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
-            preprocessed = render_markdown(
+            content = render_markdown(
                 preprocessed,
                 dataset,
                 builder,
@@ -338,11 +375,11 @@ def create_output(
                 **kwargs,
             )
             pbar.update(1)
-            preprocessed += "\n\n" + builder.reference_list()
+            content += "\n\n" + builder.reference_list()
             # second run to insert reference list
             pbar.update(1)
-            preprocessed = render_markdown(
-                preprocessed,
+            content = render_markdown(
+                content,
                 dataset,
                 builder,
                 decorate_gloss_string=builder.decorate_gloss_string,
@@ -350,7 +387,7 @@ def create_output(
                 **kwargs,
             )
             pbar.update(1)
-            preprocessed = postprocess(preprocessed, builder, source_dir)
+            content = postprocess(content, builder, source_dir)
             pbar.update(1)
             if builder.name == "latex":
                 metadata["bibfile"] = dataset.bibpath.name
@@ -362,7 +399,7 @@ def create_output(
                 builder.write_folder(
                     output_dir,
                     source_dir=source_dir,
-                    content=preprocessed,
+                    content=content,
                     metadata=metadata,
                     abbrev_dict=abbrev_dict,
                     ref_labels=ref_labels,
@@ -371,8 +408,8 @@ def create_output(
                     audio=audio_dic,
                 )
             pbar.update(1)
-        if config["output"]["data"]:
-            write_details(builder, output_dir, dataset)
+        if config["data"]["data"]:
+            write_details(builder, output_dir, dataset, preprocessed)
         if builder.name == "latex":
             bibcontents = read_file(dataset.bibpath)
             if bibcontents:
