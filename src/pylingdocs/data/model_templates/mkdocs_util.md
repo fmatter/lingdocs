@@ -77,16 +77,25 @@ personal knowledge
 {% macro render_singles(rich) %}
 {% for key, val in rich.fields.items() %}
     {% if (key is not in rich.foreignkeys and key is not in ["Tags", "References"] and val is not none)%}
-    {% if key == "Segments" %}
-        {% set val = " ".join(val) %}
-    {% endif %}
-    {% if key == "Source" and val|length != 0%}
-        {% set val = src(val[0]) %}
-    {% endif %}
-    {% if key == "Morpho_Segments" %}
-        {% set val = "-".join(val) %}
-    {% endif %}
+        {% if key == "Segments"%} {%if val|length > 0 %}
+            {% set val = " ".join(val) %}
 * {{key}}: {{val}}
+{%endif%}
+        {% elif key == "Parameter_ID"%}{%if val|length > 0 %}
+            {% set val = ", ".join(val) %}
+* {{key}}: {{val}}
+{%endif%}
+        {% elif key == "Source"%} {%if val|length > 0 %}
+            {% set val = src(val[0]) %}
+* {{key}}: {{val}}
+{%endif%}
+        {% elif key == "Morpho_Segments" %}{%if val|length > 0 %}
+            {% set val = "-".join(val) %}
+* {{key}}: {{val}}
+{%endif%}
+        {% else %}
+* {{key}}: {{val}}
+        {% endif %}
     {% endif %}
 {% endfor %}
 {% for key, val in rich.single_refs.items() %}

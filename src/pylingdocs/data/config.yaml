@@ -7,6 +7,9 @@ output: # Output: General options relating to the produced output.
   preview: mkdocs # Preview: What format should be used for [previewing](/usage#preview).
   readme: true # readme file: Should a README.md file be created?
   changelog: false # Changelog: Should a CHANGELOG.md file be created?
+  layout: book # Layout: The layout of the produced document. Options: `book`, `article`, `slides`.
+data:
+  data: false # CLDF data appendix: Create index and detail pages for database entities?
 
 # 1. This option will be set to `true` if `rich` below is true
 # 2. You can point this to a different CLDF metadata.json
@@ -14,7 +17,6 @@ output: # Output: General options relating to the produced output.
   rich: False # Rich data: Insert links to this data into the document?
 # (Slow and currently only supported for [MkDocs](/formats#mkdocs)).
   readme: true # README: Should a README.md file be created?
-  layout: book # Layout: The layout of the produced document. Options: `book`, `article`, `slides`.
 data: # CLDF data appendix: Create index and detail pages for database entities?
   data: false # This feature is disabled by default.
 # You can point this to a different CLDF metadata.json file

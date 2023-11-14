@@ -169,6 +169,9 @@ def write_details(builder, output_dir, dataset, content):
         f"Writing data for {builder.name} to {output_dir.resolve()}, this may take a while. Set data = False in the [data] section of your config file to turn off."
     )
     if config["data"]["rich"]:
+        log.info(
+            f"Rich data, too! Set rich = False in the [data] section of your config file to turn off."
+        )
         data = CLDFDataset(dataset, orm=True)
         func_dict["data"] = data
         table_list = list((k, v, v.name) for k, v in data.tables.items())
@@ -258,7 +261,7 @@ def write_details(builder, output_dir, dataset, content):
             #         loader=text_loader,
             #         func_dict=func_dict,
             #     )
-            delim = "\nDATA_DELIM\n"
+            delim = "DATA-DELIM"
             if name != "constructions.csv":
                 details = {
                     rid: d

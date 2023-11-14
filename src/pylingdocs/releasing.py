@@ -84,18 +84,17 @@ def run_releases(source, output_dir, bump, **kwargs):
     metadata["version"] = bump_version(metadata["version"], bump)
     dump(metadata, source / "metadata.yaml")
     version = _version(metadata["version"])
-    build_archive(source, output_dir, metadata["id"] + version)
+    build_archive(source, output_dir, metadata["id"] + "-" + version)
     for mode in modes:
         if version in mode.version_list(source):
             log.error(f"{version} already exists.")
             sys.exit()
     for mode in modes:
+        print(f"releasing {mode}")
         mode.release(metadata["id"] + version, source)
 
 
 def bump_version(version, step="patch"):
-    # print(version)
-    # print(step)
     delimiters = [r"\.", r"-"]
     search = "|".join(delimiters)
     parts = re.split(rf"({search})", version)
