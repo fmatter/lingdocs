@@ -6,6 +6,9 @@ import re
 import sys
 import tempfile
 from pathlib import Path
+import pycldf
+from clldutils import jsonlib
+
 
 import pandas as pd
 import panflute
@@ -54,24 +57,31 @@ def write_file(content, path, mode=None, encoding="utf-8"):
             f.write(content)
 
 
-def parse_heading(string):
+def parse_heading(string, mode="pandoc"):
     prefix = string.split(" ")[0]
     level = prefix.count("#")
     title = string.split(" ", 1)[1]
-    attr_list = re.search("({.*?})", title)
-    if attr_list:
-        attr_list = attr_list.group()
-        tag = re.findall(r"{\s?\#(.*?)\s?}", attr_list)[0]
-        title = title.replace(attr_list, "")
-    else:
-        tag = slugify(title, allow_unicode=True)
+    if mode == "pandoc":
+        attr_list = re.search("({.*?})", title)
+        if attr_list:
+            attr_list = attr_list.group()
+            tag = re.findall(r"{\s?\#(.*?)\s?}", attr_list)[0]
+            title = title.replace(attr_list, "")
+        else:
+            tag = slugify(title, allow_unicode=True)
+    elif mode == "pld":
+        res = re.findall(r"(.*?) \[label\]\((.*?)\)", title)
+        if not res:
+            tag = slugify(title, allow_unicode=True)
+        else:
+            title, tag = res[0]
     return level, title.strip(" "), tag
 
 
-def get_sections(content):
+def get_sections(content, mode="pandoc"):
     for line in content.split("\n"):
         if line.startswith("#"):
-            yield parse_heading(line)
+            yield parse_heading(line, mode=mode)
 
 
 def get_glosses(word, gloss_cands):
@@ -391,7 +401,64 @@ def split_ref(s):
     return bibkey, pages
 
 
-def load_cldf_dataset(cldf_path):
+def compile_crossrefs(contents):
+    title_dic = {}
+    tag_dic = {}
+    for label, cdata in contents.items():
+        ctag = re.findall(r"^# (.*?) \[label\]\((.*?)\)", cdata["content"])
+        if not ctag:
+            ctag = label
+            ctitle = cdata.get("title")
+        else:
+            ctitle, ctag = ctag[0]
+        title_dic[ctag] = ctitle
+        tag_dic[ctag] = ctag
+        for lvl, title, tag in get_sections(cdata["content"], mode="pld"):
+            title_dic[tag] = title
+            tag_dic[tag] = ctag
+        for table_tag in re.findall(
+            r"\[table\]\((.*?)\)",
+            cdata["content"],
+        ):
+            tag_dic["tab:" + table_tag] = ctag
+        for fig_tag in re.findall(
+            r"\[figure\]\((.*?)\)",
+            cdata["content"],
+        ):
+            tag_dic[fig_tag] = ctag
+    return tag_dic, title_dic
+
+
+def get_topics(path, title_dic, tag_dic):
+    topics = []
+    topic_index = pd.read_csv(path)
+    for topic in topic_index.to_dict("records"):
+        topic["ID"] = slugify(topic["Name"])
+        topic["References"] = [
+            {
+                "Chapter": tag_dic[section],
+                "ID": section,
+                "Label": title_dic[section],
+            }
+            for section in topic["Sections"].split(",")
+        ]
+        topic["Tags"] = topic["Tags"].split(",")
+        topics.append(topic)
+    return topics
+
+
+def table_metadata(table_name):
+    path = DATA_DIR / "cldf" / f"{table_name}-metadata.json"
+    if not path.is_file():
+        path = (
+            Path(pycldf.__file__).resolve().parent
+            / "components"
+            / f"{table_name}-metadata.json"
+        )
+    return jsonlib.load(path)
+
+
+def load_cldf_dataset(cldf_path, contents=None):
     try:
         ds = Dataset.from_metadata(cldf_path)
         temp_path = Path(tempfile.gettempdir()) / "cldf"
@@ -399,15 +466,23 @@ def load_cldf_dataset(cldf_path):
         orig_id = ds.metadata_dict.get("rdf:ID", None)
         ds = Dataset.from_metadata(temp_path / ds.filename)
         ds.add_provenance(wasDerivedFrom=orig_id)
+        table_dic = {}
         if Path(config["paths"]["add_bib"]).is_file():
             bib = pybtex.database.parse_file(
                 config["paths"]["add_bib"], bib_format="bibtex"
             )
             sources = [Source.from_entry(k, e) for k, e in bib.entries.items()]
             ds.add_sources(*sources)
-            ds.write()
+        topic_path = config["SOURCE"] / EXTRA_DIR / "topics.csv"
+        if topic_path.is_file() and contents:
+            tag_dic, title_dic = compile_crossrefs(contents)
+            TopicTable = table_metadata("TopicTable")
+            ds.add_component(TopicTable)
+            table_dic[TopicTable["url"]] = get_topics(topic_path, title_dic, tag_dic)
+        ds.write(**table_dic)
         return ds
     except FileNotFoundError as e:
+        raise e
         log.error(e)
         log.error(
             f"Could not load CLDF dataset from {Path(cldf_path).resolve()}. Please specify a path to a valid CLDF metadata file."  # noqa: E501
@@ -920,11 +995,15 @@ def lfts_link(
     with_translation=config["lfts"]["show_translation"],
     source=None,
     translation=None,
+    italicize=True,
 ):
     out = []
     if with_language:
         out.append(link(rich.language))
-    out.append(link(rich, label="*" + get_rich_label(rich) + "*"))
+    label = get_rich_label(rich)
+    if italicize:
+        label = "*" + label + "*"
+    out.append(link(rich, label=label))
     if with_translation:
         trans = translation or rich["Parameter_ID"]
         if isinstance(trans, list):
@@ -936,12 +1015,34 @@ def lfts_link(
     return " ".join(out)
 
 
-def table_label(string):
-    if string.endswith(".csv"):
-        return string.replace(".csv", "")
-    if string.endswith("Table"):
-        return string.replace("Table", "s").lower()
-    raise ValueError(f"Cannot parse component name {string}")
+def table_label(string, source="filename", target="multi"):
+    if source == "filename" or "csv" in string:
+        string = string.replace(".csv", "").rstrip("s")
+    if source == "name" or "Table" in string:
+        string = string.replace("Table", "").lower()
+    if source != "single":
+        name = string.rstrip("s")
+    else:
+        name = string
+    if "parts" in name:
+        plural = "{name}"
+    else:
+        plural = "{name}s"
+    patterns = {
+        "single": "{name}",
+        "multi": plural,
+        "name": "{name}",
+        "filename": f"{plural}.csv",
+    }
+    return patterns[target].format(name=name)
+
+
+# def table_label(string):
+#     if string.endswith(".csv"):
+#         return string.replace(".csv", "")
+#     if string.endswith("Table"):
+#         return string.replace("Table", "s").lower()
+#     raise ValueError(f"Cannot parse component name {string}")
 
 
 func_dict = {

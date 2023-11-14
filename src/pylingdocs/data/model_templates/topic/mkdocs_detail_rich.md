@@ -9,5 +9,9 @@ tags:{% for tag in rich["Tags"]%}
 
 {%endif%}
 # {{table_label(component,target="single").capitalize()}}: {{util.get_label(rich)}}
-{{util.render_singles(rich)}}
-{{util.render_multis(rich)}}
+
+{{rich["Description"]}}
+
+{% for ref in rich["References"] %}
+* [{{ref["Label"]}}](site:{{ref["Chapter"]}}#{{ref["ID"]}})
+{% endfor %}

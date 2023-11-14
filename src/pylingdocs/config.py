@@ -43,6 +43,7 @@ class Config:
 
     def load_from_dir(self, path="."):
         locp = Path(path) / "config.yaml"
+        self.data["SOURCE"] = Path(path)
         if locp.is_file():
             log.debug(f"Loading config file from {locp}")
             self.data = merge_dicts(self.data, load(locp))
@@ -52,8 +53,9 @@ class Config:
         self.dependents()
 
     def dependents(self):
-        if self.data["output"]["rich"]:
-            self.data["output"]["data"] = True
+        pass
+        # if self.data["data"]["rich"]:
+        #     self.data["data"]["data"] = True
 
     def fix_paths(self):
         for k, v in self.data["paths"].items():
