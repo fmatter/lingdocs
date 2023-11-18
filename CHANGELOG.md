@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * allow rich data when called from outside of folder
+* project creation failure
 
 ### Changed
 * table label in detail view

@@ -458,7 +458,7 @@ def table_metadata(table_name):
     return jsonlib.load(path)
 
 
-def load_cldf_dataset(cldf_path, contents=None):
+def load_cldf_dataset(cldf_path, contents=None, topics=None):
     try:
         ds = Dataset.from_metadata(cldf_path)
         temp_path = Path(tempfile.gettempdir()) / "cldf"
@@ -466,20 +466,23 @@ def load_cldf_dataset(cldf_path, contents=None):
         orig_id = ds.metadata_dict.get("rdf:ID", None)
         ds = Dataset.from_metadata(temp_path / ds.filename)
         ds.add_provenance(wasDerivedFrom=orig_id)
-        table_dic = {}
         if Path(config["paths"]["add_bib"]).is_file():
             bib = pybtex.database.parse_file(
                 config["paths"]["add_bib"], bib_format="bibtex"
             )
             sources = [Source.from_entry(k, e) for k, e in bib.entries.items()]
             ds.add_sources(*sources)
-        topic_path = config["SOURCE"] / EXTRA_DIR / "topics.csv"
-        if topic_path.is_file() and contents:
-            tag_dic, title_dic = compile_crossrefs(contents)
-            TopicTable = table_metadata("TopicTable")
-            ds.add_component(TopicTable)
-            table_dic[TopicTable["url"]] = get_topics(topic_path, title_dic, tag_dic)
-        ds.write(**table_dic)
+        if topics:
+            table_dic = {}
+            topic_path = Path(topics)
+            if topic_path.is_file() and contents:
+                tag_dic, title_dic = compile_crossrefs(contents)
+                TopicTable = table_metadata("TopicTable")
+                ds.add_component(TopicTable)
+                table_dic[TopicTable["url"]] = get_topics(
+                    topic_path, title_dic, tag_dic
+                )
+            ds.write(**table_dic)
         return ds
     except FileNotFoundError as e:
         raise e

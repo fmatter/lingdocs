@@ -46,5 +46,5 @@ dump(config, PROJECT_DIR / "config.yaml")
 if "Yes" == "{{ cookiecutter.use_sublime_text }}":
     while not path.is_file():
         path = Path(input("Please enter a path to a metadata file: ").strip(" "))
-    ds = load_cldf_dataset(path)
+    ds = load_cldf_dataset(path, topics=None)
     generate_autocomplete(ds, PROJECT_DIR)
