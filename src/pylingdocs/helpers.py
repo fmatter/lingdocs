@@ -6,14 +6,13 @@ import re
 import sys
 import tempfile
 from pathlib import Path
-import pycldf
-from clldutils import jsonlib
-
 
 import pandas as pd
 import panflute
 import pybtex
+import pycldf
 import yaml
+from clldutils import jsonlib
 from cookiecutter.main import cookiecutter
 from jinja2.runtime import Undefined
 from pycldf import Dataset, Source
