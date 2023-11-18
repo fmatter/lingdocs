@@ -4,7 +4,7 @@
     - '{{ chapter }}.md'{% endfor %}
     - 'references.md'{% if cookiecutter.data %}
   - Data: data{% endif %}
-  - Index: index
+  - Index: topic_index
 {%else%}
 nav:
     - index.md

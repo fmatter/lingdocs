@@ -4,5 +4,5 @@
 # {{table_label(component).capitalize()}}
 {% for item in ctx %}
 {% set rich = data[table_label(component)][item["ID"]] %}
-* {{util.link(rich, prefix="", table_path="index/topics")}}
+* {{util.link(rich, prefix="", table_path="topic_index/topics")}}
 {% endfor %}
