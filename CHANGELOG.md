@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2023-11-18
+
 ### Added
 * [hypothe.is](https://hypothes.is/) functionality for HTML
 * tags & index
@@ -253,7 +255,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[Unreleased]: https://github.com/fmatter/pylingdocs/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/fmatter/pylingdocs/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/fmatter/pylingdocs/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/fmatter/pylingdocs/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/fmatter/pylingdocs/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/fmatter/pylingdocs/compare/0.0.12...v0.1.0
