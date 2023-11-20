@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Title</title>
+    <title>{{cookiecutter.project_title}}</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="examples.css">
     <link rel="stylesheet" href="slides.css">
@@ -12,7 +12,12 @@
   <body>
     <textarea id="source">
 
-{{ cookiecutter.content }}
+class: center, middle
+
+# {{cookiecutter.project_title}}
+
+---
+        {{ cookiecutter.content }}
 
 
     </textarea>

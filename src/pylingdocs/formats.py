@@ -194,6 +194,8 @@ class OutputFormat:
         landingpage_path = source_dir / EXTRA_DIR / f"landingpage_{cls.name}.md"
         if landingpage_path.is_file():
             extra["landingpage"] = load(landingpage_path)
+        else:
+            extra["landingpage"] = ""
         extra.update(**metadata)
         template_path = cls.get_layout_path()
         cookiecutter(
@@ -482,7 +484,7 @@ for (var i = 0; i < targets.length; i++) {{
             log.warning(label)
             html_output = html_output.replace(f"{{#{label}}}", "")
         if config["output"]["layout"] == "slides":
-            return html_output.replace("\n<h", "\n---\n<h")
+            return html_output.replace("\n<section", "\n---\n<section")
         return html_output
 
     def manex(cls, tag, content, kind):
