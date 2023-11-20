@@ -53,5 +53,5 @@ dump(conf_str, cpath, mode="plain")
 if "Yes" == "{{ cookiecutter.use_sublime_text }}":
     while not path.is_file():
         path = Path(input("Please enter a path to a metadata file: ").strip(" "))
-    ds = load_cldf_dataset(path)
+    ds = load_cldf_dataset(path, source_dir=PROJECT_DIR)
     generate_autocomplete(ds, PROJECT_DIR)

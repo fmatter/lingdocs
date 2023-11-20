@@ -6,14 +6,13 @@ import re
 import sys
 import tempfile
 from pathlib import Path
-import pycldf
-from clldutils import jsonlib
-
 
 import pandas as pd
 import panflute
 import pybtex
+import pycldf
 import yaml
+from clldutils import jsonlib
 from cookiecutter.main import cookiecutter
 from jinja2.runtime import Undefined
 from pycldf import Dataset, Source
@@ -458,7 +457,7 @@ def table_metadata(table_name):
     return jsonlib.load(path)
 
 
-def load_cldf_dataset(cldf_path, contents=None):
+def load_cldf_dataset(cldf_path, source_dir=None):
     try:
         ds = Dataset.from_metadata(cldf_path)
         temp_path = Path(tempfile.gettempdir()) / "cldf"
@@ -466,21 +465,37 @@ def load_cldf_dataset(cldf_path, contents=None):
         orig_id = ds.metadata_dict.get("rdf:ID", None)
         ds = Dataset.from_metadata(temp_path / ds.filename)
         ds.add_provenance(wasDerivedFrom=orig_id)
-        table_dic = {}
+        if not source_dir:
+            return ds
+        source_dir = Path(source_dir)
+        config.load_from_dir(source_dir)
         if Path(config["paths"]["add_bib"]).is_file():
             bib = pybtex.database.parse_file(
                 config["paths"]["add_bib"], bib_format="bibtex"
             )
             sources = [Source.from_entry(k, e) for k, e in bib.entries.items()]
             ds.add_sources(*sources)
-        topic_path = config["SOURCE"] / EXTRA_DIR / "topics.csv"
-        if topic_path.is_file() and contents:
-            tag_dic, title_dic = compile_crossrefs(contents)
+
+        table_dic = {}
+        topic_path = source_dir / EXTRA_DIR / "topics.csv"
+        if topic_path.is_file():
+            tag_dic, title_dic = compile_crossrefs(
+                "\n".join(
+                    contents=load_content(
+                        source_dir=source_dir / CONTENT_FOLDER,
+                        structure_file=source_dir / CONTENT_FOLDER / STRUCTURE_FILE,
+                    ).values()
+                )
+            )
             TopicTable = table_metadata("TopicTable")
             ds.add_component(TopicTable)
             table_dic[TopicTable["url"]] = get_topics(topic_path, title_dic, tag_dic)
-        ds.write(**table_dic)
+            ds.write(**table_dic)
         return ds
+        extra_cldf_p = source_dir / EXTRA_DIR / "cldf"
+        if extra_cldf_p.is_dir():
+            for file in extra_cldf_p.iterdir():
+                print(file)
     except FileNotFoundError as e:
         raise e
         log.error(e)
@@ -524,7 +539,7 @@ def get_structure(structure_file, prefix_mode=None):
     return contents
 
 
-def load_content(source_dir="docs", structure_file="docs/structure.yaml"):
+def load_content(source_dir=CONTENT_FOLDER, structure_file="docs/structure.yaml"):
     contents = get_structure(
         prefix_mode="", structure_file=structure_file
     )  # todo config

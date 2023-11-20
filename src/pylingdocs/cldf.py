@@ -10,12 +10,12 @@ from pycldf.dataset import SchemaError
 from slugify import slugify
 from writio import load
 
-from pylingdocs.config import DATA_DIR, config, EXTRA_DIR
+from pylingdocs.config import DATA_DIR, EXTRA_DIR, config
 from pylingdocs.formats import CLLD
 from pylingdocs.helpers import (
-    get_topics,
     check_abbrevs,
     get_sections,
+    get_topics,
     load_figure_metadata,
     read_file,
     table_metadata,
