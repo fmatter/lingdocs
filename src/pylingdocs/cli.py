@@ -81,14 +81,12 @@ def build(source, targets, cldf, output_dir, release):
     source = Path(source)
     config.load_from_dir(source)
     if not cldf:
-        cldf = config["SOURCE"] / config["paths"]["cldf"]
+        cldf = config["source"] / config["paths"]["cldf"]
     contents = load_content(
         source_dir=source / CONTENT_FOLDER,
-        structure_file=_get_relative_file(
-            folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
-        ),
+        structure_file=source / CONTENT_FOLDER / STRUCTURE_FILE,
     )
-    ds = load_cldf_dataset(cldf, contents=contents)
+    ds = load_cldf_dataset(cldf, source_dir=source)
     metadata = load(source / "metadata.yaml")
     targets = targets or config["output"]["build"]
     if not isinstance(targets, list) and not isinstance(targets, tuple):
@@ -130,11 +128,9 @@ def preview(source, target, cldf, output_dir, refresh):
         cldf = config["paths"]["cldf"]
     contents = load_content(
         source_dir=source / CONTENT_FOLDER,
-        structure_file=_get_relative_file(
-            folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
-        ),
+        structure_file=source / CONTENT_FOLDER / STRUCTURE_FILE,
     )
-    ds = load_cldf_dataset(cldf, contents)
+    ds = load_cldf_dataset(cldf, source_dir=source)
     metadata = load(source / "metadata.yaml") or {}
     from pylingdocs.formats import builders
 
@@ -175,7 +171,7 @@ def check(source, cldf, output_dir):
 )
 def cldf(source, cldf, output_dir, add):
     config.load_from_dir(source)
-    cldf = cldf or config["SOURCE"] / config["paths"]["cldf"]
+    cldf = cldf or config["source"] / config["paths"]["cldf"]
     ds = load_cldf_dataset(cldf)
     contents = load_content(
         source_dir=source / CONTENT_FOLDER,
@@ -199,7 +195,7 @@ def cldf(source, cldf, output_dir, add):
         ds,
         source,
         output_dir,
-        metadata_file=config["SOURCE"] / "metadata.yaml",
+        metadata_file=config["source"] / "metadata.yaml",
         add_documents=add_docs,
     )
 

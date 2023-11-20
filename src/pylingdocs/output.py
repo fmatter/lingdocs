@@ -13,7 +13,6 @@ from writio import dump, load
 
 from pylingdocs.config import BENCH, CONTENT_FOLDER, EXTRA_DIR, STRUCTURE_FILE, config
 from pylingdocs.formats import builders
-from pylingdocs.helpers import table_label
 from pylingdocs.helpers import (
     _get_relative_file,
     check_abbrevs,
@@ -24,6 +23,7 @@ from pylingdocs.helpers import (
     load_figure_metadata,
     process_labels,
     read_file,
+    table_label,
     write_file,
 )
 from pylingdocs.postprocessing import postprocess

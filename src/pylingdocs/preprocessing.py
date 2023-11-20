@@ -83,6 +83,8 @@ def _load_templates(builder, rich=None):
 
 bool_dic = {"True": True, "False": False}
 
+shortcuts = {"ftr": "translation"}
+
 
 def preprocess_cldfviz(md):
     current = 0
@@ -97,9 +99,13 @@ def preprocess_cldfviz(md):
                 for arg in arguments.split("&"):
                     if "=" in arg:
                         k, v = arg.split("=")
+                        if k in shortcuts:
+                            k = shortcuts[k]
                         kwargs[k] = bool_dic.get(v, v)
                     elif arg == "nt":
                         kwargs["with_translation"] = False
+                    elif arg == "nl":
+                        kwargs["with_language"] = False
                     else:
                         args.append(arg)
             if "," in url:
