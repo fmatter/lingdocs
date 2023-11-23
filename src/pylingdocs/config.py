@@ -18,6 +18,7 @@ CONTENT_FOLDER = "docs"
 STRUCTURE_FILE = "structure.yaml"
 FIGURE_DIR = "figures"
 TABLE_DIR = "tables"
+SLIDE_COL = "!-col-!"
 
 
 def merge_dicts(a, b):

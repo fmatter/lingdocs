@@ -25,6 +25,7 @@ from pylingdocs.config import (
     PLD_DIR,
     config,
     merge_dicts,
+    SLIDE_COL,
 )
 from pylingdocs.helpers import (
     Enumerator,
@@ -471,11 +472,14 @@ for (var i = 0; i < targets.length; i++) {{
         )
 
     def preprocess(cls, content):
+        extra = ["--shift-heading-level-by=1"]
+        if config["output"]["layout"] != "slides":
+            extra.append("--section-divs")
         html_output = panflute.convert_text(
             content,
             output_format="html",
             input_format="markdown",
-            extra_args=["--shift-heading-level-by=1", "--section-divs"],
+            extra_args=extra,
         )
         unresolved_labels = re.findall(r"{#(.*?)}", html_output)
         if unresolved_labels:
@@ -484,7 +488,30 @@ for (var i = 0; i < targets.length; i++) {{
             log.warning(label)
             html_output = html_output.replace(f"{{#{label}}}", "")
         if config["output"]["layout"] == "slides":
-            return html_output.replace("\n<section", "\n---\n<section")
+            sep = "(<h2)"
+            processed_slides = []
+            slides = re.split(sep, html_output)
+            slides = slides[1::]
+            i = 0
+            while i < len(slides) - 1:
+                content = slides[i] + slides[i + 1]
+                if SLIDE_COL in content:
+                    columns = content.split(SLIDE_COL)
+                    title, columns[0] = columns[0].split("\n", 1)
+                    if len(columns) == 2:
+                        content = f"""{title}\n.cols[\n.fifty[
+{columns[0]}
+]
+.fifty[
+{columns[1]}
+]
+]"""
+                    else:
+                        print(content)
+                        raise ValueError("Too many columns")
+                processed_slides.append(f"\n{content}\n---")
+                i += 2
+            return "\n".join(processed_slides)
         return html_output
 
     def manex(cls, tag, content, kind):
