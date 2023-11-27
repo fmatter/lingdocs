@@ -117,6 +117,9 @@ def preview(dataset, source_dir, output_dir, builder, refresh=True, **kwargs):
 
     watchfiles = [str(x) for x in source_dir.iterdir()]
     watchfiles += [str(x) for x in (source_dir / CONTENT_FOLDER).iterdir()]
+    tpath = source_dir / "tables"
+    if tpath.is_dir():
+        watchfiles += [str(x) for x in tpath.iterdir()]
     extra = source_dir / EXTRA_DIR
     if extra.is_dir():
         watchfiles += [str(x) for x in extra.iterdir()]
