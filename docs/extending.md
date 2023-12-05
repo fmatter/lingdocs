@@ -78,7 +78,7 @@ class Lexeme(Base):
     shortcut = "lex"
 
 
-models = [Phoneme(), POS(), Lexeme()]
+models = [Phoneme, POS, Lexeme]
 
 ```
 
