@@ -551,6 +551,11 @@ class MkDocs(HTML):
     audio_path = "docs/assets/audio"
 
     def preprocess(cls, content):
+        content = re.sub(
+            r"\[(?P<text>.*?)\]{.smallcaps}",
+            '<span class="smallcaps">compl</span>',
+            content,
+        )
         return (
             content.replace("```{=html}", "")
             .replace("```", "")
