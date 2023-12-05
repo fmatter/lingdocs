@@ -25,7 +25,9 @@ from pylingdocs.config import (
     PLD_DIR,
     config,
     merge_dicts,
-    SLIDE_COL,
+    COLSTART,
+    COLEND,
+    COLDIV,
 )
 from pylingdocs.helpers import (
     Enumerator,
@@ -48,6 +50,25 @@ log = logging.getLogger(__name__)
 def blank_todo(url, **_kwargs):
     del url
     return ""
+
+
+col_pattern = rf"{COLSTART}(?s:.*?){COLEND}"
+
+
+def slide_columns(text):
+    text = text.replace(COLSTART, "")
+    text = text.replace(COLEND, "")
+    cols = text.split(COLDIV)
+    if len(cols) > 2:
+        log.warning("Too many columns:")
+        log.warning(text)
+    return f""".cols[\n.fifty[
+{cols[0]}
+]
+.fifty[
+{cols[1]}
+]
+]"""
 
 
 def html_todo(url, **kwargs):
@@ -475,6 +496,9 @@ for (var i = 0; i < targets.length; i++) {{
         extra = ["--shift-heading-level-by=1"]
         if config["output"]["layout"] != "slides":
             extra.append("--section-divs")
+        hits = re.findall(col_pattern, content)
+        for hit in hits:
+            content = content.replace(hit, slide_columns(hit))
         html_output = panflute.convert_text(
             content,
             output_format="html",
@@ -495,20 +519,6 @@ for (var i = 0; i < targets.length; i++) {{
             i = 0
             while i < len(slides) - 1:
                 content = slides[i] + slides[i + 1]
-                if SLIDE_COL in content:
-                    columns = content.split(SLIDE_COL)
-                    title, columns[0] = columns[0].split("\n", 1)
-                    if len(columns) == 2:
-                        content = f"""{title}\n.cols[\n.fifty[
-{columns[0]}
-]
-.fifty[
-{columns[1]}
-]
-]"""
-                    else:
-                        print(content)
-                        raise ValueError("Too many columns")
                 processed_slides.append(f"\n{content}\n---")
                 i += 2
             return "\n".join(processed_slides)

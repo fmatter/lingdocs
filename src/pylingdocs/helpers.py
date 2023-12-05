@@ -479,14 +479,12 @@ def load_cldf_dataset(cldf_path, source_dir=None):
         table_dic = {}
         topic_path = source_dir / EXTRA_DIR / "topics.csv"
         if topic_path.is_file():
-            tag_dic, title_dic = compile_crossrefs(
-                "\n".join(
-                    contents=load_content(
-                        source_dir=source_dir / CONTENT_FOLDER,
-                        structure_file=source_dir / CONTENT_FOLDER / STRUCTURE_FILE,
-                    ).values()
-                )
+            content = load_content(
+                source_dir=source_dir / CONTENT_FOLDER,
+                structure_file=source_dir / CONTENT_FOLDER / STRUCTURE_FILE,
             )
+            # content = "\n".join([x["content"] for x in content.values()])
+            tag_dic, title_dic = compile_crossrefs(content)
             TopicTable = table_metadata("TopicTable")
             ds.add_component(TopicTable)
             table_dic[TopicTable["url"]] = get_topics(topic_path, title_dic, tag_dic)
