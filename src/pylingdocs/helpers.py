@@ -792,10 +792,11 @@ def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
                     if is_gloss_abbr_candidate(part, parts, j):
                         # take care of numbered genders
                         if part[0] == "G" and re.match(r"\d", part[1:]):
-                            # output += decoration(part.lower())
-                            output += (
-                                decoration(part[0].lower()) + part[1:]
-                            )  # if the number should not be part of the abbreviation
+                            output += decoration(part.lower())
+                            # if the number should not be part of the abbreviation:
+                            # output += (
+                            #     decoration(part[0].lower()) + part[1:]
+                            # )
                         else:
                             for glosspart in resolve_glossing_combination(part):
                                 output += decoration(glosspart.lower())
