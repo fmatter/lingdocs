@@ -552,8 +552,8 @@ class MkDocs(HTML):
 
     def preprocess(cls, content):
         content = re.sub(
-            r"\[(?P<text>.*?)\]{.smallcaps}",
-            '<span class="smallcaps">compl</span>',
+            r"\[(.*?)\]{.smallcaps}",
+            r'<span class="smallcaps">\g<1></span>',
             content,
         )
         return (
