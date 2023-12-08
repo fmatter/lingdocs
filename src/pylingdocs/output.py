@@ -181,6 +181,8 @@ def write_details(builder, output_dir, dataset, content):
     func_dict["decorate_gloss_string"] = builder.decorate_gloss_string
     func_dict["ref_labels"] = builder.ref_labels
     func_dict["table_label"] = table_label
+    input(config["examples"])
+    func_dict["example_links"] = config["examples"]["custom_links"]
     log.info(
         f"Writing data for {builder.name} to {output_dir.resolve()}, this may take a while. Set data = False in the [data] section of your config file to turn off."
     )

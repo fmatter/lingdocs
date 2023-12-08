@@ -31,6 +31,10 @@
 {%- endmacro %}
 
 {% macro get_src_string (ctx, source=None) -%}
+{{example_links}}
+{% for label, link_string in example_links.items()%}
+{{label}} {{link_string}}
+{% endfor %}
 {% if source %}
 {{source}}{% elif ctx.references %}
 {% set ref = ctx.references[0] %}
