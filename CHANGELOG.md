@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * audio in mkdocs
+* changelog
 
 ### Changed
 * much simpler custom format setup
@@ -46,6 +47,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * whitespace in LFTS macro
 * template loading
 * record numbers
+
+### Removed
+* `compile-latex` command (replaced by `--compile`)
 
 ## [0.1.1] - 2023-10-13
 

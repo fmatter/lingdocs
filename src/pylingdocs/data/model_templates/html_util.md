@@ -31,10 +31,6 @@
 {%- endmacro %}
 
 {% macro get_src_string (ctx, source=None) -%}
-{{example_links}}
-{% for label, link_string in example_links.items()%}
-{{label}} {{link_string}}
-{% endfor %}
 {% if source %}
 {{source}}{% elif ctx.references %}
 {% set ref = ctx.references[0] %}
@@ -47,6 +43,9 @@
 <a href='#source-{{ref.source.id}}'>{{ref.source.refkey(year_brackets=None)}}</a>{{page_string}}{% elif "Text_ID" in ctx.data %}
 {{txt_src(ctx.data)}}{% else %}
 {% endif %}
+{% for label, link_string in example_links.items()%}
+ <a href='{{link_string.format(id=ctx.cldf.id)}}'>{{label}}</a>
+{% endfor %}
 {%- endmacro %}
 
 

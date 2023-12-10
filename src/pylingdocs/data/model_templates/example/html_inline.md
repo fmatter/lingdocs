@@ -21,7 +21,7 @@
     ftr=ctx.cldf.translatedText,
     txt=ctx.cldf.primaryText,
     lng=ctx.related("languageReference").name,
-    src="<a href='http://localhost:5001/example/" + ctx.cldf.id + "'>🖉</a>",
+    src=util.get_src_string(ctx, source),
     ex_id=example_id or ctx.cldf.id,
     title=title,
     comment=comment,
