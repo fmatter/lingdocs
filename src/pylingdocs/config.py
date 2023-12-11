@@ -19,6 +19,9 @@ STRUCTURE_FILE = "structure.yaml"
 FIGURE_DIR = "figures"
 TABLE_DIR = "tables"
 BUILD_DIR = "builds"
+COLSTART = "<<<columns---"
+COLEND = "---columns>>>"
+COLDIV = "---col---"
 
 
 def merge_dicts(a, b):

@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * argument shortcuts for LFTS forms: `nl` (don't print the language) and `ftr` (free translation)
+* columns for slides & other improvements
+* `[my smallcaps]{.smallcaps}` notation
+
+### Fixed
+* topic index
 
 ## [0.1.3] - 2023-11-18
 
