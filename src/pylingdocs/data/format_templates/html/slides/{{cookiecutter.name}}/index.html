@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Title</title>
+    <title>{{cookiecutter.project_title}}</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="examples.css">
     <link rel="stylesheet" href="slides.css">
@@ -11,9 +11,10 @@
   </head>
   <body>
     <textarea id="source">
-
+class: center, middle
+# {{cookiecutter.project_title}}
+---
 {{ cookiecutter.content }}
-
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
@@ -27,7 +28,7 @@
     <script src="crossref.js"></script>
     <script src="alignment.js"></script>
     <script>
-number_examples()
+numberExamples()
 </script>
 
 <script type="text/javascript" src="https://livejs.com/live.js"></script>
