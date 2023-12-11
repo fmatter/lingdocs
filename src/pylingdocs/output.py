@@ -400,7 +400,7 @@ def create_output(
                 if builder.name == "latex":
                     shutil.copy(
                         dataset.bibpath,
-                        source_dir / output_dir / builder.name / dataset.bibpath.name,
+                        output_dir / builder.name / dataset.bibpath.name,
                     )
                     metadata["bibfile"] = dataset.bibpath.name
                 if _compile:
