@@ -4,7 +4,7 @@ output: # Output: General options relating to the produced output.
     - mkdocs
     - html
     - plain
-  preview: mkdocs # Preview: What format should be used for [previewing](/usage#preview).
+  preview: html # Preview: What format should be used for [previewing](/usage#preview).
   readme: true # readme file: Should a README.md file be created?
   changelog: false # Changelog: Should a CHANGELOG.md file be created?
   layout: book # Layout: The layout of the produced document. Options: `book`, `article`, `slides`.

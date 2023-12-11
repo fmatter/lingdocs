@@ -411,6 +411,13 @@ def create_output(
                     chapters=chapters,
                     audio=audio_dic,
                 )
+                if builder.name == "latex":
+                    shutil.copy(
+                        dataset.bibpath,
+                        output_dir / builder.name / dataset.bibpath.name,
+                    )
+                # if _compile:
+                #     builder.compile(source_dir, output_dir)
             pbar.update(1)
         if config["data"]["data"]:
             write_details(builder, output_dir, dataset, preprocessed)
