@@ -26,6 +26,9 @@ from pylingdocs.config import (
     PLD_DIR,
     config,
     merge_dicts,
+    COLSTART,
+    COLEND,
+    COLDIV,
 )
 from pylingdocs.helpers import (
     Enumerator,
@@ -48,6 +51,25 @@ log = logging.getLogger(__name__)
 def blank_todo(url, **_kwargs):
     del url
     return ""
+
+
+col_pattern = rf"{COLSTART}(?s:.*?){COLEND}"
+
+
+def slide_columns(text):
+    text = text.replace(COLSTART, "")
+    text = text.replace(COLEND, "")
+    cols = text.split(COLDIV)
+    if len(cols) > 2:
+        log.warning("Too many columns:")
+        log.warning(text)
+    return f""".cols[\n.fifty[
+{cols[0]}
+]
+.fifty[
+{cols[1]}
+]
+]"""
 
 
 def html_todo(url, **kwargs):
@@ -195,6 +217,8 @@ class OutputFormat:
         landingpage_path = source_dir / EXTRA_DIR / f"landingpage_{cls.name}.md"
         if landingpage_path.is_file():
             extra["landingpage"] = load(landingpage_path)
+        else:
+            extra["landingpage"] = ""
         extra.update(**metadata)
         template_path = cls.get_layout_path()
         cookiecutter(
@@ -476,11 +500,17 @@ for (var i = 0; i < targets.length; i++) {{
         )
 
     def preprocess(cls, content):
+        extra = ["--shift-heading-level-by=1"]
+        if config["output"]["layout"] != "slides":
+            extra.append("--section-divs")
+        hits = re.findall(col_pattern, content)
+        for hit in hits:
+            content = content.replace(hit, slide_columns(hit))
         html_output = panflute.convert_text(
             content,
             output_format="html",
             input_format="markdown",
-            extra_args=["--shift-heading-level-by=1", "--section-divs"],
+            extra_args=extra,
         )
         unresolved_labels = re.findall(r"{#(.*?)}", html_output)
         if unresolved_labels:
@@ -489,7 +519,16 @@ for (var i = 0; i < targets.length; i++) {{
             log.warning(label)
             html_output = html_output.replace(f"{{#{label}}}", "")
         if config["output"]["layout"] == "slides":
-            return html_output.replace("\n<h", "\n---\n<h")
+            sep = "(<h2)"
+            processed_slides = []
+            slides = re.split(sep, html_output)
+            slides = slides[1::]
+            i = 0
+            while i < len(slides) - 1:
+                content = slides[i] + slides[i + 1]
+                processed_slides.append(f"\n{content}\n---")
+                i += 2
+            return "\n".join(processed_slides)
         return html_output
 
     def manex(cls, tag, content, kind):
@@ -519,6 +558,11 @@ class MkDocs(HTML):
     audio_path = "docs/assets/audio"
 
     def preprocess(cls, content):
+        content = re.sub(
+            r"\[(.*?)\]{.smallcaps}",
+            r'<span class="smallcaps">\g<1></span>',
+            content,
+        )
         return (
             content.replace("```{=html}", "")
             .replace("```", "")

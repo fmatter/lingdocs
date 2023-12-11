@@ -7,9 +7,18 @@
 }
 
 h1 {
-    color: red;
     margin: 0px;
 }
+
+h2 {
+    font-size: 120% !important;
+}
+
+h3 {
+    font-size: 100% !important;
+}
+
+
 
 table {
     border-collapse: collapse;
@@ -42,3 +51,21 @@ thead th {
     background-color: white !important;
     font-weight: 700;
 }
+
+
+.cols {
+  display: flex;
+}
+
+.fifty {
+  flex: 50%;
+}
+
+/*.column:first-of-type {float:left}
+.column:last-of-type {
+    float:right;
+    padding-left: 2ex;
+}
+
+.split-50 .column:first-of-type {width: 50%}
+.split-50 .column:last-of-type {width: 50%}*/

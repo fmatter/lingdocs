@@ -22,14 +22,10 @@
 
 {% macro get_src_string (ctx, source=None) -%}
 {% if source %}
-{{source}}
-{% elif ctx.references %}
-{{references(ctx.references)}}
-{% elif "Text_ID" in ctx.data %}
+{{source}}{% elif ctx.references %}
+{{references(ctx.references)}}{% elif "Text_ID" in ctx.data %}
 {{txt_src(ctx)}}{% else %}
-personal knowledge
-{% endif %}
-{%- endmacro %}
+personal knowledge{% endif %}{%- endmacro %}
 
 {% macro get_label(item, preferred="Name") %}
 {{item.get(preferred, item.get("Form", item.get("Primary_Text", item.get("ID", "unknown"))))}}

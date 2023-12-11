@@ -479,14 +479,12 @@ def load_cldf_dataset(cldf_path, source_dir=None):
         table_dic = {}
         topic_path = source_dir / EXTRA_DIR / "topics.csv"
         if topic_path.is_file():
-            tag_dic, title_dic = compile_crossrefs(
-                "\n".join(
-                    contents=load_content(
-                        source_dir=source_dir / CONTENT_FOLDER,
-                        structure_file=source_dir / CONTENT_FOLDER / STRUCTURE_FILE,
-                    ).values()
-                )
+            content = load_content(
+                source_dir=source_dir / CONTENT_FOLDER,
+                structure_file=source_dir / CONTENT_FOLDER / STRUCTURE_FILE,
             )
+            # content = "\n".join([x["content"] for x in content.values()])
+            tag_dic, title_dic = compile_crossrefs(content)
             TopicTable = table_metadata("TopicTable")
             ds.add_component(TopicTable)
             table_dic[TopicTable["url"]] = get_topics(topic_path, title_dic, tag_dic)
@@ -794,9 +792,11 @@ def decorate_gloss_string(input_string, decoration=lambda x: f"\\gl{{{x}}}"):
                     if is_gloss_abbr_candidate(part, parts, j):
                         # take care of numbered genders
                         if part[0] == "G" and re.match(r"\d", part[1:]):
-                            output += decoration(
-                                part.lower()
-                            )  # decoration(part[0].lower()) + part[1:] # if the number should not be part of the abbreviation
+                            output += decoration(part.lower())
+                            # if the number should not be part of the abbreviation:
+                            # output += (
+                            #     decoration(part[0].lower()) + part[1:]
+                            # )
                         else:
                             for glosspart in resolve_glossing_combination(part):
                                 output += decoration(glosspart.lower())
