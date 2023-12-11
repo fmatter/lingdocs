@@ -27,6 +27,7 @@ examples: # Interlinear examples: The default options can be overridden by [spec
   show_language: true # Show language: Show the language label? 
   show_primary: true # Show first line: Show the Primary_Text line?
   source_position: after_translation # Source position: Where to place the source?
+  custom_links: {} # Custom links: Link to a corpus or editing interface.
 # after_translation / in_preamble
 lfts: # LFTS: Different kinds of entities whose schematic inline representation is:
 # ```

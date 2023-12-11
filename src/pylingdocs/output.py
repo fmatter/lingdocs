@@ -99,6 +99,19 @@ def update_structure(
         file.rename(new_path)
 
 
+def compile_latex(output_dir=config["paths"]["output"]):  # pragma: no cover
+    log.info("Compiling LaTeX document.")
+    with subprocess.Popen(
+        "latexmk --quiet --xelatex main.tex", shell=True, cwd=output_dir / "latex"
+    ) as proc:
+        del proc  # help, prospector is forcing me
+
+
+# def preview(output_format, **kwargs):
+#     builder = builders[output_format]()
+#     _preview(builder=builder, **kwargs)
+
+
 def preview(dataset, source_dir, output_dir, builder, refresh=True, **kwargs):
     log.info("Rendering preview")
 
@@ -168,6 +181,7 @@ def write_details(builder, output_dir, dataset, content):
     func_dict["decorate_gloss_string"] = builder.decorate_gloss_string
     func_dict["ref_labels"] = builder.ref_labels
     func_dict["table_label"] = table_label
+    func_dict["example_links"] = config["examples"]["custom_links"]
     log.info(
         f"Writing data for {builder.name} to {output_dir.resolve()}, this may take a while. Set data = False in the [data] section of your config file to turn off."
     )
@@ -316,7 +330,6 @@ def create_output(
     dataset,
     output_dir,
     metadata=None,
-    _compile=False,
     **kwargs,
 ):  # pylint: disable=too-many-arguments
     """Run different builders.
@@ -333,7 +346,6 @@ def create_output(
     """
     if isinstance(metadata, (str, PosixPath)):
         metadata = load(metadata) or None
-    metadata["bibfile"] = dataset.bibpath.name
     output_dir = Path(output_dir)
     source_dir = Path(source_dir)
     if not output_dir.is_dir():
@@ -381,6 +393,8 @@ def create_output(
             pbar.update(1)
             content = postprocess(content, builder, source_dir)
             pbar.update(1)
+            if builder.name == "latex":
+                metadata["bibfile"] = dataset.bibpath.name
             if builder.single_output:
                 audio_dic = {}
                 if config[builder.name].get("audio"):
@@ -397,15 +411,6 @@ def create_output(
                     chapters=chapters,
                     audio=audio_dic,
                 )
-                if builder.name == "latex":
-                    shutil.copy(
-                        dataset.bibpath,
-                        source_dir / output_dir / builder.name / dataset.bibpath.name,
-                    )
-                    metadata["bibfile"] = dataset.bibpath.name
-                if _compile:
-                    builder.compile(source_dir, output_dir)
-
             pbar.update(1)
         if config["data"]["data"]:
             write_details(builder, output_dir, dataset, preprocessed)
