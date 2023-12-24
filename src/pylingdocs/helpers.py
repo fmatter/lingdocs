@@ -646,8 +646,13 @@ def get_md_pattern(m):
     return m.end(), m.group("label"), m.group("url")
 
 
+latex_repl = {"%": "\\%"}
+
+
 def latexify_table(cell):
     cell = str(cell)
+    for a, b in latex_repl.items():
+        cell = cell.replace(a, b)
     if "_" in cell or "*" in cell:
         return panflute.convert_text(
             cell, output_format="latex", input_format="markdown"
