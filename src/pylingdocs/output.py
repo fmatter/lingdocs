@@ -161,6 +161,8 @@ def check_ids(contents, dataset, source_dir):
 
 
 def write_details(builder, output_dir, dataset, content):
+    if builder.name not in ["mkdocs"]:
+        return None
     loader = loaders[builder.name]["data"]
     text_loader = loaders[builder.name]["text"]
     data_dir = output_dir / builder.name / builder.data_dir
