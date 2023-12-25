@@ -9,6 +9,6 @@ tags:{% for tag in rich["Tags"]%}
 ---
 
 {%endif%}
-# {{table_label(component,target="single").capitalize()}}: {{pld_util.lfts(util.get_label(rich), entity=rich.fields, with_translation=True)}}
+# {{table_label(component,target="single").capitalize()}}: {{pld_util.lfts(util.get_label(rich), entity=rich.fields, with_translation=True, with_language=with_language)}}
 {{util.render_singles(rich)}}
 {{util.render_multis(rich)}}
