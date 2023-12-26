@@ -159,6 +159,29 @@ def create_cldf(
                     "Number": i + 1,
                 }
             )
+        landingpage_path = source_dir / EXTRA_DIR / f"landingpage_cldf.md"
+        if landingpage_path.is_file():
+            lp_tent = load(landingpage_path)
+            lp_tent = preprocess(lp_tent, source_dir)
+            lp_tent = clld.preprocess_commands(lp_tent, **kwargs)
+            lp_tent = render_markdown(
+                lp_tent,
+                ds,
+                decorate_gloss_string=CLLD.decorate_gloss_string,
+                builder=clld,
+            )
+            lp_tent = "\n" + postprocess(lp_tent, clld, source_dir)
+            lp_tent = lp_tent.replace(
+                "![](", "![](/static/images/"
+            )  # rudely assume that all images live in the static dir
+            chapters.append(
+                {
+                    "ID": "landingpage",
+                    "Description": lp_tent,
+                    "Name": "Landing page",
+                }
+            )
+
     ds.write()  # todo: is this necessary?
     ds.copy(dest=output_dir / "cldf")
     ds = pycldf.Dataset.from_metadata(output_dir / "cldf" / ds.filename)
