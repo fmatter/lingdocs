@@ -184,11 +184,11 @@ def write_details(builder, output_dir, dataset, content):
     func_dict["ref_labels"] = builder.ref_labels
     func_dict["table_label"] = table_label
     log.info(
-        f"Writing data for {builder.name} to {output_dir.resolve()}, this may take a while. Set data = False in the [data] section of your config file to turn off."
+        f"Writing data for {builder.name} to {output_dir.resolve()}, this may take a while. Set Set\ndata:\n  data:\n    false\n in your config file to turn off."
     )
     if config["data"]["rich"]:
         log.info(
-            f"Rich data, too! Set rich = False in the [data] section of your config file to turn off."
+            f"Rich data, too! Set\ndata:\n  rich:\n    false\nin your config file to turn off."
         )
         data = CLDFDataset(dataset, orm=True)
         func_dict["data"] = data
