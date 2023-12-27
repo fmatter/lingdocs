@@ -54,6 +54,10 @@ def blank_todo(url, **_kwargs):
 
 col_pattern = rf"{COLSTART}(?s:.*?){COLEND}"
 
+media_base = config["media_url"] or "site:assets/audio/"
+if not media_base.endswith("/"):
+    media_base += "/"
+
 
 def slide_columns(text):
     text = text.replace(COLSTART, "")
@@ -564,9 +568,8 @@ class MkDocs(HTML):
 
     def get_audio(cls, dic, url):
         if url not in dic:
-            log.warning(url)
             return ""
-        return {"url": f"site:assets/audio/{dic[url]['url']}", "type": dic[url]["url"]}
+        return {"url": f"{media_base}{dic[url]['url']}", "type": dic[url]["url"]}
 
     def postprocess(cls, content, metadata=None):
         metadata = metadata or {}
