@@ -1,18 +1,18 @@
 import logging
 import shutil
-from pylingdocs.config import CONTENT_FOLDER
-from pylingdocs.config import STRUCTURE_FILE
+from lingdocs.config import CONTENT_FOLDER
+from lingdocs.config import STRUCTURE_FILE
 
 # import pytest
-from pylingdocs.helpers import _get_relative_file
-from pylingdocs.formats import builders
-from pylingdocs.helpers import load_content
+from lingdocs.helpers import _get_relative_file
+from lingdocs.formats import builders
+from lingdocs.helpers import load_content
 from writio import load
-from pylingdocs.output import create_output
-from pylingdocs.formats import PlainText
-from pylingdocs.postprocessing import postprocess
-from pylingdocs.preprocessing import preprocess
-from pylingdocs.preprocessing import render_markdown
+from lingdocs.output import create_output
+from lingdocs.formats import PlainText
+from lingdocs.postprocessing import postprocess
+from lingdocs.preprocessing import preprocess
+from lingdocs.preprocessing import render_markdown
 
 log = logging.getLogger(__name__)
 

@@ -4,7 +4,7 @@ UNDER CONSTRUCTION
 
 ## Introduction
 
-`pylingdocs` uses a custom markdown format. Access to entities in the
+`lingdocs` uses a custom markdown format. Access to entities in the
 database (examples, morphemes, languages\...) is done in the format
 `[abbr](id)`, where `abbr` represents the kind of entity, and `id` the
 ID of the entity. So if you have an example with the ID `narr-23`, you
@@ -22,7 +22,7 @@ example, a bibkey in a `.bib` file). `[pages]` is optional. For example,
 
 ## Interlinear examples
 
-While pylingdocs takes care of the formatting of examples, there are
+While lingdocs takes care of the formatting of examples, there are
 some parameters you might want to modify. The following table shows the
 basic layout; `[]` mark optional content.
 

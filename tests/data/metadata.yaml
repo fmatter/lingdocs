@@ -1,4 +1,4 @@
-id: pylingdocs-demo
+id: lingdocs-demo
 version: 0.0.1.draft
 title: "Pylingdocs: A Demo"
 authors: 
@@ -7,10 +7,10 @@ authors:
       orcid: 0000-0002-2545-5154
       email: fmatter@mailbox.org
       affiliation: University of Oregon
-abstract: This is a short document demonstrating the capabilities (and limits?) of pylingdocs.
+abstract: This is a short document demonstrating the capabilities (and limits?) of lingdocs.
 keywords:
-- pylingdocs
+- lingdocs
 - cldf
 license: CC-BY-SA-4.0
 type: article
-repository: https://github.com/fmatter/pylingdocs-demo
+repository: https://github.com/fmatter/lingdocs-demo
