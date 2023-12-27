@@ -198,10 +198,13 @@ class OutputFormat:
     ):  # pylint: disable=too-many-arguments
         # log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
         abbrev_dict = abbrev_dict or {}
+        title = metadata.get("title", "A beautiful title")
+        if metadata["version"]:
+            title += f" (v{metadata['version']})"
         extra = {
             "name": cls.name,
             "chapters": chapters,
-            "project_title": metadata.get("title", "A beautiful title"),
+            "project_title": title,
             "glossing_abbrevs": cls.register_glossing_abbrevs(abbrev_dict),
             "ref_labels": str(ref_labels),
             "ref_locations": str(ref_locations),
