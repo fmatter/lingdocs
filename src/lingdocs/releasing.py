@@ -11,7 +11,7 @@ import jinja2
 import keepachangelog
 from writio import dump, load
 
-from pylingdocs.config import (
+from lingdocs.config import (
     BUILD_DIR,
     CONTENT_FOLDER,
     DATA_DIR,
