@@ -56,7 +56,8 @@
     comment=comment,
     show_language=with_language,
     source_position=src_pos,
-    show_primary=with_primaryText
+    show_primary=with_primaryText,
+    audio=get_audio(ctx.cldf.mediaReference)
     ) %}
 <ol class="{{class_}}">
 {{ util.render_example(class_, build_example(ex_data))}}
