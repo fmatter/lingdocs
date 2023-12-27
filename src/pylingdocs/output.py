@@ -258,27 +258,6 @@ def write_details(builder, output_dir, dataset, content):
                     rec["ID"]: f"[]({name}#cldf:{rec['ID']})"
                     for rec in dataset.iter_rows(name)
                 }
-            # details = {}
-            # for rid, detail in tqdm(items.items(), desc=name):
-            #     if config["data"]["light"] and rid not in content:
-            #         continue
-            #     details[rid] = detail
-            # filepath = table_dir / f"{rid}.{builder.file_ext}"
-            # if filepath.is_file():
-            #     continue
-            # detail = render(
-            #     doc="".join(preprocess_cldfviz(detail)),
-            #     cldf_dict=dataset,
-            #     loader=detail_loader,
-            #     func_dict=func_dict,
-            # )  # todo prettify
-            # if "#cldf" in detail:
-            #     detail = render(
-            #         doc=detail,
-            #         cldf_dict=dataset,
-            #         loader=text_loader,
-            #         func_dict=func_dict,
-            #     )
             delim = "DATA-DELIM"
             if name != "constructions.csv":
                 details = {
@@ -286,15 +265,6 @@ def write_details(builder, output_dir, dataset, content):
                     for rid, d in details.items()
                     if not (config["data"]["light"] and rid not in content)
                 }
-            # bundles = []
-            # processed = []
-            # for v in details.values():
-            #     if len(bundles) == 1000:
-            #         processed.append("".join(preprocess_cldfviz(delim.join(bundles))))
-            #         print(f"{len(processed)*1000}/{len(details)}")
-            #         bundles = []
-            #     bundles.append(v)
-            # processed.append("".join(preprocess_cldfviz(delim.join(bundles))))
             preprocessed = "".join(preprocess_cldfviz(delim.join(details.values())))
             detail_text = render(
                 doc=preprocessed,
