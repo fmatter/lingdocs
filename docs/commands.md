@@ -18,6 +18,6 @@ You can see a list of commands by running `lingdocs --help`; you can see informa
     :depth: 1
 
 ::: mkdocs-click
-    :module: pylingdocs.cli
+    :module: lingdocs.cli
     :command: release
     :depth: 1
