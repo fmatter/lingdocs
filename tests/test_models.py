@@ -1,5 +1,5 @@
-from pylingdocs.models import Language
-from pylingdocs.models import Text
+from lingdocs.models import Language
+from lingdocs.models import Text
 
 
 def test_model_cldf():

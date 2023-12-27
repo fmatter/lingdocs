@@ -1,4 +1,4 @@
-from pylingdocs.helpers import table_metadata
+from lingdocs.helpers import table_metadata
 
 
 def test_native():

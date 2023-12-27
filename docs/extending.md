@@ -15,14 +15,14 @@ Filenames have the scheme `<format>_<view>.md`, where `format` is are names like
 * `pld/model_templates/morph/html_list.md`: the inline list view for the morph model in HTML output
 * `pld/model_templates/text/plain_inline.md`: the inline view for the text model in plaintext output
 
-To get an idea of what model templates look like, check out the [built-in templates](https://github.com/fmatter/pylingdocs/tree/main/src/pylingdocs/data/model_templates).
+To get an idea of what model templates look like, check out the [built-in templates](https://github.com/fmatter/lingdocs/tree/main/src/lingdocs/data/model_templates).
 There is a degree of inheritance in templates, so if e.g. `morph/github_detail` is not implemented, `morph/plain_detail`, `morpheme/plain_detail` and `morpheme/plain_detail` will also be tried -- the `morph` model inherits from `morpheme`, and the `github` output format inherits from `plain`.
 
 ### Formats
 Format templates live in a directory `pld/format_templates/<format_name>/<template_name>` (e.g. `html/slides`).
 They are [cookiecutter](https://cookiecutter.readthedocs.io) templates, so they minimally contain the files `cookiecutter.json` and a directory `{{cookiecutter.name}}`.
 The contents of that folder will be in `output/<format>` when a project is compiled.
-Built-in templates will be replaced entirely (not on a file-by-file basis), so it is suggested to copy the directory of one of the [built-in format templates](https://github.com/fmatter/pylingdocs/tree/main/src/pylingdocs/data/format_templates) and modify its contents.
+Built-in templates will be replaced entirely (not on a file-by-file basis), so it is suggested to copy the directory of one of the [built-in format templates](https://github.com/fmatter/lingdocs/tree/main/src/lingdocs/data/format_templates) and modify its contents.
 
 ## Creating formats
 If you need to change more than just the format templates, you can create your own format in `pld/formats.py`.
@@ -30,7 +30,7 @@ Here is an example on how to create a modified HTML format, where todos are form
 
 
 ```python
-from pylingdocs.formats import HTML
+from lingdocs.formats import HTML
 
 def custom_todo(url, **kwargs):
     return f"<span title='{url}'>TODO</span>"
@@ -60,7 +60,7 @@ formats = [CustomHTML]
 The file `pld/models.py` should be structured as follows:
 
 ```python
-from pylingdocs.models import Base
+from lingdocs.models import Base
 
 class Phoneme(Base):
     name = "Phoneme"
@@ -82,5 +82,5 @@ models = [Phoneme, POS, Lexeme]
 
 ```
 
-These are very minimal models, check out the [built-in models](https://github.com/fmatter/pylingdocs/blob/main/src/pylingdocs/models.py) for more examples.
+These are very minimal models, check out the [built-in models](https://github.com/fmatter/lingdocs/blob/main/src/lingdocs/models.py) for more examples.
 

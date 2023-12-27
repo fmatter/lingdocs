@@ -1,6 +1,6 @@
-from pylingdocs.templates import find_template
-from pylingdocs.models import models
-from pylingdocs.formats import builders
+from lingdocs.templates import find_template
+from lingdocs.models import models
+from lingdocs.formats import builders
 
 
 def test_file_load():

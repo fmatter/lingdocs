@@ -1,11 +1,11 @@
 from pathlib import Path
-from pylingdocs.helpers import _get_relative_file
-from pylingdocs.helpers import decorate_gloss_string
-from pylingdocs.helpers import load_content
-from pylingdocs.helpers import split_ref
-from pylingdocs.helpers import src
-from pylingdocs.helpers import write_file
-from pylingdocs.helpers import decorate_gloss_string
+from lingdocs.helpers import _get_relative_file
+from lingdocs.helpers import decorate_gloss_string
+from lingdocs.helpers import load_content
+from lingdocs.helpers import split_ref
+from lingdocs.helpers import src
+from lingdocs.helpers import write_file
+from lingdocs.helpers import decorate_gloss_string
 
 
 def test_structure():

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+* now simply called **lingdocs**
+
 ### Added
 * argument shortcuts for LFTS forms: `nl` (don't print the language) and `ftr` (free translation)
 * columns for slides & other improvements
@@ -166,7 +169,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * `pre_cell` and `post_cell` keywords in table metadata to apply markdown to entire table
-* `pylingdocs author-config` command
+* `lingdocs author-config` command
 * `add_bib` option for adding external sources
 * figures functionality
 * support for GUI editor
@@ -236,8 +239,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.2] - 2022-05-20
 
 ### Added
-* generate data for the [Sublime Text plugin](https://github.com/fmatter/pylingdocs-sublime/) with `pylingdocs sublime`
-* create a new project with `pylingdocs new`
+* generate data for the [Sublime Text plugin](https://github.com/fmatter/lingdocs-sublime/) with `lingdocs sublime`
+* create a new project with `lingdocs new`
 * prettier plaintext example rendering
 * use pandoc throughout
 * expanded demo document
@@ -267,20 +270,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial release.
 
-[Unreleased]: https://github.com/fmatter/pylingdocs/compare/v0.1.3...HEAD
-[0.1.3]: https://github.com/fmatter/pylingdocs/compare/v0.1.2...v0.1.3
-[0.1.2]: https://github.com/fmatter/pylingdocs/compare/v0.1.1...v0.1.2
-[0.1.1]: https://github.com/fmatter/pylingdocs/compare/v0.1.0...v0.1.1
-[0.1.0]: https://github.com/fmatter/pylingdocs/compare/0.0.12...v0.1.0
-[0.0.12]: https://github.com/fmatter/pylingdocs/compare/0.0.11...0.0.12
-[0.0.11]: https://github.com/fmatter/pylingdocs/compare/0.0.10...0.0.11
-[0.0.10]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.10
-[0.0.9]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.9
-[0.0.8]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.8
-[0.0.7]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.7
-[0.0.6]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.6
-[0.0.5]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.5
-[0.0.4]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.4
-[0.0.3]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.3
-[0.0.2]: https://github.com/fmatter/pylingdocs/releases/tag/0.0.2
-[0.0.1]: https://github.com/fmatter/pylingdocs/releases/tag/v0.0.1
+[Unreleased]: https://github.com/fmatter/lingdocs/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/fmatter/lingdocs/compare/v0.1.2...v0.1.3
+[0.1.2]: https://github.com/fmatter/lingdocs/compare/v0.1.1...v0.1.2
+[0.1.1]: https://github.com/fmatter/lingdocs/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/fmatter/lingdocs/compare/0.0.12...v0.1.0
+[0.0.12]: https://github.com/fmatter/lingdocs/compare/0.0.11...0.0.12
+[0.0.11]: https://github.com/fmatter/lingdocs/compare/0.0.10...0.0.11
+[0.0.10]: https://github.com/fmatter/lingdocs/releases/tag/0.0.10
+[0.0.9]: https://github.com/fmatter/lingdocs/releases/tag/0.0.9
+[0.0.8]: https://github.com/fmatter/lingdocs/releases/tag/0.0.8
+[0.0.7]: https://github.com/fmatter/lingdocs/releases/tag/0.0.7
+[0.0.6]: https://github.com/fmatter/lingdocs/releases/tag/0.0.6
+[0.0.5]: https://github.com/fmatter/lingdocs/releases/tag/0.0.5
+[0.0.4]: https://github.com/fmatter/lingdocs/releases/tag/0.0.4
+[0.0.3]: https://github.com/fmatter/lingdocs/releases/tag/0.0.3
+[0.0.2]: https://github.com/fmatter/lingdocs/releases/tag/0.0.2
+[0.0.1]: https://github.com/fmatter/lingdocs/releases/tag/v0.0.1

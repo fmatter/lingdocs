@@ -1,0 +1,50 @@
+output: # Output: General options relating to the produced output.
+  build: # Formats: What [formats](/formats) should be built?
+    - latex
+    - mkdocs
+    - html
+    - plain
+  preview: mkdocs # Preview: What format should be used for [previewing](/usage#preview).
+  readme: true # README: Should a README.md file be created?
+  layout: book # Layout: The layout of the produced document. Options: `book`, `article`, `slides`.
+data: # CLDF data appendix: Create index and detail pages for database entities?
+  data: false # This feature is disabled by default.
+# You can point this to a different CLDF metadata.json file
+  rich: false # Rich data: Insert links to this data into the document?
+# (Slow and currently only supported for [MkDocs](/formats#mkdocs)).
+  light: false # Light data: Only include entities referenced in document.
+examples: # Interlinear examples: The default options can be overridden by [specifying an argument](/usage#commands), e.g. `show_language=True`. 
+  show_language: true # Show language: Show the language label? 
+  show_primary: true # Show first line: Show the Primary_Text line?
+  source_position: after_translation # Source position: Where to place the source?
+# after_translation / in_preamble
+lfts: # LFTS: Different kinds of entities whose schematic inline representation is:
+# ```
+# (language) form (‘translation’) ((source))
+# ```
+# The default options can be overridden by [specifying an argument](/usage#commands), e.g. `show_language=True`. 
+  show_language: true # Show language:  
+  show_translation: true # Show free translation:  
+  show_source: true # Show source:  
+paths: # Locations: 
+  cldf: cldf/metadata.json # CLDF dataset location: The path to the CLDF metadata file. 
+  output: output # Output folder: The folder to which output is written. 
+  add_bib: extra/sources.bib # Additional references: Path to a bibfile with references not contained in the dataset.
+  audio: extra/audio # Adding audio: this folder needs to contain <MediaReference>.wav or <MediaReference>.mp3 files.
+latex: # LaTeX: LaTeX-specific settings.
+  article: article # Article template: The default template for the article layout.
+  book: book # Book template: The default template for the book layout.
+  interlinear: expex # Interlinear package: The preferred setup for interlinear examples in LaTeX.
+mkdocs:
+  audio: null # Adding audio: Add a path to your audio base URL.
+  hypothes.is: false # hypothes.is: Use [hypothes.is](https://hypothes.is) for online annotation.
+clld: # CLLD: 
+  db_uri: null # Database location: URI to the database of your CLLD app, i.e. something like `sqlite:///path/to/your/db.sqlite`.
+html:
+  hypothes.is: true # hypothes.is: Use [hypothes.is](https://hypothes.is) for online annotation.
+input: # Input: 
+  sublime: false # Sublime text: Generate data (in the docs folder) for the [Sublime text plugin](https://github.com/fmatter/lingdocs-sublime/).
+  content_file_prefix: null # File prefix: How your filenames should be prefixed, if at all.
+plain: {} # Empty settings for plaintext format.
+github: {} # Empty settings for github format.
+media_url: null # External media hosting: if your audio is stored on a media server, the base URL here will be used for audio links.
