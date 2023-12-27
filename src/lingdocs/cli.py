@@ -76,7 +76,7 @@ class BuildCommand(OutputCommand):
     help="Compile create output, where applicable.",
     show_default=True,
 )
-def build(source, targets, cldf, output_dir, _compile, release):
+def build(source, targets, cldf, output_dir, _compile):
     """Create formatted output of lingdocs project."""
     source = Path(source)
     config.load_from_dir(source)
@@ -95,7 +95,7 @@ def build(source, targets, cldf, output_dir, _compile, release):
         contents, source, targets, ds, output_dir, metadata=metadata, _compile=_compile
     )
     if config["output"]["readme"]:
-        write_readme(source / "metadata.yaml", release=release)
+        write_readme(source / "metadata.yaml")
     if config["input"]["sublime"]:
         generate_autocomplete(ds, source / "docs")
 
