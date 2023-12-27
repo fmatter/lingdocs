@@ -54,10 +54,6 @@ def blank_todo(url, **_kwargs):
 
 col_pattern = rf"{COLSTART}(?s:.*?){COLEND}"
 
-media_base = config["media_url"] or "site:assets/audio/"
-if not media_base.endswith("/"):
-    media_base += "/"
-
 
 def slide_columns(text):
     text = text.replace(COLSTART, "")
@@ -119,7 +115,6 @@ class OutputFormat:
     data_dir = "data"
     topic_dir = "topics"
     fallback_layout = "basic"
-    audio_path = "audio"
 
     @property
     def label(cls):
@@ -258,17 +253,6 @@ class OutputFormat:
                 (output_dir / parents).mkdir(exist_ok=True, parents=True)
                 out_path = output_dir / parents / d.name
                 shutil.copy(d, out_path)
-
-        cls.copy_audio(audio, output_dir)
-
-    def copy_audio(cls, audio, out_path):
-        if config["paths"]["audio"].is_dir():
-            (out_path / cls.name / cls.audio_path).mkdir(exist_ok=True, parents=True)
-            for media in tqdm(audio.values(), desc="Audio"):
-                src_path = config["paths"]["audio"] / media["Download_URL"].path
-                target_path = out_path / cls.name / cls.audio_path / Path(src_path).name
-                if src_path.is_file() and not target_path.is_file():
-                    shutil.copy(src_path, target_path)
 
     def register_glossing_abbrevs(cls, abbrev_dict):
         del abbrev_dict
@@ -552,7 +536,6 @@ class MkDocs(HTML):
     data_dir = "docs/data"
     topic_dir = "docs/index/topics"
     file_ext = "md"
-    audio_path = "docs/assets/audio"
 
     def preprocess(cls, content):
         content = re.sub(
@@ -569,7 +552,7 @@ class MkDocs(HTML):
     def get_audio(cls, dic, url):
         if url not in dic:
             return ""
-        return {"url": f"{media_base}{dic[url]['url']}", "type": dic[url]["url"]}
+        return {"url": dic[url]["url"], "type": dic[url]["type"]}
 
     def postprocess(cls, content, metadata=None):
         metadata = metadata or {}
