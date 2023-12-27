@@ -76,7 +76,7 @@ class BuildCommand(OutputCommand):
     help="Compile create output, where applicable.",
     show_default=True,
 )
-def build(source, targets, cldf, output_dir, release, _compile):
+def build(source, targets, cldf, output_dir, _compile, release):
     """Create formatted output of lingdocs project."""
     source = Path(source)
     config.load_from_dir(source)
