@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `[my smallcaps]{.smallcaps}` notation
 * landing pages
 * mkdocs texts
+* support for external media hosting
 
 ### Fixed
 * topic index
