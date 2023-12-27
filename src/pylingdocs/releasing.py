@@ -89,7 +89,7 @@ def run_releases(source, output_dir, bump, **kwargs):
             sys.exit()
     for mode in modes:
         print(f"releasing {mode}")
-        mode.release(metadata["id"] + version, source)
+        mode.release(f'{metadata["id"]}-{version}', source)
     metadata["version"] = bump_version(metadata["version"], bump)
     dump(metadata, source / "metadata.yaml")
 
