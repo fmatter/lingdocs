@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "pylingdocs"
-version = "0.1.3"
+name = "lingdocs"
+version = "0.1.5.dev"
 authors = ["Florian Matter <flmt@mailbox.org>"]
 license = "Apache-2.0"
-homepage = "https://fl.mt/pylingdocs"
-repository = "https://www.github.com/fmatter/pylingdocs"
+homepage = "https://fl.mt/lingdocs"
+repository = "https://www.github.com/fmatter/lingdocs"
 keywords = ["cldf", "markdown", "digital linguistics"]
 readme = "README.md"
 description = "Create data-rich linguistic documents."
@@ -21,10 +21,10 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-"Bug tracker" = "https://www.github.com/fmatter/pylingdocs/issues"
+"Bug tracker" = "https://www.github.com/fmatter/lingdocs/issues"
 
 [tool.poetry.scripts]
-pylingdocs = 'pylingdocs.cli:main'
+lingdocs = 'lingdocs.cli:main'
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
@@ -64,7 +64,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 packages = [
-    { include = "pylingdocs", from = "src" },
+    { include = "lingdocs", from = "src" },
 ]
 
 [tool.pylint.messages_control]
@@ -72,7 +72,7 @@ disable=["logging-fstring-interpolation"]
 
 [tox]
 isolated_build = true
-toxworkdir = "/tmp/.pylingdocs_tox"
+toxworkdir = "/tmp/.lingdocs_tox"
 commands = "pytest tests/ --import-mode importlib"
 
 [tool.pytest.ini_options]

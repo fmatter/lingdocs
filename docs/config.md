@@ -1,8 +1,8 @@
 # Configuration
 
-By default, `pylingdocs` uses the config file shown below. The values in
-it can be overridden by creating a file `pylingdocs.cfg` in the
-directory where you are executing `pylingdocs`.
+By default, `lingdocs` uses the config file shown below. The values in
+it can be overridden by creating a file `lingdocs.cfg` in the
+directory where you are executing `lingdocs`.
 
 
-{!src/pylingdocs/data/config.yaml!}
+{!src/lingdocs/data/config.yaml!}
