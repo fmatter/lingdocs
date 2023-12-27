@@ -1,14 +1,13 @@
 Introduction
 
-This document does double service as a test for pylingdocs and a
-showcase of its capabilities. It aims to demonstrate every feature and
-model currently available in pylingdocs.
+This document does double service as a test for lingdocs and a showcase
+of its capabilities. It aims to demonstrate every feature and model
+currently available in lingdocs.
 
 Common markdown
 
 You can use all the familiar markdown components. Here is a link to the
-pylingdocs github repo. Here is some bold and italic and bold italic
-text.
+lingdocs github repo. Here is some bold and italic and bold italic text.
 
 1.  here
 2.  is
@@ -33,7 +32,7 @@ A quote:
 Pylingdocs markdown
 
 Apart from database references, discussed in 7, there are a number of
-pylingdocs-specific commands, all patterning like links:
+lingdocs-specific commands, all patterning like links:
 
 -   cross-references: 2 or 1, see corresponding label commands
 -   example references:

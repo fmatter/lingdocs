@@ -1,6 +1,6 @@
 # Common markdown
 You can use all the familiar markdown components.
-Here is a link to the [pylingdocs github repo](https://github.com/fmatter/pylingdocs/).
+Here is a link to the [lingdocs github repo](https://github.com/fmatter/lingdocs/).
 Here is some **bold** and _italic_ and **_bold italic_** text.
 
 1. here
@@ -23,7 +23,7 @@ A quote:
 
 # Pylingdocs markdown [label](pld-md)
 
-Apart from database references, discussed in [ref](sec:sources), there are a number of `pylingdocs`-specific commands, all patterning like links:
+Apart from database references, discussed in [ref](sec:sources), there are a number of `lingdocs`-specific commands, all patterning like links:
 
 * cross-references: [ref](common-markdown) or [ref](sec:intro), see corresponding `label` commands
 * example references:

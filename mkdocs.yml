@@ -1,5 +1,5 @@
-site_name: pylingdocs
-repo_url: https://github.com/fmatter/pylingdocs
+site_name: lingdocs
+repo_url: https://github.com/fmatter/lingdocs
 plugins:
   - search
   - mkdocstrings
