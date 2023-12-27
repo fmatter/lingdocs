@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * columns for slides & other improvements
 * `[my smallcaps]{.smallcaps}` notation
 * landing pages
+* mkdocs texts
 
 ### Fixed
 * topic index
