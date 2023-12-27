@@ -81,8 +81,6 @@ def run_releases(source, output_dir, bump, **kwargs):
     metadata = load(source / "metadata.yaml")
     if config["output"]["changelog"]:
         release_changelog(metadata)
-    metadata["version"] = bump_version(metadata["version"], bump)
-    dump(metadata, source / "metadata.yaml")
     version = _version(metadata["version"])
     build_archive(source, output_dir, metadata["id"] + "-" + version)
     for mode in modes:
@@ -92,6 +90,8 @@ def run_releases(source, output_dir, bump, **kwargs):
     for mode in modes:
         print(f"releasing {mode}")
         mode.release(metadata["id"] + version, source)
+    metadata["version"] = bump_version(metadata["version"], bump)
+    dump(metadata, source / "metadata.yaml")
 
 
 def bump_version(version, step="patch"):
