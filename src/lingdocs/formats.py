@@ -19,15 +19,15 @@ from tqdm import tqdm
 from writio import dump, load
 
 from lingdocs.config import (
+    COLDIV,
+    COLEND,
+    COLSTART,
     DATA_DIR,
     EXTRA_DIR,
     MD_LINK_PATTERN,
     PLD_DIR,
     config,
     merge_dicts,
-    COLSTART,
-    COLEND,
-    COLDIV,
 )
 from lingdocs.helpers import (
     Enumerator,
