@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lingdocs"
-version = "0.1.4.dev"
+version = "0.1.4"
 authors = ["Florian Matter <flmt@mailbox.org>"]
 license = "Apache-2.0"
 homepage = "https://fl.mt/lingdocs"
