@@ -67,3 +67,4 @@ releasing:
       - site: html
     plain:
       - document.txt: plain.txt
+media_url: null # External media hosting: if your audio is stored on a media server, the base URL here will be used for audio links.
