@@ -36,7 +36,6 @@
     {% set _ = morphlist.append("=".join(morphparts)) %}
 {% endfor %}
 
-
         {% set _ = ex_data.append(dict(
             obj=wordlist,
             obj2=morphlist,
@@ -50,7 +49,8 @@
             comment=comment,
             show_language=with_language,
             source_position=src_pos,
-            show_primary=with_primaryText
+            show_primary=with_primaryText,
+            audio=get_audio(ctx.cldf.mediaReference)
             )) %}
     {% endfor %}
     {% set gathered_examples, full_preamble = build_examples(ex_data)%}
