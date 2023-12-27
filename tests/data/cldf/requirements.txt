@@ -37,7 +37,7 @@ pyconcepticon==3.0.0
 pycountry==22.3.5
 pyglottolog==3.11.0
 pylatexenc==2.10
--e git+ssh://git@github.com/fmatter/pylingdocs.git@6d287f2c10954f1948b3b51ea20927ff3a802300#egg=pylingdocs
+-e git+ssh://git@github.com/fmatter/lingdocs.git@6d287f2c10954f1948b3b51ea20927ff3a802300#egg=lingdocs
 pyrsistent==0.19.3
 python-dateutil==2.8.2
 python-frontmatter==1.0.0

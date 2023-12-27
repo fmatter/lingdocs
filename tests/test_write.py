@@ -1,4 +1,4 @@
-from pylingdocs.helpers import write_content_file
+from lingdocs.helpers import write_content_file
 import shutil
 
 

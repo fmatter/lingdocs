@@ -2,10 +2,10 @@ import logging
 import shutil
 from pathlib import Path
 from click.testing import CliRunner
-from pylingdocs.cli import author_config
-from pylingdocs.cli import build
-from pylingdocs.cli import check
-from pylingdocs.cli import main
+from lingdocs.cli import author_config
+from lingdocs.cli import build
+from lingdocs.cli import check
+from lingdocs.cli import main
 
 
 log = logging.getLogger(__name__)

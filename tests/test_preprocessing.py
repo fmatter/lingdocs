@@ -1,6 +1,6 @@
 import logging
-from pylingdocs.preprocessing import render_markdown
-from pylingdocs.formats import builders
+from lingdocs.preprocessing import render_markdown
+from lingdocs.formats import builders
 
 log = logging.getLogger(__name__)
 
