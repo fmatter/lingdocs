@@ -17,7 +17,7 @@
       {% endfor %}
     {% endif %}
     <div class="ftr">{{ res["ftr"] }} {{res["postamble"]}} </div>
-    {% if res["audio_url"] %}
+    {% if res["audio"] %}
         <audio controls src="{{ res["audio"]['url'] }}" type="{{ res["audio"]['type'] }}"></audio>
     {% endif %}
   </div>
