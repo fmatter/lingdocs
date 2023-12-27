@@ -36,7 +36,6 @@ latex: # LaTeX: LaTeX-specific settings.
   book: book # Book template: The default template for the book layout.
   interlinear: expex # Interlinear package: The preferred setup for interlinear examples in LaTeX.
 mkdocs:
-  audio: null # Adding audio: Add a path to your audio base URL.
   hypothes.is: false # hypothes.is: Use [hypothes.is](https://hypothes.is) for online annotation.
 clld: # CLLD: 
   db_uri: null # Database location: URI to the database of your CLLD app, i.e. something like `sqlite:///path/to/your/db.sqlite`.
@@ -47,4 +46,3 @@ input: # Input:
   content_file_prefix: null # File prefix: How your filenames should be prefixed, if at all.
 plain: {} # Empty settings for plaintext format.
 github: {} # Empty settings for github format.
-media_url: null # External media hosting: if your audio is stored on a media server, the base URL here will be used for audio links.
