@@ -194,8 +194,6 @@ class OutputFormat:
         # log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
         abbrev_dict = abbrev_dict or {}
         title = metadata.get("title", "A beautiful title")
-        if metadata["version"]:
-            title += f" (v{metadata['version']})"
         extra = {
             "name": cls.name,
             "chapters": chapters,
@@ -206,6 +204,7 @@ class OutputFormat:
             "data": config["data"]["data"],
             "layout": config["output"]["layout"],
             "conf": config.data.get(cls.name, {}),
+            "version": metadata["version"],
         }
         if "authors" in metadata:
             extra["author"] = cls.author_list(metadata["authors"])
