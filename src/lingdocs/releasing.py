@@ -46,6 +46,13 @@ def zipdir(path, zipfile):
             )
 
 
+class Mike:
+    pass
+    # - make sure mike is installed
+    # - mike set-default latest
+    # - mike deploy VERSION
+
+
 class LocalZip:
     name = "zip"
     directory = "zips"
