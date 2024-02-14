@@ -24,17 +24,18 @@ COLDIV = "---col---"
 
 
 def merge_dicts(a, b):
-    for k1, v1 in b.items():
-        if isinstance(v1, dict):
-            for k2, v2 in v1.items():
-                if isinstance(v2, dict):
-                    log.warning(
-                        "Your configuration file is too nested. Please check it."
-                    )
-                else:
-                    a[k1][k2] = v2
-        else:
-            a[k1] = v1
+    if b is not None:
+        for k1, v1 in b.items():
+            if isinstance(v1, dict):
+                for k2, v2 in v1.items():
+                    if isinstance(v2, dict):
+                        log.warning(
+                            "Your configuration file is too nested. Please check it."
+                        )
+                    else:
+                        a[k1][k2] = v2
+            else:
+                a[k1] = v1
     return a
 
 
