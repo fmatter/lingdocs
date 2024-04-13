@@ -40,7 +40,7 @@
 {%else%}
     {% set page_string = ""%}
 {% endif %}
-<a href='#source-{{ref.source.id}}'>{{ref.source.refkey(year_brackets=None)}}</a>{{page_string}}{% elif "Text_ID" in ctx.data %}
+<a href='#source-{{ref.source.id}}'>{{ref.source.refkey(year_brackets=None)}}</a>{{page_string}}{% elif "Text_ID" in ctx.data and ctx.data["Text_ID"] %}
 {{txt_src(ctx.data)}}{% else %}
 {% endif %}
 {%- endmacro %}
