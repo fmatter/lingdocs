@@ -45,6 +45,5 @@ Captions and other metadata is stored in `tables/metadata.yaml`.
 
 Every figure has an ID; they can be inserted with the directive
 `[figure](id)`.
-A file with the name `<ID>.<suffix>` must be placed in the `figures` directory.
-Captions and other metadata is stored in `figures/metadata.yaml`.
-
+For figures, a caption and a filename must be provided in `figures/metadata.yaml`.
+A file with the filename must be placed in the `figures` directory.
