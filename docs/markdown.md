@@ -38,3 +38,13 @@ basic layout; `[]` mark optional content.
 
 Every table has an ID; they can be inserted with the directive
 `[table](id)`.
+A file with the name `<ID>.csv` must be placed in the `tables` directory.
+Captions and other metadata is stored in `tables/metadata.yaml`.
+
+## Figures
+
+Every figure has an ID; they can be inserted with the directive
+`[figure](id)`.
+A file with the name `<ID>.<suffix>` must be placed in the `figures` directory.
+Captions and other metadata is stored in `figures/metadata.yaml`.
+
