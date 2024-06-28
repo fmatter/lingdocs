@@ -21,6 +21,7 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - footnotes
 nav:
   - index.md
   - User guide:

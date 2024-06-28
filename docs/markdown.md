@@ -47,3 +47,7 @@ Every figure has an ID; they can be inserted with the directive
 `[figure](id)`.
 For figures, a caption and a filename must be provided in `figures/metadata.yaml`.
 A file with the filename must be placed in the `figures` directory.
+
+## Footnotes
+
+Footnotes can be inserted with numbered `[^<ID>]`, usually something like `[^2]`; the content can then be defined on a later line with `[^<ID>]: <content>`.
