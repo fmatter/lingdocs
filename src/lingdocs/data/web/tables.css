@@ -48,3 +48,13 @@ ol th {
 ol tbody {
     border-bottom: 0px;
 }
+
+figure {
+  display: block;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+caption {
+  text-align: left;
+}

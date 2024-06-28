@@ -633,6 +633,20 @@ hide:
         log.warning(f"Not rendering live preview for format {cls.name}.")
 
 
+class SSG(HTML):
+    name = "ssg"
+
+    def figure_cmd(cls, url, *_args, **_kwargs):
+        if url in cls.figure_metadata:
+            caption = cls.figure_metadata[url].get("caption", "")
+            filename = cls.figure_metadata[url].get("filename", "")
+            return f"""<figure>
+<img src="/figures/{filename}" alt="{caption}" />
+<figcaption id="fig:{url}" aria-hidden="true">{caption}</figcaption>
+</figure>"""
+        return f"![Alt text](figures/{url}.jpg)"
+
+
 class GitHub(PlainText):
     name = "github"
     file_ext = "md"
@@ -891,7 +905,7 @@ class Latex(PlainText):
         yield content[current:]
 
 
-builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs]}
+builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs, SSG]}
 
 
 if Path(f"{PLD_DIR}/formats.py").is_file():
