@@ -30,7 +30,9 @@ It is also possible to integrate the output into [CLLD](https://clld.org/) web a
 
 ## 🔥 Quickstart
 
-1. `pip install lingdocs` ([full installation guide](https://fl.mt/lingdocs/installation))
+1. installation ([full guide](https://fl.mt/lingdocs/installation))
+    1. `pip install lingdocs`
+    1. [install pandoc](https://pandoc.org/installing.html)
 2. create or get a CLDF dataset
 3. `lingdocs new`, point to `metadata.json` file
 4. `lingdocs preview`
