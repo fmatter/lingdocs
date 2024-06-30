@@ -5,7 +5,8 @@ from io import StringIO
 import pandas as pd
 from writio import load
 
-from lingdocs.helpers import load_table_metadata
+from lingdocs.io import load_table_metadata
+from lingdocs.preprocessing import process_metadata
 
 log = logging.getLogger(__name__)
 
@@ -49,16 +50,19 @@ def insert_tables(md, builder, tables):
         df.columns = [col if "Unnamed: " not in col else "" for col in df.columns]
         if label not in tables:
             log.warning(f"Could not find metadata for table {label}.")
-            yield builder.table(df=df, caption=None, label=None)
+            yield builder.table(df=df, caption=None, label=None, tnotes=[])
         else:
             yield builder.table(
-                df=df, caption=tables[label].get("caption", None), label=label
+                df=df,
+                caption=tables[label].get("caption", None),
+                tnotes=tables[label].get("tnotes", []),
+                label=label,
             )
     yield md[current:]
 
 
-def postprocess(md_str, builder, source_dir="."):
-    tables = load_table_metadata(source_dir)
+def postprocess(md_str, ds, builder, source_dir="."):
+    tables = process_metadata(load_table_metadata(source_dir), ds, builder)
     md_str = "".join(insert_manex(md_str, builder, MANPEX_PATTERN, kind="multipart"))
     md_str = "".join(
         insert_manex(md_str, builder, MANPEX_ITEM_PATTERN, kind="subexample")

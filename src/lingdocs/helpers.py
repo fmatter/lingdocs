@@ -271,17 +271,6 @@ def load_figure_metadata(source_dir):
     return figures
 
 
-def load_table_metadata(source_dir):
-    table_md = Path(source_dir) / TABLE_DIR / "metadata.yaml"
-    if table_md.is_file():
-        with open(table_md, encoding="utf-8") as f:
-            tables = yaml.load(f, Loader=yaml.SafeLoader)
-    else:
-        log.warning(f"Inexistent table metadata file: {table_md}")
-        tables = {}
-    return tables
-
-
 def expand_pages(pages):
     out_pages = []
     for pranges in pages:
