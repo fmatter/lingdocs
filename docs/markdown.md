@@ -34,6 +34,11 @@ basic layout; `[]` mark optional content.
             |GLOSS LINE
             |'TRANSLATION'  [COMMENT]  [SOURCE]
 
+### More complex examples
+Sometimes, simply taking a single example from the dataset is not enough.
+For instance, sometimes a table may be required in an example.
+This can be achieved by creating a folder `manual_examples` in the working directory, creating a `<example-id>.md` file containing a table, and then using `[manex](example-id)` in the running text.
+
 ## Tables
 
 Every table has an ID; they can be inserted with the directive

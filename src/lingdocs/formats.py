@@ -34,6 +34,7 @@ from lingdocs.helpers import (
     decorate_gloss_string,
     extract_chapters,
     get_sections,
+    gloss_idify,
     html_example_wrap,
     html_gloss,
     latexify_table,
@@ -433,7 +434,7 @@ class HTML(PlainText):
         return f'<a class="exref" example_id="{url}" {kw_str}></a>'
 
     def gloss_cmd(cls, url, *_args, **_kwargs):
-        return decorate_gloss_string(url.upper(), decoration=html_gloss)
+        return html_gloss(url)
 
     def label_cmd(cls, url, *_args, **_kwargs):
         return f"{{ #{url} }}"
