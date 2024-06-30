@@ -49,41 +49,43 @@ function numberSections(start=0){
     var lastNodes = {}
     sections.forEach(function(section, i) {
         var heading = section.querySelectorAll("h2, h3, h4, h5, h6")[0];
-        var level = heading.tagName.toLowerCase();
-        var levelInt = parseInt(level.charAt(level.length - 1))
-        counters[level] += 1
-        number = getNumberLabel(counters, level.charAt(level.length - 1)) // the formatted X.Y.Z counter
-        if (!heading.textContent.startsWith(prefix + number)){
-            heading.textContent = prefix + number + ". " + heading.textContent    
-        }
-        if (toc) {
-            tocLink = document.createElement('a')
-            tocLink.textContent = heading.textContent //'\xa0\xa0'.repeat(level.charAt(level.length - 1)-2)+
-            tocLink.href = "#"+section.id
-            subItems = document.createElement("ol")
-            subItems.setAttribute('class', 'subitems');
-            tocEntry = document.createElement("li")
-            tocEntry.id = "nav-"+section.id
-            tocEntry.appendChild(tocLink)
-            tocEntry.appendChild(subItems)
-            if (levelInt-1 in lastNodes){
-                lastNodes[levelInt-1].appendChild(tocEntry)             
-            } else {
-                toc.appendChild(tocEntry)             
+        if (heading){
+            var level = heading.tagName.toLowerCase();
+            var levelInt = parseInt(level.charAt(level.length - 1))
+            counters[level] += 1
+            number = getNumberLabel(counters, level.charAt(level.length - 1)) // the formatted X.Y.Z counter
+            if (!heading.textContent.startsWith(prefix + number)){
+                heading.textContent = prefix + number + ". " + heading.textContent    
             }
-            lastNodes[levelInt] = subItems
-        }
-        // reset the counters smaller than the current level
-        reached = false;
-        levels.forEach(function(lvl_i, j) {
-            if (reached){
-                counters[lvl_i] = 0
-            };
-            if (level==lvl_i){
-                reached = true;
+            if (toc) {
+                tocLink = document.createElement('a')
+                tocLink.textContent = heading.textContent //'\xa0\xa0'.repeat(level.charAt(level.length - 1)-2)+
+                tocLink.href = "#"+section.id
+                subItems = document.createElement("ol")
+                subItems.setAttribute('class', 'subitems');
+                tocEntry = document.createElement("li")
+                tocEntry.id = "nav-"+section.id
+                tocEntry.appendChild(tocLink)
+                tocEntry.appendChild(subItems)
+                if (levelInt-1 in lastNodes){
+                    lastNodes[levelInt-1].appendChild(tocEntry)             
+                } else {
+                    toc.appendChild(tocEntry)             
+                }
+                lastNodes[levelInt] = subItems
             }
-        });
-        refLabels[section.id] = prefix + number // for crossref resolution
+            // reset the counters smaller than the current level
+            reached = false;
+            levels.forEach(function(lvl_i, j) {
+                if (reached){
+                    counters[lvl_i] = 0
+                };
+                if (level==lvl_i){
+                    reached = true;
+                }
+            });
+            refLabels[section.id] = prefix + number // for crossref resolution
+        }
     });
 
 
@@ -317,9 +319,8 @@ function resolveCrossrefs(){
     var refs = document.querySelectorAll("a.crossref");
     refs.forEach(function(ref, i) {
         ref.textContent = refLabels[ref.name]
-        console.log(ref.name)
-        console.log(refLabels[ref.name])
-
+        // console.log(ref.name)
+        // console.log(refLabels[ref.name])
         if (ref.name in refLocations){
             ref.href = "/"+refLocations[ref.name] + "#" + ref.href.split("#").pop()
         }
