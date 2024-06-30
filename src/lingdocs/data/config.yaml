@@ -48,6 +48,8 @@ latex: # LaTeX: LaTeX-specific settings.
   interlinear: expex # Interlinear package: The preferred setup for interlinear examples in LaTeX.
 mkdocs:
   hypothes.is: false # hypothes.is: Use [hypothes.is](https://hypothes.is) for online annotation.
+ssg:
+  preamble: toml # Preamble: The format used for storing article metadata in your SSG.
 clld: # CLLD: 
   db_uri: null # Database location: URI to the database of your CLLD app, i.e. something like `sqlite:///path/to/your/db.sqlite`.
 html:

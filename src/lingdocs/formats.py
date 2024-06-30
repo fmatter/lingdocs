@@ -35,6 +35,7 @@ from lingdocs.helpers import (
     decorate_gloss_string,
     extract_chapters,
     get_sections,
+    gloss_idify,
     html_example_wrap,
     html_gloss,
     latexify_table,
@@ -442,7 +443,7 @@ class HTML(PlainText):
         return f'<a class="exref" example_id="{url}" {kw_str}></a>'
 
     def gloss_cmd(cls, url, *_args, **_kwargs):
-        return decorate_gloss_string(url.upper(), decoration=html_gloss)
+        return html_gloss(url)
 
     def label_cmd(cls, url, *_args, **_kwargs):
         return f"{{ #{url} }}"
@@ -655,6 +656,20 @@ hide:
         dump(temp, mkd_file)
         subprocess.run("mkdocs build".split(" "), cwd=source / output_dir / cls.name)
         dump(old, mkd_file)
+
+
+class SSG(HTML):
+    name = "ssg"
+
+    def figure_cmd(cls, url, *_args, **_kwargs):
+        if url in cls.figure_metadata:
+            caption = cls.figure_metadata[url].get("caption", "")
+            filename = cls.figure_metadata[url].get("filename", "")
+            return f"""<figure>
+<img src="/figures/{filename}" alt="{caption}" />
+<figcaption id="fig:{url}" aria-hidden="true">{caption}</figcaption>
+</figure>"""
+        return f"![Alt text](figures/{url}.jpg)"
 
 
 class GitHub(PlainText):
@@ -958,8 +973,9 @@ class Docx(GitHub):
         return f"{caption}{{#tbl:{label}}}\n" + df.to_markdown(index=False)
 
 
-builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs, Docx]}
-
+builders = {
+    x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs, SSG, Docx]
+}
 
 if Path(f"{PLD_DIR}/formats.py").is_file():
     sys.path.insert(1, str(PLD_DIR))

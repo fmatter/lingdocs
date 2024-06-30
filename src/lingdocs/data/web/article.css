@@ -93,16 +93,6 @@ article table {
     max-width: 140ch;
 }
 
-article figure {
-  display: block;
-  margin-left: 0;
-  margin-right: auto;
-}
-
-article caption {
-  text-align: left;
-}
-
 /* Justify and hyphenate all paragraphs */
 article p {
   text-align: justify;

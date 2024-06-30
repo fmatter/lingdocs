@@ -175,6 +175,10 @@ def process_labels(chapters, float_ch_prefixes=True):
     return labels, locations
 
 
+def gloss_idify(gloss):
+    return gloss.replace("~", "")
+
+
 def check_abbrevs(dataset, source_dir, content):
     with open(DATA_DIR / "leipzig.yaml", encoding="utf-8") as f:
         leipzig = yaml.load(f, Loader=yaml.SafeLoader)
@@ -196,7 +200,11 @@ def check_abbrevs(dataset, source_dir, content):
 
     abbrev_path = source_dir / EXTRA_DIR / "abbreviations.csv"
     if abbrev_path.is_file():  # add abbreviations added locally
-        for rec in pd.read_csv(abbrev_path).to_dict("records"):
+        abbrev_df = pd.read_csv(abbrev_path)
+        if "ID" not in abbrev_df.columns:
+            abbrev_df["ID"] = abbrev_df["Name"].apply(lambda x: x.replace("~", ""))
+            abbrev_df["ID"] = abbrev_df["ID"].apply(slugify)
+        for rec in abbrev_df.to_dict("records"):
             abbrev_dict[rec["ID"]] = rec["Description"]
     gloss_cands = list(dict.fromkeys(gloss_cands))
     for x in map(str.lower, gloss_cands):
@@ -347,7 +355,7 @@ def combine_sources(source_list, sep="; "):
 
 
 def html_gloss(s):
-    return f"<span class='gloss'>{s}<span class='tooltiptext gloss-{s}'></span></span>"
+    return f"<span class='gloss'>{s}<span class='tooltiptext gloss-{gloss_idify(s)}'></span></span>"
 
 
 def html_example_wrap(tag, content, kind="example"):
