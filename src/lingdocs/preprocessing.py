@@ -22,8 +22,8 @@ from lingdocs.helpers import (
     comma_and_list,
     func_dict,
     get_md_pattern,
-    load_table_metadata,
 )
+from lingdocs.io import load_table_metadata
 from lingdocs.models import models
 from lingdocs.templates import load_templates
 
@@ -218,7 +218,7 @@ def load_tables(md, tables, source_dir="."):
             csv_buffer = StringIO()
             temp_df.to_csv(csv_buffer, index=True)
             csv_buffer.seek(0)
-            yield "\nPYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + csv_buffer.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
+            yield f"\nPYLINGDOCS_RAW_TABLE_START{url}CONTENT_START{csv_buffer.read()}PYLINGDOCS_RAW_TABLE_END"
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
@@ -266,7 +266,28 @@ def load_manual_examples(md, source_dir="."):
     yield md[current:]
 
 
-def preprocess(md_str, source_dir="."):
-    tables = load_table_metadata(source_dir)
+def process_metadata(tables, dataset, builder):
+    for label, mds in tables.items():
+        for md, content in mds.items():
+            if md in ["tnotes"]:
+                tables[label][md] = [
+                    "".join(
+                        render_markdown(
+                            builder.preprocess_commands(x), dataset, builder=builder
+                        )
+                    )
+                    for x in content
+                ]
+            elif md in ["caption"]:
+                tables[label][md] = "".join(
+                    render_markdown(
+                        builder.preprocess_commands(content), dataset, builder=builder
+                    )
+                )
+    return tables
+
+
+def preprocess(md_str, ds, builder, source_dir):
+    tables = process_metadata(load_table_metadata(source_dir), ds, builder)
     temp_str = "".join(load_manual_examples(md_str, source_dir))
     return "".join(load_tables(temp_str, tables, source_dir))

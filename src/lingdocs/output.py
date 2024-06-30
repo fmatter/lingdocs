@@ -339,7 +339,7 @@ def create_output(
             pbar.update(1)
             chapters = extract_chapters(content)
             ref_labels, ref_locations = process_labels(chapters)
-            preprocessed = preprocess(content, source_dir)
+            preprocessed = preprocess(content, dataset, builder, source_dir)
             builder.ref_labels = ref_labels
             builder.ref_locations = ref_locations
             preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
@@ -363,7 +363,7 @@ def create_output(
                 **kwargs,
             )
             pbar.update(1)
-            content = postprocess(content, builder, source_dir)
+            content = postprocess(content, dataset, builder, source_dir)
             pbar.update(1)
             if builder.name == "latex":
                 metadata["bibfile"] = dataset.bibpath.name

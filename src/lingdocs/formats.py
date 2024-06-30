@@ -327,7 +327,7 @@ class OutputFormat:
         del metadata
         return content
 
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, tnotes):
         label = f"tab:{label}"
         if label in cls.ref_labels:
             caption = f"{cls.ref_labels[label]}: {caption}"
@@ -481,14 +481,27 @@ for (var i = 0; i < targets.length; i++) {{
     def glossing_abbrevs_list(cls, arg_string):
         return """<dl id="glossing_abbrevs"></dl>"""
 
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, tnotes):
         table = df.to_html(escape=False, index=False)
-        if not caption:
-            return table
-        return table.replace(
-            "<thead",
-            f"<caption class='table' id ='tab:{label}'>{caption}</caption><thead",
-        )
+        if caption:
+            table = table.replace(
+                "<thead",
+                f"<caption class='table' id ='tab:{label}'>{caption}</caption><thead",
+            )
+        if tnotes:
+            p = re.compile(r"\[tnote\]\((?P<content>.*?)\)")
+            table = p.sub(r"<sup>\g<content></sup>", table)
+            fnstr = "".join(
+                [
+                    f"<tr><td colspan='{len(df.columns)}'><small><sup>{chr(i+97)}</sup>{fn}</small></td></tr>"
+                    for i, fn in enumerate(tnotes)
+                ]
+            )
+            table = table.replace(
+                "<thead",
+                f"<tfoot>{fnstr}</tfoot><thead",
+            )
+        return table
 
     def preprocess(cls, content):
         extra = ["--shift-heading-level-by=1"]
@@ -601,7 +614,7 @@ hide:
             nconf = merge_dicts(out_conf, custom_conf)
             dump(nconf, out_path)
 
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, tnotes):
         tabular = df.to_html(escape=False, index=False)
         tabular = panflute.convert_text(
             tabular,
@@ -698,7 +711,7 @@ class GitHub(PlainText):
             return f"[ex:{url}–{end}]"
         return f"[ex:{url}]"
 
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, tnotes):
         del label  # unused
         tabular = df.to_markdown(index=False)
         if not caption:
@@ -738,7 +751,7 @@ class CLLD(PlainText):
     def todo_cmd(cls, url, *_args, **_kwargs):
         return html_todo(url, **_kwargs)
 
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, tnotes):
         if not caption:
             if len(df) == 0:
                 df = df.append({x: "" for x in df.columns}, ignore_index=True)
@@ -819,7 +832,7 @@ class Latex(PlainText):
             return f"\\a\\label{{{tag}}} {content}"
         return f"\\ex\\label{{{tag}}} {content} \\xe"
 
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, tnotes):
         if len(df) == 0:
             df = df.append({x: x for x in df.columns}, ignore_index=True)
             df = df.applymap(latexify_table)
