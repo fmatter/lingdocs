@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+* tolerate empty config file
+
 ### Removed
 * support for external media hosting (must be stored in CLDF dataset)
 
