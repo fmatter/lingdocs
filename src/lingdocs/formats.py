@@ -327,7 +327,7 @@ class OutputFormat:
         del metadata
         return content
 
-    def table(cls, df, caption, label, tnotes):
+    def table(cls, df, caption, label, tnotes, subtable=False):
         label = f"tab:{label}"
         if label in cls.ref_labels:
             caption = f"{cls.ref_labels[label]}: {caption}"
@@ -481,12 +481,19 @@ for (var i = 0; i < targets.length; i++) {{
     def glossing_abbrevs_list(cls, arg_string):
         return """<dl id="glossing_abbrevs"></dl>"""
 
-    def table(cls, df, caption, label, tnotes):
+    def table(cls, df, caption, label, tnotes, subtable=False):
+        if df is None:
+            return f"<table><supercaption class='table' id='tab:{label}'>{caption}</supercaption></table>"
         table = df.to_html(escape=False, index=False)
+        if subtable:
+            prefix = "sub"
+            table = table.replace('"dataframe"', '"subtable"')
+        else:
+            prefix = ""
         if caption:
             table = table.replace(
                 "<thead",
-                f"<caption class='table' id ='tab:{label}'>{caption}</caption><thead",
+                f"<caption class='{prefix}table' id ='tab:{label}'>{caption}</caption><thead",
             )
         if tnotes:
             p = re.compile(r"\[tnote\]\((?P<content>.*?)\)")
@@ -536,7 +543,7 @@ for (var i = 0; i < targets.length; i++) {{
         return html_output
 
     def manex(cls, tag, content, kind):
-        if content.strip().startswith("PYLINGDOCS_RAW_TABLE_START"):
+        if content.strip().startswith("LINGDOCS_RAW_TABLE_START"):
             content = " \n \n" + content
         return html_example_wrap(tag, content, kind=kind)
 
@@ -614,7 +621,7 @@ hide:
             nconf = merge_dicts(out_conf, custom_conf)
             dump(nconf, out_path)
 
-    def table(cls, df, caption, label, tnotes):
+    def table(cls, df, caption, label, tnotes, subtable=False):
         tabular = df.to_html(escape=False, index=False)
         tabular = panflute.convert_text(
             tabular,
@@ -711,7 +718,7 @@ class GitHub(PlainText):
             return f"[ex:{url}–{end}]"
         return f"[ex:{url}]"
 
-    def table(cls, df, caption, label, tnotes):
+    def table(cls, df, caption, label, tnotes, subtable=False):
         del label  # unused
         tabular = df.to_markdown(index=False)
         if not caption:
@@ -751,7 +758,7 @@ class CLLD(PlainText):
     def todo_cmd(cls, url, *_args, **_kwargs):
         return html_todo(url, **_kwargs)
 
-    def table(cls, df, caption, label, tnotes):
+    def table(cls, df, caption, label, tnotes, subtable=False):
         if not caption:
             if len(df) == 0:
                 df = df.append({x: "" for x in df.columns}, ignore_index=True)
@@ -776,7 +783,7 @@ class CLLD(PlainText):
         return ""
 
     def manex(cls, tag, content, kind):
-        if content.strip().startswith("PYLINGDOCS_RAW_TABLE_START"):
+        if content.strip().startswith("LINGDOCS_RAW_TABLE_START"):
             content = " \n \n" + content
         return html_example_wrap(tag, content, kind=kind)
 
@@ -832,7 +839,7 @@ class Latex(PlainText):
             return f"\\a\\label{{{tag}}} {content}"
         return f"\\ex\\label{{{tag}}} {content} \\xe"
 
-    def table(cls, df, caption, label, tnotes):
+    def table(cls, df, caption, label, tnotes, subtable=False):
         if len(df) == 0:
             df = df.append({x: x for x in df.columns}, ignore_index=True)
             df = df.applymap(latexify_table)

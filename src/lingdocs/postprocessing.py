@@ -12,19 +12,19 @@ log = logging.getLogger(__name__)
 
 
 TABLE_PATTERN = re.compile(
-    r"PYLINGDOCS_RAW_TABLE_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
+    r"LINGDOCS_RAW_TABLE_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)LINGDOCS_RAW_TABLE_END"  # noqa: E501
 )
 
 MANEX_PATTERN = re.compile(
-    r"PYLINGDOCS_MANEX_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_MANEX_END"  # noqa: E501
+    r"LINGDOCS_MANEX_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)LINGDOCS_MANEX_END"  # noqa: E501
 )
 
 MANPEX_PATTERN = re.compile(
-    r"PYLINGDOCS_MANPEX_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_MANPEX_END"  # noqa: E501
+    r"LINGDOCS_MANPEX_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)LINGDOCS_MANPEX_END"  # noqa: E501
 )
 
 MANPEX_ITEM_PATTERN = re.compile(
-    r"PYLINGDOCS_MANPEXITEM_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_MANPEXITEM_END"  # noqa: E501
+    r"LINGDOCS_MANPEXITEM_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)LINGDOCS_MANPEXITEM_END"  # noqa: E501
 )
 
 
@@ -41,13 +41,20 @@ def insert_manex(md, builder, pattern, kind="plain"):
 
 def insert_tables(md, builder, tables):
     current = 0
+    subtables = {}
+    for label, data in tables.items():
+        for subtable in data.get("subtables", []):
+            subtables[subtable] = label
     for m in TABLE_PATTERN.finditer(md):
         yield md[current : m.start()]
         current = m.end()
         label = m.group("label")
         content = m.group("content")
-        df = pd.read_csv(StringIO(content), keep_default_na=False)
-        df.columns = [col if "Unnamed: " not in col else "" for col in df.columns]
+        if content:
+            df = pd.read_csv(StringIO(content), keep_default_na=False)
+            df.columns = [col if "Unnamed: " not in col else "" for col in df.columns]
+        else:
+            df = None
         if label not in tables:
             log.warning(f"Could not find metadata for table {label}.")
             yield builder.table(df=df, caption=None, label=None, tnotes=[])
@@ -57,6 +64,7 @@ def insert_tables(md, builder, tables):
                 caption=tables[label].get("caption", None),
                 tnotes=tables[label].get("tnotes", []),
                 label=label,
+                subtable=label in subtables,
             )
     yield md[current:]
 
