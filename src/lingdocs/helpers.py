@@ -197,7 +197,7 @@ def check_abbrevs(dataset, source_dir, content):
     abbrev_path = source_dir / EXTRA_DIR / "abbreviations.csv"
     if abbrev_path.is_file():  # add abbreviations added locally
         for rec in pd.read_csv(abbrev_path).to_dict("records"):
-            abbrev_dict[rec["ID"]] = rec["Description"]
+            abbrev_dict[rec["Name"]] = rec["Description"]
     gloss_cands = list(dict.fromkeys(gloss_cands))
     for x in map(str.lower, gloss_cands):
         if x not in abbrev_dict:
