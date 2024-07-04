@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * tolerate empty config file
+* glosses in section headings (HTML)
 
 ### Removed
 * support for external media hosting (must be stored in CLDF dataset)
