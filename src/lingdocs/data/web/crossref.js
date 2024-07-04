@@ -55,7 +55,7 @@ function numberSections(start=0){
             counters[level] += 1
             number = getNumberLabel(counters, level.charAt(level.length - 1)) // the formatted X.Y.Z counter
             if (!heading.textContent.startsWith(prefix + number)){
-                heading.textContent = prefix + number + ". " + heading.textContent    
+                heading.innerHTML = prefix + number + ". " + heading.innerHTML    
             }
             if (toc) {
                 tocLink = document.createElement('a')
