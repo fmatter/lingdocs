@@ -41,6 +41,10 @@ def insert_manex(md, builder, pattern, kind="plain"):
 
 def insert_tables(md, builder, tables):
     current = 0
+    subtables = []
+    for tbl, tbl_data in tables.items():
+        for x in tbl_data.get("subtables", []):
+            subtables.append(x)
     for m in TABLE_PATTERN.finditer(md):
         yield md[current : m.start()]
         current = m.end()
@@ -53,13 +57,20 @@ def insert_tables(md, builder, tables):
             df = None
         if label not in tables:
             log.warning(f"Could not find metadata for table {label}.")
-            yield builder.table(df=df, caption=None, label=None, tnotes=None)
+            yield builder.table(
+                df=df,
+                caption=None,
+                label=None,
+                tnotes=None,
+                subtable=label in subtables,
+            )
         else:
             yield builder.table(
                 df=df,
                 caption=tables[label].get("caption"),
                 label=label,
                 tnotes=tables[label].get("tnotes"),
+                subtable=label in subtables,
             )
     yield md[current:]
 
