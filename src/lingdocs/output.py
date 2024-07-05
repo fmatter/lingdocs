@@ -362,7 +362,7 @@ def create_output(
                 **kwargs,
             )
             pbar.update(1)
-            content = postprocess(content, builder, source_dir)
+            content = postprocess(content, builder, dataset, source_dir)
             pbar.update(1)
             if builder.name == "latex":
                 metadata["bibfile"] = dataset.bibpath.name
