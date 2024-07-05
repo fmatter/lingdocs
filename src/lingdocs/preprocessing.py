@@ -264,6 +264,27 @@ def load_manual_examples(md, source_dir="."):
     yield md[current:]
 
 
+def process_metadata(tables, dataset, builder):
+    for label, mds in tables.items():
+        for md, content in mds.items():
+            if md in ["tnotes"]:
+                tables[label][md] = [
+                    "".join(
+                        render_markdown(
+                            builder.preprocess_commands(x), dataset, builder=builder
+                        )
+                    )
+                    for x in content
+                ]
+            elif md in ["caption"]:
+                tables[label][md] = "".join(
+                    render_markdown(
+                        builder.preprocess_commands(content), dataset, builder=builder
+                    )
+                )
+    return tables
+
+
 def preprocess(md_str, source_dir="."):
     tables = load_table_metadata(source_dir)
     temp_str = "".join(load_manual_examples(md_str, source_dir))
