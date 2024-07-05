@@ -288,19 +288,26 @@ function capitalizeFirstLetter(string) {
 
 
 function numberCaptions(){
-    var captions = document.querySelectorAll("caption"); // get all captions
+    var captions = document.querySelectorAll("supercaption, caption"); // get all captions
     var figcaptions = document.querySelectorAll("figcaption"); // get all captions
     var kinds = ["table"] // might need "maps" or "plots" or sth. at some point
     var counters = {"table": 0, "figure": 0}
     captions.forEach(function(caption, i) {
         kinds.forEach(function(kind, j) {
+            var subkind = "sub"+kind;
             if (caption.classList.contains(kind)){
                 counters[kind] += 1
+                counters[subkind] = 0
                 ref_counter = capitalizeFirstLetter(kind) + " " + counters[kind];
                 if (!caption.textContent.startsWith(ref_counter + ": ")){
                     caption.textContent = ref_counter + ": " + caption.textContent
                 }
                 refLabels[caption.id] = ref_counter // store the value for resolveCrossrefs below
+            }
+            if (caption.classList.contains(subkind)){
+                counters[subkind] += 1
+                caption.textContent = String.fromCharCode(96 + counters[subkind]) + ") " + caption.textContent
+                refLabels[caption.id] = capitalizeFirstLetter(kind) + " " + counters[kind] + String.fromCharCode(96 + counters[subkind]); // store a value for resolveCrossrefs below
             }
         });
     });

@@ -11,12 +11,11 @@ from lingdocs.config import CONTENT_FOLDER, STRUCTURE_FILE, config
 from lingdocs.helpers import _get_relative_file, load_cldf_dataset, load_content
 from lingdocs.helpers import new as create_new
 from lingdocs.helpers import write_readme
-from lingdocs.output import check_abbrevs, check_ids, clean_output
-from lingdocs.output import compile_latex as cmplatex
-from lingdocs.output import create_output
+from lingdocs.output import check_abbrevs, check_ids, clean_output, create_output
 from lingdocs.output import preview as run_preview
 from lingdocs.output import update_structure as do_update_structure
 from lingdocs.preprocessing import preprocess_cldfviz
+from lingdocs.releasing import run_releases
 
 log = logging.getLogger(__name__)
 
@@ -70,13 +69,14 @@ class BuildCommand(OutputCommand):
     help="List of target output formats.",
 )
 @click.option(
-    "--release",
+    "--compile",
+    "_compile",
     is_flag=True,
     default=False,
-    help="Prepare for a citeable release",
+    help="Compile create output, where applicable.",
     show_default=True,
 )
-def build(source, targets, cldf, output_dir, release):
+def build(source, targets, cldf, output_dir, _compile):
     """Create formatted output of lingdocs project."""
     source = Path(source)
     config.load_from_dir(source)
@@ -92,18 +92,39 @@ def build(source, targets, cldf, output_dir, release):
     if not isinstance(targets, list) and not isinstance(targets, tuple):
         targets = [targets]
     create_output(
+        contents, source, targets, ds, output_dir, metadata=metadata, _compile=_compile
+    )
+    if config["output"]["readme"]:
+        write_readme(source / "metadata.yaml")
+    if config["input"]["sublime"]:
+        generate_autocomplete(ds, source / "docs")
+
+
+@main.command(cls=BuildCommand)
+@click.option("--bump", "-b", default="patch")
+def release(source, cldf, output_dir, **kwargs):
+    source = Path(source)
+    config.load_from_dir(source)
+    if not cldf:
+        cldf = config["paths"]["cldf"]
+    ds = load_cldf_dataset(cldf)
+    contents = load_content(
+        source_dir=source / CONTENT_FOLDER,
+        structure_file=_get_relative_file(
+            folder=source / CONTENT_FOLDER, file=STRUCTURE_FILE
+        ),
+    )
+    metadata = load(source / "metadata.yaml")
+    create_output(
         contents,
         source,
-        targets,
+        config["output"]["build"],
         ds,
         output_dir,
         metadata=metadata,
-        release=release,
+        _compile=True,
     )
-    if config["output"]["readme"]:
-        write_readme(source / "metadata.yaml", release=release)
-    if config["input"]["sublime"]:
-        generate_autocomplete(ds, source / "docs")
+    run_releases(source, output_dir, **kwargs)
 
 
 @main.command(cls=BuildCommand)
@@ -203,12 +224,6 @@ def cldf(source, cldf, output_dir, add):
 @main.command()
 def update_structure():
     do_update_structure()
-
-
-@main.command(cls=OutputCommand)
-def compile_latex(output_dir):  # pragma: no cover
-    """Compile the generated LaTeX output"""
-    cmplatex(output_dir=output_dir)
 
 
 @main.command(cls=OutputCommand)

@@ -22,8 +22,8 @@ from lingdocs.helpers import (
     comma_and_list,
     func_dict,
     get_md_pattern,
-    load_table_metadata,
 )
+from lingdocs.io import load_table_metadata
 from lingdocs.models import models
 from lingdocs.templates import load_templates
 
@@ -149,6 +149,7 @@ def render_markdown(
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val
             func_dict["ref_labels"] = builder.ref_labels
+
             if rich:
                 data = CLDFDataset(ds)
                 func_dict["data"] = data.tables
@@ -185,6 +186,14 @@ def render_markdown(
     sys.exit()
 
 
+def _load_table(table_path):
+    if not table_path.is_file():
+        log.info(f"Table file <{table_path.resolve()}> does not exist, creating...")
+        with open(table_path.resolve(), "w", encoding="utf-8") as new_file:
+            new_file.write("Header,row\nContent,row")
+    return pd.read_csv(table_path, index_col=0, keep_default_na=False)
+
+
 def load_tables(md, tables, source_dir="."):
     def decorate_cell(x):
         if x != "":
@@ -200,23 +209,31 @@ def load_tables(md, tables, source_dir="."):
         yield md[current : m.start()]
         current, key, url = get_md_pattern(m)
         if key == "table":
-            table_path = source_dir / TABLE_DIR / f"{url}.csv"
-            if not table_path.is_file():
-                log.info(
-                    f"Table file <{table_path.resolve()}> does not exist, creating..."
-                )
-                with open(table_path.resolve(), "w", encoding="utf-8") as new_file:
-                    new_file.write("Header,row\nContent,row")
             this_table_metadata = tables.get(url, {})
-            temp_df = pd.read_csv(table_path, index_col=0, keep_default_na=False)
-            temp_df = temp_df.applymap(decorate_cell)
-            with_header_col = this_table_metadata.get("header_column", True)
-            if not with_header_col:
-                temp_df.index = temp_df.index.map(decorate_cell)
-            csv_buffer = StringIO()
-            temp_df.to_csv(csv_buffer, index=True)
-            csv_buffer.seek(0)
-            yield "\nPYLINGDOCS_RAW_TABLE_START" + url + "CONTENT_START" + csv_buffer.read() + "PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
+
+            if "subtables" in this_table_metadata:
+                yield f"\nLINGDOCS_RAW_TABLE_START{url}CONTENT_STARTLINGDOCS_RAW_TABLE_END"
+                for subtable in this_table_metadata["subtables"]:
+                    subtable_md = tables.get(subtable, {})
+                    temp_df = _load_table(source_dir / TABLE_DIR / f"{subtable}.csv")
+                    temp_df = temp_df.map(decorate_cell)
+                    with_header_col = subtable_md.get("header_column", True)
+                    if not with_header_col:
+                        temp_df.index = temp_df.index.map(decorate_cell)
+                    csv_buffer = StringIO()
+                    temp_df.to_csv(csv_buffer, index=True)
+                    csv_buffer.seek(0)
+                    yield f"\nLINGDOCS_RAW_TABLE_START{subtable}CONTENT_START{csv_buffer.read()}LINGDOCS_RAW_TABLE_END"
+            else:
+                temp_df = _load_table(source_dir / TABLE_DIR / f"{url}.csv")
+                temp_df = temp_df.map(decorate_cell)
+                with_header_col = this_table_metadata.get("header_column", True)
+                if not with_header_col:
+                    temp_df.index = temp_df.index.map(decorate_cell)
+                csv_buffer = StringIO()
+                temp_df.to_csv(csv_buffer, index=True)
+                csv_buffer.seek(0)
+                yield f"\nLINGDOCS_RAW_TABLE_START{url}CONTENT_START{csv_buffer.read()}LINGDOCS_RAW_TABLE_END"
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
@@ -240,15 +257,15 @@ def load_manual_examples(md, source_dir="."):
                         manex_md_path = source_dir / MANEX_DIR / f"{mex}.md"
                         with open(manex_md_path, "r", encoding="utf-8") as f:
                             output.append(
-                                "PYLINGDOCS_MANPEXITEM_START"
+                                "LINGDOCS_MANPEXITEM_START"
                                 + mex
                                 + "CONTENT_START"
                                 + f.read()
-                                + "PYLINGDOCS_MANPEXITEM_END"
+                                + "LINGDOCS_MANPEXITEM_END"
                             )
-                yield "PYLINGDOCS_MANPEX_START" + url + "CONTENT_START\n" + "\n".join(
+                yield "LINGDOCS_MANPEX_START" + url + "CONTENT_START\n" + "\n".join(
                     output
-                ) + "\nPYLINGDOCS_MANPEX_END"
+                ) + "\nLINGDOCS_MANPEX_END"
             else:
                 manex_md_path = source_dir / MANEX_DIR / f"{url}.md"
                 if not manex_md_path.is_file():
@@ -258,7 +275,7 @@ def load_manual_examples(md, source_dir="."):
                     sys.exit(1)
                 else:
                     with open(manex_md_path, "r", encoding="utf-8") as f:
-                        yield "PYLINGDOCS_MANEX_START" + url + "CONTENT_START" + f.read() + "PYLINGDOCS_MANEX_END"  # noqa: E501
+                        yield "LINGDOCS_MANEX_START" + url + "CONTENT_START" + f.read() + "LINGDOCS_MANEX_END"  # noqa: E501
         else:
             yield md[m.start() : m.end()]
     yield md[current:]
@@ -285,7 +302,7 @@ def process_metadata(tables, dataset, builder):
     return tables
 
 
-def preprocess(md_str, source_dir="."):
-    tables = load_table_metadata(source_dir)
+def preprocess(md_str, ds, builder, source_dir):
+    tables = process_metadata(load_table_metadata(source_dir), ds, builder)
     temp_str = "".join(load_manual_examples(md_str, source_dir))
     return "".join(load_tables(temp_str, tables, source_dir))

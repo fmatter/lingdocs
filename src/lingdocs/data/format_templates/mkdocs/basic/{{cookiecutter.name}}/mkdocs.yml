@@ -1,4 +1,4 @@
-site_name: "{{ cookiecutter.project_title }} ({{ cookiecutter.version }})"
+site_name: "{{ cookiecutter.project_title }}"
 theme:
   name: material
   custom_dir: overrides

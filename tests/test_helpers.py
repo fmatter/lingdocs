@@ -4,8 +4,15 @@ from lingdocs.helpers import decorate_gloss_string
 from lingdocs.helpers import load_content
 from lingdocs.helpers import split_ref
 from lingdocs.helpers import src
-from lingdocs.helpers import write_file
 from lingdocs.helpers import decorate_gloss_string
+from lingdocs.helpers import write_file
+from lingdocs.releasing import bump_version
+
+
+def test_bump():
+    assert bump_version("0.1.2") == "0.1.3"
+    assert bump_version("0.1.2", step="minor") == "0.2.0"
+    assert bump_version("0.1.2", step="major") == "1.0.0"
 
 
 def test_structure():

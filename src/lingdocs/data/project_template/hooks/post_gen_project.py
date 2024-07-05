@@ -38,10 +38,17 @@ def relativize(path):
     return Path(path)
 
 
-config = load(PROJECT_DIR / "config.yaml")
+cpath = PROJECT_DIR / "config.yaml"
+config = load(cpath)
 path = relativize("{{ cookiecutter.cldf }}")
 config["paths"]["cldf"] = str(path)
-dump(config, PROJECT_DIR / "config.yaml")
+config["paths"]
+dump(config, cpath)
+
+metadata = load(PROJECT_DIR / "metadata.yaml")
+conf_str = load(cpath, mode="plain")
+conf_str = conf_str.replace("<title_placeholder>", metadata["title"])
+dump(conf_str, cpath, mode="plain")
 
 if "Yes" == "{{ cookiecutter.use_sublime_text }}":
     while not path.is_file():

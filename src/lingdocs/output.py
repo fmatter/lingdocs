@@ -183,6 +183,7 @@ def write_details(builder, output_dir, dataset, content):
     func_dict["decorate_gloss_string"] = builder.decorate_gloss_string
     func_dict["ref_labels"] = builder.ref_labels
     func_dict["table_label"] = table_label
+    func_dict["example_links"] = config["examples"]["custom_links"]
     log.info(
         f"Writing data for {builder.name} to {output_dir.resolve()}, this may take a while. Set Set\ndata:\n  data:\n    false\n in your config file to turn off."
     )
@@ -338,7 +339,7 @@ def create_output(
             pbar.update(1)
             chapters = extract_chapters(content)
             ref_labels, ref_locations = process_labels(chapters)
-            preprocessed = preprocess(content, source_dir)
+            preprocessed = preprocess(content, dataset, builder, source_dir)
             builder.ref_labels = ref_labels
             builder.ref_locations = ref_locations
             preprocessed = builder.preprocess_commands(preprocessed, **kwargs)
@@ -362,7 +363,7 @@ def create_output(
                 **kwargs,
             )
             pbar.update(1)
-            content = postprocess(content, builder, dataset, source_dir)
+            content = postprocess(content, dataset, builder, source_dir)
             pbar.update(1)
             if builder.name == "latex":
                 metadata["bibfile"] = dataset.bibpath.name
@@ -382,6 +383,13 @@ def create_output(
                     chapters=chapters,
                     audio=audio_dic,
                 )
+                if builder.name == "latex":
+                    shutil.copy(
+                        dataset.bibpath,
+                        output_dir / builder.name / dataset.bibpath.name,
+                    )
+                # if _compile:
+                #     builder.compile(source_dir, output_dir)
             pbar.update(1)
         if config["data"]["data"]:
             write_details(builder, output_dir, dataset, preprocessed)

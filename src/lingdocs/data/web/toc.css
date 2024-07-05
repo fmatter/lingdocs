@@ -66,3 +66,6 @@ nav {
 }
 
 
+.toc ol {
+  list-style-type: none;
+}

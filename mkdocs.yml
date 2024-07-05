@@ -28,6 +28,7 @@ nav:
     - installation.md
     - usage.md
     - markdown.md
+    - releasing.md
     - commands.md
     - extra.md
   - config.md

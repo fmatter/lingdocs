@@ -18,24 +18,28 @@ CONTENT_FOLDER = "docs"
 STRUCTURE_FILE = "structure.yaml"
 FIGURE_DIR = "figures"
 TABLE_DIR = "tables"
+BUILD_DIR = "builds"
 COLSTART = "<<<columns---"
 COLEND = "---columns>>>"
 COLDIV = "---col---"
 
 
 def merge_dicts(a, b):
-    if b is not None:
-        for k1, v1 in b.items():
-            if isinstance(v1, dict):
-                for k2, v2 in v1.items():
-                    if isinstance(v2, dict):
-                        log.warning(
-                            "Your configuration file is too nested. Please check it."
-                        )
-                    else:
-                        a[k1][k2] = v2
-            else:
-                a[k1] = v1
+    for k1, v1 in b.items():
+        if isinstance(v1, dict):
+            for k2, v2 in v1.items():
+                if isinstance(v2, dict):
+                    for k3, v3 in v2.items():
+                        if isinstance(v3, dict):
+                            log.warning(
+                                "Your configuration file is too nested. Please check it."
+                            )
+                        else:
+                            a[k1][k2][k3] = v3
+                else:
+                    a[k1][k2] = v2
+        else:
+            a[k1] = v1
     return a
 
 

@@ -16,3 +16,8 @@ You can see a list of commands by running `lingdocs --help`; you can see informa
     :module: lingdocs.cli
     :command: new
     :depth: 1
+
+::: mkdocs-click
+    :module: lingdocs.cli
+    :command: release
+    :depth: 1

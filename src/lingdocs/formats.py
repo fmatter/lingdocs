@@ -2,6 +2,7 @@
 import logging
 import re
 import shutil
+import subprocess
 import sys
 import threading
 import webbrowser
@@ -193,16 +194,18 @@ class OutputFormat:
     ):  # pylint: disable=too-many-arguments
         # log.debug(f"Writing {cls.name} to {output_dir} (from {DATA_DIR})")
         abbrev_dict = abbrev_dict or {}
+        title = metadata.get("title", "A beautiful title")
         extra = {
             "name": cls.name,
             "chapters": chapters,
-            "project_title": metadata.get("title", "A beautiful title"),
+            "project_title": title,
             "glossing_abbrevs": cls.register_glossing_abbrevs(abbrev_dict),
             "ref_labels": str(ref_labels),
             "ref_locations": str(ref_locations),
             "data": config["data"]["data"],
             "layout": config["output"]["layout"],
             "conf": config.data.get(cls.name, {}),
+            "version": metadata["version"],
         }
         if "authors" in metadata:
             extra["author"] = cls.author_list(metadata["authors"])
@@ -324,7 +327,7 @@ class OutputFormat:
         del metadata
         return content
 
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, tnotes, subtable=False):
         label = f"tab:{label}"
         if label in cls.ref_labels:
             caption = f"{cls.ref_labels[label]}: {caption}"
@@ -354,6 +357,12 @@ class OutputFormat:
         log.warning(
             f"Not rendering live preview for format {cls.name} {config['paths']['output'].resolve()}"
         )
+
+    def open_preview(cls):
+        pass
+
+    def compile(cls, source, output_dir):
+        pass
 
 
 class PlainText(OutputFormat):
@@ -472,14 +481,34 @@ for (var i = 0; i < targets.length; i++) {{
     def glossing_abbrevs_list(cls, arg_string):
         return """<dl id="glossing_abbrevs"></dl>"""
 
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, tnotes, subtable=False):
+        if df is None:
+            return f"<table><supercaption class='table' id='tab:{label}'>{caption}</supercaption></table>"
         table = df.to_html(escape=False, index=False)
-        if not caption:
-            return table
-        return table.replace(
-            "<thead",
-            f"<caption class='table' id ='tab:{label}'>{caption}</caption><thead",
-        )
+        if subtable:
+            prefix = "sub"
+            table = table.replace('"dataframe"', '"subtable"')
+        else:
+            prefix = ""
+        if caption:
+            table = table.replace(
+                "<thead",
+                f"<caption class='{prefix}table' id ='tab:{label}'>{caption}</caption><thead",
+            )
+        if tnotes:
+            p = re.compile(r"\[tnote\]\((?P<content>.*?)\)")
+            table = p.sub(r"<sup>\g<content></sup>", table)
+            fnstr = "".join(
+                [
+                    f"<tr><td colspan='{len(df.columns)}'><small><sup>{chr(i+97)}</sup>{fn}</small></td></tr>"
+                    for i, fn in enumerate(tnotes)
+                ]
+            )
+            table = table.replace(
+                "<thead",
+                f"<tfoot>{fnstr}</tfoot><thead",
+            )
+        return table
 
     def preprocess(cls, content):
         extra = ["--shift-heading-level-by=1"]
@@ -514,7 +543,7 @@ for (var i = 0; i < targets.length; i++) {{
         return html_output
 
     def manex(cls, tag, content, kind):
-        if content.strip().startswith("PYLINGDOCS_RAW_TABLE_START"):
+        if content.strip().startswith("LINGDOCS_RAW_TABLE_START"):
             content = " \n \n" + content
         return html_example_wrap(tag, content, kind=kind)
 
@@ -592,7 +621,7 @@ hide:
             nconf = merge_dicts(out_conf, custom_conf)
             dump(nconf, out_path)
 
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, tnotes, subtable=False):
         tabular = df.to_html(escape=False, index=False)
         tabular = panflute.convert_text(
             tabular,
@@ -632,6 +661,21 @@ hide:
 
     def run_preview(cls):
         log.warning(f"Not rendering live preview for format {cls.name}.")
+
+    def compile(cls, source, output_dir):
+        log.info("Compiling MkDocs HTML.")
+        base = source / output_dir / cls.name
+        mkd_file = base / "mkdocs.yml"
+        if not mkd_file.is_file():
+            log.error(f"Not found: {mkd_file.resolve()}")
+            return
+        old = load(mkd_file)
+        temp = old.copy()
+        temp["site_url"] = "http://www.example.com/"
+        temp["plugins"].append("offline")
+        dump(temp, mkd_file)
+        subprocess.run("mkdocs build".split(" "), cwd=source / output_dir / cls.name)
+        dump(old, mkd_file)
 
 
 class SSG(HTML):
@@ -674,7 +718,7 @@ class GitHub(PlainText):
             return f"[ex:{url}–{end}]"
         return f"[ex:{url}]"
 
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, tnotes, subtable=False):
         del label  # unused
         tabular = df.to_markdown(index=False)
         if not caption:
@@ -714,7 +758,7 @@ class CLLD(PlainText):
     def todo_cmd(cls, url, *_args, **_kwargs):
         return html_todo(url, **_kwargs)
 
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, tnotes, subtable=False):
         if not caption:
             if len(df) == 0:
                 df = df.append({x: "" for x in df.columns}, ignore_index=True)
@@ -739,7 +783,7 @@ class CLLD(PlainText):
         return ""
 
     def manex(cls, tag, content, kind):
-        if content.strip().startswith("PYLINGDOCS_RAW_TABLE_START"):
+        if content.strip().startswith("LINGDOCS_RAW_TABLE_START"):
             content = " \n \n" + content
         return html_example_wrap(tag, content, kind=kind)
 
@@ -795,7 +839,7 @@ class Latex(PlainText):
             return f"\\a\\label{{{tag}}} {content}"
         return f"\\ex\\label{{{tag}}} {content} \\xe"
 
-    def table(cls, df, caption, label):
+    def table(cls, df, caption, label, tnotes, subtable=False):
         if len(df) == 0:
             df = df.append({x: x for x in df.columns}, ignore_index=True)
             df = df.applymap(latexify_table)
@@ -905,9 +949,53 @@ class Latex(PlainText):
                 yield content[m.start() : m.end()]
         yield content[current:]
 
+    def compile(cls, source, output_dir):
+        log.info("Compiling LaTeX document.")
+        p = subprocess.Popen(
+            "latexmk --xelatex main.tex",
+            shell=True,
+            cwd=source / output_dir / cls.name,
+        )
+        p.wait()
 
-builders = {x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs, SSG]}
 
+class Docx(GitHub):
+    name = "docx"
+    file_ext = "md"
+
+    def preprocess(cls, content):
+        return content
+
+    def adjust_layout(cls, content, metadata):
+        target = config["paths"]["output"] / cls.name / "document.md"
+        if target.is_file():
+            import subprocess
+
+            process = subprocess.Popen(
+                [
+                    "pandoc",
+                    str(target),
+                    "-o",
+                    "word.docx",
+                    "-L",
+                    "pandoc-ling.lua",
+                    "-F",
+                    "pandoc-crossref",
+                ]
+            )
+        else:
+            log.warning(f"File {target.resolve()} does not exist.")
+
+    def table(cls, df, caption, label):
+        tabular = df.to_markdown(index=False)
+        if not caption:
+            return tabular
+        return f"{caption}{{#tbl:{label}}}\n" + df.to_markdown(index=False)
+
+
+builders = {
+    x.name: x for x in [PlainText, GitHub, Latex, HTML, CLLD, MkDocs, SSG, Docx]
+}
 
 if Path(f"{PLD_DIR}/formats.py").is_file():
     sys.path.insert(1, str(PLD_DIR))

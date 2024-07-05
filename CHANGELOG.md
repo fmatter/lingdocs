@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+* table notes
+* subtables
+
 ### Fixed
 * tolerate empty config file
 * glosses in section headings (HTML)
@@ -42,14 +46,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * project creation failure
 
 ### Changed
+* simple HTML template
 * table label in detail view
 * I guess you can have output with links in it without writing all the data again
+<<<<<<< HEAD
+=======
 * simple HTML template
+>>>>>>> releasing
 
 ## [0.1.2] - 2023-10-27
 
 ### Added
 * audio in mkdocs
+* changelog
 
 ### Changed
 * much simpler custom format setup
@@ -62,6 +71,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * whitespace in LFTS macro
 * template loading
 * record numbers
+
+### Removed
+* `compile-latex` command (replaced by `--compile`)
 
 ## [0.1.1] - 2023-10-13
 
