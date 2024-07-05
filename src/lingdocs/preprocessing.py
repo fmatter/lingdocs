@@ -210,7 +210,6 @@ def load_tables(md, tables, source_dir="."):
         current, key, url = get_md_pattern(m)
         if key == "table":
             this_table_metadata = tables.get(url, {})
-
             if "subtables" in this_table_metadata:
                 yield f"\nLINGDOCS_RAW_TABLE_START{url}CONTENT_STARTLINGDOCS_RAW_TABLE_END"
                 for subtable in this_table_metadata["subtables"]:
