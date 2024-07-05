@@ -12,19 +12,19 @@ log = logging.getLogger(__name__)
 
 
 TABLE_PATTERN = re.compile(
-    r"PYLINGDOCS_RAW_TABLE_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_RAW_TABLE_END"  # noqa: E501
+    r"LINGDOCS_RAW_TABLE_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)LINGDOCS_RAW_TABLE_END"  # noqa: E501
 )
 
 MANEX_PATTERN = re.compile(
-    r"PYLINGDOCS_MANEX_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_MANEX_END"  # noqa: E501
+    r"LINGDOCS_MANEX_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)LINGDOCS_MANEX_END"  # noqa: E501
 )
 
 MANPEX_PATTERN = re.compile(
-    r"PYLINGDOCS_MANPEX_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_MANPEX_END"  # noqa: E501
+    r"LINGDOCS_MANPEX_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)LINGDOCS_MANPEX_END"  # noqa: E501
 )
 
 MANPEX_ITEM_PATTERN = re.compile(
-    r"PYLINGDOCS_MANPEXITEM_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)PYLINGDOCS_MANPEXITEM_END"  # noqa: E501
+    r"LINGDOCS_MANPEXITEM_START(?P<label>[\s\S].*)CONTENT_START(?P<content>[\s\S]*?)LINGDOCS_MANPEXITEM_END"  # noqa: E501
 )
 
 
