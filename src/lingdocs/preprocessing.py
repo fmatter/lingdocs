@@ -149,7 +149,7 @@ def render_markdown(
             for func, val in kwargs.get("func_dict", {}).items():
                 func_dict[func] = val
             func_dict["ref_labels"] = builder.ref_labels
-            func_dict["example_links"] = config["examples"]["custom_links"]
+            # func_dict["example_links"] = config["examples"]["custom_links"]
 
             if rich:
                 data = CLDFDataset(ds)
