@@ -6,6 +6,7 @@ import pandas as pd
 from writio import load
 
 from lingdocs.helpers import load_table_metadata
+from lingdocs.preprocessing import process_metadata
 
 log = logging.getLogger(__name__)
 
