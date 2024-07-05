@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 * support for external media hosting (must be stored in CLDF dataset)
 
+### Changed
+* wide HTML tables
+
 ## [0.1.4] - 2023-12-27
 
 ### Changed
