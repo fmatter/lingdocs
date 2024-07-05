@@ -57,7 +57,7 @@ def insert_tables(md, builder, tables):
     yield md[current:]
 
 
-def postprocess(md_str, builder, source_dir="."):
+def postprocess(md_str, builder, dataset, source_dir="."):
     tables = load_table_metadata(source_dir)
     md_str = "".join(insert_manex(md_str, builder, MANPEX_PATTERN, kind="multipart"))
     md_str = "".join(
