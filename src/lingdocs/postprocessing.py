@@ -46,14 +46,20 @@ def insert_tables(md, builder, tables):
         current = m.end()
         label = m.group("label")
         content = m.group("content")
-        df = pd.read_csv(StringIO(content), keep_default_na=False)
-        df.columns = [col if "Unnamed: " not in col else "" for col in df.columns]
+        if content:
+            df = pd.read_csv(StringIO(content), keep_default_na=False)
+            df.columns = [col if "Unnamed: " not in col else "" for col in df.columns]
+        else:
+            df = None
         if label not in tables:
             log.warning(f"Could not find metadata for table {label}.")
-            yield builder.table(df=df, caption=None, label=None)
+            yield builder.table(df=df, caption=None, label=None, tnotes=None)
         else:
             yield builder.table(
-                df=df, caption=tables[label].get("caption", None), label=label
+                df=df,
+                caption=tables[label].get("caption"),
+                label=label,
+                tnotes=tables[label].get("tnotes"),
             )
     yield md[current:]
 
