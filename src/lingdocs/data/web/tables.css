@@ -11,7 +11,7 @@ table {
 }
 
 .subtable {
-    display: inline;
+    display: inline-block;
 }
 
 td, th {

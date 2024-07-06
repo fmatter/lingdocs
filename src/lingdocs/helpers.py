@@ -207,11 +207,13 @@ def check_abbrevs(dataset, source_dir, content):
         for rec in abbrev_df.to_dict("records"):
             abbrev_dict[rec["ID"]] = rec["Description"]
     gloss_cands = list(dict.fromkeys(gloss_cands))
-    for x in map(str.lower, gloss_cands):
+    for x in map(lambda x: slugify(x.lower()), gloss_cands):
         if x not in abbrev_dict:
             abbrev_dict[x] = leipzig.get(x, "unknown abbreviation")
     unaccounted = [
-        x for x in gloss_cands if abbrev_dict[x.lower()] == "unknown abbreviation"
+        x
+        for x in gloss_cands
+        if abbrev_dict[slugify(x.lower().replace("~", ""))] == "unknown abbreviation"
     ]
     if len(unaccounted) > 0:
         log.warning(
@@ -488,9 +490,6 @@ def load_cldf_dataset(cldf_path, source_dir=None):
             ds.write(**table_dic)
         return ds
         extra_cldf_p = source_dir / EXTRA_DIR / "cldf"
-        if extra_cldf_p.is_dir():
-            for file in extra_cldf_p.iterdir():
-                print(file)
     except FileNotFoundError as e:
         raise e
         log.error(e)
@@ -502,7 +501,6 @@ def load_cldf_dataset(cldf_path, source_dir=None):
 
 def get_structure(structure_file, prefix_mode=None):
     counters = {1: 0, 2: 0, 3: 0, 4: 0}
-    print(structure_file)
     files = load(structure_file)
     if not files:
         log.error(

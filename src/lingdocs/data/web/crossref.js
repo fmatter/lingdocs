@@ -201,7 +201,7 @@ function numberSectionsOld(start=0){
         } else {
             prefix = ""
         }
-        h1.textContent = prefix+" " + h1.textContent
+        h1.innerHTML = prefix+" " + h1.innerHTML
     }
 
     // iterate all headings
@@ -300,13 +300,13 @@ function numberCaptions(){
                 counters[subkind] = 0
                 ref_counter = capitalizeFirstLetter(kind) + " " + counters[kind];
                 if (!caption.textContent.startsWith(ref_counter + ": ")){
-                    caption.textContent = ref_counter + ": " + caption.textContent
+                    caption.innerHTML = ref_counter + ": " + caption.innerHTML
                 }
                 refLabels[caption.id] = ref_counter // store the value for resolveCrossrefs below
             }
             if (caption.classList.contains(subkind)){
                 counters[subkind] += 1
-                caption.textContent = String.fromCharCode(96 + counters[subkind]) + ") " + caption.textContent
+                caption.innerHTML = String.fromCharCode(96 + counters[subkind]) + ") " + caption.innerHTML
                 refLabels[caption.id] = capitalizeFirstLetter(kind) + " " + counters[kind] + String.fromCharCode(96 + counters[subkind]); // store a value for resolveCrossrefs below
             }
         });
@@ -315,7 +315,7 @@ function numberCaptions(){
         counters["figure"] += 1
         ref_counter = capitalizeFirstLetter("figure") + " " + counters["figure"];
         if (!caption.textContent.startsWith(ref_counter + ": ")){
-            caption.textContent = ref_counter + ": " + caption.textContent
+            caption.innerHTML = ref_counter + ": " + caption.innerHTML
         }
         refLabels[caption.id] = ref_counter // store the value for resolveCrossrefs below
     })

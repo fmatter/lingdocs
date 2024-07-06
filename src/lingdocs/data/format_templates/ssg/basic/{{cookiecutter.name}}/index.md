@@ -15,7 +15,7 @@ version = "{{ cookiecutter.version }}"
 
 {% if cookiecutter.conf.get("hypothes.is") %}<script src="https://hypothes.is/embed.js" async></script>{% endif %}
 
-<article>
+<article style="max-width: 80ch; text-align: justify;">
     <div class="version">v{{ cookiecutter.version }}</div>
     <div class="author">{{ cookiecutter.author }}</div>
     {% if cookiecutter.abstract %}<div class="abstract">
