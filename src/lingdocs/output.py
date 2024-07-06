@@ -332,8 +332,10 @@ def create_output(
         if output_format not in builders:
             log.warning(f"Unknown output format '{output_format}'.")
             continue
-        with tqdm(total=6, desc=f"Building {output_format} output") as pbar:
-            builder = builders[output_format]()
+        builder = builders[output_format]()
+        with tqdm(
+            total=6, desc=f"Writing {output_format} to {(output_dir / builder.name)}"
+        ) as pbar:
             builder.figure_metadata = figure_metadata
             content = "\n\n".join([x["content"] for x in contents.values()])
             pbar.update(1)
@@ -400,6 +402,3 @@ def create_output(
                     bibcontents.replace(" &", " \\&"),
                     output_dir / builder.name / dataset.bibpath.name,
                 )
-        log.info(
-            f"Wrote format {output_format} to {(output_dir / builder.name).resolve()}"
-        )

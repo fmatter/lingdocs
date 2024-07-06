@@ -56,7 +56,7 @@ def insert_tables(md, builder, tables):
         else:
             df = None
         if label not in tables:
-            log.warning(f"Could not find metadata for table {label}.")
+            log.debug(f"Table without metadata: {label}")
             yield builder.table(
                 df=df,
                 caption=None,
