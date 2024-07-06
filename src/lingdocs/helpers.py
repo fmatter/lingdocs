@@ -207,11 +207,13 @@ def check_abbrevs(dataset, source_dir, content):
         for rec in abbrev_df.to_dict("records"):
             abbrev_dict[rec["ID"]] = rec["Description"]
     gloss_cands = list(dict.fromkeys(gloss_cands))
-    for x in map(str.lower, gloss_cands):
+    for x in map(lambda x: slugify(x.lower()), gloss_cands):
         if x not in abbrev_dict:
             abbrev_dict[x] = leipzig.get(x, "unknown abbreviation")
     unaccounted = [
-        x for x in gloss_cands if abbrev_dict[x.lower()] == "unknown abbreviation"
+        x
+        for x in gloss_cands
+        if abbrev_dict[slugify(x.lower().replace("~", ""))] == "unknown abbreviation"
     ]
     if len(unaccounted) > 0:
         log.warning(
