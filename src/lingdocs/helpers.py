@@ -488,9 +488,6 @@ def load_cldf_dataset(cldf_path, source_dir=None):
             ds.write(**table_dic)
         return ds
         extra_cldf_p = source_dir / EXTRA_DIR / "cldf"
-        if extra_cldf_p.is_dir():
-            for file in extra_cldf_p.iterdir():
-                print(file)
     except FileNotFoundError as e:
         raise e
         log.error(e)
@@ -502,7 +499,6 @@ def load_cldf_dataset(cldf_path, source_dir=None):
 
 def get_structure(structure_file, prefix_mode=None):
     counters = {1: 0, 2: 0, 3: 0, 4: 0}
-    print(structure_file)
     files = load(structure_file)
     if not files:
         log.error(
