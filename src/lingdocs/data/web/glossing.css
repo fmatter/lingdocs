@@ -2,6 +2,8 @@
   font-variant: small-caps;
 }
 
+sub, sup { line-height: 0; }
+
 .gloss {
   font-variant: small-caps;
 }

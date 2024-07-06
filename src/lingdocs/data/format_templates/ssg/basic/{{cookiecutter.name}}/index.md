@@ -16,11 +16,12 @@ version = "{{ cookiecutter.version }}"
 {% if cookiecutter.conf.get("hypothes.is") %}<script src="https://hypothes.is/embed.js" async></script>{% endif %}
 
 <article style="max-width: 80ch; text-align: justify;">
-    <div class="version">v{{ cookiecutter.version }}</div>
-    <div class="author">{{ cookiecutter.author }}</div>
+    <div style="display: inline;" class="author">{{ cookiecutter.author }}</div> |
+    <div style="display: inline;" class="version">v{{ cookiecutter.version }}</div> |
+    <div style="display: inline;" class="appendix"> <a href="{{ cookiecutter.appendix }}" >🗃️ Data</a></div>
     {% if cookiecutter.abstract %}<div class="abstract">
-        <b>Abstract</b>
-        <p>{{ cookiecutter.abstract }}</p>
+        <h4>Abstract</h4>
+        {{ cookiecutter.abstract }}
     </div>
     {% endif %} {{ cookiecutter.content }}
     <script>{{cookiecutter.glossing_abbrevs}}</script>

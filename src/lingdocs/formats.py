@@ -206,6 +206,7 @@ class OutputFormat:
             "layout": config["output"]["layout"],
             "conf": config.data.get(cls.name, {}),
             "version": metadata["version"],
+            # "metadata": metadata
         }
         if "authors" in metadata:
             extra["author"] = cls.author_list(metadata["authors"])
@@ -840,7 +841,9 @@ class Latex(PlainText):
         return f"\\ex\\label{{{tag}}} {content} \\xe"
 
     def table(cls, df, caption, label, tnotes, subtable=False):
-        if len(df) == 0:
+        if df is None:
+            tabular = ""
+        elif len(df) == 0:
             df = df.append({x: x for x in df.columns}, ignore_index=True)
             df = df.applymap(latexify_table)
             tabular = df.to_latex(escape=False, index=False, header=False)
