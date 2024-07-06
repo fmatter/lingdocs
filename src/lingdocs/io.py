@@ -1,3 +1,7 @@
+from pathlib import Path
+
+import yaml
+
 from lingdocs.config import (
     CONTENT_FOLDER,
     DATA_DIR,
@@ -7,8 +11,6 @@ from lingdocs.config import (
     TABLE_DIR,
     config,
 )
-from pathlib import Path
-import yaml
 
 
 def load_table_metadata(source_dir):

@@ -18,11 +18,7 @@ from lingdocs.config import (
     TABLE_DIR,
     config,
 )
-from lingdocs.helpers import (
-    comma_and_list,
-    func_dict,
-    get_md_pattern,
-)
+from lingdocs.helpers import comma_and_list, func_dict, get_md_pattern
 from lingdocs.io import load_table_metadata
 from lingdocs.models import models
 from lingdocs.templates import load_templates
