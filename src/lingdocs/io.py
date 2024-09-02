@@ -11,6 +11,7 @@ from lingdocs.config import (
     TABLE_DIR,
     config,
 )
+from loguru import logger as log
 
 
 def load_table_metadata(source_dir):
